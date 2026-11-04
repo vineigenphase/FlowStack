@@ -7,7 +7,7 @@
  * is rebuilt in full; when nothing changed we skip both list calls' full pull.
  */
 import { and, eq, gte, lt } from "drizzle-orm";
-import { accountMaps, accounts, detectedApps, supplierSpend, syncCursors } from "@/db/schema";
+import { accountMaps, accounts, detectedApps, fingerprints, supplierSpend, syncCursors } from "@/db/schema";
 import { withOrg, type Db } from "@/lib/db/client";
 import { apps as catalogApps } from "@/lib/catalog/load";
 import { enqueueAll, type QueueItem } from "@/lib/queue/enqueue";
@@ -19,6 +19,11 @@ import { matchSupplier, type Fingerprint, type Match } from "./match";
 
 export function catalogFingerprints(): Fingerprint[] {
   return catalogApps().flatMap((a) => a.fingerprints.map((pattern) => ({ appId: a.id, pattern })));
+}
+
+export function dedupeFingerprints(fps: Fingerprint[]): Fingerprint[] {
+  const seen = new Set<string>();
+  return fps.filter((f) => (seen.has(f.pattern) ? false : (seen.add(f.pattern), true)));
 }
 
 async function changedSince(c: XeroClient, since: Date, cursor: Date | null) {
@@ -70,7 +75,9 @@ export async function detect(tx: Db, orgId: string, asAt: string, hints: Supplie
   const since = monthsBack(asAt, 12);
   const recent = new Set(Array.from({ length: 4 }, (_, i) => monthsBack(asAt, i + 1)));
   const rows = await tx.select().from(supplierSpend).where(gte(supplierSpend.month, since));
-  const fps = catalogFingerprints();
+  // Catalogue YAML plus aliases people confirmed from the review queue.
+  const confirmed = await tx.select({ appId: fingerprints.appId, pattern: fingerprints.pattern }).from(fingerprints);
+  const fps = dedupeFingerprints([...catalogFingerprints(), ...confirmed]);
 
   const softwareCodes = new Set(
     (

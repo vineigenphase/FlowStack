@@ -243,7 +243,12 @@ export const flags = pgTable(
     evidence: jsonb("evidence").notNull(),
     createdAt: ts("created_at").notNull().defaultNow(),
   },
-  (t) => [index("flags_org_run").on(t.orgId, t.runId), index("flags_org_line").on(t.orgId, t.lineKey)],
+  (t) => [
+    index("flags_org_run").on(t.orgId, t.runId),
+    index("flags_org_line").on(t.orgId, t.lineKey),
+    // One flag per line per run; recomputes update in place so flag ids (and feedback) survive.
+    unique("flags_run_line").on(t.runId, t.lineKey),
+  ],
 );
 
 export const recommendations = pgTable(
@@ -266,6 +271,7 @@ export const flagFeedback = pgTable("flag_feedback", {
   flagId: uuid("flag_id").notNull().references(() => flags.id, { onDelete: "cascade" }),
   orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
   userId: uuid("user_id"),
+  lineKey: text("line_key").notNull(),
   ruleId: text("rule_id"),
   ruleVersion: integer("rule_version"),
   answer: text("answer", { enum: ["yes", "no"] }).notNull(),
@@ -374,6 +380,20 @@ export const shortlist = pgTable(
   (t) => [primaryKey({ columns: [t.orgId, t.appId, t.lineKey] })],
 );
 
+/** A person accepted an unreconciled cash flow (BACKEND.md §9). Applies only while the difference is unchanged. */
+export const cashflowAcceptances = pgTable(
+  "cashflow_acceptances",
+  {
+    orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
+    periodTo: date("period_to").notNull(),
+    diff: money("diff").notNull(),
+    note: text("note").notNull(),
+    acceptedBy: text("accepted_by").notNull(),
+    acceptedAt: ts("accepted_at").notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.orgId, t.periodTo] })],
+);
+
 // ---------- people-in-the-loop ----------
 
 export const reviewQueue = pgTable(
@@ -422,4 +442,5 @@ export const TENANT_TABLES = [
   "line_overrides",
   "org_essentials",
   "shortlist",
+  "cashflow_acceptances",
 ] as const;

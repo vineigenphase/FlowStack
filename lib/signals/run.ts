@@ -1,6 +1,6 @@
 /** Load what flag computation needs for one run, compute, and store flags + recommendations. */
 import { and, eq, inArray } from "drizzle-orm";
-import { appFacts, detectedApps, flags, lineOverrides, orgs, recommendations, statementLines, statements, trialBalance } from "@/db/schema";
+import { appFacts, cashflowAcceptances, detectedApps, flags, lineOverrides, orgs, recommendations, statementLines, statements, trialBalance } from "@/db/schema";
 import { withOrg } from "@/lib/db/client";
 import { env } from "@/lib/env";
 import { apps as catalogApps, rulesFile } from "@/lib/catalog/load";
@@ -60,12 +60,16 @@ export async function computeFlags(orgId: string, runId: string) {
     const prices = new Map<string, { known: boolean }>();
     for (const f of facts) if (f.field === "price_from_gbp" && (f.state === "verified" || f.state === "found") && f.value !== null) prices.set(f.appId, { known: true });
 
+    // A person may accept an unreconciled cash flow; it holds only while the unexplained amount is unchanged.
+    const [accepted] = cf ? await tx.select().from(cashflowAcceptances).where(eq(cashflowAcceptances.periodTo, cf.periodTo)) : [];
+    const cfOk = Boolean(cf?.reconciled) || Boolean(cf && accepted && Math.abs(accepted.diff - (cf.reconDiff ?? 0)) < 1);
+
     const rf = rulesFile();
     const out = compute(lines, {
       revenue: pl.totals.revenue ?? 0,
       totalAssets: bs.totals.total_assets ?? 0,
       monthsInPeriod: pl.periodFrom ? monthsBetween(pl.periodFrom, pl.periodTo) : 12,
-      cfReconciled: Boolean(cf?.reconciled),
+      cfReconciled: cfOk,
       rules: rf.rules,
       apps: catalogApps(),
       markets: org.markets,
@@ -77,28 +81,39 @@ export async function computeFlags(orgId: string, runId: string) {
       scoring: rf.scoring,
     });
 
-    await tx.delete(flags).where(eq(flags.runId, runId));
+    // Upsert by (run, line) so flag ids — and the feedback that references them — survive a recompute.
+    const keep = new Set(out.map((f) => f.lineKey));
+    const existing = await tx.select({ id: flags.id, lineKey: flags.lineKey }).from(flags).where(eq(flags.runId, runId));
+    const stale = existing.filter((e) => !keep.has(e.lineKey)).map((e) => e.id);
+    if (stale.length) await tx.delete(flags).where(inArray(flags.id, stale));
     for (const f of out) {
+      const values = {
+        orgId,
+        runId,
+        statementKind: f.kind,
+        lineKey: f.lineKey,
+        xeroAccountId: f.xeroAccountId,
+        ruleId: f.ruleId,
+        ruleVersion: f.ruleVersion,
+        value: f.value,
+        base: f.base,
+        materiality: f.materiality,
+        band: f.band,
+        coverageGap: f.coverageGap,
+        strength: f.strength,
+        state: f.state,
+        evidence: { ...f.evidence, cause: f.cause },
+      };
+      const { orgId: _o, runId: _r, lineKey: _l, ...set } = values;
+      void _o;
+      void _r;
+      void _l;
       const [row] = await tx
         .insert(flags)
-        .values({
-          orgId,
-          runId,
-          statementKind: f.kind,
-          lineKey: f.lineKey,
-          xeroAccountId: f.xeroAccountId,
-          ruleId: f.ruleId,
-          ruleVersion: f.ruleVersion,
-          value: f.value,
-          base: f.base,
-          materiality: f.materiality,
-          band: f.band,
-          coverageGap: f.coverageGap,
-          strength: f.strength,
-          state: f.state,
-          evidence: { ...f.evidence, cause: f.cause },
-        })
+        .values(values)
+        .onConflictDoUpdate({ target: [flags.runId, flags.lineKey], set })
         .returning({ id: flags.id });
+      await tx.delete(recommendations).where(eq(recommendations.flagId, row!.id));
       if (f.recommendations.length) {
         await tx.insert(recommendations).values(
           f.recommendations.map((r) => ({

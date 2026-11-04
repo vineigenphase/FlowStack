@@ -152,3 +152,23 @@ export class FixtureXeroClient implements XeroClient {
     return { status: 404, json: null, bytes: 0, notModified: false };
   }
 }
+
+/** Serves responses from an object keyed like the fixture files (used by the labelled eval set). */
+export class MemoryXeroClient implements XeroClient {
+  readonly meter = { calls: 0, bytes: 0 };
+  readonly limits: Limits = { day: null, minute: null, appMinute: null };
+  constructor(
+    private data: Record<string, unknown>,
+    readonly orgKey = "memory",
+  ) {}
+
+  async get(call: XeroCall): Promise<XeroResult> {
+    this.meter.calls++;
+    const key = call.page && call.page > 1 ? `${call.key}-p${call.page}` : call.key;
+    const json = this.data[key] ?? (call.page && call.page > 1 ? undefined : this.data[`${call.key}-p1`]);
+    if (json === undefined) return { status: 404, json: null, bytes: 0, notModified: false };
+    const bytes = Buffer.byteLength(JSON.stringify(json));
+    this.meter.bytes += bytes;
+    return { status: 200, json, bytes, notModified: false };
+  }
+}

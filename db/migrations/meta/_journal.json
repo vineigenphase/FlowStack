@@ -22,6 +22,20 @@
       "when": 1793797750436,
       "tag": "0002_grant_key",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793807506617,
+      "tag": "0003_cashflow_acceptances",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793807659810,
+      "tag": "0004_flags_upsert_feedback_line",
+      "breakpoints": true
     }
   ]
 }

@@ -47,3 +47,20 @@ On the synthetic set 19 of 52 lines flag. Per the spec, an in-use app that doesn
 kept apps is outranked → gap 0.5 → still flagged (e.g. Pleo loses to ApprovalMax on card-spend lines because
 ApprovalMax connects to Dext). That's faithful to §8.3 but is the most likely source of "Not a problem"
 answers; M7's labelled set should measure it.
+
+## M6–M7 decisions
+- **Flags upsert on (run_id, line_key).** Recompute used to delete + reinsert flags, which cascaded away
+  users' feedback and changed flag ids under the UI. Flag ids are now stable within a run.
+- **Fingerprint confirmations** from the queue are stored as exact-name rows in the DB `fingerprints` table and
+  merged with catalog/apps.yaml at detection time. They are global (all orgs benefit on their next refresh).
+- **Accepting an unreconciled cash flow** writes `cashflow_acceptances(org, period_to, diff)`. It only applies
+  while the unexplained amount is unchanged (±£1); a different gap needs a fresh look.
+- **Feedback:** "no" → line_override (marked_fine) + flag_disputed item; "yes" removes an earlier override.
+  FP report uses each flag's latest answer.
+- **Labelled set** (`fixtures/labelled/`, built by `scripts/make-labelled.ts`) has DRAFT labels written by Claude
+  from the business story — a person must review them before the gate is trusted.
+
+## Eval result 2026-11-04: gate FAILS (61.9% FP vs 15%)
+All 26 FPs are card_spend / supplier_bills lines where the right app is already paid for (Pleo, Dext) but §8.3
+ranks a better-integrated alternative above it → gap 0.5 → flagged. Payroll, stock, receivables: 0% FP, 0% missed.
+Fix needs a spec decision (see conversation); not changed unilaterally.
