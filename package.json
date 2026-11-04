@@ -23,6 +23,8 @@
     "@anthropic-ai/sdk": "^1.4.0",
     "@electric-sql/pglite": "^0.5.15",
     "@mozilla/readability": "^0.6.0",
+    "@neon/config": "^1.10.3",
+    "@neon/env": "^1.6.11",
     "@sentry/nextjs": "^11.10.0",
     "drizzle-orm": "^0.45.4",
     "iron-session": "^9.0.1",

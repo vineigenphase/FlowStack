@@ -2,14 +2,8 @@
  * pnpm deploy:check — run with the target environment's variables (e.g. `vercel env pull .env.deploy` then
  * `DOTENV=.env.deploy pnpm deploy:check`). Checks settings, connects to the database, verifies the app role and RLS.
  */
-import fs from "node:fs";
-const file = process.env.DOTENV;
-if (file && fs.existsSync(file)) {
-  for (const line of fs.readFileSync(file, "utf8").split(/\r?\n/)) {
-    const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*"?(.*?)"?\s*$/);
-    if (m && process.env[m[1]!] === undefined) process.env[m[1]!] = m[2]!;
-  }
-}
+import { loadEnvFiles } from "./_env";
+if (process.env.DOTENV) loadEnvFiles([process.env.DOTENV]);
 const { env, missingForDeploy } = await import("@/lib/env");
 const { openDb } = await import("@/lib/db/client");
 const { sql } = await import("drizzle-orm");

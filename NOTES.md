@@ -91,5 +91,11 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
   (no headers, cookies, bodies, query strings — the OAuth code is in one — or stack-frame variables),
   outputFileTracingIncludes for catalog/*.yaml (verified in .nft.json), deploy guards (`missingForDeploy`, health
   `missing`, openDb refuses PGlite on Vercel), postgres-js tuned for serverless, `pnpm deploy:check`, /app/[org] landing page.
-- **Blocked on the owner:** Neon MCP is read-only and the account only has the Telos project (FlowStack must not share
-  it); Vercel CLI isn't installed/logged in; Xero app creds. Steps in DEPLOY.md.
+- **Deployed (4 Nov 2026):** Neon project FlowStack `round-mouse-47017658` (eu-west-2, branch `production`), linked with
+  `neon init`/`neon deploy` (neon.ts declares Postgres only; Data API and Neon Auth deliberately off — server-only DB
+  access, own Xero sign-in). Vercel project flow-stack1/flowstack, live at https://flowstack-xi-ten.vercel.app, health
+  ok with `missing: []`, XERO_MODE=fixtures. Env set by `scripts/vercel-env.sh` (owner-run; per-environment secrets).
+  Kept postgres-js: Neon's HTTP driver can't run the transaction + `SET LOCAL ROLE` RLS pattern.
+- `.env.local` now points local dev at Neon; blank DATABASE_URL to go back to PGlite. Run `DOTENV=.env.local pnpm deploy:check`.
+- **Still open:** Xero app creds → XERO_MODE=live and the Demo Company connect check; Preview has no APP_URL and shares
+  the production Neon branch — give it its own branch before real customers connect.
