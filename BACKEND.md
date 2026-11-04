@@ -178,7 +178,8 @@ The pipeline, in order, stopping at the first confident match:
 ```yaml
 - id: payroll_no_bridge
   account_categories: [wages, employer_ni, pensions]
-  app_categories: [payroll, rota]
+  app_categories: [payroll, rota]   # where recommendations come from
+  covered_by: [payroll]             # in use → line is handled (defaults to app_categories)
   min_value_gbp: 1000          # low threshold is fine; materiality decides the rank
   cause: "Payroll costs this size usually need a payroll app posting to Xero. Only your team can confirm how it's done today."
 - id: rent_fine
@@ -191,9 +192,12 @@ The pipeline, in order, stopping at the first confident match:
 base         = revenue YTD (P&L and cash flow lines) | total assets (BS lines)
 materiality  = |value| / base
 band         = high if ≥ HIGH_BAND (0.10) | medium if ≥ MED_BAND (0.02) | low otherwise
-coverage_gap = 1    if no detected app sits in any of the rule's app categories
-             = 0.5  if one does, but a different app outranks it (computed after scoring, §8)
-             = 0    if the top-ranked app is already in use  → state "covered"
+coverage_gap = 0    if an app in use sits in the rule's covered_by categories  → state "covered"
+                    (a same-job app that ranks higher is kept as evidence.switch_option — a note, not a flag)
+             = 0.5  if an app in use only helps (in app_categories but not covered_by), e.g. a rota app for payroll
+             = 1    if no app in use sits in any of the rule's app categories
+# Coverage rule v2 (4 Nov 2026). v1 set gap 0.5 whenever a different app outranked the one in use; on the
+# labelled set that flagged lines the business already pays to handle (61.9% FP). See NOTES.md.
 strength     = coverage_gap × materiality
 ```
 
@@ -202,7 +206,7 @@ Line states:
 | State | When |
 |---|---|
 | `flagged` | the rule has app categories, value ≥ min, gap > 0, mapping is confident |
-| `covered` | gap = 0; show "Covered · <app>" |
+| `covered` | gap = 0; show "Covered · <app>", plus "Could switch to <app>" when `switch_option` is set |
 | `fine` | the rule has no app categories, or no rule applies |
 | `marked_fine` | the user answered "Not a problem" (persisted per org + line + rule) |
 | `queued` | the mapping is unsure or cash flow is unreconciled; the line shows as "Checking" |
@@ -261,7 +265,7 @@ match = 100 × ( 0.40 × strength_norm          # strength ÷ max strength acros
               + 0.15 × price_fit )            # band vs revenue band; 0.5 neutral when price is missing (never estimated)
 ```
 - Return the top 3 plus the in-use app if it isn't in the top 3. Each comes with `components` and a one-line `reason`.
-- An in-use app ranked first → line becomes `covered`. An in-use app ranked lower → gap 0.5, and both are shown (e.g. Pleo vs Ramp).
+- Coverage is decided by `covered_by` (§7.2), not by rank. When the line is covered but a same-job app ranks higher, both are shown (e.g. Pleo vs Ramp) and the higher one is recorded as `switch_option`.
 - Priority presets (Balanced, Lowest cost, Fastest live, Best support) from CLAUDE.md §7.3b come later. Keep the weights in `catalog/rules.yaml → scoring:`.
 
 ---

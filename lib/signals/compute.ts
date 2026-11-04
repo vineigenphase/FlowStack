@@ -4,7 +4,12 @@
  *   base         = revenue YTD (P&L and cash flow lines) | total assets (BS lines)
  *   materiality  = |value| / base
  *   band         = high ≥ HIGH_BAND | medium ≥ MED_BAND | low
- *   coverage_gap = 1 no detected app in the rule's categories | 0.5 one is, but another app outranks it | 0 top app in use
+ *   coverage_gap = 0   an app in use sits in the rule's covered_by categories → "covered"
+ *                      (a better-ranked alternative is kept as evidence.switch_option, not a flag)
+ *                = 0.5 an app in use only helps (in app_categories, not covered_by), e.g. a rota app for payroll
+ *                = 1   no app in use in the rule's categories
+ *   (Coverage rule v2, 2026-11-04 — replaced "0.5 when an in-use app is outranked", which flagged lines the
+ *    business already pays to handle. See NOTES.md.)
  *   strength     = coverage_gap × materiality
  */
 import type { App, Rule, Scoring } from "@/lib/catalog/load";
@@ -127,23 +132,19 @@ export function computeFlags(lines: LineIn[], ctx: FlagCtx): FlagOut[] {
       // The detected app is always a candidate, even outside the org's markets.
       for (const d of detectedInArea) if (!eligible.some((a) => a.id === d.app)) eligible.push(appsById.get(d.app)!);
       w.candidates = eligible;
-      w.coverageGap = detectedInArea.length ? 0.5 : 1;
+      const coveredBy = rule.covered_by ?? rule.app_categories;
+      const covering = kept.filter((a) => a.categories.some((c) => coveredBy.includes(c)));
+      if (covering.length) {
+        w.state = "covered";
+        w.coverageGap = 0;
+      } else {
+        w.coverageGap = detectedInArea.length ? 0.5 : 1;
+      }
     }
     return w;
   });
 
-  // Rank within each flagged line. strength_norm is constant within a line, so ranking doesn't depend on it.
-  for (const w of work) {
-    if (w.state !== "flagged") continue;
-    const scored = scoreCandidates({ candidates: w.candidates, strengthNorm: 0, kept, inUse: ctx.inUse, prices: ctx.prices, annualRevenue, scoring: ctx.scoring });
-    if (scored[0]?.inUse) {
-      w.state = "covered";
-      w.coverageGap = 0;
-    } else {
-      w.coverageGap = scored.some((s) => s.inUse) ? 0.5 : 1;
-    }
-    w.strength = r4(w.coverageGap * w.materiality);
-  }
+  for (const w of work) if (w.state === "flagged") w.strength = r4(w.coverageGap * w.materiality);
 
   const maxStrength = Math.max(0, ...work.filter((w) => w.state === "flagged").map((w) => w.strength));
   for (const w of work) {
@@ -151,7 +152,16 @@ export function computeFlags(lines: LineIn[], ctx: FlagCtx): FlagOut[] {
     const strengthNorm = maxStrength > 0 ? r4(w.strength / maxStrength) : 0;
     const scored = scoreCandidates({ candidates: w.candidates, strengthNorm, kept, inUse: ctx.inUse, prices: ctx.prices, annualRevenue, scoring: ctx.scoring });
     w.recommendations = shortlistOf(scored).map((s, i) => ({ ...s, rank: i + 1 }));
-    if (w.state === "covered") w.evidence.covered_by = scored[0]!.appId;
+    if (w.state === "covered") {
+      const rule = w.rule!;
+      const coveredBy = rule.covered_by ?? rule.app_categories;
+      const by = scored.find((x) => x.inUse && appsById.get(x.appId)!.categories.some((c) => coveredBy.includes(c)))!;
+      w.evidence.covered_by = by.appId;
+      // Not a flag: an alternative that does the same job and ranks higher than what they already pay for.
+      const sameJob = scored.filter((x) => appsById.get(x.appId)!.categories.some((c) => coveredBy.includes(c)));
+      const alt = sameJob[0];
+      if (alt && !alt.inUse && alt.match > by.match) w.evidence.switch_option = { app: alt.appId, match: alt.match, in_use_match: by.match, reason: alt.reason };
+    }
   }
 
   return work.map((w) => {

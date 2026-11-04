@@ -1,5 +1,12 @@
 # Flag rules (BACKEND.md §7.1) and scoring weights (§8.3). Thresholds live here, not in code.
 # Bump `version` when a rule's meaning changes: flags store rule_id + rule_version so FP-rate shifts trace to edits.
+#
+# app_categories: where candidate apps come from (what we'd recommend).
+# covered_by:     categories that, if the business already pays for an app in them, mean the line is handled
+#                 ("covered"). Defaults to app_categories. An in-use app that is only in app_categories helps
+#                 but doesn't handle it → flagged with coverage gap 0.5.
+# v2 (2026-11-04): coverage rule v2 for every rule — in-use apps in covered_by now cover the line even when
+#                  another app ranks higher (that becomes a "could switch" note, not a flag).
 
 scoring:
   weights: { strength: 0.40, fit_with_in_use: 0.25, peer_results: 0.20, price_fit: 0.15 }
@@ -8,15 +15,16 @@ scoring:
 
 rules:
   - id: payroll_no_bridge
-    version: 1
+    version: 2
     account_categories: [wages, employer_ni, pensions]
     app_categories: [payroll, rota]
+    covered_by: [payroll]          # a rota app feeds payroll but doesn't run it
     statements: [pl]
     min_value_gbp: 1000
     cause: "Payroll costs this size usually need a payroll app posting to Xero. Only your team can confirm how it's done today."
 
   - id: payroll_liabilities
-    version: 1
+    version: 2
     account_categories: [payroll_liabilities]
     app_categories: [payroll]
     statements: [bs, cf]
@@ -24,15 +32,16 @@ rules:
     cause: "PAYE, NI and pension balances usually come from a payroll app's journal. Check how these reach Xero."
 
   - id: cost_of_sales_stock
-    version: 1
+    version: 2
     account_categories: [cost_of_sales, inventory]
     app_categories: [inventory, data_capture]
+    covered_by: [inventory]        # bill capture records purchases but doesn't cost stock
     statements: [pl, bs, cf]
     min_value_gbp: 5000
     cause: "Purchases this size are usually captured and costed by an inventory or bill-capture app."
 
   - id: supplier_bills
-    version: 1
+    version: 2
     account_categories: [trade_creditors, utilities, repairs, cleaning, freight]
     app_categories: [data_capture, spend_payables]
     statements: [pl, bs, cf]
@@ -40,7 +49,7 @@ rules:
     cause: "Bills at this volume are usually captured by an app rather than keyed by hand."
 
   - id: receivables
-    version: 1
+    version: 2
     account_categories: [trade_debtors]
     app_categories: [billing_receivables]
     statements: [bs, cf]
@@ -48,7 +57,7 @@ rules:
     cause: "Money owed by customers at this level is usually chased by a collections app."
 
   - id: sales_capture
-    version: 1
+    version: 2
     account_categories: [sales]
     app_categories: [epos_ecommerce, billing_receivables]
     statements: [pl]
@@ -56,7 +65,7 @@ rules:
     cause: "Sales this size usually flow into Xero from an EPOS, ecommerce or invoicing app."
 
   - id: card_spend
-    version: 1
+    version: 2
     account_categories: [travel, entertainment, office_general, software_subscriptions, motor, advertising]
     app_categories: [spend_payables]
     statements: [pl]
@@ -64,7 +73,7 @@ rules:
     cause: "Card and expense spend is usually captured by a spend app with receipts attached."
 
   - id: fx_costs
-    version: 1
+    version: 2
     account_categories: [fx_gains_losses]
     app_categories: [fx_banking]
     statements: [pl]
@@ -72,7 +81,7 @@ rules:
     cause: "Currency gains and losses point to foreign payments that an FX account can make cheaper."
 
   - id: fine_as_is
-    version: 1
+    version: 2
     account_categories:
       [rent, depreciation, interest, corporation_tax, bank_charges, insurance, professional_fees, telephone_internet,
        bank, prepayments, fixed_assets, vat, corporation_tax_payable, accruals, short_term_loans, long_term_loans,

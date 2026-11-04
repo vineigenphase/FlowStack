@@ -159,11 +159,15 @@ describe("flag computation", () => {
     expect(computeFlags([line({ category: "rent" })], base)[0]!.state).toBe("fine");
     expect(computeFlags([line({ value: 500 })], base)[0]!.state).toBe("fine"); // under min_value_gbp
     expect(computeFlags([line({})], { ...base, overrides: new Set(["pl:477|payroll_no_bridge"]) })[0]!.state).toBe("marked_fine");
-    // Staffology alone loses to Deputy (native with an app they keep). With both in use, the top app is in use.
+    // A rota app only helps with payroll → gap 0.5. A payroll app in use covers it, even if another ranks higher.
     const staff = { appId: "staffology", spend12m: 1200, monthsSeen: 12 };
     const dep = { appId: "deputy", spend12m: 2400, monthsSeen: 12 };
-    const half = computeFlags([line({})], { ...base, inUse: new Map([["staffology", staff]]) })[0]!;
+    const half = computeFlags([line({})], { ...base, inUse: new Map([["deputy", dep]]) })[0]!;
     expect(half).toMatchObject({ state: "flagged", coverageGap: 0.5 });
+    const alone = computeFlags([line({})], { ...base, inUse: new Map([["staffology", staff]]) })[0]!;
+    expect(alone.state).toBe("covered");
+    // Deputy ranks higher overall but is a rota app, so it's not offered as a payroll switch.
+    expect(alone.evidence.switch_option).toBeUndefined();
     const covered = computeFlags([line({})], { ...base, inUse: new Map([["staffology", staff], ["deputy", dep]]) })[0]!;
     expect(covered).toMatchObject({ state: "covered", coverageGap: 0, strength: 0 });
     expect(covered.recommendations[0]).toMatchObject({ inUse: true });

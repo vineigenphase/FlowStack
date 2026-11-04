@@ -26,31 +26,31 @@ const flagFor = async (lineKey: string) => (await withOrg(orgId, (tx) => tx.sele
 
 describe("feedback", () => {
   it('"no" marks the line fine for this org, keeps the flag id, and opens flag_disputed', async () => {
-    const f = await flagFor("pl:445");
+    const f = await flagFor("pl:310");
     expect(f.state).toBe("flagged");
-    const out = await submitFeedback({ orgId, flagId: f.id, userId: null, answer: "no", note: "Dext captures these bills" });
+    const out = await submitFeedback({ orgId, flagId: f.id, userId: null, answer: "no", note: "MarketMan is being rolled out" });
     expect(out.state).toBe("marked_fine");
-    expect((await flagFor("pl:445")).id).toBe(f.id);
+    expect((await flagFor("pl:310")).id).toBe(f.id);
     const ov = await withOrg(orgId, (tx) => tx.select().from(lineOverrides));
-    expect(ov).toEqual([expect.objectContaining({ lineKey: "pl:445", ruleId: "supplier_bills", state: "marked_fine" })]);
+    expect(ov).toEqual([expect.objectContaining({ lineKey: "pl:310", ruleId: "cost_of_sales_stock", state: "marked_fine" })]);
     const db = await adminDb();
     const q = await db.select().from(reviewQueue).where(eq(reviewQueue.kind, "flag_disputed"));
-    expect(q[0]!.reason).toContain("supplier_bills v1");
-    expect(q[0]!.reason).toContain("Dext captures these bills");
+    expect(q[0]!.reason).toContain("cost_of_sales_stock v2");
+    expect(q[0]!.reason).toContain("MarketMan is being rolled out");
   });
 
   it("the override survives a recompute, and feedback survives with it", async () => {
     await recompute(orgId);
-    expect((await flagFor("pl:445")).state).toBe("marked_fine");
+    expect((await flagFor("pl:310")).state).toBe("marked_fine");
     const fb = await withOrg(orgId, (tx) => tx.select().from(flagFeedback));
     expect(fb).toHaveLength(1);
   });
 
   it('"yes" after "no" undoes the override', async () => {
-    const f = await flagFor("pl:445");
+    const f = await flagFor("pl:310");
     const out = await submitFeedback({ orgId, flagId: f.id, userId: null, answer: "yes" });
     expect(out.state).toBe("flagged");
-    expect(await withOrg(orgId, (tx) => tx.select().from(lineOverrides).where(and(eq(lineOverrides.lineKey, "pl:445"))))).toHaveLength(0);
+    expect(await withOrg(orgId, (tx) => tx.select().from(lineOverrides).where(and(eq(lineOverrides.lineKey, "pl:310"))))).toHaveLength(0);
   });
 
   it("refuses feedback on a fine line", async () => {
@@ -62,9 +62,9 @@ describe("feedback", () => {
     const wages = await flagFor("pl:477");
     await submitFeedback({ orgId, flagId: wages.id, userId: null, answer: "yes" });
     const r = await fpReport();
-    // pl:445 latest answer is "yes", pl:477 "yes" → 0 of 2.
+    // pl:310 latest answer is "yes", pl:477 "yes" → 0 of 2.
     expect(r.overall).toEqual({ answered: 2, no: 0, rate: 0 });
-    expect(r.byRule.map((x) => x.key)).toEqual(["payroll_no_bridge@v1", "supplier_bills@v1"]);
+    expect(r.byRule.map((x) => x.key)).toEqual(["cost_of_sales_stock@v2", "payroll_no_bridge@v2"]);
   });
 });
 

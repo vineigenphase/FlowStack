@@ -108,7 +108,7 @@ describe("M5 flags", () => {
     const state = (k: string) => f.get(k)?.state;
     // Sales flow through Lightspeed, which ranks first → covered.
     expect(state("pl:200")).toBe("covered");
-    // Deputy (rota) is in use but Staffology outranks it (native with Deputy) → flagged with gap 0.5.
+    // Deputy (rota) is in use but only helps with payroll (not in covered_by) → flagged with gap 0.5.
     expect(state("pl:477")).toBe("flagged");
     expect(f.get("pl:477")!.coverageGap).toBe(0.5);
     for (const k of ["pl:404", "pl:412", "pl:416", "pl:433", "pl:437", "pl:469", "pl:489", "pl:500", "pl:260"]) expect(state(k), k).toBe("fine");
@@ -119,11 +119,11 @@ describe("M5 flags", () => {
 
   it("hero £ at stake matches the hand calculation", async () => {
     const f = [...(await flagsByKey()).values()];
-    // Flagged P&L cost lines: COGS 812,300 + advertising 31,500 + cleaning 18,900 + general 8,700 + utilities 54,300
-    // + repairs 27,600 + wages 690,000 + employer NI 71,200 + pensions 20,700 + subscriptions 14,900 + travel 3,800
-    const hand = 812_300 + 31_500 + 18_900 + 8_700 + 54_300 + 27_600 + 690_000 + 71_200 + 20_700 + 14_900 + 3_800;
+    // Coverage rule v2: Pleo covers card spend and Dext covers bills, so only the real gaps flag:
+    // COGS 812,300 (no inventory app) + wages 690,000 + employer NI 71,200 + pensions 20,700 (no payroll app).
+    const hand = 812_300 + 690_000 + 71_200 + 20_700;
     const flaggedPl = f.filter((x) => x.statementKind === "pl" && x.state === "flagged").map((x) => x.lineKey).sort();
-    expect(flaggedPl).toEqual(["pl:310", "pl:400", "pl:408", "pl:429", "pl:445", "pl:473", "pl:477", "pl:478", "pl:479", "pl:485", "pl:493"]);
+    expect(flaggedPl).toEqual(["pl:310", "pl:477", "pl:478", "pl:479"]);
     const revenueCats = new Set(accountCategories().filter((c) => c.revenue).map((c) => c.key));
     const total = atStake(
       f.map((x) => ({ kind: x.statementKind, state: x.state, value: x.value, lineKey: x.lineKey })),
@@ -131,14 +131,22 @@ describe("M5 flags", () => {
       revenueCats,
     );
     expect(total).toBe(hand);
-    expect(hand).toBe(1_753_900);
+    expect(hand).toBe(1_594_200);
+  });
+
+  it("a line covered by an app they pay for keeps the higher-ranked alternative as a note, not a flag", async () => {
+    const util = (await flagsByKey()).get("pl:445")!;
+    expect(util.state).toBe("covered");
+    const ev = util.evidence as Record<string, unknown>;
+    expect(ev.covered_by).toBe("dext");
+    expect(ev.switch_option).toMatchObject({ app: "approvalmax" });
   });
 
   it("every flag carries traceable evidence: trial balance row, base, materiality, rule + version", async () => {
     const w = (await flagsByKey()).get("pl:477")!;
     const ev = w.evidence as Record<string, unknown>;
     expect(ev.trial_balance).toEqual({ code: "477", name: "Wages and Salaries", ytd_net: 690_000, as_at: "2026-10-31" });
-    expect(ev).toMatchObject({ statement_value: 690_000, base_label: "Revenue", base_value: expected.revenue, rule_id: "payroll_no_bridge", rule_version: 1 });
+    expect(ev).toMatchObject({ statement_value: 690_000, base_label: "Revenue", base_value: expected.revenue, rule_id: "payroll_no_bridge", rule_version: 2 });
     expect(ev.detected_in_area).toEqual([{ app: "deputy", spend_12m: 2574, months_seen: 12 }]);
   });
 

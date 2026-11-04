@@ -63,4 +63,7 @@ answers; M7's labelled set should measure it.
 ## Eval result 2026-11-04: gate FAILS (61.9% FP vs 15%)
 All 26 FPs are card_spend / supplier_bills lines where the right app is already paid for (Pleo, Dext) but §8.3
 ranks a better-integrated alternative above it → gap 0.5 → flagged. Payroll, stock, receivables: 0% FP, 0% missed.
-Fix needs a spec decision (see conversation); not changed unilaterally.
+**Resolved same day (owner approved): coverage rule v2.** Rules gain `covered_by` (categories that actually do the
+job; payroll → [payroll], stock → [inventory]). An in-use app there covers the line; a higher-ranked same-job app
+becomes `evidence.switch_option`. All rules bumped to v2. Eval: 0% FP, 0% missed, 100% state agreement on 155
+lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the story", not proof. BACKEND.md updated.

@@ -32,6 +32,8 @@ export const Rule = z.object({
   version: z.number().int().default(1),
   account_categories: z.array(z.string()).min(1),
   app_categories: strs,
+  /** Categories that, when an app in them is in use, mean the line is handled. Defaults to app_categories. */
+  covered_by: z.array(z.string()).optional(),
   statements: z.array(z.enum(["pl", "bs", "cf"])).default(["pl", "bs", "cf"]),
   min_value_gbp: z.number().default(0),
   cause: z.string().optional(),
@@ -118,6 +120,7 @@ export function validateCatalog(): string[] {
   for (const r of rulesFile().rules) {
     for (const k of r.account_categories) if (!acc.has(k)) errs.push(`rule ${r.id}: unknown account category ${k}`);
     for (const k of r.app_categories) if (!appCats.has(k)) errs.push(`rule ${r.id}: unknown app category ${k}`);
+    for (const k of r.covered_by ?? []) if (!r.app_categories.includes(k)) errs.push(`rule ${r.id}: covered_by ${k} is not one of its app_categories`);
   }
   const pats = new Map<string, string>();
   for (const a of apps()) {
