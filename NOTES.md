@@ -23,3 +23,27 @@ Things that differ from CLAUDE.md / BACKEND.md, and why. Keep this short and cur
   `statements.totals`; `statement_lines.line_key`, `statement_lines.category`;
   `recommendations.org_id` and `flag_feedback.org_id/rule_id/rule_version` (RLS + FP traceability);
   `detected_apps.present`.
+
+## Behaviour decisions (M2–M5)
+- **grant_key on xero_connections.** One Xero authorisation can cover several tenants with a single rotating
+  refresh token. Rows from the same grant share `grant_key`, refresh together under one advisory lock, and
+  disconnecting one only revokes the refresh token when no sibling is still active.
+- **Queue writes happen after the tenant transaction commits** (`enqueueAll`). The queue is owner-only, and
+  writing it from inside `withOrg` both deadlocks single-connection PGlite and could leave queue items for
+  rolled-back work.
+- **If-Modified-Since is a probe, not a delta.** Aggregates can't be patched (the rows are gone), so when the
+  probe shows changes the 12-month spend window is rebuilt in full; when nothing changed, the full pull is skipped.
+- **Fingerprints:** exact by default; a trailing ` *` opts a pattern into token-prefix matching. Short or
+  ambiguous names ("float", "wise") stay exact-only.
+- **"Kept apps" for fit** exclude Xero itself and `other_software` (Google, Microsoft, Slack), otherwise every
+  app with a Xero integration would score 1.0.
+- **recompute(orgId)** rebuilds categories → cash flow → flags from stored rows, no Xero calls. M6 uses it
+  after a review item is resolved.
+- The open balance sheet is stored as a second `bs` statement in the run; "latest BS" = max(period_to).
+- `/api/dev/login` exists only when XERO_MODE=fixtures and NODE_ENV≠production.
+
+## Known risk to watch (FP rate)
+On the synthetic set 19 of 52 lines flag. Per the spec, an in-use app that doesn't integrate with the other
+kept apps is outranked → gap 0.5 → still flagged (e.g. Pleo loses to ApprovalMax on card-spend lines because
+ApprovalMax connects to Dext). That's faithful to §8.3 but is the most likely source of "Not a problem"
+answers; M7's labelled set should measure it.

@@ -1,0 +1,17 @@
+# App categories (BACKEND.md §8.1). Grouping follows Mayday's public map as a reference, typed by hand. No scraping.
+- { key: management_reporting, label: Management reporting }
+- { key: consolidation, label: Consolidation }
+- { key: data_capture, label: Data capture }
+- { key: spend_payables, label: Spend and payables }
+- { key: billing_receivables, label: Billing and receivables }
+- { key: payroll, label: Payroll }
+- { key: rota, label: Rota and time }
+- { key: fx_banking, label: FX and global banking }
+- { key: inventory, label: Inventory and purchasing }
+- { key: job_project, label: Job and project management }
+- { key: fpa, label: FP&A }
+- { key: cash_forecasting, label: Cash flow forecasting }
+- { key: epos_ecommerce, label: EPOS and ecommerce sales }
+- { key: compliance, label: Compliance }
+# Not a finance gap; lets detection recognise common software so it doesn't flood the review queue.
+- { key: other_software, label: Other software }

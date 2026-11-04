@@ -1,0 +1,1 @@
+ALTER TABLE "xero_connections" ADD COLUMN "grant_key" text NOT NULL;

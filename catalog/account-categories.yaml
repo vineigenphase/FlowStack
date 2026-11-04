@@ -1,0 +1,206 @@
+# Account categories (BACKEND.md §5). Signals work off these keys, never raw account codes.
+#
+# How a match is scored (lib/mapping/rules.ts):
+#   system_account equal                         → 0.95
+#   reporting_code prefix + type allowed         → 0.90
+#   type_only (the Xero Type alone is decisive)  → 0.90
+#   name keyword + type allowed                  → 0.80
+#   name keyword, no types listed                → 0.70   (below MAP_CONFIDENCE_MIN 0.75 → review queue)
+# The highest score wins; ties go to the entry listed first.
+#
+# Reporting codes are UK Xero codes as used in our synthetic fixtures. VERIFY against the real
+# Demo Company chart (`pnpm xero:record`) before relying on them; names back them up meanwhile.
+
+# ---------------- Profit and loss ----------------
+- key: sales
+  label: Sales
+  statement: pl
+  revenue: true
+  match: { types: [REVENUE, SALES], reporting_codes: [REV.TRA], name_any: [sales, turnover, revenue from] }
+- key: other_income
+  label: Other income
+  statement: pl
+  revenue: true
+  match: { types: [REVENUE, OTHERINCOME], reporting_codes: [REV.OTH], name_any: [other revenue, other income, interest income, grant] }
+- key: cost_of_sales
+  label: Cost of sales
+  statement: pl
+  match: { types: [DIRECTCOSTS], reporting_codes: [EXP.COS], name_any: [cost of goods, cost of sales, purchases, food cost, drink cost], type_only: true }
+- key: wages
+  label: Wages and salaries
+  statement: pl
+  match: { types: [EXPENSE, OVERHEADS, DIRECTCOSTS], reporting_codes: [EXP.EMP.WAG], name_any: [wage, salar, payroll, staff cost, tronc] }
+- key: employer_ni
+  label: Employer's National Insurance
+  statement: pl
+  match: { types: [EXPENSE, OVERHEADS, DIRECTCOSTS], reporting_codes: [EXP.EMP.NIC], name_any: [national insurance, employers ni, employer ni, payroll tax] }
+- key: pensions
+  label: Pensions
+  statement: pl
+  match: { types: [EXPENSE, OVERHEADS, DIRECTCOSTS], reporting_codes: [EXP.EMP.PEN], name_any: [pension, 401k, superannuation] }
+- key: staff_other
+  label: Other staff costs
+  statement: pl
+  match: { types: [EXPENSE, OVERHEADS], reporting_codes: [EXP.EMP.OTH], name_any: [staff welfare, training, recruitment, staff uniform, staff meals] }
+- key: contractors
+  label: Subcontractors and freelancers
+  statement: pl
+  match: { types: [EXPENSE, OVERHEADS, DIRECTCOSTS], name_any: [subcontract, contractor, freelanc, agency staff] }
+- key: rent
+  label: Rent and rates
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.REN, EXP.OCC.REN], name_any: [rent, rates, lease] }
+- key: utilities
+  label: Utilities
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.UTI], name_any: [light, power, heating, electric, gas, water, utilit] }
+- key: repairs
+  label: Repairs and maintenance
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.REP], name_any: [repair, maintenance] }
+- key: cleaning
+  label: Cleaning
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.CLE], name_any: [cleaning, laundry, waste] }
+- key: insurance
+  label: Insurance
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.INS], name_any: [insurance] }
+- key: advertising
+  label: Advertising and marketing
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.ADV], name_any: [advertis, marketing, promotion] }
+- key: professional_fees
+  label: Accountancy and legal
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.PRO], name_any: [accounting, accountancy, legal, consulting, audit, professional fee] }
+- key: software_subscriptions
+  label: Software and subscriptions
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.SUB], name_any: [subscription, software, saas, computer software, it services] }
+- key: telephone_internet
+  label: Telephone and internet
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.TEL], name_any: [telephone, internet, mobile, broadband] }
+- key: travel
+  label: Travel
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.TRA], name_any: [travel, accommodation, subsistence] }
+- key: motor
+  label: Motor and vehicles
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.MOT], name_any: [motor, vehicle, fuel, mileage] }
+- key: freight
+  label: Freight and postage
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE, DIRECTCOSTS], reporting_codes: [EXP.FRE], name_any: [freight, courier, postage, delivery] }
+- key: entertainment
+  label: Entertainment
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.ENT], name_any: [entertainment] }
+- key: office_general
+  label: General and office expenses
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.GEN, EXP.OFF], name_any: [general expense, office expense, printing, stationery] }
+- key: bank_charges
+  label: Bank charges
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.BAN], name_any: [bank fee, bank charge] }
+- key: card_fees
+  label: Card processing fees
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE, DIRECTCOSTS], name_any: [merchant fee, card fee, processing fee, stripe fee, payment fee] }
+- key: interest
+  label: Interest
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.INT], name_any: [interest paid, interest expense, loan interest] }
+- key: depreciation
+  label: Depreciation
+  statement: pl
+  match: { types: [DEPRECIATN], reporting_codes: [EXP.DEP], name_any: [depreciation, amortisation, amortization], type_only: true }
+- key: corporation_tax
+  label: Corporation tax
+  statement: pl
+  match: { types: [EXPENSE, OVERHEADS], reporting_codes: [EXP.TAX], name_any: [corporation tax, income tax expense] }
+- key: bad_debts
+  label: Bad debts
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE], name_any: [bad debt, doubtful debt] }
+- key: fx_gains_losses
+  label: Foreign exchange gains and losses
+  statement: pl
+  match: { types: [OVERHEADS, EXPENSE, REVENUE, OTHERINCOME], name_any: [foreign exchange, fx gain, fx loss, currency gain, currency loss, realised currency, unrealised currency] }
+
+# ---------------- Balance sheet ----------------
+- key: bank
+  label: Bank and cash
+  statement: bs
+  match: { types: [BANK], type_only: true }
+- key: trade_debtors
+  label: Money owed by customers
+  statement: bs
+  match: { types: [CURRENT], system_account: DEBTORS, reporting_codes: [ASS.CUR.REC.TRA], name_any: [accounts receivable, trade debtors] }
+- key: other_debtors
+  label: Other debtors
+  statement: bs
+  match: { types: [CURRENT], reporting_codes: [ASS.CUR.REC.OTH], name_any: [other debtors, sundry debtors, deposits paid] }
+- key: prepayments
+  label: Prepayments
+  statement: bs
+  match: { types: [PREPAYMENT], reporting_codes: [ASS.CUR.REC.PRE], name_any: [prepayment], type_only: true }
+- key: inventory
+  label: Stock
+  statement: bs
+  match: { types: [INVENTORY], reporting_codes: [ASS.CUR.INY], name_any: [inventory, stock], type_only: true }
+- key: fixed_assets
+  label: Fixed assets
+  statement: bs
+  match: { types: [FIXED, NONCURRENT], reporting_codes: [ASS.NCA], name_any: [equipment, furniture, vehicles, property, accumulated depreciation, computer], type_only: true }
+- key: trade_creditors
+  label: Money owed to suppliers
+  statement: bs
+  match: { types: [CURRLIAB], system_account: CREDITORS, reporting_codes: [LIA.CUR.PAY.TRA], name_any: [accounts payable, trade creditors] }
+- key: vat
+  label: VAT / sales tax
+  statement: bs
+  match: { types: [CURRLIAB], system_account: GST, reporting_codes: [LIA.CUR.TAX.VAT], name_any: [vat, gst, sales tax] }
+- key: payroll_liabilities
+  label: PAYE, NI and pension payable
+  statement: bs
+  match: { types: [CURRLIAB], reporting_codes: [LIA.CUR.TAX.PAY], name_any: [paye, payroll liabilit, pension payable, wages payable, net wages] }
+- key: corporation_tax_payable
+  label: Corporation tax payable
+  statement: bs
+  match: { types: [CURRLIAB], reporting_codes: [LIA.CUR.TAX.COR], name_any: [corporation tax payable, corporation tax] }
+- key: accruals
+  label: Accruals and deferred income
+  statement: bs
+  match: { types: [CURRLIAB], reporting_codes: [LIA.CUR.ACC], name_any: [accrual, deferred income] }
+- key: short_term_loans
+  label: Short-term loans
+  statement: bs
+  match: { types: [CURRLIAB], reporting_codes: [LIA.CUR.LOA], name_any: [short-term loan, short term loan, overdraft, credit facility] }
+- key: directors_loan
+  label: Directors' loan account
+  statement: bs
+  match: { types: [CURRLIAB, TERMLIAB], name_any: [director's loan, directors loan, directors' loan] }
+- key: long_term_loans
+  label: Long-term loans
+  statement: bs
+  match: { types: [TERMLIAB], reporting_codes: [LIA.NCL], name_any: [loan, mortgage, hire purchase, finance lease], type_only: true }
+- key: share_capital
+  label: Share capital
+  statement: bs
+  match: { types: [EQUITY], reporting_codes: [EQU.SHA], name_any: [share capital, ordinary shares] }
+- key: retained_earnings
+  label: Retained earnings
+  statement: bs
+  match: { types: [EQUITY], system_account: RETAINEDEARNINGS, reporting_codes: [EQU.RET], name_any: [retained earnings] }
+- key: dividends
+  label: Dividends
+  statement: bs
+  match: { types: [EQUITY], reporting_codes: [EQU.DIV], name_any: [dividend, drawings] }
+- key: other_equity
+  label: Other equity
+  statement: bs
+  match: { types: [EQUITY], name_any: [funds introduced, capital contribution, owner] }

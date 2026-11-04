@@ -1,0 +1,6 @@
+# Every-year items per market (BACKEND.md §8.1). sample: true until a person verifies them.
+- { key: uk_vat_returns, market: UK, label: VAT returns (Making Tax Digital), cadence: quarterly, note: "Filed from Xero under MTD", sample: true }
+- { key: uk_confirmation_statement, market: UK, label: Confirmation statement, cadence: yearly, note: "Companies House fee £50 (check current fee)", sample: true }
+- { key: uk_month_end_close, market: UK, label: Month-end close calendar, cadence: monthly, note: "e.g. Easy Month End", sample: true }
+- { key: uk_corporation_tax_return, market: UK, label: Corporation tax return (CT600), cadence: yearly, sample: true }
+- { key: uk_payroll_rti, market: UK, label: Payroll RTI submissions, cadence: monthly, sample: true }

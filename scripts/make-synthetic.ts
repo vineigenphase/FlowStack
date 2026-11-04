@@ -316,7 +316,7 @@ const spendSpec: S[] = [
   { name: "MSFT * E0300ABCD", amount: 96.4, account: "485" },
   { name: "Slack Technologies", amount: 64.0, account: "485" },
   { name: "Tillflow Ltd", amount: 79.0, account: "485", from: 6 }, // unknown software supplier → queue
-  { name: "Fathom HQ", amount: 45.0, account: "485", from: 8 }, // fuzzy to "fathom" → fingerprint_check
+  { name: "Fathum Ltd", amount: 45.0, account: "485", from: 8 }, // misspelt "Fathom": fuzzy 0.93–0.97 → fingerprint_check
   { name: "AMAZON MKTPLACE PMTS", amount: 212.37, account: "429" },
   { name: "EE Limited DD", amount: 410.0, account: "489" },
 ];

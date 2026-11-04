@@ -1,0 +1,51 @@
+import { cookies } from "next/headers";
+import { getIronSession, type SessionOptions } from "iron-session";
+import { and, eq } from "drizzle-orm";
+import { orgMembers, users } from "@/db/schema";
+import { adminDb } from "@/lib/db/client";
+import { env } from "@/lib/env";
+import { HttpError } from "@/lib/api";
+
+export type SessionData = { userId?: string; email?: string; isAdmin?: boolean };
+export type OAuthState = { verifier?: string; state?: string };
+
+const base = (): Omit<SessionOptions, "cookieName"> => ({
+  password: env().SESSION_SECRET,
+  cookieOptions: { httpOnly: true, sameSite: "lax", secure: env().NODE_ENV === "production", path: "/" },
+});
+
+export async function getSession() {
+  return getIronSession<SessionData>(await cookies(), { ...base(), cookieName: "fs_session" });
+}
+
+/** Short-lived cookie holding the PKCE verifier and state between /start and /callback. */
+export async function getOAuthState() {
+  return getIronSession<OAuthState>(await cookies(), { ...base(), cookieName: "fs_oauth", ttl: 600 });
+}
+
+export async function requireUser() {
+  const s = await getSession();
+  if (!s.userId) throw new HttpError(401, "Sign in with Xero first");
+  return { userId: s.userId, email: s.email ?? "", isAdmin: Boolean(s.isAdmin) };
+}
+
+/** The signed-in user must be a member of this org (checked on the owner connection; RLS scopes the data after). */
+export async function requireOrgMember(orgId: string) {
+  const u = await requireUser();
+  if (!/^[0-9a-f-]{36}$/i.test(orgId)) throw new HttpError(404, "Org not found");
+  const db = await adminDb();
+  const [m] = await db
+    .select({ role: orgMembers.role })
+    .from(orgMembers)
+    .where(and(eq(orgMembers.orgId, orgId), eq(orgMembers.userId, u.userId)));
+  if (!m && !u.isAdmin) throw new HttpError(404, "Org not found");
+  return { ...u, role: m?.role ?? "member" };
+}
+
+export async function requireAdmin() {
+  const u = await requireUser();
+  const db = await adminDb();
+  const [row] = await db.select({ isAdmin: users.isAdmin }).from(users).where(eq(users.id, u.userId));
+  if (!row?.isAdmin) throw new HttpError(403, "Admins only");
+  return u;
+}

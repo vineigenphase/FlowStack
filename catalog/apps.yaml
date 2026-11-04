@@ -1,0 +1,294 @@
+# App catalogue (BACKEND.md §8.1). Hand-entered. Every entry is `sample: true` until a person verifies it.
+# source: where the entry's facts came from (vendor site, typed by hand). PRs touching this file note the source of each fact.
+#
+# fingerprints: normalised supplier names (lib/detect/normalise.ts).
+#   "deputy"     exact match on the whole normalised name
+#   "pleo *"     token-prefix match: "pleo technologies" matches; use only for distinctive names
+# integrations: native | via_app | csv. "xero" is the ledger itself.
+
+- id: xero
+  name: Xero
+  categories: [accounting]
+  markets: [UK, US, CA, AU]
+  website: https://www.xero.com
+  fingerprints: ["xero", "xero *"]
+  sample: true
+  source: hand-entered
+
+# ---------- payroll ----------
+- id: staffology
+  name: Staffology Payroll
+  categories: [payroll]
+  markets: [UK]
+  website: https://www.staffology.co.uk
+  crawl: { home: /, pricing: /pricing, product: /payroll, services: null }
+  fingerprints: ["staffology", "iris staffology", "staffology *"]
+  integrations: [{ to: deputy, kind: native }, { to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+- id: brightpay
+  name: BrightPay
+  categories: [payroll]
+  markets: [UK]
+  website: https://www.brightpay.co.uk
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["brightpay", "brightpay *", "thesaurus software"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+- id: gusto
+  name: Gusto
+  categories: [payroll]
+  markets: [US]
+  website: https://gusto.com
+  crawl: { home: /, pricing: /product/pricing, product: null, services: null }
+  fingerprints: ["gusto", "gusto *", "zenpayroll"]
+  integrations: [{ to: xero, kind: native }, { to: deputy, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+
+# ---------- rota ----------
+- id: deputy
+  name: Deputy
+  categories: [rota]
+  markets: [UK, US, CA, AU]
+  website: https://www.deputy.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["deputy", "deputy com *", "deputy com", "deputechnologies"]
+  integrations: [{ to: staffology, kind: native }, { to: xero, kind: native }, { to: gusto, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+- id: planday
+  name: Planday
+  categories: [rota]
+  markets: [UK]
+  website: https://www.planday.com
+  fingerprints: ["planday", "planday *"]
+  integrations: [{ to: xero, kind: native }, { to: brightpay, kind: csv }]
+  sample: true
+  source: hand-entered from vendor site
+- id: rotaready
+  name: Rotaready
+  categories: [rota]
+  markets: [UK]
+  website: https://www.rotaready.com
+  fingerprints: ["rotaready", "rotaready *"]
+  integrations: [{ to: staffology, kind: native }, { to: xero, kind: csv }]
+  sample: true
+  source: hand-entered from vendor site
+
+# ---------- data capture ----------
+- id: dext
+  name: Dext Prepare
+  categories: [data_capture]
+  markets: [UK, US, CA, AU]
+  website: https://dext.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["dext", "dext *", "receipt bank", "receipt bank *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+- id: hubdoc
+  name: Hubdoc
+  categories: [data_capture]
+  markets: [UK, US, CA, AU]
+  website: https://www.hubdoc.com
+  fingerprints: ["hubdoc", "hubdoc *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+
+# ---------- spend & payables ----------
+- id: pleo
+  name: Pleo
+  categories: [spend_payables]
+  markets: [UK]
+  website: https://www.pleo.io
+  crawl: { home: /en-gb, pricing: /en-gb/pricing, product: null, services: null }
+  fingerprints: ["pleo", "pleo *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+- id: spendesk
+  name: Spendesk
+  categories: [spend_payables]
+  markets: [UK]
+  website: https://www.spendesk.com
+  fingerprints: ["spendesk", "spendesk *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+- id: soldo
+  name: Soldo
+  categories: [spend_payables]
+  markets: [UK]
+  website: https://www.soldo.com
+  fingerprints: ["soldo", "soldo *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+- id: ramp
+  name: Ramp
+  categories: [spend_payables]
+  markets: [US]
+  website: https://ramp.com
+  fingerprints: ["ramp business", "ramp business *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+- id: approvalmax
+  name: ApprovalMax
+  categories: [spend_payables]
+  markets: [UK, US, AU]
+  website: https://approvalmax.com
+  fingerprints: ["approvalmax", "approvalmax *"]
+  integrations: [{ to: xero, kind: native }, { to: dext, kind: via_app }]
+  sample: true
+  source: hand-entered from vendor site
+
+# ---------- billing & receivables ----------
+- id: chaser
+  name: Chaser
+  categories: [billing_receivables]
+  markets: [UK, US, AU]
+  website: https://www.chaserhq.com
+  fingerprints: ["chaser", "chaserhq", "chaser hq", "chaser technologies *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+- id: gocardless
+  name: GoCardless
+  categories: [billing_receivables]
+  markets: [UK, US, CA, AU]
+  website: https://gocardless.com
+  fingerprints: ["gocardless", "gocardless *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+
+# ---------- reporting / consolidation / forecasting ----------
+- id: fathom
+  name: Fathom
+  categories: [management_reporting, consolidation]
+  markets: [UK, US, CA, AU]
+  website: https://www.fathomhq.com
+  fingerprints: ["fathom", "fathomhq", "fathom hq", "fathom applications *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+- id: syft
+  name: Syft Analytics
+  categories: [management_reporting, consolidation]
+  markets: [UK, US, CA, AU]
+  website: https://www.syftanalytics.com
+  fingerprints: ["syft analytics", "syft analytics *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+- id: float
+  name: Float
+  categories: [cash_forecasting]
+  markets: [UK, US, CA, AU]
+  website: https://floatapp.com
+  fingerprints: ["floatapp", "float app", "float cash flow *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+- id: agicap
+  name: Agicap
+  categories: [cash_forecasting]
+  markets: [UK]
+  website: https://agicap.com
+  fingerprints: ["agicap", "agicap *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+
+# ---------- FX ----------
+- id: wise
+  name: Wise Business
+  categories: [fx_banking]
+  markets: [UK, US, CA, AU]
+  website: https://wise.com/gb/business
+  fingerprints: ["wise", "wise payments", "transferwise", "transferwise *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+- id: airwallex
+  name: Airwallex
+  categories: [fx_banking, spend_payables]
+  markets: [UK, US, CA, AU]
+  website: https://www.airwallex.com
+  fingerprints: ["airwallex", "airwallex *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+
+# ---------- inventory ----------
+- id: unleashed
+  name: Unleashed
+  categories: [inventory]
+  markets: [UK, US, CA, AU]
+  website: https://www.unleashedsoftware.com
+  fingerprints: ["unleashed software", "unleashed software *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+- id: marketman
+  name: MarketMan
+  categories: [inventory]
+  markets: [UK, US]
+  website: https://www.marketman.com
+  fingerprints: ["marketman", "marketman *"]
+  integrations: [{ to: xero, kind: native }, { to: lightspeed, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+- id: procure_wizard
+  name: Procure Wizard
+  categories: [inventory]
+  markets: [UK]
+  website: https://www.procurewizard.com
+  fingerprints: ["procure wizard", "procure wizard *", "procurewizard"]
+  integrations: [{ to: xero, kind: native }, { to: dext, kind: via_app }]
+  sample: true
+  source: hand-entered from vendor site
+
+# ---------- EPOS / ecommerce ----------
+- id: lightspeed
+  name: Lightspeed Restaurant
+  categories: [epos_ecommerce]
+  markets: [UK, US, CA, AU]
+  website: https://www.lightspeedhq.co.uk
+  fingerprints: ["lightspeed", "lightspeed *"]
+  integrations: [{ to: xero, kind: native }, { to: marketman, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+- id: square
+  name: Square
+  categories: [epos_ecommerce]
+  markets: [UK, US, CA, AU]
+  website: https://squareup.com/gb
+  fingerprints: ["square", "squareup", "sq squareup *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered from vendor site
+
+# ---------- other software (recognised, never recommended) ----------
+- id: google_workspace
+  name: Google Workspace
+  categories: [other_software]
+  markets: [UK, US, CA, AU]
+  fingerprints: ["google *", "gsuite", "google workspace"]
+  sample: true
+- id: microsoft_365
+  name: Microsoft 365
+  categories: [other_software]
+  markets: [UK, US, CA, AU]
+  fingerprints: ["msft", "msft *", "microsoft *"]
+  sample: true
+- id: slack
+  name: Slack
+  categories: [other_software]
+  markets: [UK, US, CA, AU]
+  fingerprints: ["slack", "slack *"]
+  sample: true

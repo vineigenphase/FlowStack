@@ -1,0 +1,20 @@
+# Markets (BACKEND.md §8.1, D8: chosen at set-up in 1.0).
+- key: UK
+  label: United Kingdom
+  currency: GBP
+  swaps: []
+- key: US
+  label: United States
+  currency: USD
+  swaps:
+    - { category: payroll, from: staffology, to: gusto }
+    - { category: rota, from: rotaready, to: deputy }
+- key: CA
+  label: Canada
+  currency: CAD
+  swaps: []
+- key: AU
+  label: Australia
+  currency: AUD
+  swaps:
+    - { category: payroll, from: staffology, to: deputy }

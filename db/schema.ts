@@ -68,6 +68,9 @@ export const xeroConnections = pgTable("xero_connections", {
   orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
   tenantId: text("tenant_id").notNull().unique(),
   connectionId: text("connection_id"),
+  /** One Xero authorisation can cover several tenants with a single rotating refresh token.
+   *  Rows sharing a grant_key hold the same token set and are refreshed together under one lock. */
+  grantKey: text("grant_key").notNull(),
   encAccess: bytea("enc_access"),
   encRefresh: bytea("enc_refresh"),
   expiresAt: ts("expires_at"),

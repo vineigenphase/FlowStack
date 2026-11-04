@@ -22,6 +22,7 @@ beforeAll(async () => {
     .values({
       orgId: o!.id,
       tenantId: "tenant-1",
+      grantKey: "grant-1",
       encAccess: await seal("old-access"),
       encRefresh: await seal("refresh-1"),
       expiresAt: new Date(Date.now() - 1000),
