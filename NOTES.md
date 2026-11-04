@@ -67,3 +67,21 @@ ranks a better-integrated alternative above it → gap 0.5 → flagged. Payroll,
 job; payroll → [payroll], stock → [inventory]). An in-use app there covers the line; a higher-ranked same-job app
 becomes `evidence.switch_option`. All rules bumped to v2. Eval: 0% FP, 0% missed, 100% state agreement on 155
 lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the story", not proof. BACKEND.md updated.
+
+## M8 decisions (2026-11-04)
+- **Seeded facts are `missing` (sample: true), never invented values.** `pnpm db:seed` writes one row per app × field.
+  Crawler facts are real observations, so they carry `sample: false` even while unverified.
+- **Extraction = regex rules (always) + claude-haiku-5-5 structured output (only when LLM_ENABLED).** The LLM sees
+  vendor marketing pages only, never ledger data. Every fact from either path must pass the verbatim quote check.
+- **One `fact_missing` item per app** (ref = app + sorted missing fields), not one per field, to keep the queue usable.
+- **Spot checks:** 20% of new/changed `found` facts. **>30% numeric move** or **pages disagreeing** → `conflicting`,
+  last value kept. A `verified` fact is never downgraded by the crawler; it only goes `stale` after 90 days.
+- **All pages failing = no information.** Facts are not touched (the first version re-confirmed them — fixed).
+- Queue resolution gained `verify {field, value, source_url}` for fact_* items → state `verified`, checked_by = person.
+
+## Live crawl, 3 apps (2026-11-04)
+- Staffology: 3 pages fetched, 0 facts — prices not in the page text.
+- Dext: `data_location = EU` found ("data is stored in the EU", dext.com). `/pricing` 404 — **crawl path needs a person**.
+- Pleo: `/en-gb` paths 404 → corrected to `/en`. Pages fetch, but prices are client-rendered (JSON in the HTML; Readability
+  text has no £). Correctly recorded as missing. **Set TAVILY_API_KEY** (renders JS) to get most pricing pages.
+- Crawl paths in catalog/apps.yaml are hand guesses for every other app; expect more 404s until a person checks them.

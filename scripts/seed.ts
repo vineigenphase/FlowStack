@@ -22,7 +22,9 @@ for (const a of apps()) {
   for (const p of a.fingerprints) await db.insert(fingerprints).values({ appId: a.id, pattern: p, kind: p.endsWith(" *") ? "alias" : "name" }).onConflictDoNothing();
   for (const i of a.integrations) await db.insert(integrations).values({ fromApp: a.id, toApp: i.to, kind: i.kind }).onConflictDoNothing();
 }
-console.log(`seeded ${apps().length} apps (all sample: true)`);
+const { seedFacts } = await import("@/lib/catalog/facts");
+const facts = await seedFacts();
+console.log(`seeded ${apps().length} apps (all sample: true), ${facts} new fact rows (state: missing)`);
 
 if (process.argv.includes("--demo-org")) {
   const { runRefresh } = await import("@/lib/sync/refresh");

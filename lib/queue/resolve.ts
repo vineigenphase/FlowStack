@@ -5,10 +5,11 @@
  */
 import { and, asc, desc, eq } from "drizzle-orm";
 import { z } from "zod";
-import { accountMaps, apps as appsT, auditLog, cashflowAcceptances, fingerprints, reviewQueue, statements, supplierSpend } from "@/db/schema";
+import { accountMaps, appFacts, apps as appsT, auditLog, cashflowAcceptances, fingerprints, reviewQueue, statements, supplierSpend } from "@/db/schema";
 import { adminDb, withOrg } from "@/lib/db/client";
 import { HttpError } from "@/lib/api";
 import { accountCategories, apps as catalogApps } from "@/lib/catalog/load";
+import { FACT_FIELDS } from "@/lib/catalog/facts";
 import { detect } from "@/lib/detect";
 import { recompute } from "@/lib/sync/refresh";
 import { enqueueAll, type QueueKind } from "./enqueue";
@@ -19,6 +20,8 @@ export const Resolution = z.discriminatedUnion("action", [
   z.object({ action: z.literal("add_alias"), app_id: z.string() }),
   z.object({ action: z.literal("accept"), note: z.string().trim().min(3) }),
   z.object({ action: z.literal("note"), note: z.string().trim().min(3) }),
+  // fact_*: a person enters the value and where they saw it → state "verified".
+  z.object({ action: z.literal("verify"), field: z.string(), value: z.unknown(), source_url: z.string().url() }),
   z.object({ action: z.literal("dismiss"), note: z.string().trim().optional() }),
 ]);
 export type Resolution = z.infer<typeof Resolution>;
@@ -30,10 +33,10 @@ const ALLOWED: Record<QueueKind, Resolution["action"][]> = {
   unknown_supplier: ["add_alias", "dismiss"],
   cashflow_unreconciled: ["accept", "dismiss"],
   flag_disputed: ["note", "dismiss"],
-  fact_missing: ["note", "dismiss"],
-  fact_conflicting: ["note", "dismiss"],
-  fact_stale: ["note", "dismiss"],
-  fact_spot_check: ["note", "dismiss"],
+  fact_missing: ["verify", "note", "dismiss"],
+  fact_conflicting: ["verify", "note", "dismiss"],
+  fact_stale: ["verify", "note", "dismiss"],
+  fact_spot_check: ["verify", "note", "dismiss"],
 };
 
 export async function listQueue(opts: { kind?: string; status?: "open" | "done" | "dismissed"; limit?: number } = {}) {
@@ -134,6 +137,16 @@ export async function resolveItem(id: string, actor: string, resolution: Resolut
       await db.insert(cashflowAcceptances).values(row).onConflictDoUpdate({ target: [cashflowAcceptances.orgId, cashflowAcceptances.periodTo], set: row });
       effects.push(`accepted £${Math.abs(row.diff).toFixed(2)} unexplained for ${periodTo}`);
       recomputeOrg = true;
+      break;
+    }
+    case "verify": {
+      const appId = str(ref.app_id, "app_id");
+      if (!(FACT_FIELDS as readonly string[]).includes(resolution.field)) throw new HttpError(422, `Unknown fact field ${resolution.field}`);
+      if (resolution.value === undefined || resolution.value === null) throw new HttpError(422, "A verified fact needs a value");
+      await ensureAppRow(appId);
+      const row = { appId, field: resolution.field, value: resolution.value, state: "verified" as const, quote: null, sourceUrl: resolution.source_url, checkedAt: new Date(), checkedBy: actor, sample: false };
+      await db.insert(appFacts).values(row).onConflictDoUpdate({ target: [appFacts.appId, appFacts.field], set: row });
+      effects.push(`verified ${appId}.${resolution.field} = ${JSON.stringify(resolution.value)}`);
       break;
     }
     case "note":

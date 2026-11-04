@@ -19,11 +19,14 @@
     "queue": "tsx scripts/queue.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.4.0",
     "@electric-sql/pglite": "^0.5.15",
+    "@mozilla/readability": "^0.6.0",
     "drizzle-orm": "^0.45.4",
     "iron-session": "^9.0.1",
     "jose": "^6.2.15",
     "libsodium-wrappers": "^0.8.4",
+    "linkedom": "^0.18.15",
     "next": "^16.4.5",
     "pino": "^10.4.0",
     "postgres": "^4.0.0",

@@ -104,7 +104,7 @@
   categories: [spend_payables]
   markets: [UK]
   website: https://www.pleo.io
-  crawl: { home: /en-gb, pricing: /en-gb/pricing, product: null, services: null }
+  crawl: { home: /en, pricing: /en/pricing, product: null, services: null }   # /en-gb paths 404 (checked 2026-11-04)
   fingerprints: ["pleo", "pleo *"]
   integrations: [{ to: xero, kind: native }]
   sample: true
