@@ -1,0 +1,1572 @@
+{
+  "Invoices": [
+    {
+      "InvoiceID": "535c1226-1683-431d-ad5a-45f23e0afa0e",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "65d503f1-f0c2-40e4-a2e4-a15836e68c4a",
+        "Name": "Brakes Bros Ltd"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "DateString": "2025-11-15T00:00:00",
+      "Status": "PAID",
+      "Total": 61200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "235b2b4f-1cf1-4d9c-a97b-7ef9bc8ca1ba",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "65d503f1-f0c2-40e4-a2e4-a15836e68c4a",
+        "Name": "Brakes Bros Ltd"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "DateString": "2025-12-15T00:00:00",
+      "Status": "PAID",
+      "Total": 61200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "ea876b3e-1306-462d-a3dc-0b36a56679d9",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "65d503f1-f0c2-40e4-a2e4-a15836e68c4a",
+        "Name": "Brakes Bros Ltd"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "DateString": "2026-01-15T00:00:00",
+      "Status": "PAID",
+      "Total": 61200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "89b589b2-1838-424b-ac24-2fc99c5b0262",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "65d503f1-f0c2-40e4-a2e4-a15836e68c4a",
+        "Name": "Brakes Bros Ltd"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "DateString": "2026-02-15T00:00:00",
+      "Status": "PAID",
+      "Total": 61200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "25475bd1-6f50-42d0-aa03-679d8be9c9e2",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "65d503f1-f0c2-40e4-a2e4-a15836e68c4a",
+        "Name": "Brakes Bros Ltd"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "DateString": "2026-03-15T00:00:00",
+      "Status": "PAID",
+      "Total": 61200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "fa3fb3a9-e760-4333-a176-24c0a9c81ee2",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "65d503f1-f0c2-40e4-a2e4-a15836e68c4a",
+        "Name": "Brakes Bros Ltd"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "DateString": "2026-04-15T00:00:00",
+      "Status": "PAID",
+      "Total": 61200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "2dc388f4-0f57-452e-a7e4-bf01b403b150",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "65d503f1-f0c2-40e4-a2e4-a15836e68c4a",
+        "Name": "Brakes Bros Ltd"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "DateString": "2026-05-15T00:00:00",
+      "Status": "PAID",
+      "Total": 61200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "548569bf-a9aa-4de3-a59b-0b9e5f7ddaec",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "65d503f1-f0c2-40e4-a2e4-a15836e68c4a",
+        "Name": "Brakes Bros Ltd"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "DateString": "2026-06-15T00:00:00",
+      "Status": "PAID",
+      "Total": 61200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "b0a0e8ec-5e6c-4d79-add7-deaf94fa2204",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "65d503f1-f0c2-40e4-a2e4-a15836e68c4a",
+        "Name": "Brakes Bros Ltd"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "DateString": "2026-07-15T00:00:00",
+      "Status": "PAID",
+      "Total": 61200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "3ba28eaf-864a-493b-a3a4-17e27c38a181",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "65d503f1-f0c2-40e4-a2e4-a15836e68c4a",
+        "Name": "Brakes Bros Ltd"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "DateString": "2026-08-15T00:00:00",
+      "Status": "PAID",
+      "Total": 61200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "5b184dc7-de00-4752-ac45-e8ae322624b0",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "65d503f1-f0c2-40e4-a2e4-a15836e68c4a",
+        "Name": "Brakes Bros Ltd"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "DateString": "2026-09-15T00:00:00",
+      "Status": "PAID",
+      "Total": 61200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "dd14f28e-e989-450e-a9ce-3a512ed9ffdf",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "65d503f1-f0c2-40e4-a2e4-a15836e68c4a",
+        "Name": "Brakes Bros Ltd"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "DateString": "2026-10-15T00:00:00",
+      "Status": "AUTHORISED",
+      "Total": 61200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "e303304a-1502-4ff9-ac0f-c9e6f9442e3f",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "ec741724-d2a4-4116-afd7-19a099475fe1",
+        "Name": "Bidfood UK Ltd"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "DateString": "2025-11-15T00:00:00",
+      "Status": "PAID",
+      "Total": 48700,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "b6b6425f-5789-44b0-ad46-a9a57bf2f455",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "ec741724-d2a4-4116-afd7-19a099475fe1",
+        "Name": "Bidfood UK Ltd"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "DateString": "2025-12-15T00:00:00",
+      "Status": "PAID",
+      "Total": 48700,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "70b40cd4-fb11-4579-aa49-e153d542ef90",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "ec741724-d2a4-4116-afd7-19a099475fe1",
+        "Name": "Bidfood UK Ltd"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "DateString": "2026-01-15T00:00:00",
+      "Status": "PAID",
+      "Total": 48700,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "9e6baaa4-b25f-45ed-ae78-9bc13813cca2",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "ec741724-d2a4-4116-afd7-19a099475fe1",
+        "Name": "Bidfood UK Ltd"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "DateString": "2026-02-15T00:00:00",
+      "Status": "PAID",
+      "Total": 48700,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "6543ba2a-b1c2-46c8-abc3-4781db4fe123",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "ec741724-d2a4-4116-afd7-19a099475fe1",
+        "Name": "Bidfood UK Ltd"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "DateString": "2026-03-15T00:00:00",
+      "Status": "PAID",
+      "Total": 48700,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "9de1eb35-1d2c-4da2-a6d8-ce67503bbaea",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "ec741724-d2a4-4116-afd7-19a099475fe1",
+        "Name": "Bidfood UK Ltd"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "DateString": "2026-04-15T00:00:00",
+      "Status": "PAID",
+      "Total": 48700,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "b85cec6c-c478-46f2-af69-151a753e205d",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "ec741724-d2a4-4116-afd7-19a099475fe1",
+        "Name": "Bidfood UK Ltd"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "DateString": "2026-05-15T00:00:00",
+      "Status": "PAID",
+      "Total": 48700,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "16ea070f-39b8-487b-a61e-bc8c58a2faa0",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "ec741724-d2a4-4116-afd7-19a099475fe1",
+        "Name": "Bidfood UK Ltd"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "DateString": "2026-06-15T00:00:00",
+      "Status": "PAID",
+      "Total": 48700,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "69f00c2a-e8d1-487d-ac13-07329c26c6c6",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "ec741724-d2a4-4116-afd7-19a099475fe1",
+        "Name": "Bidfood UK Ltd"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "DateString": "2026-07-15T00:00:00",
+      "Status": "PAID",
+      "Total": 48700,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "6cdd17a4-eae0-43c7-a984-31eda2eda113",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "ec741724-d2a4-4116-afd7-19a099475fe1",
+        "Name": "Bidfood UK Ltd"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "DateString": "2026-08-15T00:00:00",
+      "Status": "PAID",
+      "Total": 48700,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "5a269148-266c-4429-a6dd-24cf6541a09e",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "ec741724-d2a4-4116-afd7-19a099475fe1",
+        "Name": "Bidfood UK Ltd"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "DateString": "2026-09-15T00:00:00",
+      "Status": "PAID",
+      "Total": 48700,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "eaf4f523-9aee-4611-acc7-ff468f7b015c",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "ec741724-d2a4-4116-afd7-19a099475fe1",
+        "Name": "Bidfood UK Ltd"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "DateString": "2026-10-15T00:00:00",
+      "Status": "AUTHORISED",
+      "Total": 48700,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "14f2c4b0-bfc1-403f-a16d-24b0833b7f1f",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "2269dc7d-cba6-4545-a61f-cfee08fa7b1a",
+        "Name": "Hollis Estates Ltd"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "DateString": "2025-11-15T00:00:00",
+      "Status": "PAID",
+      "Total": 72000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "56e28b1d-fb3e-4ea9-ad18-458e8f9aa59f",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "2269dc7d-cba6-4545-a61f-cfee08fa7b1a",
+        "Name": "Hollis Estates Ltd"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "DateString": "2026-02-15T00:00:00",
+      "Status": "PAID",
+      "Total": 72000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "7a5d5f28-cee2-4260-ac7d-e3f6ed464623",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "2269dc7d-cba6-4545-a61f-cfee08fa7b1a",
+        "Name": "Hollis Estates Ltd"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "DateString": "2026-05-15T00:00:00",
+      "Status": "PAID",
+      "Total": 72000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "2c6f9f5e-6a80-4882-a1ba-8912b9be52ae",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "2269dc7d-cba6-4545-a61f-cfee08fa7b1a",
+        "Name": "Hollis Estates Ltd"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "DateString": "2026-08-15T00:00:00",
+      "Status": "PAID",
+      "Total": 72000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "0be305b4-349c-4f53-ade9-81d53571812e",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4192ff4c-d018-48b3-a54b-789c1bc4fadb",
+        "Name": "British Gas Business"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "DateString": "2025-11-15T00:00:00",
+      "Status": "PAID",
+      "Total": 7760,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "3384f773-ce10-4227-acdf-929003b1de23",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4192ff4c-d018-48b3-a54b-789c1bc4fadb",
+        "Name": "British Gas Business"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "DateString": "2025-12-15T00:00:00",
+      "Status": "PAID",
+      "Total": 7760,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "884af869-ca87-4f62-a798-722da20bb345",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4192ff4c-d018-48b3-a54b-789c1bc4fadb",
+        "Name": "British Gas Business"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "DateString": "2026-01-15T00:00:00",
+      "Status": "PAID",
+      "Total": 7760,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "e1488cbe-cef5-4b60-afea-6c98061965ef",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4192ff4c-d018-48b3-a54b-789c1bc4fadb",
+        "Name": "British Gas Business"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "DateString": "2026-02-15T00:00:00",
+      "Status": "PAID",
+      "Total": 7760,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "301a64ef-d52d-4738-a0be-4821bbc2c13d",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4192ff4c-d018-48b3-a54b-789c1bc4fadb",
+        "Name": "British Gas Business"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "DateString": "2026-03-15T00:00:00",
+      "Status": "PAID",
+      "Total": 7760,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "02826915-6984-41b6-a6f7-b5425db6fc5b",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4192ff4c-d018-48b3-a54b-789c1bc4fadb",
+        "Name": "British Gas Business"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "DateString": "2026-04-15T00:00:00",
+      "Status": "PAID",
+      "Total": 7760,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "da1279f8-4541-4bbd-af36-c694ca86ad13",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4192ff4c-d018-48b3-a54b-789c1bc4fadb",
+        "Name": "British Gas Business"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "DateString": "2026-05-15T00:00:00",
+      "Status": "PAID",
+      "Total": 7760,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "0268da1a-a40d-45f4-af07-a5fb3bd5e580",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4192ff4c-d018-48b3-a54b-789c1bc4fadb",
+        "Name": "British Gas Business"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "DateString": "2026-06-15T00:00:00",
+      "Status": "PAID",
+      "Total": 7760,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "5c54fe23-b7f6-42fa-aa01-0d387493608b",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4192ff4c-d018-48b3-a54b-789c1bc4fadb",
+        "Name": "British Gas Business"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "DateString": "2026-07-15T00:00:00",
+      "Status": "PAID",
+      "Total": 7760,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "9775e4d0-254b-437a-a89a-ad0452a76f4f",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4192ff4c-d018-48b3-a54b-789c1bc4fadb",
+        "Name": "British Gas Business"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "DateString": "2026-08-15T00:00:00",
+      "Status": "PAID",
+      "Total": 7760,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "47ec6e43-5c01-4950-a578-c34cdacf0c91",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4192ff4c-d018-48b3-a54b-789c1bc4fadb",
+        "Name": "British Gas Business"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "DateString": "2026-09-15T00:00:00",
+      "Status": "PAID",
+      "Total": 7760,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "af60b23f-fa4b-40f9-a606-39d0e05086e9",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4192ff4c-d018-48b3-a54b-789c1bc4fadb",
+        "Name": "British Gas Business"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "DateString": "2026-10-15T00:00:00",
+      "Status": "AUTHORISED",
+      "Total": 7760,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "56f9ebeb-cee2-45ac-a181-02d6996f18f1",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "DateString": "2025-11-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "a30c2643-4475-48c3-aeca-852bd48c0f6c",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "DateString": "2025-12-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "4a626865-168e-45b1-ad2e-2790cd1113ec",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "DateString": "2026-01-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "043b9a31-ce64-407b-a956-26c67797a009",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "DateString": "2026-02-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "04597471-f5b4-49be-a7d7-ab6a30f4221a",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "DateString": "2026-03-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "f533583a-e087-4905-a8fb-2f974f73ed33",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "DateString": "2026-04-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "e9263cad-71d8-433b-a0e5-de847aa41afd",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "DateString": "2026-05-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "083f9601-8602-4afb-ac80-7054d0782d39",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "DateString": "2026-06-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "558a0947-35b3-4a67-a3e6-1a4dc253e900",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "DateString": "2026-07-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "232e8ec8-bc3a-4f0c-a895-b3752f6852f8",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "DateString": "2026-08-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "6026d4f7-22a8-470b-a10c-da252ba0d78a",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "DateString": "2026-09-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "44dc8627-cf3f-418a-a398-d1ce1a6cbe20",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "DateString": "2026-10-15T00:00:00",
+      "Status": "AUTHORISED",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "fcd7b175-d942-47ee-aeba-cdfcfaec4e3e",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "a4fd3577-d6a9-46e2-a5c9-f1bb7fcb1e6c",
+        "Name": "Dext Software Ltd"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "DateString": "2025-11-15T00:00:00",
+      "Status": "PAID",
+      "Total": 54,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "f2f6fc0f-0b92-4fd3-a728-47fac6cd8ed8",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "a4fd3577-d6a9-46e2-a5c9-f1bb7fcb1e6c",
+        "Name": "Dext Software Ltd"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "DateString": "2025-12-15T00:00:00",
+      "Status": "PAID",
+      "Total": 54,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "64f593c6-a895-4d14-ae9e-8d2cf6536329",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "a4fd3577-d6a9-46e2-a5c9-f1bb7fcb1e6c",
+        "Name": "Dext Software Ltd"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "DateString": "2026-01-15T00:00:00",
+      "Status": "PAID",
+      "Total": 54,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "eef5eb8f-c5fc-4754-afd1-8294b900f4c6",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "a4fd3577-d6a9-46e2-a5c9-f1bb7fcb1e6c",
+        "Name": "Dext Software Ltd"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "DateString": "2026-02-15T00:00:00",
+      "Status": "PAID",
+      "Total": 54,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "6d8d5968-e67b-4151-ae14-bb2295cdcdf2",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "a4fd3577-d6a9-46e2-a5c9-f1bb7fcb1e6c",
+        "Name": "Dext Software Ltd"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "DateString": "2026-03-15T00:00:00",
+      "Status": "PAID",
+      "Total": 54,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "4ff92c48-35b4-4ffa-add1-980509b3332f",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "a4fd3577-d6a9-46e2-a5c9-f1bb7fcb1e6c",
+        "Name": "Dext Software Ltd"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "DateString": "2026-04-15T00:00:00",
+      "Status": "PAID",
+      "Total": 54,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "249d97cd-98f1-4fa0-aae5-39b9f947133b",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "a4fd3577-d6a9-46e2-a5c9-f1bb7fcb1e6c",
+        "Name": "Dext Software Ltd"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "DateString": "2026-05-15T00:00:00",
+      "Status": "PAID",
+      "Total": 54,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "2f66c826-b007-485b-a3cc-9bcb3f5b9bd4",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "a4fd3577-d6a9-46e2-a5c9-f1bb7fcb1e6c",
+        "Name": "Dext Software Ltd"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "DateString": "2026-06-15T00:00:00",
+      "Status": "PAID",
+      "Total": 54,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "bdf3a38d-5e50-4355-affb-4fbc66121b4a",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "a4fd3577-d6a9-46e2-a5c9-f1bb7fcb1e6c",
+        "Name": "Dext Software Ltd"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "DateString": "2026-07-15T00:00:00",
+      "Status": "PAID",
+      "Total": 54,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "5c2a1a0c-9362-4111-a185-c466990fc2e1",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "a4fd3577-d6a9-46e2-a5c9-f1bb7fcb1e6c",
+        "Name": "Dext Software Ltd"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "DateString": "2026-08-15T00:00:00",
+      "Status": "PAID",
+      "Total": 54,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "8f9ab954-6304-41ec-a048-6a2f275d545f",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "a4fd3577-d6a9-46e2-a5c9-f1bb7fcb1e6c",
+        "Name": "Dext Software Ltd"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "DateString": "2026-09-15T00:00:00",
+      "Status": "PAID",
+      "Total": 54,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "365f0d6f-9c1f-49f2-ad32-ba110935d2ea",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "a4fd3577-d6a9-46e2-a5c9-f1bb7fcb1e6c",
+        "Name": "Dext Software Ltd"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "DateString": "2026-10-15T00:00:00",
+      "Status": "AUTHORISED",
+      "Total": 54,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "71965fa2-6be9-4233-a2ff-80db265c3804",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "8d31f8f9-888b-4a75-a948-1bead49cd2ec",
+        "Name": "Deputy"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "DateString": "2025-11-15T00:00:00",
+      "Status": "PAID",
+      "Total": 214.5,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "6cc6da88-7d47-4d9a-a79c-55e8befe5617",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "8d31f8f9-888b-4a75-a948-1bead49cd2ec",
+        "Name": "Deputy"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "DateString": "2025-12-15T00:00:00",
+      "Status": "PAID",
+      "Total": 214.5,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "2ebdfbdd-f3d8-40b2-abef-7df5a87a0b97",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "8d31f8f9-888b-4a75-a948-1bead49cd2ec",
+        "Name": "Deputy"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "DateString": "2026-01-15T00:00:00",
+      "Status": "PAID",
+      "Total": 214.5,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "40ac63a1-3f74-4291-a670-068b9eab0056",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "8d31f8f9-888b-4a75-a948-1bead49cd2ec",
+        "Name": "Deputy"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "DateString": "2026-02-15T00:00:00",
+      "Status": "PAID",
+      "Total": 214.5,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "1c5005fe-5486-4378-aa56-22fa6886e73c",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "8d31f8f9-888b-4a75-a948-1bead49cd2ec",
+        "Name": "Deputy"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "DateString": "2026-03-15T00:00:00",
+      "Status": "PAID",
+      "Total": 214.5,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "8f9b3335-d333-4324-a68c-fc5aa807b031",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "8d31f8f9-888b-4a75-a948-1bead49cd2ec",
+        "Name": "Deputy"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "DateString": "2026-04-15T00:00:00",
+      "Status": "PAID",
+      "Total": 214.5,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "9d8d9401-449f-432b-aa28-98dbc4a99b56",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "8d31f8f9-888b-4a75-a948-1bead49cd2ec",
+        "Name": "Deputy"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "DateString": "2026-05-15T00:00:00",
+      "Status": "PAID",
+      "Total": 214.5,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "3870f8d8-5cb9-4303-a7b5-4841e6572c29",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "8d31f8f9-888b-4a75-a948-1bead49cd2ec",
+        "Name": "Deputy"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "DateString": "2026-06-15T00:00:00",
+      "Status": "PAID",
+      "Total": 214.5,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "8234ff63-849c-43d6-a63f-e8056317551a",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "8d31f8f9-888b-4a75-a948-1bead49cd2ec",
+        "Name": "Deputy"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "DateString": "2026-07-15T00:00:00",
+      "Status": "PAID",
+      "Total": 214.5,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "b9905244-d166-4732-a317-313bfe5906fc",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "8d31f8f9-888b-4a75-a948-1bead49cd2ec",
+        "Name": "Deputy"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "DateString": "2026-08-15T00:00:00",
+      "Status": "PAID",
+      "Total": 214.5,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "5b8464a4-1a27-4944-a014-0e52273c9a48",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "8d31f8f9-888b-4a75-a948-1bead49cd2ec",
+        "Name": "Deputy"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "DateString": "2026-09-15T00:00:00",
+      "Status": "PAID",
+      "Total": 214.5,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "e12b6efb-4977-47e9-ae58-3e5549726ab2",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "8d31f8f9-888b-4a75-a948-1bead49cd2ec",
+        "Name": "Deputy"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "DateString": "2026-10-15T00:00:00",
+      "Status": "AUTHORISED",
+      "Total": 214.5,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "d80d80d9-9fa8-4958-adc6-c9a80f4e0434",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "adcf9c70-32aa-458e-a840-bc6b7209d87e",
+        "Name": "Pleo Technologies ApS"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "DateString": "2025-11-15T00:00:00",
+      "Status": "PAID",
+      "Total": 105.3,
+      "CurrencyCode": "EUR",
+      "CurrencyRate": 1.17
+    },
+    {
+      "InvoiceID": "1c410ac8-8ee6-4d82-a601-c4aacc63898a",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "adcf9c70-32aa-458e-a840-bc6b7209d87e",
+        "Name": "Pleo Technologies ApS"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "DateString": "2025-12-15T00:00:00",
+      "Status": "PAID",
+      "Total": 105.3,
+      "CurrencyCode": "EUR",
+      "CurrencyRate": 1.17
+    },
+    {
+      "InvoiceID": "0a741286-684b-475e-a92e-bcd328dc6c28",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "adcf9c70-32aa-458e-a840-bc6b7209d87e",
+        "Name": "Pleo Technologies ApS"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "DateString": "2026-01-15T00:00:00",
+      "Status": "PAID",
+      "Total": 105.3,
+      "CurrencyCode": "EUR",
+      "CurrencyRate": 1.17
+    },
+    {
+      "InvoiceID": "2f89c570-7ef4-4c7c-a7ac-59bcb967a84e",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "adcf9c70-32aa-458e-a840-bc6b7209d87e",
+        "Name": "Pleo Technologies ApS"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "DateString": "2026-02-15T00:00:00",
+      "Status": "PAID",
+      "Total": 105.3,
+      "CurrencyCode": "EUR",
+      "CurrencyRate": 1.17
+    },
+    {
+      "InvoiceID": "48edbb0e-c5ae-4e54-ac2a-f676bec50c76",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "adcf9c70-32aa-458e-a840-bc6b7209d87e",
+        "Name": "Pleo Technologies ApS"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "DateString": "2026-03-15T00:00:00",
+      "Status": "PAID",
+      "Total": 105.3,
+      "CurrencyCode": "EUR",
+      "CurrencyRate": 1.17
+    },
+    {
+      "InvoiceID": "76020b64-f60f-4311-a165-90a674c8228b",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "adcf9c70-32aa-458e-a840-bc6b7209d87e",
+        "Name": "Pleo Technologies ApS"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "DateString": "2026-04-15T00:00:00",
+      "Status": "PAID",
+      "Total": 105.3,
+      "CurrencyCode": "EUR",
+      "CurrencyRate": 1.17
+    },
+    {
+      "InvoiceID": "f6df83f7-f024-4873-a799-b2abc1f0fd10",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "adcf9c70-32aa-458e-a840-bc6b7209d87e",
+        "Name": "Pleo Technologies ApS"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "DateString": "2026-05-15T00:00:00",
+      "Status": "PAID",
+      "Total": 105.3,
+      "CurrencyCode": "EUR",
+      "CurrencyRate": 1.17
+    },
+    {
+      "InvoiceID": "29b63c0d-cd21-497f-adfa-001423ec8a9a",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "adcf9c70-32aa-458e-a840-bc6b7209d87e",
+        "Name": "Pleo Technologies ApS"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "DateString": "2026-06-15T00:00:00",
+      "Status": "PAID",
+      "Total": 105.3,
+      "CurrencyCode": "EUR",
+      "CurrencyRate": 1.17
+    },
+    {
+      "InvoiceID": "87d6f7e3-e2ec-4138-a120-4c2ee4f8e5c1",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "adcf9c70-32aa-458e-a840-bc6b7209d87e",
+        "Name": "Pleo Technologies ApS"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "DateString": "2026-07-15T00:00:00",
+      "Status": "PAID",
+      "Total": 105.3,
+      "CurrencyCode": "EUR",
+      "CurrencyRate": 1.17
+    },
+    {
+      "InvoiceID": "c7cf9a44-cd2e-4fa1-afba-f60993d31c10",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "adcf9c70-32aa-458e-a840-bc6b7209d87e",
+        "Name": "Pleo Technologies ApS"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "DateString": "2026-08-15T00:00:00",
+      "Status": "PAID",
+      "Total": 105.3,
+      "CurrencyCode": "EUR",
+      "CurrencyRate": 1.17
+    },
+    {
+      "InvoiceID": "8ff971b2-7225-4aad-aa85-01850e5c0f0a",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "adcf9c70-32aa-458e-a840-bc6b7209d87e",
+        "Name": "Pleo Technologies ApS"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "DateString": "2026-09-15T00:00:00",
+      "Status": "PAID",
+      "Total": 105.3,
+      "CurrencyCode": "EUR",
+      "CurrencyRate": 1.17
+    },
+    {
+      "InvoiceID": "6e3829be-ee34-4600-aa64-76899abd9e33",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "adcf9c70-32aa-458e-a840-bc6b7209d87e",
+        "Name": "Pleo Technologies ApS"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "DateString": "2026-10-15T00:00:00",
+      "Status": "AUTHORISED",
+      "Total": 105.3,
+      "CurrencyCode": "EUR",
+      "CurrencyRate": 1.17
+    },
+    {
+      "InvoiceID": "d05c3318-e947-4186-a38f-10ec9cd2b101",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "0e3468a9-a6f1-44c3-a11e-3e1bd92bab82",
+        "Name": "Lightspeed (UK) Ltd"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "DateString": "2025-11-15T00:00:00",
+      "Status": "PAID",
+      "Total": 189,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "f2a67a4c-446d-4b13-a687-4e513b3d6699",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "0e3468a9-a6f1-44c3-a11e-3e1bd92bab82",
+        "Name": "Lightspeed (UK) Ltd"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "DateString": "2025-12-15T00:00:00",
+      "Status": "PAID",
+      "Total": 189,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "31558572-b721-4cc4-afc3-58c3025baec4",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "0e3468a9-a6f1-44c3-a11e-3e1bd92bab82",
+        "Name": "Lightspeed (UK) Ltd"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "DateString": "2026-01-15T00:00:00",
+      "Status": "PAID",
+      "Total": 189,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "d57bd983-2bf6-425f-af45-4fe952244448",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "0e3468a9-a6f1-44c3-a11e-3e1bd92bab82",
+        "Name": "Lightspeed (UK) Ltd"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "DateString": "2026-02-15T00:00:00",
+      "Status": "PAID",
+      "Total": 189,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "ae523f56-28da-4130-af16-f333e0a31631",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "0e3468a9-a6f1-44c3-a11e-3e1bd92bab82",
+        "Name": "Lightspeed (UK) Ltd"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "DateString": "2026-03-15T00:00:00",
+      "Status": "PAID",
+      "Total": 189,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "293c807b-681d-46b1-a1f6-77c2ed109de5",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "0e3468a9-a6f1-44c3-a11e-3e1bd92bab82",
+        "Name": "Lightspeed (UK) Ltd"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "DateString": "2026-04-15T00:00:00",
+      "Status": "PAID",
+      "Total": 189,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "eaea3db3-39a9-4696-a884-a46d88b6e9a4",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "0e3468a9-a6f1-44c3-a11e-3e1bd92bab82",
+        "Name": "Lightspeed (UK) Ltd"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "DateString": "2026-05-15T00:00:00",
+      "Status": "PAID",
+      "Total": 189,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "03947a22-e18f-4d00-a7d7-8bcf31a01be8",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "0e3468a9-a6f1-44c3-a11e-3e1bd92bab82",
+        "Name": "Lightspeed (UK) Ltd"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "DateString": "2026-06-15T00:00:00",
+      "Status": "PAID",
+      "Total": 189,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "b025e02f-3318-4726-ab5d-06e6f550b2ef",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "0e3468a9-a6f1-44c3-a11e-3e1bd92bab82",
+        "Name": "Lightspeed (UK) Ltd"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "DateString": "2026-07-15T00:00:00",
+      "Status": "PAID",
+      "Total": 189,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "b53b7e03-487d-47f9-a94a-96dd873e92a7",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "0e3468a9-a6f1-44c3-a11e-3e1bd92bab82",
+        "Name": "Lightspeed (UK) Ltd"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "DateString": "2026-08-15T00:00:00",
+      "Status": "PAID",
+      "Total": 189,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "0d957b39-b5d3-4320-a4ba-3c43cdf7ec9d",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "0e3468a9-a6f1-44c3-a11e-3e1bd92bab82",
+        "Name": "Lightspeed (UK) Ltd"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "DateString": "2026-09-15T00:00:00",
+      "Status": "PAID",
+      "Total": 189,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "24689509-f4ae-4dc8-a821-583bd2869102",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "0e3468a9-a6f1-44c3-a11e-3e1bd92bab82",
+        "Name": "Lightspeed (UK) Ltd"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "DateString": "2026-10-15T00:00:00",
+      "Status": "AUTHORISED",
+      "Total": 189,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "a4bd7c0e-b125-497d-a19d-07fac0f15024",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d99ee57-168d-4829-a0e5-a8968d247f76",
+        "Name": "Hiscox Insurance"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "DateString": "2025-11-15T00:00:00",
+      "Status": "PAID",
+      "Total": 2200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "c22901d7-80f7-464b-a81c-bd2fcd40e903",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d99ee57-168d-4829-a0e5-a8968d247f76",
+        "Name": "Hiscox Insurance"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "DateString": "2025-12-15T00:00:00",
+      "Status": "PAID",
+      "Total": 2200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "be7d75c0-f2f4-4eb7-adb2-34e4ea853029",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d99ee57-168d-4829-a0e5-a8968d247f76",
+        "Name": "Hiscox Insurance"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "DateString": "2026-01-15T00:00:00",
+      "Status": "PAID",
+      "Total": 2200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "26ab2864-c28c-43bd-a445-f6d592d517c0",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d99ee57-168d-4829-a0e5-a8968d247f76",
+        "Name": "Hiscox Insurance"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "DateString": "2026-02-15T00:00:00",
+      "Status": "PAID",
+      "Total": 2200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "91b189e9-031c-48a4-ab64-ce0f5c65849f",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d99ee57-168d-4829-a0e5-a8968d247f76",
+        "Name": "Hiscox Insurance"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "DateString": "2026-03-15T00:00:00",
+      "Status": "PAID",
+      "Total": 2200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "c5c3110c-e9f0-443a-af1a-f3fa9c047141",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d99ee57-168d-4829-a0e5-a8968d247f76",
+        "Name": "Hiscox Insurance"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "DateString": "2026-04-15T00:00:00",
+      "Status": "PAID",
+      "Total": 2200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "81386946-732e-4ca5-a632-a0b1a5a0e4dc",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d99ee57-168d-4829-a0e5-a8968d247f76",
+        "Name": "Hiscox Insurance"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "DateString": "2026-05-15T00:00:00",
+      "Status": "PAID",
+      "Total": 2200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "9b93eb02-42fe-4379-a6cf-ae0a56adb4c9",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d99ee57-168d-4829-a0e5-a8968d247f76",
+        "Name": "Hiscox Insurance"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "DateString": "2026-06-15T00:00:00",
+      "Status": "PAID",
+      "Total": 2200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "2140cbc8-dd77-4659-a02a-dcd8ab8bbf1b",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d99ee57-168d-4829-a0e5-a8968d247f76",
+        "Name": "Hiscox Insurance"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "DateString": "2026-07-15T00:00:00",
+      "Status": "PAID",
+      "Total": 2200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "96a13b2b-74f3-4160-ab39-39d44ff56771",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d99ee57-168d-4829-a0e5-a8968d247f76",
+        "Name": "Hiscox Insurance"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "DateString": "2026-08-15T00:00:00",
+      "Status": "PAID",
+      "Total": 2200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "e4d551ed-5c7a-4c79-a1b2-d34a1726dc0a",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d99ee57-168d-4829-a0e5-a8968d247f76",
+        "Name": "Hiscox Insurance"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "DateString": "2026-09-15T00:00:00",
+      "Status": "PAID",
+      "Total": 2200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "b3f3e93d-f241-457f-a092-3d65a3d5928a",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d99ee57-168d-4829-a0e5-a8968d247f76",
+        "Name": "Hiscox Insurance"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "DateString": "2026-10-15T00:00:00",
+      "Status": "AUTHORISED",
+      "Total": 2200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "Organisations": [
+    {
+      "OrganisationID": "5a445d71-0ae2-4cd2-a606-2b0c84850838",
+      "Name": "Copperpot Kitchens Ltd (sample)",
+      "BaseCurrency": "GBP",
+      "CountryCode": "GB",
+      "FinancialYearEndDay": 31,
+      "FinancialYearEndMonth": 3
+    }
+  ]
+}

@@ -1,0 +1,356 @@
+{
+  "Accounts": [
+    {
+      "AccountID": "93c9631e-5ac9-4aff-ae29-53b3cec48971",
+      "Code": "200",
+      "Name": "Sales",
+      "Type": "REVENUE",
+      "Class": "REVENUE",
+      "Status": "ACTIVE",
+      "ReportingCode": "REV.TRA.GOO"
+    },
+    {
+      "AccountID": "562f1f32-72b2-4c73-aaa0-f37f1beef989",
+      "Code": "260",
+      "Name": "Other Revenue",
+      "Type": "REVENUE",
+      "Class": "REVENUE",
+      "Status": "ACTIVE",
+      "ReportingCode": "REV.OTH"
+    },
+    {
+      "AccountID": "bdfb8fbf-7ef4-4ac0-a6c7-4de062b0251d",
+      "Code": "310",
+      "Name": "Cost of Goods Sold",
+      "Type": "DIRECTCOSTS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.COS.PUR"
+    },
+    {
+      "AccountID": "f1501a5e-31d0-4a2b-a771-4858632774fe",
+      "Code": "400",
+      "Name": "Advertising & Marketing",
+      "Type": "OVERHEADS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.ADV"
+    },
+    {
+      "AccountID": "1ddef92d-0d10-424a-a99c-92e605ee329b",
+      "Code": "404",
+      "Name": "Bank Fees",
+      "Type": "OVERHEADS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.BAN"
+    },
+    {
+      "AccountID": "f46d8283-bc74-4a2f-aa86-4ff4ffc57aa2",
+      "Code": "408",
+      "Name": "Cleaning",
+      "Type": "OVERHEADS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.CLE"
+    },
+    {
+      "AccountID": "c69bd6a2-3bdc-4222-a6c3-b85a7c5a7ff8",
+      "Code": "412",
+      "Name": "Consulting & Accounting",
+      "Type": "OVERHEADS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.PRO"
+    },
+    {
+      "AccountID": "ff3e7e6e-370f-468f-ab81-45c79a6d01f3",
+      "Code": "416",
+      "Name": "Depreciation",
+      "Type": "DEPRECIATN",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.DEP"
+    },
+    {
+      "AccountID": "85f954eb-fcd4-41cf-a909-76be53e67871",
+      "Code": "429",
+      "Name": "General Expenses",
+      "Type": "OVERHEADS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.GEN"
+    },
+    {
+      "AccountID": "92fa613f-8fe4-42bd-ab1d-f09f8cd0d337",
+      "Code": "433",
+      "Name": "Insurance",
+      "Type": "OVERHEADS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.INS"
+    },
+    {
+      "AccountID": "976680d6-9fbf-4ac7-aa2a-bfeb1b8217d0",
+      "Code": "437",
+      "Name": "Interest Paid",
+      "Type": "OVERHEADS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.INT"
+    },
+    {
+      "AccountID": "4ea66474-0f34-4542-af45-917d2ea55409",
+      "Code": "445",
+      "Name": "Light, Power, Heating",
+      "Type": "OVERHEADS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.UTI"
+    },
+    {
+      "AccountID": "50ad4331-ca55-4100-a709-0d631ae21bd0",
+      "Code": "469",
+      "Name": "Rent",
+      "Type": "OVERHEADS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.REN"
+    },
+    {
+      "AccountID": "281ce735-8d10-4112-af24-afafe66284f8",
+      "Code": "473",
+      "Name": "Repairs and Maintenance",
+      "Type": "OVERHEADS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.REP"
+    },
+    {
+      "AccountID": "1e95858b-e2c7-449a-a958-46c6829e03ba",
+      "Code": "477",
+      "Name": "Wages and Salaries",
+      "Type": "OVERHEADS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.EMP.WAG"
+    },
+    {
+      "AccountID": "cb7a283f-2c17-4746-a110-9401561b6050",
+      "Code": "478",
+      "Name": "Employers National Insurance",
+      "Type": "OVERHEADS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.EMP.NIC"
+    },
+    {
+      "AccountID": "78ea5cfc-5891-427f-a0d6-2f73e0b0cf69",
+      "Code": "479",
+      "Name": "Employers Pensions",
+      "Type": "OVERHEADS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.EMP.PEN"
+    },
+    {
+      "AccountID": "a6a8a3e8-7750-40a9-a329-cd99b0601ee9",
+      "Code": "485",
+      "Name": "Subscriptions",
+      "Type": "OVERHEADS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.SUB"
+    },
+    {
+      "AccountID": "658d7e45-b934-4e56-a200-a144a36ff169",
+      "Code": "489",
+      "Name": "Telephone & Internet",
+      "Type": "OVERHEADS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.TEL"
+    },
+    {
+      "AccountID": "0ce37f76-09b3-4ed9-aad0-9fdc650af11c",
+      "Code": "493",
+      "Name": "Travel - National",
+      "Type": "OVERHEADS",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.TRA"
+    },
+    {
+      "AccountID": "a0eb99c7-4c53-4c68-a359-75208a9abb1a",
+      "Code": "500",
+      "Name": "Corporation Tax",
+      "Type": "EXPENSE",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE",
+      "ReportingCode": "EXP.TAX"
+    },
+    {
+      "AccountID": "b4eeb4c4-18ec-45a3-aa3f-f62e5616bfde",
+      "Code": "999",
+      "Name": "Sundry adjustments",
+      "Type": "EXPENSE",
+      "Class": "EXPENSE",
+      "Status": "ACTIVE"
+    },
+    {
+      "AccountID": "97930d5c-e865-4a7b-aba6-828d220f3194",
+      "Code": "090",
+      "Name": "Business Bank Account",
+      "Type": "BANK",
+      "Class": "ASSET",
+      "Status": "ACTIVE"
+    },
+    {
+      "AccountID": "ec77b5e1-45ef-4575-a134-8a91774d7d1f",
+      "Code": "091",
+      "Name": "Business Savings Account",
+      "Type": "BANK",
+      "Class": "ASSET",
+      "Status": "ACTIVE"
+    },
+    {
+      "AccountID": "ad066eee-a367-46a3-abbd-f4a5a67f89d2",
+      "Code": "610",
+      "Name": "Accounts Receivable",
+      "Type": "CURRENT",
+      "Class": "ASSET",
+      "Status": "ACTIVE",
+      "ReportingCode": "ASS.CUR.REC.TRA",
+      "SystemAccount": "DEBTORS"
+    },
+    {
+      "AccountID": "fa7793e7-d35c-43c7-a55b-d13f3e53c0d8",
+      "Code": "620",
+      "Name": "Prepayments",
+      "Type": "PREPAYMENT",
+      "Class": "ASSET",
+      "Status": "ACTIVE",
+      "ReportingCode": "ASS.CUR.REC.PRE"
+    },
+    {
+      "AccountID": "a6d38dbc-2493-4d84-ab90-cc9b789cfcf9",
+      "Code": "630",
+      "Name": "Inventory",
+      "Type": "INVENTORY",
+      "Class": "ASSET",
+      "Status": "ACTIVE",
+      "ReportingCode": "ASS.CUR.INY"
+    },
+    {
+      "AccountID": "1b9de35e-d8b3-4150-a86b-47676aeed923",
+      "Code": "710",
+      "Name": "Kitchen Equipment",
+      "Type": "FIXED",
+      "Class": "ASSET",
+      "Status": "ACTIVE",
+      "ReportingCode": "ASS.NCA.FIX.PLA"
+    },
+    {
+      "AccountID": "386eeb0e-4fbe-428e-ab1b-4b9f759d1d60",
+      "Code": "711",
+      "Name": "Less Accumulated Depreciation on Kitchen Equipment",
+      "Type": "FIXED",
+      "Class": "ASSET",
+      "Status": "ACTIVE",
+      "ReportingCode": "ASS.NCA.FIX.PLA.ACC"
+    },
+    {
+      "AccountID": "48c47c39-4da3-40ff-aa2e-1d7903717c9d",
+      "Code": "800",
+      "Name": "Accounts Payable",
+      "Type": "CURRLIAB",
+      "Class": "LIABILITY",
+      "Status": "ACTIVE",
+      "ReportingCode": "LIA.CUR.PAY.TRA",
+      "SystemAccount": "CREDITORS"
+    },
+    {
+      "AccountID": "37f6231f-ec81-4d34-ab86-27c702e6c04c",
+      "Code": "820",
+      "Name": "VAT",
+      "Type": "CURRLIAB",
+      "Class": "LIABILITY",
+      "Status": "ACTIVE",
+      "ReportingCode": "LIA.CUR.TAX.VAT",
+      "SystemAccount": "GST"
+    },
+    {
+      "AccountID": "1a2a8bdf-586b-4d07-a4b5-bf7fdda8dfbe",
+      "Code": "825",
+      "Name": "PAYE & NI Payable",
+      "Type": "CURRLIAB",
+      "Class": "LIABILITY",
+      "Status": "ACTIVE",
+      "ReportingCode": "LIA.CUR.TAX.PAY"
+    },
+    {
+      "AccountID": "02f0ce92-1245-46cf-ad91-8e1d971a164c",
+      "Code": "830",
+      "Name": "Corporation Tax Payable",
+      "Type": "CURRLIAB",
+      "Class": "LIABILITY",
+      "Status": "ACTIVE",
+      "ReportingCode": "LIA.CUR.TAX.COR"
+    },
+    {
+      "AccountID": "62a3c39e-e0d7-405c-a248-fac3f28914cc",
+      "Code": "835",
+      "Name": "Accruals",
+      "Type": "CURRLIAB",
+      "Class": "LIABILITY",
+      "Status": "ACTIVE",
+      "ReportingCode": "LIA.CUR.ACC"
+    },
+    {
+      "AccountID": "22488c84-c4ec-4073-a84d-c5c2a58911c3",
+      "Code": "840",
+      "Name": "Short-term Loan",
+      "Type": "CURRLIAB",
+      "Class": "LIABILITY",
+      "Status": "ACTIVE",
+      "ReportingCode": "LIA.CUR.LOA"
+    },
+    {
+      "AccountID": "d337f2bb-05f7-4c3d-ae2a-c4f814895850",
+      "Code": "900",
+      "Name": "Bank Loan",
+      "Type": "TERMLIAB",
+      "Class": "LIABILITY",
+      "Status": "ACTIVE",
+      "ReportingCode": "LIA.NCL.LOA"
+    },
+    {
+      "AccountID": "945a4f35-5a1f-44f8-a618-2d356aae7405",
+      "Code": "950",
+      "Name": "Share Capital",
+      "Type": "EQUITY",
+      "Class": "EQUITY",
+      "Status": "ACTIVE",
+      "ReportingCode": "EQU.SHA"
+    },
+    {
+      "AccountID": "bf7d905d-efe5-492d-a5be-65498c7e3a10",
+      "Code": "960",
+      "Name": "Retained Earnings",
+      "Type": "EQUITY",
+      "Class": "EQUITY",
+      "Status": "ACTIVE",
+      "ReportingCode": "EQU.RET",
+      "SystemAccount": "RETAINEDEARNINGS"
+    },
+    {
+      "AccountID": "5b11fea0-5967-423a-a46b-9d4ae38df244",
+      "Code": "970",
+      "Name": "Dividends Paid",
+      "Type": "EQUITY",
+      "Class": "EQUITY",
+      "Status": "ACTIVE",
+      "ReportingCode": "EQU.DIV"
+    }
+  ]
+}
