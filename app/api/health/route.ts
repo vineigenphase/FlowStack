@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { env } from "@/lib/env";
+import { env, isDeployed, missingForDeploy } from "@/lib/env";
 import { pingDb } from "@/lib/db/client";
 
 export const dynamic = "force-dynamic";
@@ -21,6 +21,7 @@ export async function GET() {
     llm: e.LLM_ENABLED,
     database: e.DATABASE_URL ? "postgres" : "pglite",
   };
-  const ok = db === "ok";
-  return NextResponse.json({ ok, db, config }, { status: ok ? 200 : 503 });
+  const missing = isDeployed() ? missingForDeploy(e) : [];
+  const ok = db === "ok" && missing.length === 0;
+  return NextResponse.json({ ok, db, config, missing, env: process.env.VERCEL_ENV ?? "local" }, { status: ok ? 200 : 503 });
 }

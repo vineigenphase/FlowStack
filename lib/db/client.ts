@@ -18,6 +18,9 @@ let owner: Promise<Handle> | null = null;
  * needs no Docker. `memory://` → in-memory PGlite (tests). Anything else → postgres-js (Docker, Neon).
  */
 export async function openDb(url: string): Promise<Handle> {
+  if (!url && process.env.VERCEL) {
+    throw new Error("DATABASE_URL is not set. Deployed environments need Postgres (Neon); PGlite is for local dev only.");
+  }
   if (!url || url.startsWith("memory://") || url.startsWith("pglite:")) {
     const { PGlite } = await import("@electric-sql/pglite");
     const { drizzle } = await import("drizzle-orm/pglite");
@@ -28,7 +31,8 @@ export async function openDb(url: string): Promise<Handle> {
   }
   const { default: postgres } = await import("postgres");
   const { drizzle } = await import("drizzle-orm/postgres-js");
-  const client = postgres(url, { max: 5, prepare: false });
+  // Serverless: few connections per instance, through Neon's pooler (transaction mode → no prepared statements).
+  const client = postgres(url, { max: process.env.VERCEL ? 2 : 5, prepare: false, idle_timeout: 20, connect_timeout: 15 });
   const db = drizzle(client, { schema }) as unknown as Db;
   return { db, kind: "postgres", close: () => client.end() };
 }

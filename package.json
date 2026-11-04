@@ -16,12 +16,14 @@
     "refresh": "tsx scripts/refresh.ts",
     "eval": "tsx scripts/eval.ts",
     "crawl": "tsx scripts/crawl.ts",
-    "queue": "tsx scripts/queue.ts"
+    "queue": "tsx scripts/queue.ts",
+    "deploy:check": "tsx scripts/deploy-check.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.4.0",
     "@electric-sql/pglite": "^0.5.15",
     "@mozilla/readability": "^0.6.0",
+    "@sentry/nextjs": "^11.10.0",
     "drizzle-orm": "^0.45.4",
     "iron-session": "^9.0.1",
     "jose": "^6.2.15",

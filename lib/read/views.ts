@@ -84,7 +84,8 @@ export async function summaryView(orgId: string) {
     const recs = fl.length ? await tx.select().from(recommendations).where(inArray(recommendations.flagId, fl.map((f) => f.id))) : [];
     const sl = await tx.select().from(shortlist);
     const finance = det.filter((d) => d.present && !catalogApps().find((a) => a.id === d.appId)?.categories.some((c) => c === "accounting" || c === "other_software"));
-    const counts = Object.fromEntries(["flagged", "covered", "fine", "marked_fine", "queued"].map((s) => [s, fl.filter((f) => f.state === s).length]));
+    const countOf = (state: string) => fl.filter((f) => f.state === state).length;
+    const counts = { flagged: countOf("flagged"), covered: countOf("covered"), fine: countOf("fine"), marked_fine: countOf("marked_fine"), queued: countOf("queued") };
     return {
       org: { id: org.id, name: org.name, markets: org.markets, industry: org.industry },
       ready: true,

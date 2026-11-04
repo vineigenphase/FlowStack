@@ -52,6 +52,23 @@ export function env(): Env {
   return cached;
 }
 
+/**
+ * Settings a deployed environment can't run without. PGlite is a dev convenience: on Vercel the filesystem is
+ * read-only and per-instance, so a real DATABASE_URL is required. Returns the names that are missing.
+ */
+export function missingForDeploy(e: Env = env()): string[] {
+  const missing: string[] = [];
+  if (!e.DATABASE_URL) missing.push("DATABASE_URL");
+  if (Buffer.from(e.TOKEN_ENC_KEY || "", "base64").length !== 32) missing.push("TOKEN_ENC_KEY");
+  if (e.SESSION_SECRET.length < 32) missing.push("SESSION_SECRET");
+  if (e.CRON_SECRET.length < 16) missing.push("CRON_SECRET");
+  if (e.XERO_MODE === "live" && !(e.XERO_CLIENT_ID && e.XERO_CLIENT_SECRET)) missing.push("XERO_CLIENT_ID/XERO_CLIENT_SECRET");
+  if (!/^https:\/\//.test(e.APP_URL)) missing.push("APP_URL (https)");
+  return missing;
+}
+
+export const isDeployed = () => Boolean(process.env.VERCEL);
+
 export function resetEnv() {
   cached = null;
 }

@@ -85,3 +85,11 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
 - Pleo: `/en-gb` paths 404 → corrected to `/en`. Pages fetch, but prices are client-rendered (JSON in the HTML; Readability
   text has no £). Correctly recorded as missing. **Set TAVILY_API_KEY** (renders JS) to get most pricing pages.
 - Crawl paths in catalog/apps.yaml are hand guesses for every other app; expect more 404s until a person checks them.
+
+## M9 (2026-11-04) — deploy-ready, not deployed
+- Added: vercel.json (migrate on build, crons), Sentry via instrumentation.ts with every `dataCollection` option off
+  (no headers, cookies, bodies, query strings — the OAuth code is in one — or stack-frame variables),
+  outputFileTracingIncludes for catalog/*.yaml (verified in .nft.json), deploy guards (`missingForDeploy`, health
+  `missing`, openDb refuses PGlite on Vercel), postgres-js tuned for serverless, `pnpm deploy:check`, /app/[org] landing page.
+- **Blocked on the owner:** Neon MCP is read-only and the account only has the Telos project (FlowStack must not share
+  it); Vercel CLI isn't installed/logged in; Xero app creds. Steps in DEPLOY.md.

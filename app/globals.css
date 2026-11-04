@@ -1,0 +1,7 @@
+:root { --ink: #111; --paper: #fff; --muted: #666; --mark: #ffe04a; }
+@media (prefers-color-scheme: dark) { :root { --ink: #eee; --paper: #141414; --muted: #999; --mark: #8a7400; } }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.5 system-ui, sans-serif; }
+a { color: inherit; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
+.hero .num { font: 600 2rem ui-monospace, monospace; background: var(--mark); padding: 0 6px; }
+.tag { font-size: 0.75rem; margin-left: 8px; padding: 2px 6px; border: 1px solid var(--muted); color: var(--muted); vertical-align: middle; }

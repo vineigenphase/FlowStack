@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import "./globals.css";
 
 export const metadata = { title: "FlowStack", description: "Which apps your Xero ledger says you need." };
 
