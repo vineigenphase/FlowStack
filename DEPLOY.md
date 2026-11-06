@@ -58,6 +58,15 @@ vercel deploy                          # preview; build runs `pnpm db:migrate &&
    encrypted blobs (never readable tokens).
 5. `vercel --prod` once the preview checks out.
 
+## Neon branches per environment
+- **Production** → Neon branch `production` (`br-curly-base-zavdocpe`).
+- **Preview** → Neon branch `preview` (`br-shy-sun-za9iz0jm`), created from production on 6 Nov 2026 with all tenant
+  data removed (orgs and everything under them, users, review queue, audit log). The catalogue and migration history
+  were kept, so preview builds migrate cleanly. No expiry (made with `neon branches create`, not `neon checkout`).
+- Point Vercel Preview at it: `bash scripts/vercel-preview-db.sh` (prints names only).
+- Never copy production tenant data into preview. To reset preview, delete the branch, re-create it from production,
+  and clear tenant data the same way before any preview deploy uses it.
+
 ## Crons
 `vercel.json`: nightly 02:17 UTC (stale facts) and monthly 1st 03:41 UTC (catalogue crawl). Both are daily-or-less, so
 they work on the Hobby plan. The monthly crawl runs inline (`maxDuration` 300s); if the catalogue grows past what fits,

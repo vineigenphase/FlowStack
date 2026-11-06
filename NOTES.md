@@ -112,3 +112,5 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
   refreshed". One refresh per org at a time: partial unique index `sync_runs_one_running` (migration 0005);
   `runRefresh` closes runs still `running` after 5 min as abandoned, then a clashing insert → `RefreshBusyError` → 409.
   Also fixed mis-encoded "Â£"/"Â§" in lib/read/views.ts (summary API label).
+- **Preview DB (6 Nov 2026):** Neon branch `preview` (br-shy-sun-za9iz0jm), tenant data cleared, catalogue kept. Vercel
+  Preview points at it via `scripts/vercel-preview-db.sh`. Details in DEPLOY.md "Neon branches per environment".
