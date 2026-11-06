@@ -5,6 +5,7 @@ import { adminDb } from "@/lib/db/client";
 import { orgMembers, orgs } from "@/db/schema";
 import { SignOut } from "@/components/sign-out";
 import { signInHref } from "@/lib/ui/signin";
+import { SiteHeader } from "@/components/site-header";
 
 export const dynamic = "force-dynamic";
 
@@ -20,6 +21,8 @@ export default async function Home() {
     : [];
 
   return (
+    <>
+    <SiteHeader />
     <main className="wrap">
       <h1 className="display">FlowStack</h1>
       <p className="lede">Which apps your Xero ledger says you need, based on your own figures. Read-only: we never change anything in Xero.</p>
@@ -56,5 +59,6 @@ export default async function Home() {
         </p>
       )}
     </main>
+    </>
   );
 }

@@ -186,3 +186,21 @@ td a { font-weight: 600; }
   .fn-gap::after { border-left: 2px dashed var(--line); }
   .fn-checking::after { border-left: 2px dotted var(--muted); }
 }
+
+/* apps directory + dossier */
+.top-link { text-decoration: none; opacity: 0.85; }
+.top-link:hover { opacity: 1; text-decoration: underline; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+.chips a { padding: 4px 10px; border: 1px solid var(--line); text-decoration: none; font-size: 0.875rem; }
+.chips a[aria-current="page"] { border-color: var(--ink); font-weight: 600; }
+.dir { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px; }
+.dir-link { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border: 1px solid var(--line); text-decoration: none; height: 100%; }
+.dir-link:hover { background: var(--surface); }
+.dossier dl { margin: 0; display: grid; gap: 0; border-top: 1px solid var(--line); }
+.fact { display: grid; grid-template-columns: minmax(140px, 30%) 1fr; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.fact dt { color: var(--muted); font-size: 0.9rem; }
+.fact dd { margin: 0; }
+.quote { display: block; font-size: 0.85rem; margin-top: 2px; font-family: var(--font-m); }
+.quote::before { content: "\201C"; }
+.quote::after { content: "\201D"; }
+@media (max-width: 520px) { .fact { grid-template-columns: 1fr; gap: 2px; } }

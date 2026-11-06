@@ -159,7 +159,7 @@ describe("directory API models", () => {
     const all = await listApps();
     expect(all.some((a) => a.id === "slack" || a.id === "xero")).toBe(false);
     const payroll = await listApps({ category: "payroll", market: "UK" });
-    expect(payroll.map((a) => a.id).sort()).toEqual(["brightpay", "staffology"]);
+    expect(payroll.map((a) => a.id).sort()).toEqual(["brightpay", "deel", "employmenthero", "staffology", "telleroo"]);
     expect(payroll.every((a) => a.sample)).toBe(true);
   });
 });

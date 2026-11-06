@@ -99,7 +99,7 @@ export default async function OrgPage({ params }: { params: Promise<{ org: strin
             <p className="muted">None detected from your supplier bills yet.</p>
           )}
           <p className="muted small">
-            App details are draft catalogue entries that a person hasn&apos;t checked yet. Prices aren&apos;t shown until they&apos;re verified.
+            App details are draft catalogue entries that a person hasn&apos;t checked yet. Any price shown comes from the vendor&apos;s own site, with the page it came from. <Link href="/apps">All apps</Link>
           </p>
         </>
       )}

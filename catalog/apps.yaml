@@ -292,3 +292,523 @@
   markets: [UK, US, CA, AU]
   fingerprints: ["slack", "slack *"]
   sample: true
+
+# ======================================================================================================
+# Added 2026-11-06. Names checked against Mayday's public CFO Techstack map AS A NAME CHECKLIST ONLY
+# (owner decision, NOTES.md); nothing else was taken from it. Website, crawl paths and the Xero link were
+# checked on each vendor's own site with FlowStackBot (robots.txt respected; pnpm crawl:probe). A `to: xero`
+# edge is only set where the vendor's own page mentions Xero; that is not proof of a native integration.
+# Categories and markets are hand-entered by us. Everything stays sample: true until a person verifies it.
+# Not added: Derive (no vendor site found), Pento (now redirects to HiBob), Mayday + Easy Month End
+# (month-end tools; no matching finance job in our taxonomy).
+# ======================================================================================================
+
+# ---------- reporting / consolidation ----------
+- id: spotlight
+  name: Spotlight Reporting
+  categories: [management_reporting, consolidation, fpa]
+  markets: [UK, US, AU, CA]
+  website: https://www.spotlightreporting.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["spotlight reporting", "spotlight reporting *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: g_accon
+  name: G-Accon
+  categories: [management_reporting, consolidation]
+  markets: [UK, US, AU, CA]
+  website: https://www.g-accon.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["g accon", "gaccon"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: joiin
+  name: Joiin
+  categories: [consolidation, management_reporting]
+  markets: [UK, US, AU, CA]
+  website: https://www.joiin.co
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["joiin", "joiin *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: calxa
+  name: Calxa
+  categories: [fpa, consolidation, cash_forecasting]
+  markets: [UK, US, AU]
+  website: https://www.calxa.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["calxa", "calxa *"]
+  integrations: []   # site blocks automated requests; Xero link not confirmed by us
+  sample: true
+  source: hand-entered; vendor site blocks FlowStackBot (needs a person)
+- id: datasights
+  name: DataSights
+  categories: [consolidation, management_reporting]
+  markets: [UK, AU]
+  website: https://datasights.co
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["datasights", "data sights"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+
+# ---------- FP&A / forecasting ----------
+- id: xpna
+  name: xpna
+  categories: [fpa, consolidation]
+  markets: [UK, US, AU]
+  website: https://xpna.co
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["xpna", "xpna *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: castaway
+  name: Castaway
+  categories: [fpa, cash_forecasting]
+  markets: [UK, AU]
+  website: https://castawayforecasting.com
+  crawl: { home: /, pricing: null, product: null, services: null }
+  fingerprints: ["castaway forecasting", "castaway forecasting *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06 (no pricing page found)
+- id: datarails
+  name: Datarails
+  categories: [fpa]
+  markets: [UK, US]
+  website: https://www.datarails.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["datarails", "datarails *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: cashflowfrog
+  name: Cash Flow Frog
+  categories: [cash_forecasting]
+  markets: [UK, US, AU, CA]
+  website: https://cashflowfrog.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["cash flow frog", "cashflow frog", "cashflowfrog"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+
+# ---------- spend / AP / data capture ----------
+- id: ezzybills
+  name: EzzyBills
+  categories: [data_capture, spend_payables]
+  markets: [UK, AU, US]
+  website: https://www.ezzybills.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["ezzybills", "ezzy bills"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: lightyear
+  name: Lightyear
+  categories: [data_capture, spend_payables]
+  markets: [UK, AU]
+  website: https://www.lightyear.cloud
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["lightyear cloud", "lightyear"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: autoentry
+  name: AutoEntry
+  categories: [data_capture]
+  markets: [UK, US, CA, AU]
+  website: https://www.autoentry.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["autoentry", "auto entry"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: tipalti
+  name: Tipalti
+  categories: [spend_payables]
+  markets: [UK, US, CA, AU]
+  website: https://tipalti.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["tipalti", "tipalti *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: weel
+  name: Weel
+  categories: [spend_payables]
+  markets: [AU]
+  website: https://letsweel.com
+  crawl: { home: /, pricing: null, product: null, services: null }
+  fingerprints: ["weel", "lets weel"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06 (no pricing page found)
+- id: cledara
+  name: Cledara
+  categories: [spend_payables]
+  markets: [UK, US]
+  website: https://www.cledara.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["cledara", "cledara *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: payhawk
+  name: Payhawk
+  categories: [spend_payables]
+  markets: [UK, US]
+  website: https://payhawk.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["payhawk", "payhawk *"]
+  integrations: []   # Xero not mentioned on the pages we fetched
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: modulr
+  name: Modulr
+  categories: [spend_payables]
+  markets: [UK]
+  website: https://www.modulrfinance.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["modulr", "modulr finance", "modulr *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: telleroo
+  name: Telleroo
+  categories: [spend_payables, payroll]
+  markets: [UK]
+  website: https://www.telleroo.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["telleroo", "telleroo *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: expensify
+  name: Expensify
+  categories: [spend_payables]
+  markets: [UK, US, CA, AU]
+  website: https://www.expensify.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["expensify", "expensify *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: capitalontap
+  name: Capital on Tap
+  categories: [spend_payables]
+  markets: [UK, US]
+  website: https://www.capitalontap.com
+  crawl: { home: /, pricing: null, product: null, services: null }
+  fingerprints: ["capital on tap", "capitalontap"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06 (no pricing page found)
+
+# ---------- job & project ----------
+- id: workflowmax
+  name: WorkflowMax
+  categories: [job_project]
+  markets: [UK, AU, US]
+  website: https://www.workflowmax.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["workflowmax", "workflow max"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: workguru
+  name: WorkGuru
+  categories: [job_project, inventory]
+  markets: [UK, AU, US]
+  website: https://workguru.io
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["workguru", "work guru"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: scoro
+  name: Scoro
+  categories: [job_project]
+  markets: [UK, US, AU]
+  website: https://www.scoro.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["scoro", "scoro software", "scoro *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: gojee
+  name: Gojee
+  categories: [job_project, inventory]
+  markets: [AU, US, CA]
+  website: https://gojee.com.au
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["gojee", "gojee *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: projectworks
+  name: Projectworks
+  categories: [job_project]
+  markets: [UK, US, AU]
+  website: https://www.projectworks.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["projectworks", "projectworks *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: harvest
+  name: Harvest
+  categories: [job_project, rota]
+  markets: [UK, US, CA, AU]
+  website: https://www.getharvest.com
+  crawl: { home: /, pricing: /pricing, product: /integrations/xero, services: null }
+  fingerprints: ["getharvest", "harvest time tracking", "harvest forecast"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor Xero page checked 2026-11-06
+- id: tradify
+  name: Tradify
+  categories: [job_project]
+  markets: [UK, US, CA, AU]
+  website: https://www.tradifyhq.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["tradify", "tradify *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: simpro
+  name: Simpro
+  categories: [job_project]
+  markets: [UK, US, AU]
+  website: https://www.simprogroup.com
+  crawl: { home: /, pricing: null, product: null, services: null }
+  fingerprints: ["simpro", "simpro group", "simpro software"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06 (no pricing page found)
+- id: servicem8
+  name: ServiceM8
+  categories: [job_project]
+  markets: [UK, US, AU]
+  website: https://www.servicem8.com
+  crawl: { home: /uk, pricing: /pricing, product: null, services: null }
+  fingerprints: ["servicem8", "service m8"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: fergus
+  name: Fergus
+  categories: [job_project]
+  markets: [UK, AU]
+  website: https://www.fergus.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["fergus software", "fergus com"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+
+# ---------- payroll / HR ----------
+- id: employmenthero
+  name: Employment Hero
+  categories: [payroll, rota]
+  markets: [UK, AU]
+  website: https://employmenthero.com
+  crawl: { home: /uk, pricing: /pricing, product: /uk/integrations/xero, services: null }
+  fingerprints: ["employment hero", "employment hero *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor Xero page checked 2026-11-06
+- id: deel
+  name: Deel
+  categories: [payroll]
+  markets: [UK, US, CA, AU]
+  website: https://www.deel.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["deel", "deel *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor Xero marketplace page checked 2026-11-06
+
+# ---------- billing & receivables ----------
+- id: adfin
+  name: Adfin
+  categories: [billing_receivables]
+  markets: [UK]
+  website: https://www.adfin.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["adfin", "adfin *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: pinch
+  name: Pinch Payments
+  categories: [billing_receivables]
+  markets: [AU]
+  website: https://www.getpinch.com.au
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["pinch payments", "getpinch"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: maxio
+  name: Maxio
+  categories: [billing_receivables]
+  markets: [US, UK]
+  website: https://www.maxio.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["maxio", "maxio *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: stripe
+  name: Stripe
+  categories: [billing_receivables, epos_ecommerce]
+  markets: [UK, US, CA, AU]
+  website: https://stripe.com
+  crawl: { home: /gb, pricing: /gb/pricing, product: null, services: null }
+  fingerprints: ["stripe", "stripe payments", "stripe *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: paidnice
+  name: Paidnice
+  categories: [billing_receivables]
+  markets: [UK, US, AU]
+  website: https://www.paidnice.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["paidnice", "paid nice"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: chargebee
+  name: Chargebee
+  categories: [billing_receivables]
+  markets: [UK, US, CA, AU]
+  website: https://www.chargebee.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["chargebee", "chargebee *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+
+# ---------- inventory ----------
+- id: katana
+  name: Katana
+  categories: [inventory]
+  markets: [UK, US, CA, AU]
+  website: https://katanamrp.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["katana mrp", "katana technologies"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: cin7
+  name: Cin7
+  categories: [inventory]
+  markets: [UK, US, CA, AU]
+  website: https://www.cin7.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["cin7", "cin7 *", "dear systems"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: brightpearl
+  name: Brightpearl
+  categories: [inventory, epos_ecommerce]
+  markets: [UK, US]
+  website: https://www.brightpearl.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["brightpearl", "brightpearl *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+
+# ---------- EPOS / ecommerce ----------
+- id: a2x
+  name: A2X
+  categories: [epos_ecommerce]
+  markets: [UK, US, CA, AU]
+  website: https://www.a2xaccounting.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["a2x", "a2x accounting", "a2x *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: linkmybooks
+  name: Link My Books
+  categories: [epos_ecommerce]
+  markets: [UK, US, AU]
+  website: https://linkmybooks.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["link my books", "linkmybooks"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: zettle
+  name: Zettle by PayPal
+  categories: [epos_ecommerce]
+  markets: [UK]
+  website: https://www.zettle.com
+  crawl: { home: /gb, pricing: /gb/pricing, product: /gb/integrations, services: null }
+  fingerprints: ["zettle", "izettle", "zettle *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor integrations page checked 2026-11-06
+- id: sumup
+  name: SumUp
+  categories: [epos_ecommerce]
+  markets: [UK, US, AU]
+  website: https://www.sumup.com
+  crawl: { home: /en-gb, pricing: /en-gb/pricing, product: null, services: null }
+  fingerprints: ["sumup", "sumup *"]
+  integrations: []   # Xero not confirmed on the pages we fetched
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+- id: eposnow
+  name: Epos Now
+  categories: [epos_ecommerce]
+  markets: [UK, US, AU]
+  website: https://www.eposnow.com
+  crawl: { home: /uk, pricing: /uk/pricing, product: null, services: null }
+  fingerprints: ["epos now", "eposnow"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+
+# ---------- FX & banking ----------
+- id: revolut
+  name: Revolut Business
+  categories: [fx_banking, spend_payables]
+  markets: [UK, US, AU]
+  website: https://www.revolut.com
+  crawl: { home: /business, pricing: null, product: null, services: null }
+  fingerprints: ["revolut business", "revolut"]
+  integrations: []   # site blocks automated requests; Xero link not confirmed by us
+  sample: true
+  source: hand-entered; vendor site blocks FlowStackBot (needs a person)
+- id: equals
+  name: Equals Money
+  categories: [fx_banking, spend_payables]
+  markets: [UK]
+  website: https://equalsmoney.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["equals money", "equals money *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-06
+
+# ---------- compliance ----------
+- id: avalara
+  name: Avalara
+  categories: [compliance]
+  markets: [UK, US, CA, AU]
+  website: https://www.avalara.com
+  crawl: { home: /, pricing: /pricing, product: /us/en/products/integrations/xero.html, services: null }
+  fingerprints: ["avalara", "avalara *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor Xero page checked 2026-11-06

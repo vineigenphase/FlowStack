@@ -132,3 +132,22 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
 - Fixes in order: "fix" items (apps already paid for) before "add" items, then by £, then by flagged-line count.
   No dependency graph beyond that yet.
 - Links to Xero come from catalog/apps.yaml integrations, which are unverified (said on the page).
+
+## Catalogue to 79 apps + directory and dossier pages (6 Nov 2026)
+- **Owner decision (deviation from CLAUDE.md §2.4 "no scraping of competitors"):** Mayday's public CFO Techstack
+  map was read ONCE, for app names only, as a checklist. Nothing else was taken from it: no descriptions, ratings,
+  categories-per-app or prices. Names were typed into catalog/apps.yaml by hand. Do not re-read it for anything else.
+- 49 apps added (33 from that checklist, 18 UK Xero apps we chose; Derive skipped: no vendor site found; Pento skipped:
+  redirects to HiBob; Mayday/Easy Month End skipped: month-end tools, no matching finance job). 79 total, 75 in the
+  directory (Xero + 3 general software excluded). Compliance and FP&A now have apps.
+- Every website, crawl path and Xero link was checked on the vendor's own site with FlowStackBot (honest user agent,
+  robots.txt respected) via `pnpm crawl:probe`. `to: xero` is set only where the vendor's own page mentions Xero
+  (a proxy, not proof). Calxa and Revolut block bots → no Xero edge, "needs a person".
+- Markets and categories are our own hand entries; all sample: true.
+- Crawl on the preview branch, rules extractor only (no TAVILY_API_KEY, no ANTHROPIC_API_KEY): 23/49 apps gave at least
+  one fact; 8 have a £ price. Many pricing pages are USD or client-rendered. Some regex prices are add-ons, not the
+  main plan (Stripe "£7/month") — they stay `found` (unverified) and go to spot checks.
+- `/apps` (public directory, alphabetical per job, never ranked) and `/apps/[id]` (dossier grouped as §7.3b: price,
+  contract, fit with Xero, security, support; each fact shows quote, source link and date; peer prices say "not
+  enough peers yet" until k ≥ 10).
+- Production facts fill in on the monthly crawl (1st, 03:41) or `pnpm crawl` with production env.

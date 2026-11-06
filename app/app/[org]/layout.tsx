@@ -44,6 +44,7 @@ export default async function OrgLayout({ children, params }: { children: ReactN
             {o?.name ?? "Organisation"}
             {o?.sample ? <span className="tag">sample data</span> : null}
           </span>
+          <Link href="/apps" className="top-link">Apps</Link>
           <SignOut />
         </div>
         <div className="wrap"><OrgNav org={org} /></div>

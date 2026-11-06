@@ -16,6 +16,7 @@
     "refresh": "tsx scripts/refresh.ts",
     "eval": "tsx scripts/eval.ts",
     "crawl": "tsx scripts/crawl.ts",
+    "crawl:probe": "tsx scripts/probe-paths.ts",
     "queue": "tsx scripts/queue.ts",
     "deploy:check": "tsx scripts/deploy-check.ts"
   },
