@@ -27,10 +27,18 @@ export function parseAmount(v: string | undefined): number {
   return neg ? -n : n;
 }
 
+/**
+ * Live Xero balance sheets tag the "Current Year Earnings" row with this placeholder account id. It is not a real
+ * account (it never appears in /Accounts), so treat it as no account: the row is a computed total, like
+ * "Total Equity". Missing this made the cash flow count last year's earnings rolling into retained earnings as
+ * financing cash (Demo Company, Nov 2026).
+ */
+export const XERO_PLACEHOLDER_ACCOUNT_ID = "abababab-abab-abab-abab-abababababab";
+
 function accountIdOf(cells: { Attributes?: { Id: string; Value: string }[] }[] | undefined): string | null {
   for (const c of cells ?? []) {
     const a = c.Attributes?.find((x) => x.Id.toLowerCase() === "account");
-    if (a) return a.Value;
+    if (a) return a.Value.toLowerCase() === XERO_PLACEHOLDER_ACCOUNT_ID ? null : a.Value;
   }
   return null;
 }

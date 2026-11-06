@@ -99,3 +99,8 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
 - `.env.local` now points local dev at Neon; blank DATABASE_URL to go back to PGlite. Run `DOTENV=.env.local pnpm deploy:check`.
 - **Still open:** Xero app creds → XERO_MODE=live and the Demo Company connect check; Preview has no APP_URL and shares
   the production Neon branch — give it its own branch before real customers connect.
+- **Live-data fix (6 Nov 2026):** real Xero balance sheets tag "Current Year Earnings" with the placeholder account id
+  `abababab-abab-abab-abab-abababababab`; the synthetic fixture didn't. The parser now treats it as no account, so
+  `buildBS` reads CYE into totals and the cash flow cancels the prior-year earnings roll into retained earnings.
+  Demo Company (UK) now reconciles exactly (CFO 6,684.76 / CFI −2,583.33 / CFF 0 = Δbank 4,101.43); regression test in
+  tests/cashflow-live-shape.test.ts. Also: functions pinned to lhr1 (next to Neon), refresh route maxDuration 300.
