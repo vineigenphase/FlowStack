@@ -107,11 +107,20 @@ export async function lineView(orgId: string, lineKey: string) {
     if (!runId) return null;
     const [f] = await tx.select().from(flags).where(and(eq(flags.runId, runId), eq(flags.lineKey, lineKey)));
     if (!f) return null;
+    const [line] = await tx
+      .select({ name: statementLines.name, code: statementLines.code, section: statementLines.section })
+      .from(statementLines)
+      .innerJoin(statements, eq(statements.id, statementLines.statementId))
+      .where(and(eq(statements.runId, runId), eq(statementLines.lineKey, lineKey)))
+      .limit(1);
     const recs = await tx.select().from(recommendations).where(eq(recommendations.flagId, f.id));
     const rule = rulesFile().rules.find((r) => r.id === f.ruleId);
     const det = await tx.select().from(detectedApps);
     return {
       key: f.lineKey,
+      name: line?.name ?? f.lineKey,
+      code: line?.code ?? null,
+      section: line ? (SECTION_LABELS[line.section] ?? line.section) : null,
       statement: f.statementKind,
       state: f.state,
       band: f.band,
@@ -134,5 +143,39 @@ export async function runView(orgId: string, runId: string) {
   return withOrg(orgId, async (tx) => {
     const [r] = await tx.select().from(syncRuns).where(eq(syncRuns.id, runId));
     return r ? { id: r.id, status: r.status, startedAt: r.startedAt, finishedAt: r.finishedAt, steps: r.steps, calls: r.calls, egressBytes: r.egressBytes, error: r.error } : null;
+  });
+}
+
+/** Lines worth a look on the latest run, biggest first (P&L against revenue, balance sheet against total assets). */
+export async function flaggedLines(orgId: string, limit = 10) {
+  return withOrg(orgId, async (tx) => {
+    const runId = await latestRun(tx);
+    if (!runId) return [];
+    const fl = await tx.select().from(flags).where(and(eq(flags.runId, runId), eq(flags.state, "flagged")));
+    if (!fl.length) return [];
+    const names = await tx
+      .select({ lineKey: statementLines.lineKey, name: statementLines.name })
+      .from(statementLines)
+      .innerJoin(statements, eq(statements.id, statementLines.statementId))
+      .where(eq(statements.runId, runId));
+    const nameOf = new Map(names.map((n) => [n.lineKey, n.name]));
+    const recs = await tx.select().from(recommendations).where(inArray(recommendations.flagId, fl.map((f) => f.id)));
+    const rule = (id: string | null) => rulesFile().rules.find((r) => r.id === id);
+    return fl
+      .sort((a, b) => b.materiality - a.materiality)
+      .slice(0, limit)
+      .map((f) => {
+        const top = recs.filter((r) => r.flagId === f.id && !r.inUse).sort((a, b) => a.rank - b.rank)[0];
+        return {
+          key: f.lineKey,
+          name: nameOf.get(f.lineKey) ?? f.lineKey,
+          statement: f.statementKind,
+          value: f.value,
+          materiality: f.materiality,
+          band: f.band,
+          cause: rule(f.ruleId)?.cause ?? null,
+          topApp: top ? { id: top.appId, name: appName(top.appId), match: Math.round(top.match) } : null,
+        };
+      });
   });
 }

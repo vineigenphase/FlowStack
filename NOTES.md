@@ -114,3 +114,9 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
   Also fixed mis-encoded "Â£"/"Â§" in lib/read/views.ts (summary API label).
 - **Preview DB (6 Nov 2026):** Neon branch `preview` (br-shy-sun-za9iz0jm), tenant data cleared, catalogue kept. Vercel
   Preview points at it via `scripts/vercel-preview-db.sh`. Details in DEPLOY.md "Neon branches per environment".
+
+## Readable pages (6 Nov 2026)
+- Server-rendered pages replace the JSON links: `/app/[org]` (summary + lines worth a look), `/app/[org]/statements/{pl,bs,cf}`, `/app/[org]/lines/[lineKey]` (cause, evidence, apps in use, ranked apps, "Is this right?").
+- Built without the prototype (not in the repo); visual tokens follow CLAUDE.md §1. Swap in the prototype's design when it turns up.
+- Plain CSS in app/globals.css, not Tailwind (CLAUDE.md §4) — small surface, no new dependency. Revisit with the prototype port.
+- Prices still hidden; catalogue apps tagged "draft entry"; sample orgs tagged "sample data".
