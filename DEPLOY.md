@@ -58,6 +58,18 @@ vercel deploy                          # preview; build runs `pnpm db:migrate &&
    encrypted blobs (never readable tokens).
 5. `vercel --prod` once the preview checks out.
 
+## Git deploys (since 6 Nov 2026)
+The Vercel project is connected to the private GitHub repo `vineigenphase/FlowStack` (free on Hobby for personal repos).
+- **Push to `main` → Production** (https://flowstack-xi-ten.vercel.app). Merge to `main` only what should go live.
+- **Push to `dev` → Preview** at the stable branch address https://flowstack-git-dev-flow-stack1.vercel.app (Preview
+  `APP_URL`), running on the Neon `preview` branch. Other branches get previews too, at
+  `https://flowstack-git-<branch>-flow-stack1.vercel.app`.
+- Preview URLs sit behind Vercel's login (Deployment Protection); from the CLI use
+  `MSYS_NO_PATHCONV=1 vercel curl /api/health --deployment <url>`.
+- Vercel skips a commit it has already deployed, so a new branch at the same commit as `main` gets no preview until
+  it has a commit of its own.
+- `vercel deploy --prod` still works for an out-of-band deploy, but prefer merging to `main`.
+
 ## Neon branches per environment
 - **Production** → Neon branch `production` (`br-curly-base-zavdocpe`).
 - **Preview** → Neon branch `preview` (`br-shy-sun-za9iz0jm`), created from production on 6 Nov 2026 with all tenant
