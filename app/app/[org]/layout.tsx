@@ -7,6 +7,7 @@ import { withOrg } from "@/lib/db/client";
 import { orgs } from "@/db/schema";
 import { OrgNav } from "@/components/org-nav";
 import { SignOut } from "@/components/sign-out";
+import { signInHref } from "@/lib/ui/signin";
 
 export const dynamic = "force-dynamic";
 
@@ -17,11 +18,12 @@ export default async function OrgLayout({ children, params }: { children: ReactN
     await requireOrgMember(org);
   } catch (e) {
     if (e instanceof HttpError && e.status === 401) {
+      const si = signInHref(`/app/${org}`);
       return (
         <main className="wrap">
           <h1>Sign in</h1>
           <p>Sign in to see this organisation.</p>
-          <p><a className="btn" href="/api/auth/xero/start">Sign in with Xero</a></p>
+          <p><a className="btn" href={si.href}>{si.dev ? "Sign in (local sample data)" : "Sign in with Xero"}</a></p>
         </main>
       );
     }

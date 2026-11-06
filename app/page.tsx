@@ -4,11 +4,13 @@ import { getSession } from "@/lib/auth/session";
 import { adminDb } from "@/lib/db/client";
 import { orgMembers, orgs } from "@/db/schema";
 import { SignOut } from "@/components/sign-out";
+import { signInHref } from "@/lib/ui/signin";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const s = await getSession();
+  const si = signInHref();
   const mine = s.userId
     ? await (await adminDb())
         .select({ id: orgs.id, name: orgs.name, sample: orgs.sample })
@@ -44,13 +46,13 @@ export default async function Home() {
             <p className="muted">No organisations connected yet.</p>
           )}
           <p className="actions">
-            <a className="btn" href="/api/auth/xero/start">Connect another Xero organisation</a>
+            {si.dev ? null : <a className="btn" href={si.href}>Connect another Xero organisation</a>}
             <SignOut />
           </p>
         </>
       ) : (
         <p className="actions">
-          <a className="btn" href="/api/auth/xero/start">Connect Xero</a>
+          <a className="btn" href={si.href}>{si.dev ? "Sign in (local sample data)" : "Connect Xero"}</a>
         </p>
       )}
     </main>
