@@ -135,7 +135,9 @@ td a { font-weight: 600; }
   .hide-sm { display: none; }
   h1 { font-size: 1.4rem; }
   .display { font-size: 2rem; }
-  td, th { padding: 6px 4px; }
+  td, th { padding: 6px 4px; overflow-wrap: anywhere; }
+  /* Long status labels ("Covered by an app you use") wrap instead of pushing the table past the screen. */
+  .stmt .badge { white-space: normal; }
   .stmt th:nth-child(1) { width: 46%; }
   .stmt th:nth-child(2) { width: 26%; }
 }

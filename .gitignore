@@ -13,3 +13,6 @@ fixtures/xero/*-live/
 .vercel
 .env*
 !.env.example
+.pglite-e2e
+.next-e2e
+.e2e-results
