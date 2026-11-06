@@ -1,0 +1,66 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+
+type State = { kind: "idle" } | { kind: "running"; since: number } | { kind: "done"; status: string } | { kind: "error"; message: string };
+
+/**
+ * POSTs /api/orgs/:org/refresh (runs inline, read-only Xero calls), then re-renders the page's server data.
+ * `busy` = a refresh is already running server-side (e.g. the first one after connect).
+ */
+export function RefreshButton({ org, busy = false }: { org: string; busy?: boolean }) {
+  const router = useRouter();
+  const [state, setState] = useState<State>({ kind: "idle" });
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    if (state.kind !== "running") return;
+    const t = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(t);
+  }, [state.kind]);
+
+  async function refresh() {
+    const since = Date.now();
+    setNow(since);
+    setState({ kind: "running", since });
+    try {
+      const res = await fetch(`/api/orgs/${org}/refresh`, { method: "POST" });
+      const json = (await res.json().catch(() => ({}))) as { status?: string; error?: string };
+      if (!res.ok) {
+        setState({ kind: "error", message: json.error ?? `Refresh failed (HTTP ${res.status}).` });
+        return;
+      }
+      setState({ kind: "done", status: json.status ?? "ok" });
+      router.refresh();
+    } catch {
+      setState({ kind: "error", message: "Couldn't reach FlowStack. Check your connection and try again." });
+    }
+  }
+
+  const running = state.kind === "running";
+  const secs = running ? Math.max(0, Math.round((now - state.since) / 1000)) : 0;
+  const message =
+    state.kind === "running"
+      ? `Refreshing from Xero… ${secs}s`
+      : state.kind === "done"
+        ? state.status === "ok"
+          ? "Up to date."
+          : `Refresh finished with status: ${state.status}.`
+        : state.kind === "error"
+          ? state.message
+          : busy
+            ? "A refresh is running. Reload in a few seconds."
+            : "";
+
+  return (
+    <div className="refresh">
+      <button type="button" className="btn" onClick={refresh} disabled={running || busy} aria-busy={running}>
+        {running ? "Refreshing…" : "Refresh from Xero"}
+      </button>
+      <span className={state.kind === "error" ? "refresh-msg error" : "refresh-msg"} role="status" aria-live="polite">
+        {message}
+      </span>
+    </div>
+  );
+}

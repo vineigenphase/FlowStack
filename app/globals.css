@@ -5,3 +5,12 @@ a { color: inherit; }
 .wrap { max-width: 640px; margin: 0 auto; padding: 24px 16px; }
 .hero .num { font: 600 2rem ui-monospace, monospace; background: var(--mark); padding: 0 6px; }
 .tag { font-size: 0.75rem; margin-left: 8px; padding: 2px 6px; border: 1px solid var(--muted); color: var(--muted); vertical-align: middle; }
+.refresh { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 8px 0 4px; }
+.btn { font: inherit; font-weight: 600; color: var(--paper); background: var(--ink); border: 1px solid var(--ink); padding: 8px 14px; min-height: 40px; cursor: pointer; }
+.btn:hover:not(:disabled) { opacity: 0.85; }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.btn:disabled { cursor: default; opacity: 0.55; }
+.refresh-msg { color: var(--muted); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+.refresh-msg.error { color: #b42318; }
+@media (prefers-color-scheme: dark) { .refresh-msg.error { color: #f97066; } }
+.meta { color: var(--muted); font-size: 0.875rem; margin-top: 0; }

@@ -5,7 +5,7 @@
  * Everything after the fetch (categories on lines, derived cash flow, flags) runs from stored rows in
  * `recompute()`, so resolving a review item can recompute the org without calling Xero again.
  */
-import { and, desc, eq, inArray } from "drizzle-orm";
+import { and, desc, eq, inArray, lt } from "drizzle-orm";
 import {
   accountMaps,
   accounts,
@@ -38,12 +38,37 @@ type StepKey = (typeof STEPS)[number];
 
 export type RefreshOpts = { client?: XeroClient; now?: Date };
 
+/** A refresh is already running for this org (the sync_runs_one_running index refused a second one). */
+export class RefreshBusyError extends Error {
+  constructor() {
+    super("A refresh is already running for this organisation.");
+  }
+}
+
+/** Functions stop at 300s, so a run still marked running after this has died and must not block the org. */
+export const ABANDONED_AFTER_MS = 5 * 60 * 1000;
+
+const isUniqueViolation = (e: unknown) => {
+  for (let x = e as { code?: string; cause?: unknown } | undefined; x; x = x.cause as typeof x) if (x.code === "23505") return true;
+  return false;
+};
+
 export async function runRefresh(orgId: string, opts: RefreshOpts = {}) {
   const admin = await adminDb();
-  const [run] = await admin
-    .insert(syncRuns)
-    .values({ orgId, steps: STEPS.map((key) => ({ key, status: "pending" as const })) })
-    .returning();
+  await admin
+    .update(syncRuns)
+    .set({ status: "error", error: "Abandoned: stopped before finishing", finishedAt: new Date() })
+    .where(and(eq(syncRuns.orgId, orgId), eq(syncRuns.status, "running"), lt(syncRuns.startedAt, new Date(Date.now() - ABANDONED_AFTER_MS))));
+  let run: typeof syncRuns.$inferSelect | undefined;
+  try {
+    [run] = await admin
+      .insert(syncRuns)
+      .values({ orgId, steps: STEPS.map((key) => ({ key, status: "pending" as const })) })
+      .returning();
+  } catch (e) {
+    if (isUniqueViolation(e)) throw new RefreshBusyError();
+    throw e;
+  }
   const runId = run!.id;
   const steps: RunStep[] = run!.steps;
   const client = opts.client ?? (await clientForOrg(orgId));

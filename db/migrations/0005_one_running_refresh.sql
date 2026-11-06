@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX "sync_runs_one_running" ON "sync_runs" USING btree ("org_id") WHERE status = 'running';

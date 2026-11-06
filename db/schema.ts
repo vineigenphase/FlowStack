@@ -18,8 +18,10 @@ import {
   text,
   timestamp,
   unique,
+  uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
+import { sql } from "drizzle-orm";
 
 const bytea = customType<{ data: Uint8Array; driverData: Uint8Array }>({
   dataType: () => "bytea",
@@ -92,7 +94,10 @@ export const syncRuns = pgTable("sync_runs", {
   egressBytes: integer("egress_bytes").notNull().default(0),
   steps: jsonb("steps").$type<RunStep[]>().notNull().default([]),
   error: text("error"),
-});
+}, (t) => [
+  // One refresh at a time per org: a second concurrent run fails to insert (runRefresh → RefreshBusyError → 409).
+  uniqueIndex("sync_runs_one_running").on(t.orgId).where(sql`status = 'running'`),
+]);
 
 export type RunStep = { key: string; status: "pending" | "running" | "ok" | "error"; calls?: number; bytes?: number; error?: string };
 

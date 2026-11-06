@@ -1,4 +1,4 @@
-/** Read models for the API (BACKEND.md Â§13). All reads run inside withOrg, so RLS scopes them. */
+/** Read models for the API (BACKEND.md §13). All reads run inside withOrg, so RLS scopes them. */
 import { and, desc, eq, inArray } from "drizzle-orm";
 import { detectedApps, flags, orgs, recommendations, shortlist, statementLines, statements, syncRuns } from "@/db/schema";
 import { withOrg, type Db } from "@/lib/db/client";
@@ -59,7 +59,7 @@ export async function statementView(orgId: string, kind: "pl" | "bs" | "cf") {
       period: s.periodFrom ? { label: "Year to date", from: s.periodFrom, to: s.periodTo } : { label: `As at ${s.periodTo}`, from: null, to: s.periodTo },
       derived: s.derived,
       ...(kind === "cf"
-        ? { reconciled: s.reconciled, unexplained: s.reconciled ? 0 : Math.abs(s.reconDiff ?? 0), message: s.reconciled ? null : `Cash flow doesn't reconcile yet: Â£${Math.abs(s.reconDiff ?? 0).toFixed(2)} unexplained` }
+        ? { reconciled: s.reconciled, unexplained: s.reconciled ? 0 : Math.abs(s.reconDiff ?? 0), message: s.reconciled ? null : `Cash flow doesn't reconcile yet: £${Math.abs(s.reconDiff ?? 0).toFixed(2)} unexplained` }
         : {}),
       base,
       totals: s.totals,
@@ -90,7 +90,7 @@ export async function summaryView(orgId: string) {
       org: { id: org.id, name: org.name, markets: org.markets, industry: org.industry },
       ready: true,
       lastRun: run ? { id: run.id, status: run.status, finishedAt: run.finishedAt, calls: run.calls, egressBytes: run.egressBytes } : null,
-      atStake: { label: "Â£ at stake", value: atStake(fl.map((f) => ({ kind: f.statementKind, state: f.state, value: f.value, lineKey: f.lineKey })), (k) => catOf.get(k) ?? null, revenueCats) },
+      atStake: { label: "£ at stake", value: atStake(fl.map((f) => ({ kind: f.statementKind, state: f.state, value: f.value, lineKey: f.lineKey })), (k) => catOf.get(k) ?? null, revenueCats) },
       lines: { total: fl.length, ...counts },
       appsInUse: finance.map((d) => ({ id: d.appId, name: appName(d.appId), spend12m: d.spend12m, monthsSeen: d.monthsSeen })),
       appsMatched: new Set(recs.filter((r) => !r.inUse).map((r) => r.appId)).size,

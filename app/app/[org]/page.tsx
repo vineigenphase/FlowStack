@@ -1,10 +1,13 @@
 import { HttpError } from "@/lib/api";
 import { requireOrgMember } from "@/lib/auth/session";
 import { summaryView } from "@/lib/read/views";
+import { RefreshButton } from "@/components/refresh-button";
 
 export const dynamic = "force-dynamic";
 
 const gbp = (n: number) => `£${Math.round(n).toLocaleString("en-GB")}`;
+const when = (d: Date | string) =>
+  new Date(d).toLocaleString("en-GB", { timeZone: "Europe/London", dateStyle: "medium", timeStyle: "short" });
 
 /**
  * Where the Xero callback lands. A plain status page so a connect can be checked end to end;
@@ -27,9 +30,17 @@ export default async function OrgPage({ params }: { params: Promise<{ org: strin
   }
   const s = await summaryView(org);
   if (!s) return <main className="wrap"><p>Not found.</p></main>;
+  const run = s.lastRun;
   return (
     <main className="wrap">
       <h1>{s.org.name}{s.sample ? <span className="tag">sample</span> : null}</h1>
+      <RefreshButton org={org} busy={run?.status === "running"} />
+      {run?.finishedAt ? (
+        <p className="meta">
+          Last refreshed {when(run.finishedAt)}
+          {run.status !== "ok" ? <> · finished with status <b>{run.status}</b></> : null}
+        </p>
+      ) : null}
       {!s.ready ? (
         <p>
           First refresh {s.lastRun ? <>is <b>{s.lastRun.status}</b></> : "hasn't started"}. Reload in a few seconds.

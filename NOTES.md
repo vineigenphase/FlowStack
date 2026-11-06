@@ -108,3 +108,7 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
   for that period (`autoClose`: status done, assignee/actor `system`, `resolution.auto = true`, audit row
   `queue.done.*`). If the problem returns, `enqueue` reopens only items with `resolution.auto` (audit
   `queue.reopened.*`); items a person accepted or dismissed stay closed.
+- **Refresh button (6 Nov 2026):** `/app/[org]` has "Refresh from Xero" (components/refresh-button.tsx) and "Last
+  refreshed". One refresh per org at a time: partial unique index `sync_runs_one_running` (migration 0005);
+  `runRefresh` closes runs still `running` after 5 min as abandoned, then a clashing insert → `RefreshBusyError` → 409.
+  Also fixed mis-encoded "Â£"/"Â§" in lib/read/views.ts (summary API label).
