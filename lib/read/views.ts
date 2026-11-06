@@ -2,7 +2,8 @@
 import { and, desc, eq, inArray } from "drizzle-orm";
 import { detectedApps, flags, orgs, recommendations, shortlist, statementLines, statements, syncRuns } from "@/db/schema";
 import { withOrg, type Db } from "@/lib/db/client";
-import { accountCategories, apps as catalogApps, rulesFile } from "@/lib/catalog/load";
+import { accountCategories, appCategories, apps as catalogApps, rulesFile } from "@/lib/catalog/load";
+import { buildStackMap } from "@/lib/map/build";
 import { SECTION_LABELS } from "@/lib/statements/build";
 import { atStake } from "@/lib/signals/compute";
 
@@ -177,5 +178,42 @@ export async function flaggedLines(orgId: string, limit = 10) {
           topApp: top ? { id: top.appId, name: appName(top.appId), match: Math.round(top.match) } : null,
         };
       });
+  });
+}
+
+/** Stack map for the latest run (lib/map/build.ts). Null before the first refresh finishes. */
+export async function stackMapView(orgId: string) {
+  return withOrg(orgId, async (tx) => {
+    const runId = await latestRun(tx);
+    if (!runId) return null;
+    const fl = await tx.select().from(flags).where(eq(flags.runId, runId));
+    const names = await tx
+      .select({ lineKey: statementLines.lineKey, name: statementLines.name, code: statementLines.code, category: statementLines.category })
+      .from(statementLines)
+      .innerJoin(statements, eq(statements.id, statementLines.statementId))
+      .where(eq(statements.runId, runId));
+    const byKey = new Map(names.map((n) => [n.lineKey, n]));
+    const revenueCats = new Set(accountCategories().filter((c) => c.revenue).map((c) => c.key));
+    const recs = fl.length ? await tx.select().from(recommendations).where(inArray(recommendations.flagId, fl.map((f) => f.id))) : [];
+    const keyOf = new Map(fl.map((f) => [f.id, f.lineKey]));
+    const det = await tx.select().from(detectedApps);
+    return buildStackMap({
+      categories: appCategories(),
+      apps: catalogApps(),
+      rules: rulesFile().rules,
+      inUse: det.map((d) => ({ appId: d.appId, spend12m: d.spend12m, monthsSeen: d.monthsSeen, present: d.present })),
+      lines: fl.map((f) => ({
+        key: f.lineKey,
+        name: byKey.get(f.lineKey)?.name ?? f.lineKey,
+        code: byKey.get(f.lineKey)?.code ?? null,
+        kind: f.statementKind,
+        state: f.state,
+        value: f.value,
+        materiality: f.materiality,
+        ruleId: f.ruleId,
+        revenue: revenueCats.has(byKey.get(f.lineKey)?.category ?? ""),
+      })),
+      recs: recs.map((r) => ({ lineKey: keyOf.get(r.flagId)!, appId: r.appId, rank: r.rank, match: r.match, inUse: r.inUse })),
+    });
   });
 }

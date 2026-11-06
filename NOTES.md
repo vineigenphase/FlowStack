@@ -120,3 +120,15 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
 - Built without the prototype (not in the repo); visual tokens follow CLAUDE.md §1. Swap in the prototype's design when it turns up.
 - Plain CSS in app/globals.css, not Tailwind (CLAUDE.md §4) — small surface, no new dependency. Revisit with the prototype port.
 - Prices still hidden; catalogue apps tagged "draft entry"; sample orgs tagged "sample data".
+
+## Stack map (6 Nov 2026)
+- `/app/[org]/map`: Xero in the middle, each app category (finance job) around it, from the latest run. Built from
+  CLAUDE.md §1.3 + the "client money flow" notes; no prototype, so the layout is mine.
+- Each line belongs to one job: its rule's first `covered_by`, else first `app_categories` (payroll lines → Payroll, not Rota).
+  Cash flow lines are left out (they restate balance-sheet movements).
+- £ per job uses the summary's at-stake rule (flagged P&L cost lines), so the jobs add up to the hero figure.
+- Status: gap (flagged, no app) · part by hand (app reaches Xero by CSV, or app in use but lines still flagged) ·
+  connected · being checked (only queued lines) · quiet (listed in one line, not drawn).
+- Fixes in order: "fix" items (apps already paid for) before "add" items, then by £, then by flagged-line count.
+  No dependency graph beyond that yet.
+- Links to Xero come from catalog/apps.yaml integrations, which are unverified (said on the page).

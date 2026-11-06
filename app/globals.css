@@ -139,3 +139,50 @@ td a { font-weight: 600; }
   .stmt th:nth-child(1) { width: 46%; }
   .stmt th:nth-child(2) { width: 26%; }
 }
+
+/* stack map: Xero in the centre column, functions either side, connectors drawn by status */
+.legend { display: flex; flex-wrap: wrap; gap: 6px 20px; list-style: none; padding: 0; margin: 12px 0 20px; font-size: 0.85rem; color: var(--muted); }
+.legend li { display: flex; align-items: center; gap: 8px; }
+.key { display: inline-block; width: 28px; border-top: 3px solid var(--ink); }
+.k-part_manual { border-top: 3px dashed var(--hand); }
+.k-gap { border-top: 6px solid var(--mark); }
+.k-checking { border-top: 3px dotted var(--muted); }
+.hub { --gap: 44px; display: grid; grid-template-columns: 1fr 150px 1fr; grid-template-rows: repeat(var(--rows), auto); column-gap: var(--gap); row-gap: 14px; margin: 8px 0 20px; }
+.hub-core { grid-column: 2; grid-row: 1 / span var(--rows); align-self: center; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; padding: 20px 10px; background: var(--rail); color: var(--rail-ink); border: 1px solid var(--line); }
+.hub-core .muted { color: inherit; opacity: 0.7; }
+.core-name { font: 700 1.5rem var(--font-d); font-stretch: 125%; }
+.fn { position: relative; grid-row: var(--row); border: 1px solid var(--line); background: var(--paper); padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; }
+.fn.side-l { grid-column: 1; }
+.fn.side-r { grid-column: 3; }
+.fn::after { content: ""; position: absolute; top: 50%; width: var(--gap); border-top: 2px solid var(--ink); }
+.fn.side-l::after { left: 100%; }
+.fn.side-r::after { right: 100%; }
+.fn-part_manual::after { border-top: 2px dashed var(--hand); }
+.fn-gap::after { border-top: 2px dashed var(--line); }
+.fn-checking::after { border-top: 2px dotted var(--muted); }
+.fn-gap { box-shadow: inset 4px 0 0 var(--mark); }
+.fn-part_manual { border-style: dashed; border-color: var(--hand); }
+.fn-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.fn h3 { margin: 0; font: 600 1rem var(--font-d); font-stretch: 112%; }
+.fn p { margin: 0; }
+.fn-apps { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; }
+.fn-apps li { display: flex; flex-direction: column; }
+.link-note { font-size: 0.8rem; color: var(--muted); }
+.link-note.l-csv { color: var(--hand); }
+.fn-none { color: var(--muted); font-size: 0.875rem; }
+.s-gap { background: var(--mark); color: var(--mark-ink); border-color: var(--mark); }
+.s-part_manual { color: var(--hand); border: 1px dashed currentColor; }
+.s-connected { color: var(--ok); border-color: currentColor; }
+.s-checking { border-style: dotted; }
+.fixes { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.fixes li { display: flex; gap: 12px; align-items: flex-start; }
+.fix-n { flex: none; width: 28px; height: 28px; display: grid; place-items: center; background: var(--ink); color: var(--paper); font-weight: 600; }
+@media (max-width: 720px) {
+  .hub { grid-template-columns: 1fr; grid-template-rows: none; --gap: 0px; }
+  .hub-core { grid-column: 1; grid-row: auto; flex-direction: row; gap: 10px; justify-content: center; padding: 12px; }
+  .fn.side-l, .fn.side-r { grid-column: 1; grid-row: auto; margin-left: 14px; }
+  .fn::after { top: -14px; left: -14px !important; right: auto !important; width: 0; height: calc(100% + 14px); border-top: 0; border-left: 2px solid var(--ink); }
+  .fn-part_manual::after { border-left: 2px dashed var(--hand); }
+  .fn-gap::after { border-left: 2px dashed var(--line); }
+  .fn-checking::after { border-left: 2px dotted var(--muted); }
+}
