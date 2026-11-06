@@ -104,3 +104,7 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
   `buildBS` reads CYE into totals and the cash flow cancels the prior-year earnings roll into retained earnings.
   Demo Company (UK) now reconciles exactly (CFO 6,684.76 / CFI −2,583.33 / CFF 0 = Δbank 4,101.43); regression test in
   tests/cashflow-live-shape.test.ts. Also: functions pinned to lhr1 (next to Neon), refresh route maxDuration 300.
+- **Queue auto-close (6 Nov 2026):** a refresh whose cash flow reconciles closes the open `cashflow_unreconciled` item
+  for that period (`autoClose`: status done, assignee/actor `system`, `resolution.auto = true`, audit row
+  `queue.done.*`). If the problem returns, `enqueue` reopens only items with `resolution.auto` (audit
+  `queue.reopened.*`); items a person accepted or dismissed stay closed.

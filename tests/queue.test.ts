@@ -104,3 +104,49 @@ describe("resolveItem", () => {
     expect(audits.length).toBe(closed);
   });
 });
+
+describe("cashflow_unreconciled closes itself when a later run reconciles", () => {
+  const setArType = (type: string) => withOrg(orgId, (tx) => tx.update(accounts).set({ type }).where(eq(accounts.code, "610")));
+  const cfItem = async () => {
+    const db = await adminDb();
+    return (await db.select().from(reviewQueue).where(and(eq(reviewQueue.orgId, orgId), eq(reviewQueue.kind, "cashflow_unreconciled"))))[0];
+  };
+  const audits = async (action: string) =>
+    (await (await adminDb()).select().from(auditLog).where(and(eq(auditLog.action, action), eq(auditLog.actor, "system")))).length;
+
+  it("an item a person accepted stays closed when the problem recurs", async () => {
+    // The previous suite left Accounts Receivable without a type and the item accepted by a person.
+    await recompute(orgId);
+    const item = (await cfItem())!;
+    expect(item.status).toBe("done");
+    expect((item.resolution as { auto?: boolean }).auto).toBeUndefined();
+  });
+
+  it("fix → auto-closed with an audit row; break again → reopened; fix → closed again", async () => {
+    const db = await adminDb();
+    await db.delete(reviewQueue).where(and(eq(reviewQueue.orgId, orgId), eq(reviewQueue.kind, "cashflow_unreconciled")));
+
+    await recompute(orgId); // still broken → a fresh open item
+    expect((await cfItem())!.status).toBe("open");
+
+    await setArType("CURRENT");
+    await recompute(orgId);
+    let item = (await cfItem())!;
+    expect(item.status).toBe("done");
+    expect(item.assignee).toBe("system");
+    expect(item.resolution).toMatchObject({ auto: true, by: "system" });
+    expect(await audits("queue.done.cashflow_unreconciled")).toBe(1);
+
+    await setArType("");
+    await recompute(orgId);
+    item = (await cfItem())!;
+    expect(item.status).toBe("open");
+    expect(item.resolution).toBeNull();
+    expect(await audits("queue.reopened.cashflow_unreconciled")).toBe(1);
+
+    await setArType("CURRENT");
+    await recompute(orgId);
+    expect((await cfItem())!.status).toBe("done");
+    expect(await audits("queue.done.cashflow_unreconciled")).toBe(2);
+  });
+});

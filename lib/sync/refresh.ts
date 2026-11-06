@@ -24,7 +24,7 @@ import { mapAccounts } from "@/lib/mapping";
 import { buildBS, buildPL, type Statement, type StatementLine } from "@/lib/statements/build";
 import { accountInfo } from "@/lib/statements/accounts";
 import { deriveCashFlow } from "@/lib/statements/cashflow";
-import { enqueueAll, type QueueItem } from "@/lib/queue/enqueue";
+import { autoClose, enqueueAll, type QueueItem } from "@/lib/queue/enqueue";
 import { clientForOrg } from "@/lib/xero";
 import type { XeroClient } from "@/lib/xero/client";
 import { getAccounts, getBalanceSheet, getOrganisation, getProfitAndLoss, getTrialBalance } from "@/lib/xero/endpoints";
@@ -209,6 +209,7 @@ export async function recompute(orgId: string, runId?: string, opts: { stepper?:
 
   await step("cashflow", async () => {
     const pending: QueueItem[] = [];
+    let reconciledTo: string | null = null;
     await withOrg(orgId, async (tx) => {
       const info = await accountInfo(tx);
       const stmts = await tx.select().from(statements).where(eq(statements.runId, id));
@@ -260,6 +261,7 @@ export async function recompute(orgId: string, runId?: string, opts: { stepper?:
       const old = stmts.filter((s) => s.kind === "cf").map((s) => s.id);
       if (old.length) await tx.delete(statements).where(inArray(statements.id, old));
       await insertStatement(tx, orgId, id, cf);
+      if (cf.reconciled) reconciledTo = cf.periodTo;
       if (!cf.reconciled) {
         pending.push({
           kind: "cashflow_unreconciled",
@@ -272,6 +274,8 @@ export async function recompute(orgId: string, runId?: string, opts: { stepper?:
       }
     });
     await enqueueAll(pending);
+    // The problem went away (e.g. a fix or a mapping change): close the open item for this period. Reopens if it returns.
+    if (reconciledTo) await autoClose("cashflow_unreconciled", { org_id: orgId, period_to: reconciledTo }, `Reconciled on run ${id}`);
   });
 
   await step("flags", () => computeFlags(orgId, id));
