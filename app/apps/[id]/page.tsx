@@ -4,6 +4,7 @@ import { appCategories } from "@/lib/catalog/load";
 import { getApp } from "@/lib/catalog/directory";
 import { SiteHeader } from "@/components/site-header";
 import { FACT_GROUPS, factText } from "@/lib/ui/facts";
+import { peerBand } from "@/lib/prices";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +20,7 @@ export default async function AppPage({ params }: { params: Promise<{ id: string
   const byField = new Map(a.facts.map((f) => [f.field, f]));
   const xero = a.integrations.find((i) => i.to === "xero");
   const others = a.integrations.filter((i) => i.to !== "xero");
+  const peer = await peerBand(a.id);
 
   return (
     <>
@@ -84,7 +86,19 @@ export default async function AppPage({ params }: { params: Promise<{ id: string
               {g.label === "Price" ? (
                 <div className="fact missing">
                   <dt>What similar businesses pay</dt>
-                  <dd><span className="muted">Not enough peers yet. Shown once 10 or more connected businesses pay for it, as a range only.</span></dd>
+                  <dd>
+                    {peer ? (
+                      <>
+                        <b className="num">£{Math.round(peer.p25).toLocaleString("en-GB")}–£{Math.round(peer.p75).toLocaleString("en-GB")} a month</b>
+                        <span className="muted small block">
+                          Middle half of {peer.n} businesses that pay for it (median £{Math.round(peer.median).toLocaleString("en-GB")}), from their own bills
+                          over the last 12 months. Only businesses that agreed to share are counted.
+                        </span>
+                      </>
+                    ) : (
+                      <span className="muted">Not enough peers yet. Shown once 10 or more connected businesses pay for it, as a range only.</span>
+                    )}
+                  </dd>
                 </div>
               ) : null}
             </dl>

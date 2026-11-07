@@ -96,7 +96,7 @@ export async function detect(tx: Db, orgId: string, asAt: string, hints: Supplie
     if (!byContact.has(r.contactId)) byContact.set(r.contactId, { name: r.contactName, norm: r.nameNorm, match: matchSupplier(r.nameNorm, fps) });
   }
 
-  type Acc = { spend: number; months: Set<string>; last: string; contacts: Map<string, { name: string; match: string; score: number }>; sources: Set<string> };
+  type Acc = { spend: number; months: Set<string>; byMonth: Map<string, number>; last: string; contacts: Map<string, { name: string; match: string; score: number }>; sources: Set<string> };
   const perApp = new Map<string, Acc>();
   const pending: QueueItem[] = [];
 
@@ -126,9 +126,10 @@ export async function detect(tx: Db, orgId: string, asAt: string, hints: Supplie
   for (const r of rows) {
     const c = byContact.get(r.contactId)!;
     if (!c.match || c.match.kind === "fuzzy_check") continue;
-    const a = perApp.get(c.match.appId) ?? { spend: 0, months: new Set(), last: r.month, contacts: new Map(), sources: new Set() };
+    const a = perApp.get(c.match.appId) ?? { spend: 0, months: new Set(), byMonth: new Map(), last: r.month, contacts: new Map(), sources: new Set() };
     a.spend += r.amount;
     a.months.add(r.month);
+    a.byMonth.set(r.month, (a.byMonth.get(r.month) ?? 0) + r.amount);
     if (r.month > a.last) a.last = r.month;
     a.contacts.set(r.contactId, { name: r.contactName, match: c.match.kind, score: c.match.score });
     a.sources.add(r.source);
@@ -143,7 +144,12 @@ export async function detect(tx: Db, orgId: string, asAt: string, hints: Supplie
     monthsSeen: a.months.size,
     lastSeen: a.last,
     present: [...a.months].filter((m) => recent.has(m)).length >= 2,
-    evidence: { contacts: [...a.contacts.values()], sources: [...a.sources] },
+    // Monthly totals (aggregates only) feed the after-install chart, renewal checks and peer prices.
+    evidence: {
+      contacts: [...a.contacts.values()],
+      sources: [...a.sources],
+      monthly: Object.fromEntries([...a.byMonth].sort(([x], [y]) => x.localeCompare(y)).map(([m, v]) => [m, Math.round(v * 100) / 100])),
+    },
   }));
   if (out.length) await tx.insert(detectedApps).values(out);
   return { suppliers: byContact.size, detected: out.length, present: out.filter((o) => o.present).length, pending };

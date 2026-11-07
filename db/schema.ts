@@ -51,6 +51,8 @@ export const orgs = pgTable("orgs", {
   industry: text("industry"),
   markets: text("markets").array().notNull().default(["UK"]),
   includeCurrentMonth: boolean("include_current_month").notNull().default(false),
+  /** Consent (opt-in) to count what this business pays each app in anonymous peer ranges (10+ businesses). */
+  sharePrices: boolean("share_prices").notNull().default(false),
   sample: boolean("sample").notNull().default(false),
   createdAt: ts("created_at").notNull().defaultNow(),
 });
@@ -399,6 +401,66 @@ export const cashflowAcceptances = pgTable(
   (t) => [primaryKey({ columns: [t.orgId, t.periodTo] })],
 );
 
+// ---------- after install (CLAUDE.md §7.6) ----------
+
+/** An app the business started using for a line: marked by a user, or seen in bills after we recommended it. */
+export const installs = pgTable(
+  "installs",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
+    appId: text("app_id").notNull(),
+    /** The flagged line it was meant to fix, if any. */
+    lineKey: text("line_key"),
+    /** The line as it stood when the app went in: the yardstick for day 90. */
+    baseline: jsonb("baseline").$type<InstallBaseline>().notNull(),
+    source: text("source", { enum: ["user", "detected"] }).notNull(),
+    installedOn: date("installed_on").notNull(),
+    renewalOn: date("renewal_on"),
+    status: text("status", { enum: ["active", "removed"] }).notNull().default("active"),
+    createdBy: uuid("created_by"),
+    createdAt: ts("created_at").notNull().defaultNow(),
+  },
+  (t) => [unique("installs_org_app").on(t.orgId, t.appId)],
+);
+
+export type InstallBaseline = { lineValue: number | null; lineState: string | null; lineName: string | null; runId: string | null };
+export type CheckinKind = "d7" | "d30" | "d90" | "renewal";
+export type CheckinResult = { headline: string; detail?: string; numbers?: Record<string, number | null> };
+
+export const checkins = pgTable(
+  "checkins",
+  {
+    orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
+    installId: uuid("install_id").notNull().references(() => installs.id, { onDelete: "cascade" }),
+    kind: text("kind", { enum: ["d7", "d30", "d90", "renewal"] }).notNull(),
+    dueOn: date("due_on").notNull(),
+    status: text("status", { enum: ["pending", "ok", "not_yet", "failed", "info"] }).notNull().default("pending"),
+    result: jsonb("result").$type<CheckinResult>(),
+    checkedAt: ts("checked_at"),
+  },
+  (t) => [primaryKey({ columns: [t.installId, t.kind] }), index("checkins_due").on(t.status, t.dueOn)],
+);
+
+// ---------- peer prices (CLAUDE.md §7.3b; plain statistics, 10+ businesses, opt-in) ----------
+
+/**
+ * What each consenting business pays each detected app per month. Cross-tenant by design, so the app role has
+ * no access: only the owner connection reads it, and only aggregates of 10+ businesses leave lib/prices.
+ */
+export const priceObservations = pgTable(
+  "price_observations",
+  {
+    appId: text("app_id").notNull(),
+    orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
+    month: date("month").notNull(),
+    amount: money("amount").notNull(),
+    sizeBand: text("size_band"),
+    industry: text("industry"),
+  },
+  (t) => [primaryKey({ columns: [t.appId, t.orgId, t.month] })],
+);
+
 // ---------- people-in-the-loop ----------
 
 export const reviewQueue = pgTable(
@@ -448,4 +510,6 @@ export const TENANT_TABLES = [
   "org_essentials",
   "shortlist",
   "cashflow_acceptances",
+  "installs",
+  "checkins",
 ] as const;

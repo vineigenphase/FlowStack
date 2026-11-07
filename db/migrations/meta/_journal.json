@@ -43,6 +43,20 @@
       "when": 1793935562749,
       "tag": "0005_one_running_refresh",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793998936295,
+      "tag": "0006_installs_checkins",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793999103886,
+      "tag": "0007_peer_prices",
+      "breakpoints": true
     }
   ]
 }

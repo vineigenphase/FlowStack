@@ -11,7 +11,18 @@ const MIGRATIONS = path.resolve(process.cwd(), "db/migrations");
 
 type Handle = { db: Db; close: () => Promise<void>; kind: "pglite" | "postgres" };
 
-let owner: Promise<Handle> | null = null;
+/**
+ * One handle per process, kept on globalThis: the Next dev server can load this module more than once (route
+ * handlers and pages are bundled separately). With PGlite that would mean two copies of one on-disk database,
+ * each blind to the other's writes.
+ */
+const g = globalThis as unknown as { __flowstackDb?: Promise<Handle> | null };
+const ownerRef = {
+  get: () => g.__flowstackDb ?? null,
+  set: (p: Promise<Handle> | null) => {
+    g.__flowstackDb = p;
+  },
+};
 
 /**
  * Open a database. Empty DATABASE_URL → embedded Postgres (PGlite) on disk, so dev mode
@@ -51,16 +62,16 @@ export async function migrateDb(h: Handle) {
 
 /** The owner connection. Bypasses RLS (table owner) — use only for admin, queue and system jobs. */
 export async function adminDb(): Promise<Db> {
-  if (!owner) {
+  if (!ownerRef.get()) {
     const e = env();
-    owner = openDb(e.DATABASE_ADMIN_URL || e.DATABASE_URL);
+    ownerRef.set(openDb(e.DATABASE_ADMIN_URL || e.DATABASE_URL));
   }
-  return (await owner).db;
+  return (await ownerRef.get()!).db;
 }
 
 /** Tests: swap in a fresh database (e.g. memory://). */
 export function setDbForTests(h: Handle | null) {
-  owner = h ? Promise.resolve(h) : null;
+  ownerRef.set(h ? Promise.resolve(h) : null);
 }
 
 /**

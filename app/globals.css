@@ -206,3 +206,36 @@ td a { font-weight: 600; }
 .quote::before { content: "\201C"; }
 .quote::after { content: "\201D"; }
 @media (max-width: 520px) { .fact { grid-template-columns: 1fr; gap: 2px; } }
+
+/* actions on cards */
+.card-actions { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin-top: 4px; }
+.post-button { display: inline-flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.inline-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.inline-form input, .inline-form select, .stack-form input, .stack-form select, .stack-form textarea {
+  font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--line); padding: 6px 8px; max-width: 100%;
+}
+
+/* after install */
+.install { border-top: 1px solid var(--line); padding-top: 8px; margin-top: 24px; }
+.bills { margin: 12px 0; }
+.bills-bars { display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; height: 96px; align-items: end; }
+.bar-col { display: flex; flex-direction: column; justify-content: flex-end; align-items: stretch; height: 100%; position: relative; }
+.bar { display: block; background: var(--ink); min-height: 1px; }
+.bar-col.start { border-left: 2px dashed var(--hand); padding-left: 2px; }
+.bar-label { font: 0.7rem var(--font-m); color: var(--muted); text-align: center; }
+.checks { list-style: none; padding: 0; margin: 12px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 8px; }
+.check { border: 1px solid var(--line); padding: 8px 10px; display: flex; flex-direction: column; gap: 2px; background: var(--paper); }
+.check.s-failed { box-shadow: inset 4px 0 0 var(--mark); }
+.check-head { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.badge.c-ok { color: var(--ok); border-color: var(--ok); }
+.badge.c-failed { background: var(--mark); color: var(--mark-ink); border-color: var(--mark); }
+.badge.c-not_yet { border-style: dashed; }
+.install-actions { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; }
+
+/* forms */
+.stack-form { display: flex; flex-direction: column; gap: 16px; max-width: 640px; }
+.stack-form label { display: flex; flex-direction: column; gap: 4px; }
+.stack-form fieldset { border: 1px solid var(--line); padding: 8px 12px; margin: 0; }
+.stack-form legend { font-weight: 600; padding: 0 4px; }
+.stack-form .check-label { flex-direction: row; align-items: center; gap: 8px; margin: 4px 0; }
+.stack-form textarea { min-height: 120px; }

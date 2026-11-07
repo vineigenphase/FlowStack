@@ -2,6 +2,7 @@ import Link from "next/link";
 import { requireOrgMember } from "@/lib/auth/session";
 import { lineView } from "@/lib/read/views";
 import { FeedbackButtons } from "@/components/feedback-buttons";
+import { PostButton } from "@/components/post-button";
 import { gbp, KIND_LABEL, pct, STATE_LABEL } from "@/lib/ui/format";
 
 export const dynamic = "force-dynamic";
@@ -114,6 +115,17 @@ export default async function LinePage({ params }: { params: Promise<{ org: stri
                   <span className="num">{r.match}% match</span>
                 </span>
                 <span className="small">{r.reason}</span>
+                <span className="card-actions small">
+                  <Link href={`/apps/${r.app.id}`}>Prices, contract and security</Link>
+                  {r.inUse ? null : (
+                    <PostButton
+                      url={`/api/orgs/${org}/installs`}
+                      payload={{ appId: r.app.id, lineKey: l.key }}
+                      label="We've started using it"
+                      done="Saved. We'll check it at day 7, 30 and 90."
+                    />
+                  )}
+                </span>
               </li>
             ))}
           </ol>

@@ -11,6 +11,8 @@ export function OrgNav({ org }: { org: string }) {
     { href: `/app/${org}/statements/pl`, label: "Profit and loss" },
     { href: `/app/${org}/statements/bs`, label: "Balance sheet" },
     { href: `/app/${org}/statements/cf`, label: "Cash flow" },
+    { href: `/app/${org}/after`, label: "After install" },
+    { href: `/app/${org}/settings`, label: "Settings" },
   ];
   return (
     <nav className="tabs" aria-label="Organisation">

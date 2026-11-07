@@ -32,6 +32,8 @@ import type { ParsedReport } from "@/lib/xero/parse-report";
 import { periodsFor } from "./periods";
 import { syncAppsInUse } from "@/lib/detect";
 import { computeFlags } from "@/lib/signals/run";
+import { detectInstalls, evaluateDue } from "@/lib/checkins";
+import { peerBand, recordObservations } from "@/lib/prices";
 
 export const STEPS = ["organisation", "accounts", "reports", "mapping", "statements", "apps", "cashflow", "flags"] as const;
 type StepKey = (typeof STEPS)[number];
@@ -304,7 +306,26 @@ export async function recompute(orgId: string, runId?: string, opts: { stepper?:
   });
 
   await step("flags", () => computeFlags(orgId, id));
+  await afterInstall(orgId);
   return { recomputed: true, runId: id };
+}
+
+/**
+ * After-install (CLAUDE.md §7.6): a recommended app that started billing becomes an install, peer price
+ * observations are rewritten (opt-in only), and any check-in that's now due is judged from the figures we just
+ * stored. Never fails the refresh.
+ */
+async function afterInstall(orgId: string) {
+  try {
+    await withOrg(orgId, async (tx) => {
+      const [s] = await tx.select({ to: statements.periodTo }).from(statements).orderBy(desc(statements.periodTo)).limit(1);
+      if (s) await detectInstalls(tx, orgId, s.to);
+    });
+    await recordObservations(orgId);
+    await evaluateDue(orgId, { peer: peerBand });
+  } catch (e) {
+    log.error({ err: { message: (e as Error).message }, orgId }, "after-install step failed");
+  }
 }
 
 async function latestRunId(orgId: string): Promise<string | null> {

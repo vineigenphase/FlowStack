@@ -25,6 +25,7 @@ async function firstOrgPath(page: Page): Promise<string> {
 }
 
 test("connect → diagnosis → recommendations → stack map", async ({ page }) => {
+  test.setTimeout(300_000); // the dev server compiles each route on its first visit
   await signIn(page);
   const org = await firstOrgPath(page);
   await expect(page.getByText("sample data").first()).toBeVisible();
@@ -40,6 +41,21 @@ test("connect → diagnosis → recommendations → stack map", async ({ page })
   await expect(page.getByRole("heading", { name: "Why we flagged it" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Apps that fit" })).toBeVisible();
   await expect(page.getByText("Nobody can pay to rank higher")).toBeVisible();
+
+  // After install: mark the top suggestion as started, then it's on the After install page with day 7/30/90.
+  const firstRec = page.locator("ol.cards li").filter({ has: page.getByRole("button", { name: "We've started using it" }) }).first();
+  const appName = (await firstRec.locator(".card-head b").first().innerText()).split("\n")[0]!.replace(/(you use this|draft entry)/g, "").trim();
+  // Retry the click until the page has hydrated and the save message shows (dev server compiles on first visit).
+  await expect(async () => {
+    await firstRec.getByRole("button", { name: "We've started using it" }).click();
+    await expect(page.getByText("We'll check it at day 7, 30 and 90")).toBeVisible({ timeout: 5000 });
+  }).toPass({ timeout: 90_000 });
+  await visit(page, `${org}/after`);
+  await expect(page.getByRole("heading", { name: appName })).toBeVisible();
+  await expect(page.getByText("Day 90")).toBeVisible();
+
+  await visit(page, `${org}/settings`);
+  await expect(page.getByText("Help other businesses compare prices")).toBeVisible();
 
   await visit(page, `${org}/map`);
   await expect(page.getByRole("heading", { name: "Stack map" })).toBeVisible();
@@ -65,7 +81,7 @@ for (const scheme of ["light", "dark"] as const) {
       await visit(page, org);
       return page.locator("a.card-link[href*='/lines/']").first().getAttribute("href");
     })();
-    const paths = ["/", org, `${org}/map`, `${org}/statements/pl`, `${org}/statements/bs`, `${org}/statements/cf`, lineHref!, "/apps", "/apps/autoentry"];
+    const paths = ["/", org, `${org}/map`, `${org}/statements/pl`, `${org}/statements/bs`, `${org}/statements/cf`, lineHref!, `${org}/after`, `${org}/settings`, "/apps", "/apps/autoentry"];
     for (const p of paths) {
       await visit(page, p);
       await page.waitForLoadState("networkidle");
