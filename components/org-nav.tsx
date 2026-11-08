@@ -8,6 +8,7 @@ export function OrgNav({ org }: { org: string }) {
   const tabs = [
     { href: `/app/${org}`, label: "Summary" },
     { href: `/app/${org}/map`, label: "Stack map" },
+    { href: `/app/${org}/ask`, label: "Ask" },
     { href: `/app/${org}/statements/pl`, label: "Profit and loss" },
     { href: `/app/${org}/statements/bs`, label: "Balance sheet" },
     { href: `/app/${org}/statements/cf`, label: "Cash flow" },

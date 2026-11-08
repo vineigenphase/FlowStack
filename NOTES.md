@@ -151,3 +151,54 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
   contract, fit with Xero, security, support; each fact shows quote, source link and date; peer prices say "not
   enough peers yet" until k ≥ 10).
 - Production facts fill in on the monthly crawl (1st, 03:41) or `pnpm crawl` with production env.
+
+## Rest of the spec, no Stripe (7–8 Nov 2026)
+- **Owner instruction:** "continue building, leave Stripe, address the rest of the spec". Stripe is paused (the owner
+  is rethinking billing). This overrides BACKEND.md §18's "keep the seams, don't build yet" for the items below.
+- **E2E (CLAUDE.md §10):** `pnpm test:e2e` (Playwright, installed Chrome). Throwaway `.pglite-e2e` DB with every DB
+  variable overridden; own build dir (`NEXT_DIST_DIR=.next-e2e`). Covers connect → diagnosis → recs → map, install →
+  After install, settings, Ask, practice → proposal by link, and the 400px light/dark check on every page.
+  The 400px check found two real overflows (P&L status badges; proposal fixes list), both fixed.
+- **DB handle on globalThis** (lib/db/client.ts): the Next dev server bundles route handlers and pages separately, so
+  each loaded its own PGlite copy and pages couldn't see route writes. Neon was never affected.
+- **Check-ins (§7.6):** installs + checkins. Reports-first means we judge from bills and line states, not the app's own
+  sync: day 7 "bills reaching Xero", day 30 "line now handled", day 90 "still flagged? before/after figure",
+  renewal −60 "price vs peer range". Detected installs: a recommended app whose first bill is in the last 2 months.
+  Nightly cron judges due check-ins, refreshing at most 5 stale orgs a night. No adoption target exists in 1.0
+  (needs volumes, D7), so the after-install chart shows monthly bills only.
+- **Peer prices (§7.3b #1):** opt-in (`orgs.share_prices`, default off: the spec says consent; owner may want to
+  revisit the default with the terms page), sample orgs excluded, k ≥ 10 distinct businesses, asker excluded from its
+  own comparison, size band from annualised revenue. `price_observations` has RLS on with no grant (owner only).
+  Xero terms clause 29 forbids supplying aggregated user data to a third party; these ranges are shown only inside
+  FlowStack. Have the owner/legal confirm that reading.
+- **Verified reviews (§7.5, DMCC):** 2+ months of the app's bills; tenure badge; every submit/edit queued
+  (`review_moderation`: publish, or reject with a reason, never dismiss, never for negativity); RLS lets the app role
+  insert only pending, non-incentivised rows; sample orgs never queued or public; full audit_log; 90-day support
+  re-rate; vendor replies entered by an admin. Incentive ("1 month of Pro") NOT built: it depends on pricing (paused).
+  The 90-day follow-up is an in-app prompt; email needs a provider (owner). Check current CMA guidance before launch.
+  `peer_results` in ranking = mean review score from 5+ published reviews (90-day support preferred), else neutral.
+- **Practice plan (§1 Firm UX):** firms, firm_members, firm_orgs, firm_invites, playbooks, proposals (all owner-only
+  tables). `requireOrgMember` now also admits members of a firm that has the client. Clients are added one at a time
+  by someone who connected that org (Bulk Connections is Advanced-only). Practice home ranks clients by £ at stake
+  (hours are out of 1.0, D7), 5-segment flow bar (sales ← EPOS; payroll ← payroll + rota; purchases ← data capture +
+  spend + inventory; collections ← billing; payments ← FX/banking), filters, playbook drift, ask across clients.
+  Proposals: firm-branded public link (unguessable token, 30 days, noindex), client ticks fixes and sees £ at stake
+  (not "time back": needs volumes). Monday digest is a page; email/Slack delivery needs a provider (owner).
+  Colleague invites are single-use join links (sign-in stays Xero; no email magic links yet).
+- **Ask (§7.4):** keyword + job retrieval from the catalogue; rules answer always. Written answer only with
+  LLM_ENABLED + key + per-org opt-in (`orgs.ask_ai`) because Xero terms 7(b)(ii) need the user's consent to pass API
+  data to a third party (re-read 8 Nov 2026). Prompt = industry, size band, markets, app names, job keys that need a
+  look; no amounts, account names or other supplier names (tested). Points must cite allowed ids or are dropped.
+  claude-opus-5-5 with structured output; logs token counts only. Ask across clients is rules-only.
+- **KPIs (BACKEND §18):** gross margin, staff costs share (wages, employer NI, pensions, other staff; not
+  contractors), net profit share on the summary page. Null when the accounts aren't there.
+- **Priority presets (§7.3b):** Balanced / Lowest cost / Fastest live / Best support on each line page, using the
+  spec's weights over: standard match, published price, published days to go live, verified-review support (3+).
+  Unknowns are neutral (0.5) and say so. Must-have questions are not built (need a situation form; quote requests
+  collect sites/headcount/must-haves but don't filter ranking yet).
+- **Quote requests (§7.3b #3):** situation only (industry, size band, markets, sites, headcount, apps kept,
+  must-haves, reply-to email the user types), shown to the user before sending. `quote_request` queue item → our team
+  emails vendors (`mark_sent`) and enters replies (`POST /api/admin/quotes/:id/replies`). Median response time per
+  vendor on app pages from 3+ replies.
+- **Not buildable here (owner):** Xero App Store listing/certification, Core/Plus plan, QuickBooks (needs an Intuit
+  developer app), email/Slack provider, Stripe decision, terms/consent wording, CMA check, §11 open questions.

@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/site-header";
 import { FACT_GROUPS, factText } from "@/lib/ui/facts";
 import { peerBand } from "@/lib/prices";
 import { PRICE_BANDS, publicReviews, ROLES, SCORE_LABELS } from "@/lib/reviews";
+import { MIN_FOR_RESPONSE_TIME, responseTime } from "@/lib/quotes";
 
 export const dynamic = "force-dynamic";
 
@@ -21,7 +22,7 @@ export default async function AppPage({ params }: { params: Promise<{ id: string
   const byField = new Map(a.facts.map((f) => [f.field, f]));
   const xero = a.integrations.find((i) => i.to === "xero");
   const others = a.integrations.filter((i) => i.to !== "xero");
-  const [peer, rv] = await Promise.all([peerBand(a.id), publicReviews(a.id)]);
+  const [peer, rv, rt] = await Promise.all([peerBand(a.id), publicReviews(a.id), responseTime(a.id)]);
 
   return (
     <>
@@ -83,6 +84,21 @@ export default async function AppPage({ params }: { params: Promise<{ id: string
                     </div>
                   ) : null}
                 </>
+              ) : null}
+              {g.label === "Price" ? (
+                <div className={rt.days === null ? "fact missing" : "fact"}>
+                  <dt>Replies to quote requests</dt>
+                  <dd>
+                    {rt.days === null ? (
+                      <span className="muted">Not enough requests yet ({rt.n} of {MIN_FOR_RESPONSE_TIME} needed)</span>
+                    ) : (
+                      <>
+                        <b>In about {rt.days} days</b>
+                        <span className="muted small block">Middle value across {rt.n} quote requests sent through FlowStack.</span>
+                      </>
+                    )}
+                  </dd>
+                </div>
               ) : null}
               {g.label === "Price" ? (
                 <div className="fact missing">

@@ -24,11 +24,12 @@ export const SettingsInput = z.object({
   industry: z.enum(INDUSTRIES.map((i) => i.key) as [string, ...string[]]).nullable().optional(),
   markets: z.array(z.enum(["UK", "US", "CA", "AU"])).min(1).optional(),
   sharePrices: z.boolean().optional(),
+  askAi: z.boolean().optional(),
 });
 
 export async function getSettings(orgId: string) {
   const [o] = await withOrg(orgId, (tx) => tx.select().from(orgs).where(eq(orgs.id, orgId)));
-  return o ? { industry: o.industry, markets: o.markets, sharePrices: o.sharePrices, sample: o.sample } : null;
+  return o ? { industry: o.industry, markets: o.markets, sharePrices: o.sharePrices, askAi: o.askAi, sample: o.sample } : null;
 }
 
 /** Saves settings. Consent changes are audited and take effect on peer prices at once (rows written or deleted). */
@@ -38,10 +39,15 @@ export async function saveSettings(orgId: string, userId: string, input: z.infer
   if (input.industry !== undefined) set.industry = input.industry;
   if (input.markets) set.markets = input.markets;
   if (input.sharePrices !== undefined) set.sharePrices = input.sharePrices;
+  if (input.askAi !== undefined) set.askAi = input.askAi;
   if (Object.keys(set).length) await withOrg(orgId, (tx) => tx.update(orgs).set(set).where(eq(orgs.id, orgId)));
   if (input.sharePrices !== undefined && input.sharePrices !== before?.sharePrices) {
     const db = await adminDb();
     await db.insert(auditLog).values({ actor: userId, action: input.sharePrices ? "share_prices.on" : "share_prices.off", target: { org_id: orgId } });
+  }
+  if (input.askAi !== undefined && input.askAi !== before?.askAi) {
+    const db = await adminDb();
+    await db.insert(auditLog).values({ actor: userId, action: input.askAi ? "ask_ai.on" : "ask_ai.off", target: { org_id: orgId } });
   }
   if (input.sharePrices !== undefined || input.industry !== undefined) await recordObservations(orgId);
   // Markets decide which apps are candidates: re-rank from stored figures (no Xero calls).

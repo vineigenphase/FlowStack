@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { getIronSession, type SessionOptions } from "iron-session";
 import { and, eq } from "drizzle-orm";
-import { orgMembers, users } from "@/db/schema";
+import { firmMembers, firmOrgs, orgMembers, users } from "@/db/schema";
 import { adminDb } from "@/lib/db/client";
 import { env } from "@/lib/env";
 import { HttpError } from "@/lib/api";
@@ -38,8 +38,17 @@ export async function requireOrgMember(orgId: string) {
     .select({ role: orgMembers.role })
     .from(orgMembers)
     .where(and(eq(orgMembers.orgId, orgId), eq(orgMembers.userId, u.userId)));
-  if (!m && !u.isAdmin) throw new HttpError(404, "Org not found");
-  return { ...u, role: m?.role ?? "member" };
+  if (m) return { ...u, role: m.role, via: "org" as const };
+  // Practice plan: members of a firm that looks after this client can open it too.
+  const [f] = await db
+    .select({ firmId: firmOrgs.firmId })
+    .from(firmOrgs)
+    .innerJoin(firmMembers, and(eq(firmMembers.firmId, firmOrgs.firmId), eq(firmMembers.userId, u.userId)))
+    .where(eq(firmOrgs.orgId, orgId))
+    .limit(1);
+  if (f) return { ...u, role: "member" as const, via: "firm" as const };
+  if (!u.isAdmin) throw new HttpError(404, "Org not found");
+  return { ...u, role: "member" as const, via: "admin" as const };
 }
 
 export async function requireAdmin() {

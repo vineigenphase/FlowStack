@@ -6,7 +6,7 @@ import { useState } from "react";
 type Props = {
   org: string;
   industries: { key: string; label: string }[];
-  initial: { industry: string | null; markets: string[]; sharePrices: boolean; sample: boolean };
+  initial: { industry: string | null; markets: string[]; sharePrices: boolean; askAi: boolean; sample: boolean };
 };
 
 const MARKETS = ["UK", "US", "CA", "AU"];
@@ -16,6 +16,7 @@ export function SettingsForm({ org, industries, initial }: Props) {
   const [industry, setIndustry] = useState(initial.industry ?? "");
   const [markets, setMarkets] = useState<string[]>(initial.markets);
   const [share, setShare] = useState(initial.sharePrices);
+  const [ask, setAsk] = useState(initial.askAi);
   const [msg, setMsg] = useState<{ text: string; error?: boolean } | null>(null);
 
   async function save(e: React.FormEvent) {
@@ -24,7 +25,7 @@ export function SettingsForm({ org, industries, initial }: Props) {
     const res = await fetch(`/api/orgs/${org}/settings`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ industry: industry || null, markets, sharePrices: share }),
+      body: JSON.stringify({ industry: industry || null, markets, sharePrices: share, askAi: ask }),
     }).catch(() => null);
     const json = res ? ((await res.json().catch(() => ({}))) as { error?: string }) : {};
     if (!res || !res.ok) setMsg({ text: json.error ?? "Couldn't save.", error: true });
@@ -71,6 +72,20 @@ export function SettingsForm({ org, industries, initial }: Props) {
           quarter). A range only appears once 10 or more businesses are in it, and never names anyone. It&apos;s plain arithmetic: nothing
           is used to train AI. Turn it off at any time and your figures are removed straight away.
           {initial.sample ? " Sample organisations never count." : ""}
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Written answers in Ask</legend>
+        <label className="check-label">
+          <input type="checkbox" checked={ask} onChange={(e) => setAsk(e.target.checked)} />
+          Let Ask send a summary of our business to our AI provider (Anthropic) to write answers
+        </label>
+        <p className="muted small">
+          The summary is your industry, size band, markets, the names of apps we found in your bills and which finance jobs need a look.
+          Never amounts, transactions, or customer or supplier names. It&apos;s used only to answer your question, isn&apos;t kept by the
+          provider for training, and nothing trains AI on your data. Without this, Ask still works: it lists matching apps from your
+          figures without a written answer.
         </p>
       </fieldset>
 

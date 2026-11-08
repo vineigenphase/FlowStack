@@ -244,6 +244,24 @@ export async function peerResults(appIds: string[]): Promise<Map<string, number>
   return out;
 }
 
+/** Support-after-go-live per app from published reviews (the 90-day re-rate where there is one). */
+export async function supportScores(appIds: string[]): Promise<Map<string, { avg: number; n: number }>> {
+  const out = new Map<string, { avg: number; n: number }>();
+  if (!appIds.length) return out;
+  const db = await adminDb();
+  const rows = await db
+    .select({ id: reviews.id, appId: reviews.appId, scores: reviews.scores })
+    .from(reviews)
+    .where(and(inArray(reviews.appId, appIds), eq(reviews.status, "published"), eq(reviews.sample, false)));
+  if (!rows.length) return out;
+  const fus = await db.select().from(reviewFollowups).where(inArray(reviewFollowups.reviewId, rows.map((r) => r.id)));
+  for (const appId of new Set(rows.map((r) => r.appId))) {
+    const v = rows.filter((r) => r.appId === appId).map((r) => fus.find((f) => f.reviewId === r.id)?.supportScore ?? r.scores.support);
+    out.set(appId, { avg: Math.round((v.reduce((a, b) => a + b, 0) / v.length) * 10) / 10, n: v.length });
+  }
+  return out;
+}
+
 /** This business's own reviews (any status), for its reviews page. */
 export async function myReviews(orgId: string) {
   return withOrg(orgId, async (tx) => {

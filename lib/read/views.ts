@@ -6,6 +6,7 @@ import { accountCategories, appCategories, apps as catalogApps, rulesFile } from
 import { buildStackMap } from "@/lib/map/build";
 import { SECTION_LABELS } from "@/lib/statements/build";
 import { atStake } from "@/lib/signals/compute";
+import { kpis } from "@/lib/statements/kpis";
 
 const LABELS = { pl: "Profit and loss", bs: "Balance sheet", cf: "Cash flow (derived from your balance sheet)" } as const;
 
@@ -67,6 +68,18 @@ export async function statementView(orgId: string, kind: "pl" | "bs" | "cf") {
       sections: [...sections.values()],
       sample: Boolean(org?.sample),
     };
+  });
+}
+
+/** Gross margin, labour share and net income share from the latest P&L (BACKEND.md §18 KPIs). */
+export async function kpiView(orgId: string) {
+  return withOrg(orgId, async (tx) => {
+    const runId = await latestRun(tx);
+    if (!runId) return null;
+    const pl = await stmt(tx, runId, "pl");
+    if (!pl) return null;
+    const lines = await tx.select({ category: statementLines.category, value: statementLines.value }).from(statementLines).where(eq(statementLines.statementId, pl.id));
+    return { ...kpis(lines, pl.totals), period: { from: pl.periodFrom, to: pl.periodTo } };
   });
 }
 

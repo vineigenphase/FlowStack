@@ -14,6 +14,7 @@ import { detect } from "@/lib/detect";
 import { recompute } from "@/lib/sync/refresh";
 import { enqueueAll, type QueueKind } from "./enqueue";
 import { moderate } from "@/lib/reviews";
+import { markSent } from "@/lib/quotes";
 
 export const Resolution = z.discriminatedUnion("action", [
   z.object({ action: z.literal("map"), category: z.string() }),
@@ -27,6 +28,8 @@ export const Resolution = z.discriminatedUnion("action", [
   // review_moderation: publish, or reject with the rule it breaks (never for being negative).
   z.object({ action: z.literal("publish") }),
   z.object({ action: z.literal("reject"), note: z.string().trim().min(3) }),
+  // quote_request: our team sent it to the vendors (replies are entered separately).
+  z.object({ action: z.literal("mark_sent") }),
 ]);
 export type Resolution = z.infer<typeof Resolution>;
 
@@ -42,6 +45,7 @@ const ALLOWED: Record<QueueKind, Resolution["action"][]> = {
   fact_stale: ["verify", "note", "dismiss"],
   fact_spot_check: ["verify", "note", "dismiss"],
   review_moderation: ["publish", "reject"],
+  quote_request: ["mark_sent", "dismiss"],
 };
 
 export async function listQueue(opts: { kind?: string; status?: "open" | "done" | "dismissed"; limit?: number } = {}) {
@@ -159,6 +163,12 @@ export async function resolveItem(id: string, actor: string, resolution: Resolut
       const reviewId = str(ref.review_id, "review_id");
       await moderate(reviewId, resolution.action);
       effects.push(`${resolution.action === "publish" ? "published" : "rejected"} review ${reviewId}`);
+      break;
+    }
+    case "mark_sent": {
+      const requestId = str(ref.request_id, "request_id");
+      await markSent(requestId, actor);
+      effects.push(`quote request ${requestId} sent`);
       break;
     }
     case "note":

@@ -65,6 +65,13 @@ test("connect → diagnosis → recommendations → stack map", async ({ page })
   await visit(page, `${org}/settings`);
   await expect(page.getByText("Help other businesses compare prices")).toBeVisible();
 
+  // Ask: rules answer (no consent, LLM off in e2e) lists payroll apps.
+  const answer = await (await page.request.post(`/api/orgs/${org.split("/").pop()}/ask`, { data: { question: "which payroll app works with Deputy?" } })).json();
+  expect(answer.mode).toBe("rules");
+  expect(answer.candidates.length).toBeGreaterThan(0);
+  await visit(page, `${org}/ask`);
+  await expect(page.getByRole("heading", { name: "Ask" })).toBeVisible();
+
   await visit(page, `${org}/map`);
   await expect(page.getByRole("heading", { name: "Stack map" })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Fixes, in order" })).toBeVisible();
@@ -78,6 +85,48 @@ test("public apps directory and a dossier", async ({ page }) => {
   await expect(page.getByText("What similar businesses pay")).toBeVisible();
 });
 
+/** Practice pages found in the practice test, checked at 400px below. */
+const practicePaths: string[] = [];
+
+test("practice: start a firm, add the client, playbook, proposal by link", async ({ page }) => {
+  test.setTimeout(300_000);
+  await signIn(page);
+  const org = (await firstOrgPath(page)).split("/").pop()!;
+  // Set-up through the API (same cookies as the page), then check what a partner and a client see.
+  const firm = await (await page.request.post("/api/firms", { data: { name: "Ledger & Co" } })).json();
+  expect(firm.id).toBeTruthy();
+  expect((await page.request.post(`/api/firms/${firm.id}/clients`, { data: { orgId: org } })).status()).toBe(200);
+  expect((await page.request.put(`/api/firms/${firm.id}/playbooks`, { data: { industry: "hospitality", jobKey: "payroll", appId: "staffology" } })).status()).toBe(200);
+  expect((await page.request.patch(`/api/orgs/${org}/settings`, { data: { industry: "hospitality" } })).status()).toBe(200);
+
+  await visit(page, `/practice/${firm.id}`);
+  await expect(page.getByRole("heading", { name: "Clients" })).toBeVisible();
+  await expect(page.getByLabel("Money flows").first()).toBeVisible();
+  await expect(page.getByText("Off playbook in payroll")).toBeVisible();
+
+  const p = await (await page.request.post(`/api/firms/${firm.id}/proposals`, { data: { orgId: org } })).json();
+  await page.request.patch(`/api/firms/${firm.id}/proposals/${p.id}`, { data: { feeText: "Set-up £1,200 one-off.", status: "sent" } });
+  await visit(page, `/practice/${firm.id}/clients/${org}`);
+  await expect(page.getByText("Sent: waiting for the client")).toBeVisible();
+
+  // The client's view, signed out: firm-branded, tick and accept.
+  const client = await page.context().browser()!.newContext();
+  const cp = await client.newPage();
+  await visit(cp, `/p/${p.token}`);
+  await expect(cp.getByText("Ledger & Co").first()).toBeVisible();
+  await expect(cp.getByText("Set-up £1,200 one-off.")).toBeVisible();
+  await expect(cp.getByText("No app pays to appear")).toBeVisible();
+  await expect(async () => {
+    await cp.getByRole("button", { name: "Go ahead with these" }).click({ timeout: 5000 });
+    await expect(cp.getByText("Your adviser has your answer")).toBeVisible({ timeout: 5000 });
+  }).toPass({ timeout: 90_000 });
+  await client.close();
+
+  await visit(page, `/practice/${firm.id}/digest`);
+  await expect(page.getByRole("heading", { name: "Answered this week" })).toBeVisible();
+  practicePaths.push("/practice", `/practice/${firm.id}`, `/practice/${firm.id}/playbooks`, `/practice/${firm.id}/clients/${org}`, `/practice/${firm.id}/digest`, `/p/${p.token}`);
+});
+
 /** CLAUDE.md §10 definition of done: works in both themes at 400px width (no sideways scrolling). */
 for (const scheme of ["light", "dark"] as const) {
   test(`400px wide, ${scheme} theme: no page scrolls sideways`, async ({ browser }) => {
@@ -89,7 +138,7 @@ for (const scheme of ["light", "dark"] as const) {
       await visit(page, org);
       return page.locator("a.card-link[href*='/lines/']").first().getAttribute("href");
     })();
-    const paths = ["/", org, `${org}/map`, `${org}/statements/pl`, `${org}/statements/bs`, `${org}/statements/cf`, lineHref!, `${org}/after`, `${org}/reviews`, `${org}/settings`, "/apps", "/apps/autoentry"];
+    const paths = ["/", org, `${org}/map`, `${org}/statements/pl`, `${org}/statements/bs`, `${org}/statements/cf`, lineHref!, `${org}/after`, `${org}/reviews`, `${org}/settings`, `${org}/ask`, `${lineHref!}?priority=cost`, "/apps", "/apps/autoentry", ...practicePaths];
     for (const p of paths) {
       await visit(page, p);
       await page.waitForLoadState("networkidle");
@@ -97,6 +146,11 @@ for (const scheme of ["light", "dark"] as const) {
         const client = document.documentElement.clientWidth;
         // Name the deepest elements that stick out, so a failure says what to fix.
         const wide = [...document.body.querySelectorAll("*")]
+          .filter((el) => {
+            // Skip anything inside a container that scrolls sideways on purpose (the tab bar).
+            for (let p = el.parentElement; p; p = p.parentElement) if (["auto", "scroll", "hidden"].includes(getComputedStyle(p).overflowX)) return false;
+            return true;
+          })
           .filter((el) => el.getBoundingClientRect().right > client + 1 && ![...el.children].some((c) => c.getBoundingClientRect().right > client + 1))
           .slice(0, 5)
           .map((el) => `${el.tagName.toLowerCase()}.${(el as HTMLElement).className} "${(el.textContent ?? "").trim().slice(0, 30)}" →${Math.round(el.getBoundingClientRect().right)}px`);

@@ -14,7 +14,8 @@ export type QueueKind =
   | "fact_spot_check"
   | "cashflow_unreconciled"
   | "flag_disputed"
-  | "review_moderation";
+  | "review_moderation"
+  | "quote_request";
 
 /** Stable JSON: keys sorted, so the same ref always hashes the same. */
 export function stableJson(v: unknown): string {

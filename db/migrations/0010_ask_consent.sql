@@ -1,0 +1,1 @@
+ALTER TABLE "orgs" ADD COLUMN "ask_ai" boolean DEFAULT false NOT NULL;

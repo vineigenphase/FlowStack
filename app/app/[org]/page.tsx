@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { requireOrgMember } from "@/lib/auth/session";
-import { flaggedLines, summaryView } from "@/lib/read/views";
+import { flaggedLines, kpiView, summaryView } from "@/lib/read/views";
 import { RefreshButton } from "@/components/refresh-button";
 import { gbp, KIND_LABEL, lineHref, pct, when } from "@/lib/ui/format";
 
@@ -18,6 +18,7 @@ export default async function OrgPage({ params }: { params: Promise<{ org: strin
   if (!s) return null;
   const run = s.lastRun;
   const top = s.ready ? await flaggedLines(org) : [];
+  const k = s.ready ? await kpiView(org) : null;
 
   return (
     <>
@@ -55,6 +56,30 @@ export default async function OrgPage({ params }: { params: Promise<{ org: strin
               <span className="stat-sub">by our team</span>
             </div>
           </section>
+
+          {k ? (
+            <section className="kpis" aria-label="Headline ratios">
+              <h2>Year to date</h2>
+              <dl className="totals">
+                <div>
+                  <dt>Gross margin</dt>
+                  <dd className="num">{k.grossMargin === null ? "n/a" : pct(k.grossMargin)}</dd>
+                </div>
+                <div>
+                  <dt>Staff costs</dt>
+                  <dd className="num">{k.labourShare === null ? "n/a" : pct(k.labourShare)}</dd>
+                </div>
+                <div>
+                  <dt>Net profit</dt>
+                  <dd className="num">{k.netShare === null ? "n/a" : pct(k.netShare)}</dd>
+                </div>
+              </dl>
+              <p className="muted small">
+                Shares of revenue ({gbp(k.revenue)}). Staff costs are wages, employer&apos;s NI, pensions and other staff costs; contractors aren&apos;t
+                included. &quot;n/a&quot; means those accounts aren&apos;t in your figures.
+              </p>
+            </section>
+          ) : null}
 
           <h2>Lines worth a look</h2>
           {top.length === 0 ? (

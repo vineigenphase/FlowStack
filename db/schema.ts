@@ -53,6 +53,12 @@ export const orgs = pgTable("orgs", {
   includeCurrentMonth: boolean("include_current_month").notNull().default(false),
   /** Consent (opt-in) to count what this business pays each app in anonymous peer ranges (10+ businesses). */
   sharePrices: boolean("share_prices").notNull().default(false),
+  /**
+   * Consent (opt-in) for Ask to send a summary of this business (industry, size band, app names, which finance
+   * jobs need a look; never amounts or transactions) to our AI provider. Xero terms 7(b)(ii): no API data to a
+   * third party without the user's consent.
+   */
+  askAi: boolean("ask_ai").notNull().default(false),
   sample: boolean("sample").notNull().default(false),
   createdAt: ts("created_at").notNull().defaultNow(),
 });
@@ -516,6 +522,125 @@ export const vendorReplies = pgTable("vendor_replies", {
   createdAt: ts("created_at").notNull().defaultNow(),
 });
 
+// ---------- quote requests (CLAUDE.md §7.3b "Where prices come from" #3) ----------
+
+/** What the business tells vendors when asking for a quote. Never ledger amounts or transactions. */
+export type QuoteSituation = {
+  industry: string | null;
+  sizeBand: string | null;
+  markets: string[];
+  sites: number | null;
+  headcount: number | null;
+  keeps: string[];
+  mustHaves: string | null;
+};
+
+export const quoteRequests = pgTable("quote_requests", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
+  lineKey: text("line_key"),
+  appIds: text("app_ids").array().notNull(),
+  situation: jsonb("situation").$type<QuoteSituation>().notNull(),
+  /** Where vendors should reply (the user's email, given by them for this request). */
+  replyTo: text("reply_to").notNull(),
+  createdBy: uuid("created_by"),
+  createdAt: ts("created_at").notNull().defaultNow(),
+  /** Set when our team has sent the request to the vendors. */
+  sentAt: ts("sent_at"),
+});
+
+export const quoteReplies = pgTable(
+  "quote_replies",
+  {
+    requestId: uuid("request_id").notNull().references(() => quoteRequests.id, { onDelete: "cascade" }),
+    orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
+    appId: text("app_id").notNull(),
+    priceMonthly: money("price_monthly"),
+    priceText: text("price_text").notNull(),
+    terms: jsonb("terms").$type<Record<string, string>>().notNull().default({}),
+    receivedAt: ts("received_at").notNull(),
+    enteredBy: text("entered_by").notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.requestId, t.appId] })],
+);
+
+// ---------- practice plan (CLAUDE.md §1 "Who pays", "Firm UX"; BACKEND.md §18) ----------
+// Firm tables span many client orgs, so the app role has no access: lib/firms reads them on the owner connection
+// after checking firm membership. Client data itself is still read per org through withOrg (RLS).
+
+export const firms = pgTable("firms", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  createdAt: ts("created_at").notNull().defaultNow(),
+});
+
+export const firmMembers = pgTable(
+  "firm_members",
+  {
+    firmId: uuid("firm_id").notNull().references(() => firms.id, { onDelete: "cascade" }),
+    userId: uuid("user_id").notNull().references(() => users.id, { onDelete: "cascade" }),
+    role: text("role", { enum: ["owner", "member"] }).notNull().default("member"),
+  },
+  (t) => [primaryKey({ columns: [t.firmId, t.userId] })],
+);
+
+/** A client business the firm looks after. Added by someone who is a member of that org (they connected it). */
+export const firmOrgs = pgTable(
+  "firm_orgs",
+  {
+    firmId: uuid("firm_id").notNull().references(() => firms.id, { onDelete: "cascade" }),
+    orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
+    addedBy: uuid("added_by"),
+    addedAt: ts("added_at").notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.firmId, t.orgId] })],
+);
+
+/** Join link for colleagues (sign-in stays "Sign in with Xero"). Single use, expires. */
+export const firmInvites = pgTable("firm_invites", {
+  token: text("token").primaryKey(),
+  firmId: uuid("firm_id").notNull().references(() => firms.id, { onDelete: "cascade" }),
+  createdBy: uuid("created_by"),
+  expiresAt: ts("expires_at").notNull(),
+  usedBy: uuid("used_by"),
+  usedAt: ts("used_at"),
+});
+
+/** The firm's standard app per finance job, per industry. Clients that differ are flagged as drifting. */
+export const playbooks = pgTable(
+  "playbooks",
+  {
+    firmId: uuid("firm_id").notNull().references(() => firms.id, { onDelete: "cascade" }),
+    industry: text("industry").notNull(),
+    jobKey: text("job_key").notNull(),
+    appId: text("app_id").notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.firmId, t.industry, t.jobKey] })],
+);
+
+export type ProposalItem = { n: number; kind: "fix" | "add"; fn: string; title: string; why: string; atStake: number; lines: string[] };
+
+/** A firm-branded list of fixes for one client, shared by link. The client ticks the fixes they want. */
+export const proposals = pgTable(
+  "proposals",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    firmId: uuid("firm_id").notNull().references(() => firms.id, { onDelete: "cascade" }),
+    orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
+    token: text("token").notNull().unique(),
+    items: jsonb("items").$type<ProposalItem[]>().notNull(),
+    chosen: jsonb("chosen").$type<number[]>().notNull().default([]),
+    feeText: text("fee_text"),
+    status: text("status", { enum: ["draft", "sent", "accepted", "withdrawn"] }).notNull().default("draft"),
+    createdBy: uuid("created_by"),
+    createdAt: ts("created_at").notNull().defaultNow(),
+    sentAt: ts("sent_at"),
+    respondedAt: ts("responded_at"),
+    expiresAt: ts("expires_at"),
+  },
+  (t) => [index("proposals_firm").on(t.firmId, t.status)],
+);
+
 // ---------- people-in-the-loop ----------
 
 export const reviewQueue = pgTable(
@@ -569,4 +694,6 @@ export const TENANT_TABLES = [
   "checkins",
   "reviews",
   "review_followups",
+  "quote_requests",
+  "quote_replies",
 ] as const;
