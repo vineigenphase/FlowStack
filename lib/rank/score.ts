@@ -1,7 +1,7 @@
 /**
  * Scoring (BACKEND.md §8.3). Pure.
  *   match = 100 × (0.40 strength_norm + 0.25 fit_with_in_use + 0.20 peer_results + 0.15 price_fit)
- * Missing price → price_fit is neutral (0.5), never estimated. Peer results are neutral until 3.0.
+ * Missing price → price_fit is neutral (0.5), never estimated. Peer results come from verified reviews (5+ per app), else neutral.
  */
 import type { App, Scoring } from "@/lib/catalog/load";
 
@@ -49,6 +49,7 @@ export function scoreCandidates(opts: {
   kept: App[];
   inUse: Map<string, InUse>;
   prices: Map<string, PriceInfo>;
+  peer?: Map<string, number>;
   annualRevenue: number;
   scoring: Scoring;
 }): Scored[] {
@@ -60,7 +61,7 @@ export function scoreCandidates(opts: {
     const components: Components = {
       strength_norm: opts.strengthNorm,
       fit_with_in_use: fit.score,
-      peer_results: s.neutral,
+      peer_results: opts.peer?.get(app.id) ?? s.neutral,
       price_fit: price,
     };
     const match = r1(

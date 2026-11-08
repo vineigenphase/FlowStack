@@ -57,6 +57,13 @@
       "when": 1793999103886,
       "tag": "0007_peer_prices",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1794149272290,
+      "tag": "0008_reviews",
+      "breakpoints": true
     }
   ]
 }

@@ -45,11 +45,19 @@ test("connect → diagnosis → recommendations → stack map", async ({ page })
   // After install: mark the top suggestion as started, then it's on the After install page with day 7/30/90.
   const firstRec = page.locator("ol.cards li").filter({ has: page.getByRole("button", { name: "We've started using it" }) }).first();
   const appName = (await firstRec.locator(".card-head b").first().innerText()).split("\n")[0]!.replace(/(you use this|draft entry)/g, "").trim();
-  // Retry the click until the page has hydrated and the save message shows (dev server compiles on first visit).
+  // The dev server compiles the installs route on first use and may reload the page, which wipes the
+  // "Saved" message. So judge by the result: the install shows on the After install page (saving is idempotent).
+  // A click before hydration does nothing, so click until the POST goes out.
+  let status = 0;
+  let text = "";
   await expect(async () => {
-    await firstRec.getByRole("button", { name: "We've started using it" }).click();
-    await expect(page.getByText("We'll check it at day 7, 30 and 90")).toBeVisible({ timeout: 5000 });
-  }).toPass({ timeout: 90_000 });
+    const saved = page.waitForResponse((r) => r.url().endsWith("/installs") && r.request().method() === "POST", { timeout: 15_000 });
+    await firstRec.getByRole("button", { name: "We've started using it" }).click({ timeout: 5000 });
+    const res = await saved;
+    status = res.status();
+    text = await res.text();
+  }).toPass({ timeout: 120_000 });
+  expect(status, text).toBe(200);
   await visit(page, `${org}/after`);
   await expect(page.getByRole("heading", { name: appName })).toBeVisible();
   await expect(page.getByText("Day 90")).toBeVisible();
@@ -81,7 +89,7 @@ for (const scheme of ["light", "dark"] as const) {
       await visit(page, org);
       return page.locator("a.card-link[href*='/lines/']").first().getAttribute("href");
     })();
-    const paths = ["/", org, `${org}/map`, `${org}/statements/pl`, `${org}/statements/bs`, `${org}/statements/cf`, lineHref!, `${org}/after`, `${org}/settings`, "/apps", "/apps/autoentry"];
+    const paths = ["/", org, `${org}/map`, `${org}/statements/pl`, `${org}/statements/bs`, `${org}/statements/cf`, lineHref!, `${org}/after`, `${org}/reviews`, `${org}/settings`, "/apps", "/apps/autoentry"];
     for (const p of paths) {
       await visit(page, p);
       await page.waitForLoadState("networkidle");

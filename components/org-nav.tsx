@@ -12,6 +12,7 @@ export function OrgNav({ org }: { org: string }) {
     { href: `/app/${org}/statements/bs`, label: "Balance sheet" },
     { href: `/app/${org}/statements/cf`, label: "Cash flow" },
     { href: `/app/${org}/after`, label: "After install" },
+    { href: `/app/${org}/reviews`, label: "Reviews" },
     { href: `/app/${org}/settings`, label: "Settings" },
   ];
   return (

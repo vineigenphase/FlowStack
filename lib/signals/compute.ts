@@ -40,6 +40,8 @@ export type FlagCtx = {
   markets: string[];
   inUse: Map<string, InUse>; // present apps only
   prices: Map<string, PriceInfo>;
+  /** peer_results per app from verified reviews (0 to 1). Missing means neutral. */
+  peer?: Map<string, number>;
   overrides: Set<string>; // `${lineKey}|${ruleId}`
   tb: Map<string, TbRow>; // by xeroAccountId
   bands: { high: number; medium: number };
@@ -150,7 +152,7 @@ export function computeFlags(lines: LineIn[], ctx: FlagCtx): FlagOut[] {
   for (const w of work) {
     if (w.state !== "flagged" && w.state !== "covered") continue;
     const strengthNorm = maxStrength > 0 ? r4(w.strength / maxStrength) : 0;
-    const scored = scoreCandidates({ candidates: w.candidates, strengthNorm, kept, inUse: ctx.inUse, prices: ctx.prices, annualRevenue, scoring: ctx.scoring });
+    const scored = scoreCandidates({ candidates: w.candidates, strengthNorm, kept, inUse: ctx.inUse, prices: ctx.prices, peer: ctx.peer, annualRevenue, scoring: ctx.scoring });
     w.recommendations = shortlistOf(scored).map((s, i) => ({ ...s, rank: i + 1 }));
     if (w.state === "covered") {
       const rule = w.rule!;

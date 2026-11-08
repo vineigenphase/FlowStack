@@ -461,6 +461,61 @@ export const priceObservations = pgTable(
   (t) => [primaryKey({ columns: [t.appId, t.orgId, t.month] })],
 );
 
+// ---------- verified reviews (CLAUDE.md §7.5; UK DMCC Act 2024) ----------
+
+export type ReviewScores = { setup: number; support: number; value: number; xero_sync: number };
+
+/**
+ * One review per business per app. Only allowed when the app's bills show in the reviewer's own ledger for 2+
+ * months. Every review is checked by a person before it is public (status), and every change is in audit_log.
+ * We never write or seed reviews. Sample orgs' reviews are never public.
+ */
+export const reviews = pgTable(
+  "reviews",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
+    appId: text("app_id").notNull(),
+    userId: uuid("user_id"),
+    role: text("role").notNull(),
+    scores: jsonb("scores").$type<ReviewScores>().notNull(),
+    priceBand: text("price_band"),
+    body: text("body").notNull(),
+    /** Months of bills from the app in this ledger when the review was written: the "verified" badge. */
+    verifiedMonths: integer("verified_months").notNull(),
+    /** Shown on the review when true (DMCC). No incentive scheme runs yet, so always false for now. */
+    incentivised: boolean("incentivised").notNull().default(false),
+    status: text("status", { enum: ["pending", "published", "rejected", "withdrawn"] }).notNull().default("pending"),
+    sample: boolean("sample").notNull().default(false),
+    createdAt: ts("created_at").notNull().defaultNow(),
+    publishedAt: ts("published_at"),
+  },
+  (t) => [unique("reviews_org_app").on(t.orgId, t.appId), index("reviews_app_status").on(t.appId, t.status)],
+);
+
+/** The 90-day "support after go-live" re-rate. */
+export const reviewFollowups = pgTable(
+  "review_followups",
+  {
+    reviewId: uuid("review_id").notNull().references(() => reviews.id, { onDelete: "cascade" }),
+    orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
+    day: integer("day").notNull(),
+    supportScore: integer("support_score").notNull(),
+    note: text("note"),
+    createdAt: ts("created_at").notNull().defaultNow(),
+  },
+  (t) => [primaryKey({ columns: [t.reviewId, t.day] })],
+);
+
+/** A vendor's public reply, entered by our team once the vendor is verified. Vendors can't edit, hide or reorder reviews. */
+export const vendorReplies = pgTable("vendor_replies", {
+  reviewId: uuid("review_id").primaryKey().references(() => reviews.id, { onDelete: "cascade" }),
+  vendorName: text("vendor_name").notNull(),
+  body: text("body").notNull(),
+  enteredBy: text("entered_by").notNull(),
+  createdAt: ts("created_at").notNull().defaultNow(),
+});
+
 // ---------- people-in-the-loop ----------
 
 export const reviewQueue = pgTable(
@@ -512,4 +567,6 @@ export const TENANT_TABLES = [
   "cashflow_acceptances",
   "installs",
   "checkins",
+  "reviews",
+  "review_followups",
 ] as const;

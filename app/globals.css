@@ -239,3 +239,11 @@ td a { font-weight: 600; }
 .stack-form legend { font-weight: 600; padding: 0 4px; }
 .stack-form .check-label { flex-direction: row; align-items: center; gap: 8px; margin: 4px 0; }
 .stack-form textarea { min-height: 120px; }
+
+/* reviews */
+.review-app { border-top: 1px solid var(--line); padding: 10px 0; }
+.review-app summary { cursor: pointer; }
+.review-app[open] summary { margin-bottom: 12px; }
+.scores { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; }
+.review-list { display: flex; flex-direction: column; gap: 8px; }
+.vendor-reply { border-left: 3px solid var(--line); padding-left: 8px; margin-top: 4px; }

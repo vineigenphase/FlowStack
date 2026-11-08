@@ -5,6 +5,7 @@ import { getApp } from "@/lib/catalog/directory";
 import { SiteHeader } from "@/components/site-header";
 import { FACT_GROUPS, factText } from "@/lib/ui/facts";
 import { peerBand } from "@/lib/prices";
+import { PRICE_BANDS, publicReviews, ROLES, SCORE_LABELS } from "@/lib/reviews";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +21,7 @@ export default async function AppPage({ params }: { params: Promise<{ id: string
   const byField = new Map(a.facts.map((f) => [f.field, f]));
   const xero = a.integrations.find((i) => i.to === "xero");
   const others = a.integrations.filter((i) => i.to !== "xero");
-  const peer = await peerBand(a.id);
+  const [peer, rv] = await Promise.all([peerBand(a.id), publicReviews(a.id)]);
 
   return (
     <>
@@ -104,6 +105,51 @@ export default async function AppPage({ params }: { params: Promise<{ id: string
             </dl>
           </section>
         ))}
+
+        <section className="dossier reviews">
+          <h2>Reviews from businesses that pay for it</h2>
+          {rv.reviews.length ? (
+            <>
+              <dl className="totals">
+                {(Object.keys(SCORE_LABELS) as (keyof typeof SCORE_LABELS)[]).map((k) => (
+                  <div key={k}>
+                    <dt>{SCORE_LABELS[k]}</dt>
+                    <dd className="num">{rv.averages![k]}/5</dd>
+                  </div>
+                ))}
+              </dl>
+              <ol className="plain review-list">
+                {rv.reviews.map((r) => (
+                  <li key={r.id} className="card">
+                    <span className="card-head">
+                      <b>{ROLES.find((x) => x.key === r.role)?.label ?? "Reviewer"}</b>
+                      <span className="badge b-covered">Verified: paid for it {r.verifiedMonths} months</span>
+                    </span>
+                    {r.incentivised ? <span className="tag">incentivised: the reviewer got something for writing it</span> : null}
+                    <span className="small muted">
+                      {(Object.keys(SCORE_LABELS) as (keyof typeof SCORE_LABELS)[]).map((k) => `${SCORE_LABELS[k]} ${r.scores[k]}/5`).join(" · ")}
+                      {r.priceBand ? ` · pays ${PRICE_BANDS.find((p) => p.key === r.priceBand)?.label.toLowerCase()}` : ""}
+                    </span>
+                    <span>{r.body}</span>
+                    {r.followupSupport !== null ? <span className="small">90 days on, support after go-live: {r.followupSupport}/5</span> : null}
+                    <span className="muted small">{day(r.publishedAt)}</span>
+                    {r.reply ? (
+                      <span className="vendor-reply small">
+                        <b>Reply from {r.reply.vendorName}:</b> {r.reply.body}
+                      </span>
+                    ) : null}
+                  </li>
+                ))}
+              </ol>
+            </>
+          ) : (
+            <p className="muted">
+              No reviews yet. Only businesses whose own Xero shows they&apos;ve paid for {a.name} for 2 months or more can review it, and we never
+              write reviews ourselves.
+            </p>
+          )}
+          <p className="muted small">Newest first. Vendors can reply but can&apos;t edit, hide or reorder reviews.</p>
+        </section>
 
         <p className="muted small">
           Facts are read from {a.name}&apos;s own website and stored only with the exact words they came from. &quot;From the vendor&apos;s

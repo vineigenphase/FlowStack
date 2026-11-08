@@ -6,6 +6,7 @@ import { env } from "@/lib/env";
 import { apps as catalogApps, rulesFile } from "@/lib/catalog/load";
 import { accountInfo } from "@/lib/statements/accounts";
 import { computeFlags as compute, type LineIn, type TbRow } from "./compute";
+import { peerResults } from "@/lib/reviews";
 
 const CREDIT_CLASSES = new Set(["REVENUE", "LIABILITY", "EQUITY"]);
 const PRICE_FIELDS = ["price_from_gbp", "price_model"];
@@ -17,6 +18,8 @@ export function monthsBetween(from: string, to: string) {
 }
 
 export async function computeFlags(orgId: string, runId: string) {
+  // Verified-review results are global (owner connection), so read them before the tenant transaction opens.
+  const peer = await peerResults(catalogApps().map((a) => a.id));
   return withOrg(orgId, async (tx) => {
     const [org] = await tx.select().from(orgs).where(eq(orgs.id, orgId));
     const stmts = await tx.select().from(statements).where(eq(statements.runId, runId));
@@ -75,6 +78,7 @@ export async function computeFlags(orgId: string, runId: string) {
       markets: org.markets,
       inUse: new Map(detected.map((d) => [d.appId, { appId: d.appId, spend12m: d.spend12m, monthsSeen: d.monthsSeen }])),
       prices,
+      peer,
       overrides: new Set(overrides.map((o) => `${o.lineKey}|${o.ruleId}`)),
       tb,
       bands: { high: env().HIGH_BAND, medium: env().MED_BAND },

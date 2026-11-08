@@ -13,6 +13,7 @@ import { FACT_FIELDS } from "@/lib/catalog/facts";
 import { detect } from "@/lib/detect";
 import { recompute } from "@/lib/sync/refresh";
 import { enqueueAll, type QueueKind } from "./enqueue";
+import { moderate } from "@/lib/reviews";
 
 export const Resolution = z.discriminatedUnion("action", [
   z.object({ action: z.literal("map"), category: z.string() }),
@@ -23,6 +24,9 @@ export const Resolution = z.discriminatedUnion("action", [
   // fact_*: a person enters the value and where they saw it → state "verified".
   z.object({ action: z.literal("verify"), field: z.string(), value: z.unknown(), source_url: z.string().url() }),
   z.object({ action: z.literal("dismiss"), note: z.string().trim().optional() }),
+  // review_moderation: publish, or reject with the rule it breaks (never for being negative).
+  z.object({ action: z.literal("publish") }),
+  z.object({ action: z.literal("reject"), note: z.string().trim().min(3) }),
 ]);
 export type Resolution = z.infer<typeof Resolution>;
 
@@ -37,6 +41,7 @@ const ALLOWED: Record<QueueKind, Resolution["action"][]> = {
   fact_conflicting: ["verify", "note", "dismiss"],
   fact_stale: ["verify", "note", "dismiss"],
   fact_spot_check: ["verify", "note", "dismiss"],
+  review_moderation: ["publish", "reject"],
 };
 
 export async function listQueue(opts: { kind?: string; status?: "open" | "done" | "dismissed"; limit?: number } = {}) {
@@ -147,6 +152,13 @@ export async function resolveItem(id: string, actor: string, resolution: Resolut
       const row = { appId, field: resolution.field, value: resolution.value, state: "verified" as const, quote: null, sourceUrl: resolution.source_url, checkedAt: new Date(), checkedBy: actor, sample: false };
       await db.insert(appFacts).values(row).onConflictDoUpdate({ target: [appFacts.appId, appFacts.field], set: row });
       effects.push(`verified ${appId}.${resolution.field} = ${JSON.stringify(resolution.value)}`);
+      break;
+    }
+    case "publish":
+    case "reject": {
+      const reviewId = str(ref.review_id, "review_id");
+      await moderate(reviewId, resolution.action);
+      effects.push(`${resolution.action === "publish" ? "published" : "rejected"} review ${reviewId}`);
       break;
     }
     case "note":
