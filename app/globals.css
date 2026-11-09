@@ -305,3 +305,6 @@ td a { font-weight: 600; }
 .job-title .choices legend { font-weight: 600; margin-bottom: 8px; }
 .job-title .chip { padding: 4px 10px; border: 1px solid var(--line); font-size: 0.875rem; cursor: pointer; }
 .job-title .chip:has(input:checked) { border-color: var(--ink); font-weight: 600; }
+
+/* v1.1 D: four feedback answers */
+.feedback-answers { display: flex; flex-wrap: wrap; gap: 6px; }

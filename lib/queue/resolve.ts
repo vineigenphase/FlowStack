@@ -36,7 +36,7 @@ export type Resolution = z.infer<typeof Resolution>;
 /** Which actions make sense for each kind. */
 export const ALLOWED: Record<QueueKind, Resolution["action"][]> = {
   account_mapping: ["map", "dismiss"],
-  fingerprint_check: ["confirm", "dismiss"],
+  fingerprint_check: ["confirm", "note", "dismiss"],
   unknown_supplier: ["add_alias", "dismiss"],
   cashflow_unreconciled: ["accept", "dismiss"],
   flag_disputed: ["note", "dismiss"],

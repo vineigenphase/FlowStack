@@ -254,7 +254,7 @@ export const flags = pgTable(
     band: text("band", { enum: ["high", "medium", "low"] }).notNull(),
     coverageGap: real("coverage_gap").notNull(),
     strength: real("strength").notNull(),
-    state: text("state", { enum: ["flagged", "covered", "fine", "marked_fine", "queued"] }).notNull(),
+    state: text("state", { enum: ["flagged", "covered", "fine", "marked_fine", "snoozed", "queued"] }).notNull(),
     evidence: jsonb("evidence").notNull(),
     createdAt: ts("created_at").notNull().defaultNow(),
   },
@@ -291,7 +291,11 @@ export const flagFeedback = pgTable("flag_feedback", {
   lineKey: text("line_key").notNull(),
   ruleId: text("rule_id"),
   ruleVersion: integer("rule_version"),
-  answer: text("answer", { enum: ["yes", "no"] }).notNull(),
+  /** v1.1 D. "no" is the pre-v1.1 "Not a problem" and counts as no_app_needed. */
+  answer: text("answer", { enum: ["yes", "no", "already_use_app", "no_app_needed", "numbers_wrong", "not_now"] }).notNull(),
+  /** already_use_app: the app they named (a catalogue id, or free text when we don't know it). */
+  appId: text("app_id"),
+  appName: text("app_name"),
   note: text("note"),
   createdAt: ts("created_at").notNull().defaultNow(),
 });
@@ -302,7 +306,10 @@ export const lineOverrides = pgTable(
     orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
     lineKey: text("line_key").notNull(),
     ruleId: text("rule_id").notNull(),
-    state: text("state", { enum: ["marked_fine"] }).notNull().default("marked_fine"),
+    /** v1.1 D: marked_fine (no app needed) | snoozed (not now, until `until`) | queued (numbers wrong) | declared (an app they use covers it). */
+    state: text("state", { enum: ["marked_fine", "snoozed", "queued", "declared"] }).notNull().default("marked_fine"),
+    until: date("until"),
+    appId: text("app_id"),
     userId: uuid("user_id"),
     createdAt: ts("created_at").notNull().defaultNow(),
   },

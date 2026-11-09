@@ -13,7 +13,8 @@ export const STATE_LABEL: Record<string, string> = {
   flagged: "Look at this",
   covered: "Covered by an app you use",
   fine: "Fine",
-  marked_fine: "You said not a problem",
+  marked_fine: "You said no app is needed",
+  snoozed: "Hidden for now (you said not now)",
   queued: "Being checked",
 };
 export const KIND_LABEL = { pl: "Profit and loss", bs: "Balance sheet", cf: "Cash flow" } as const;

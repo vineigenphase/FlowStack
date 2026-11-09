@@ -15,7 +15,10 @@
 import type { App, Rule, Scoring } from "@/lib/catalog/load";
 import { scoreCandidates, shortlistOf, type InUse, type PriceInfo, type Scored } from "@/lib/rank/score";
 
-export type LineState = "flagged" | "covered" | "fine" | "marked_fine" | "queued";
+export type LineState = "flagged" | "covered" | "fine" | "marked_fine" | "snoozed" | "queued";
+
+/** A user's answer that changes a line (v1.1 D), keyed `${lineKey}|${ruleId}`. */
+export type LineOverride = { state: "marked_fine" | "snoozed" | "queued" | "declared"; until: string | null; appId: string | null };
 export type Band = "high" | "medium" | "low";
 
 export type LineIn = {
@@ -42,7 +45,9 @@ export type FlagCtx = {
   prices: Map<string, PriceInfo>;
   /** peer_results per app from verified reviews (0 to 1). Missing means neutral. */
   peer?: Map<string, number>;
-  overrides: Set<string>; // `${lineKey}|${ruleId}`
+  overrides: Map<string, LineOverride>; // `${lineKey}|${ruleId}`
+  /** "Today" for snooze expiry (ISO date). */
+  today?: string;
   tb: Map<string, TbRow>; // by xeroAccountId
   bands: { high: number; medium: number };
   scoring: Scoring;
@@ -87,6 +92,12 @@ export function computeFlags(lines: LineIn[], ctx: FlagCtx): FlagOut[] {
   const annualRevenue = ctx.monthsInPeriod > 0 ? (ctx.revenue * 12) / ctx.monthsInPeriod : ctx.revenue;
 
   type Work = FlagOut & { rule: Rule | null; candidates: App[] };
+  const today = ctx.today ?? new Date().toISOString().slice(0, 10);
+  /** The user's answer for this line, ignoring a snooze that has run out. */
+  const overrideOf = (lineKey: string, ruleId: string): LineOverride | undefined => {
+    const o = ctx.overrides.get(`${lineKey}|${ruleId}`);
+    return o && !(o.state === "snoozed" && o.until && o.until <= today) ? o : undefined;
+  };
   const work: Work[] = lines.map((l) => {
     const base = l.kind === "bs" ? ctx.totalAssets : ctx.revenue;
     const materiality = base ? r4(Math.abs(l.value) / Math.abs(base)) : 0;
@@ -129,8 +140,16 @@ export function computeFlags(lines: LineIn[], ctx: FlagCtx): FlagOut[] {
     else if (l.kind === "cf" && !ctx.cfReconciled) w.state = "queued";
     else if (!rule || rule.app_categories.length === 0) w.state = "fine";
     else if (Math.abs(l.value) < rule.min_value_gbp) w.state = "fine";
-    else if (ctx.overrides.has(`${l.lineKey}|${rule.id}`)) w.state = "marked_fine";
-    else {
+    else if (overrideOf(l.lineKey, rule.id)?.state === "marked_fine") w.state = "marked_fine";
+    else if (overrideOf(l.lineKey, rule.id)?.state === "queued") w.state = "queued";
+    else if (overrideOf(l.lineKey, rule.id)?.state === "snoozed") w.state = "snoozed";
+    else if (overrideOf(l.lineKey, rule.id)?.state === "declared") {
+      // "We already use an app for this": covered by the app they named, even though no payments show.
+      w.state = "covered";
+      w.coverageGap = 0;
+      w.evidence.covered_by = overrideOf(l.lineKey, rule.id)!.appId;
+      w.evidence.declared = true;
+    } else {
       w.state = "flagged";
       const eligible = ctx.apps.filter(
         (a) => a.categories.some((c) => rule.app_categories.includes(c)) && a.markets.some((m) => ctx.markets.includes(m)),
@@ -154,7 +173,7 @@ export function computeFlags(lines: LineIn[], ctx: FlagCtx): FlagOut[] {
 
   const maxStrength = Math.max(0, ...work.filter((w) => w.state === "flagged").map((w) => w.strength));
   for (const w of work) {
-    if (w.state !== "flagged" && w.state !== "covered") continue;
+    if ((w.state !== "flagged" && w.state !== "covered") || w.evidence.declared) continue;
     const strengthNorm = maxStrength > 0 ? r4(w.strength / maxStrength) : 0;
     const scored = scoreCandidates({ candidates: w.candidates, strengthNorm, kept, inUse: ctx.inUse, prices: ctx.prices, peer: ctx.peer, annualRevenue, scoring: ctx.scoring });
     const kindOf = (s: Scored): RecKind | null => (s.inUse ? null : w.state === "covered" ? "change" : "add");
@@ -183,7 +202,7 @@ function pick(u: InUse) {
   return { spend_12m: u.spend12m, months_seen: u.monthsSeen };
 }
 
-const STATE_ORDER: Record<LineState, number> = { flagged: 0, covered: 1, queued: 2, marked_fine: 3, fine: 4 };
+const STATE_ORDER: Record<LineState, number> = { flagged: 0, covered: 1, queued: 2, snoozed: 3, marked_fine: 4, fine: 5 };
 
 /** Flagged by |value| desc (the cost of getting it wrong), then covered, then the rest. */
 export function orderFlags<T extends { state: LineState; value: number }>(xs: T[]): T[] {

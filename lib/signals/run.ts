@@ -79,7 +79,7 @@ export async function computeFlags(orgId: string, runId: string) {
       inUse: new Map(detected.map((d) => [d.appId, { appId: d.appId, spend12m: d.spend12m, monthsSeen: d.monthsSeen }])),
       prices,
       peer,
-      overrides: new Set(overrides.map((o) => `${o.lineKey}|${o.ruleId}`)),
+      overrides: new Map(overrides.map((o) => [`${o.lineKey}|${o.ruleId}`, { state: o.state, until: o.until, appId: o.appId }])),
       tb,
       bands: { high: env().HIGH_BAND, medium: env().MED_BAND },
       scoring: rf.scoring,

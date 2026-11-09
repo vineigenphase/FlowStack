@@ -9,6 +9,7 @@ import { orgQuotes, situationFor } from "@/lib/quotes";
 import { QuoteForm } from "@/components/quote-form";
 import { gbp, KIND_LABEL, pct, STATE_LABEL } from "@/lib/ui/format";
 
+import { apps as catalogApps } from "@/lib/catalog/load";
 export const dynamic = "force-dynamic";
 
 type Evidence = {
@@ -87,7 +88,9 @@ export default async function LinePage({ params, searchParams }: { params: Promi
         </p>
       ) : null}
 
-      {l.flagId && ["flagged", "covered", "marked_fine"].includes(l.state) ? <FeedbackButtons flagId={l.flagId} state={l.state} /> : null}
+      {l.flagId && ["flagged", "covered", "marked_fine", "snoozed", "queued"].includes(l.state) && l.ruleId ? (
+        <FeedbackButtons flagId={l.flagId} state={l.state} apps={catalogApps().map((a) => ({ id: a.id, name: a.name })).sort((a, b) => a.name.localeCompare(b.name))} />
+      ) : null}
 
       {l.detectedInArea.length ? (
         <>

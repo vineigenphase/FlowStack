@@ -137,7 +137,7 @@ describe("flag computation", () => {
     markets: ["UK"],
     inUse: new Map(),
     prices: new Map(),
-    overrides: new Set(),
+    overrides: new Map(),
     tb: new Map(),
     bands: { high: 0.1, medium: 0.02 },
     scoring: rf.scoring,
@@ -158,7 +158,15 @@ describe("flag computation", () => {
     expect(computeFlags([line({ kind: "cf", lineKey: "cf:477" })], { ...base, cfReconciled: false })[0]!.state).toBe("queued");
     expect(computeFlags([line({ category: "rent" })], base)[0]!.state).toBe("fine");
     expect(computeFlags([line({ value: 500 })], base)[0]!.state).toBe("fine"); // under min_value_gbp
-    expect(computeFlags([line({})], { ...base, overrides: new Set(["pl:477|payroll_no_bridge"]) })[0]!.state).toBe("marked_fine");
+    const ov = (state: "marked_fine" | "snoozed" | "queued" | "declared", extra: { until?: string; appId?: string } = {}) =>
+      new Map([["pl:477|payroll_no_bridge", { state, until: extra.until ?? null, appId: extra.appId ?? null }]]);
+    expect(computeFlags([line({})], { ...base, overrides: ov("marked_fine") })[0]!.state).toBe("marked_fine");
+    // v1.1 D: not now → snoozed until the date, then flagged again; numbers wrong → queued; an app they use → covered.
+    expect(computeFlags([line({})], { ...base, today: "2026-11-09", overrides: ov("snoozed", { until: "2027-02-07" }) })[0]!.state).toBe("snoozed");
+    expect(computeFlags([line({})], { ...base, today: "2027-02-07", overrides: ov("snoozed", { until: "2027-02-07" }) })[0]!.state).toBe("flagged");
+    expect(computeFlags([line({})], { ...base, overrides: ov("queued") })[0]!.state).toBe("queued");
+    const declared = computeFlags([line({})], { ...base, overrides: ov("declared", { appId: "brightpay" }) })[0]!;
+    expect(declared).toMatchObject({ state: "covered", coverageGap: 0, evidence: { covered_by: "brightpay", declared: true } });
     // A rota app only helps with payroll → gap 0.5. A payroll app in use covers it, even if another ranks higher.
     const staff = { appId: "staffology", spend12m: 1200, monthsSeen: 12 };
     const dep = { appId: "deputy", spend12m: 2400, monthsSeen: 12 };

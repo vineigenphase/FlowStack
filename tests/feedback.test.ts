@@ -53,6 +53,32 @@ describe("feedback", () => {
     expect(await withOrg(orgId, (tx) => tx.select().from(lineOverrides).where(and(eq(lineOverrides.lineKey, "pl:310"))))).toHaveLength(0);
   });
 
+  it("v1.1 D: not now snoozes 90 days; numbers wrong queues it with a mapping item; an app they use covers it", async () => {
+    const f = await flagFor("pl:310");
+    const snoozed = await submitFeedback({ orgId, flagId: f.id, userId: null, answer: "not_now", now: new Date("2026-11-09T10:00:00Z") });
+    expect(snoozed.state).toBe("snoozed");
+    const [ov] = await withOrg(orgId, (tx) => tx.select().from(lineOverrides).where(eq(lineOverrides.lineKey, "pl:310")));
+    expect(ov).toMatchObject({ state: "snoozed", until: "2027-02-07" });
+
+    const wrong = await submitFeedback({ orgId, flagId: f.id, userId: null, answer: "numbers_wrong" });
+    expect(wrong.state).toBe("queued");
+    const db = await adminDb();
+    const mapping = await db.select().from(reviewQueue).where(eq(reviewQueue.kind, "account_mapping"));
+    expect(mapping.some((q) => q.reason.includes("pl:310"))).toBe(true);
+
+    await expect(submitFeedback({ orgId, flagId: f.id, userId: null, answer: "already_use_app" })).rejects.toMatchObject({ status: 422 });
+    const uses = await submitFeedback({ orgId, flagId: f.id, userId: null, answer: "already_use_app", appId: "marketman" });
+    expect(uses.state).toBe("covered");
+    const after = await flagFor("pl:310");
+    expect(after.evidence).toMatchObject({ covered_by: "marketman", declared: true });
+    // An app we don't know goes to our team to add; the line stays as it was until then.
+    await submitFeedback({ orgId, flagId: f.id, userId: null, answer: "already_use_app", appName: "Stocky McStockface" });
+    const fp = await db.select().from(reviewQueue).where(eq(reviewQueue.kind, "fingerprint_check"));
+    expect(fp.some((q) => q.reason.includes("Stocky McStockface"))).toBe(true);
+    // Back to "yes" so the later report test starts clean.
+    await submitFeedback({ orgId, flagId: f.id, userId: null, answer: "yes" });
+  });
+
   it("refuses feedback on a fine line", async () => {
     const f = await flagFor("pl:469");
     await expect(submitFeedback({ orgId, flagId: f.id, userId: null, answer: "no" })).rejects.toMatchObject({ status: 422 });
@@ -63,7 +89,7 @@ describe("feedback", () => {
     await submitFeedback({ orgId, flagId: wages.id, userId: null, answer: "yes" });
     const r = await fpReport();
     // pl:310 latest answer is "yes", pl:477 "yes" → 0 of 2.
-    expect(r.overall).toEqual({ answered: 2, no: 0, rate: 0 });
+    expect(r.overall).toEqual({ answered: 2, falsePositives: 0, misses: 0, notNow: 0, rate: 0, missRate: 0 });
     expect(r.byRule.map((x) => x.key)).toEqual(["cost_of_sales_stock@v2", "payroll_no_bridge@v2"]);
   });
 });
@@ -76,12 +102,18 @@ describe("fpReportFrom", () => {
       { flagId: "a", ruleId: "r", ruleVersion: 1, answer: "no", createdAt: d("2026-11-03T10:00:00Z") },
       { flagId: "b", ruleId: "r", ruleVersion: 2, answer: "yes", createdAt: d("2026-11-10T10:00:00Z") },
     ]);
-    expect(r.overall).toEqual({ answered: 2, no: 1, rate: 0.5 });
+    expect(r.overall).toMatchObject({ answered: 2, falsePositives: 1, rate: 0.5 });
     expect(r.byRule).toEqual([
-      { key: "r@v1", answered: 1, no: 1, rate: 1 },
-      { key: "r@v2", answered: 1, no: 0, rate: 0 },
+      { key: "r@v1", answered: 1, falsePositives: 1, misses: 0, notNow: 0, rate: 1, missRate: 0 },
+      { key: "r@v2", answered: 1, falsePositives: 0, misses: 0, notNow: 0, rate: 0, missRate: 0 },
     ]);
     expect(r.byWeek.map((w) => w.key)).toEqual(["2026-W45", "2026-W46"]);
+  });
+  it("v1.1 D: FP = (no app needed + numbers wrong) ÷ (yes + those + already use); misses separate; not now in neither", () => {
+    const at = d("2026-11-09T10:00:00Z");
+    const row = (flagId: string, answer: string) => ({ flagId, ruleId: "r", ruleVersion: 1, answer, createdAt: at });
+    const r = fpReportFrom([row("a", "yes"), row("b", "no_app_needed"), row("c", "numbers_wrong"), row("d", "already_use_app"), row("e", "not_now"), row("f", "yes")]);
+    expect(r.overall).toEqual({ answered: 5, falsePositives: 2, misses: 1, notNow: 1, rate: 0.4, missRate: 0.2 });
   });
   it("iso weeks at year boundaries", () => {
     expect(isoWeek(d("2026-01-01T00:00:00Z"))).toBe("2026-W01");

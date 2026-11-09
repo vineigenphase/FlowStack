@@ -143,6 +143,7 @@ export async function lineView(orgId: string, lineKey: string) {
       coverageGap: f.coverageGap,
       strength: f.strength,
       flagId: f.id,
+      ruleId: f.ruleId,
       cause: rule?.cause ?? null,
       evidence: { ...(f.evidence as object), run_id: runId },
       recommendations: recs

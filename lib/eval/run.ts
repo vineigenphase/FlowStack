@@ -15,7 +15,7 @@ import { migrateDb, openDb, setDbForTests, withOrg } from "@/lib/db/client";
 import { MemoryXeroClient } from "@/lib/xero/client";
 import { runRefresh } from "@/lib/sync/refresh";
 
-const State = z.enum(["flagged", "covered", "fine", "marked_fine", "queued"]);
+const State = z.enum(["flagged", "covered", "fine", "marked_fine", "snoozed", "queued"]);
 type State = z.infer<typeof State>;
 
 export const LabelledOrg = z.object({
@@ -27,6 +27,8 @@ export const LabelledOrg = z.object({
   defaults: z.object({ pl: State, bs: State, cf: State }).default({ pl: "fine", bs: "fine", cf: "fine" }),
   expected: z.record(z.string(), State),
   why: z.record(z.string(), z.string()).default({}),
+  /** v1.1 D: for lines a user would dispute, the answer they would give (yes | already_use_app | no_app_needed | numbers_wrong | not_now). */
+  expected_reason: z.record(z.string(), z.enum(["yes", "already_use_app", "no_app_needed", "numbers_wrong", "not_now"])).default({}),
   xero: z.record(z.string(), z.unknown()),
 });
 export type LabelledOrg = z.infer<typeof LabelledOrg>;
