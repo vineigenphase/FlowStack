@@ -40,6 +40,12 @@ const EnvSchema = z.object({
   MED_BAND: num(0.02),
   MAP_CONFIDENCE_MIN: num(0.75),
   FP_GATE: num(0.15),
+  /** v1.1 G: peer price ranges are OPEN (CHANGES-v1.1.md §4 item 2: lawyer + Xero partner sign-off). Off: nothing is collected or shown. */
+  PEER_PRICES_ENABLED: bool,
+  /** v1.1 H: the Monday digest is parked until firms connect many clients. */
+  MONDAY_DIGEST_ENABLED: bool,
+  /** v1.1 I: Xero plan connection cap (Starter 5, Core 50). */
+  XERO_CONNECTION_CAP: num(5),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

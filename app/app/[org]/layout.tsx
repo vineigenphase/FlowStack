@@ -8,14 +8,17 @@ import { orgs } from "@/db/schema";
 import { OrgNav } from "@/components/org-nav";
 import { SignOut } from "@/components/sign-out";
 import { signInHref } from "@/lib/ui/signin";
+import { OrgSwitcher } from "@/components/org-switcher";
+import { myOrgs } from "@/lib/me";
 
 export const dynamic = "force-dynamic";
 
 /** Header, sign-in gate and tabs for every org page. Each page still checks membership itself. */
 export default async function OrgLayout({ children, params }: { children: ReactNode; params: Promise<{ org: string }> }) {
   const { org } = await params;
+  let userId: string;
   try {
-    await requireOrgMember(org);
+    userId = (await requireOrgMember(org)).userId;
   } catch (e) {
     if (e instanceof HttpError && e.status === 401) {
       const si = signInHref(`/app/${org}`);
@@ -34,6 +37,7 @@ export default async function OrgLayout({ children, params }: { children: ReactN
       </main>
     );
   }
+  const mine = (await myOrgs(userId)).map((x) => ({ id: x.id, name: x.name, sample: x.sample }));
   const [o] = await withOrg(org, (tx) => tx.select({ name: orgs.name, sample: orgs.sample }).from(orgs).where(eq(orgs.id, org)));
   return (
     <>
@@ -41,7 +45,13 @@ export default async function OrgLayout({ children, params }: { children: ReactN
         <div className="wrap top-inner">
           <Link href="/" className="brand">FlowStack</Link>
           <span className="org-name">
-            {o?.name ?? "Organisation"}
+            {mine.length > 1 && mine.some((x) => x.id === org) ? (
+              <OrgSwitcher current={org} orgs={mine} />
+            ) : (
+              <>
+                {o?.name ?? "Organisation"}
+              </>
+            )}
             {o?.sample ? <span className="tag">sample data</span> : null}
           </span>
           <Link href="/apps" className="top-link">Apps</Link>

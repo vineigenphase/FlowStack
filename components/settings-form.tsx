@@ -7,11 +7,13 @@ type Props = {
   org: string;
   industries: { key: string; label: string }[];
   initial: { industry: string | null; markets: string[]; sharePrices: boolean; askAi: boolean; sample: boolean };
+  /** v1.1 G: peer prices are out of 1.0, so the opt-in is hidden unless enabled. */
+  peerPrices?: boolean;
 };
 
 const MARKETS = ["UK", "US", "CA", "AU"];
 
-export function SettingsForm({ org, industries, initial }: Props) {
+export function SettingsForm({ org, industries, initial, peerPrices = false }: Props) {
   const router = useRouter();
   const [industry, setIndustry] = useState(initial.industry ?? "");
   const [markets, setMarkets] = useState<string[]>(initial.markets);
@@ -61,6 +63,7 @@ export function SettingsForm({ org, industries, initial }: Props) {
         ))}
       </fieldset>
 
+      {peerPrices ? (
       <fieldset>
         <legend>Help other businesses compare prices</legend>
         <label className="check-label">
@@ -74,6 +77,7 @@ export function SettingsForm({ org, industries, initial }: Props) {
           {initial.sample ? " Sample organisations never count." : ""}
         </p>
       </fieldset>
+      ) : null}
 
       <fieldset>
         <legend>Written answers in Ask</legend>

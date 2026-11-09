@@ -25,6 +25,8 @@ export const MIN_FOR_RANKING = 5;
 
 export const ROLES = [
   { key: "finance_director", label: "Finance director or CFO" },
+  { key: "financial_controller", label: "Financial controller" },
+  { key: "head_of_finance", label: "Head of finance" },
   { key: "finance_manager", label: "Finance manager" },
   { key: "bookkeeper", label: "Bookkeeper" },
   { key: "accountant", label: "Accountant or adviser" },

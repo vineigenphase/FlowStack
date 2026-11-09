@@ -227,3 +227,24 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
   - Definition of "Not a problem" reasons.
   - Drop-off rule for apps that stop billing.
   - Pricing and margins.
+
+## v1.1 build log (9 Nov 2026)
+
+- **K + F (ff12752):**
+  - Weights are 0.50 / 0.35 / 0.10 / 0.05, read from rules.yaml.
+  - `recommendations.kind` is `add` or `change` (null for the in-use app).
+  - Stack map steps are Add or Change, ordered by £ only. A function whose in-use app is still the best match gets no step.
+  - Proposals drafted before v1.1 may still carry "fix".
+- **G:** `PEER_PRICES_ENABLED` (default off).
+  - Off means nothing is recorded (existing rows are deleted on the next refresh), nothing is shown on the dossier, and the settings opt-in is hidden.
+  - The renewal check-in gets no peer band, so it says so.
+- **H:** `MONDAY_DIGEST_ENABLED` (default off). The tab is hidden and the page returns not found.
+- **A:**
+  - `users.job_title`, asked once on the home page (Skip is remembered as `not_given`).
+  - Review roles gain "Financial controller" and "Head of finance".
+  - Industry `saas_tech` is renamed `saas` (migration 0013), and ecommerce and SaaS are listed first.
+- **I:**
+  - `/api/me`, `/api/me/orgs`, `/api/me/active-org`, and the session's `activeOrgId`.
+  - A switcher in the org header when the user has 2+ businesses.
+  - `XERO_CONNECTION_CAP` (default 5) is checked before OAuth (→ `/connect/limit`) and in the callback: new tenants over the cap are skipped, and reconnecting always works.
+  - **Deviation:** firms link to clients through the existing `firm_orgs` table (many-to-many) rather than `orgs.firm_id`. It's the same grouping, and a client can sit with more than one firm.

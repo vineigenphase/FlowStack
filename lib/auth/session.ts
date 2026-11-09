@@ -6,7 +6,8 @@ import { adminDb } from "@/lib/db/client";
 import { env } from "@/lib/env";
 import { HttpError } from "@/lib/api";
 
-export type SessionData = { userId?: string; email?: string; isAdmin?: boolean };
+/** activeOrgId: the business last switched to (v1.1 I). Every data route still checks membership itself. */
+export type SessionData = { userId?: string; email?: string; isAdmin?: boolean; activeOrgId?: string };
 export type OAuthState = { verifier?: string; state?: string };
 
 const base = (): Omit<SessionOptions, "cookieName"> => ({

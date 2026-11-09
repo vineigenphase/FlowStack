@@ -5,11 +5,18 @@
  * - Opt-in: a business's bills count only when `orgs.share_prices` is on. Turning it off deletes its rows.
  * - Sample orgs never count.
  * - price_observations is unreadable to the app role; only aggregates of k+ distinct businesses leave this file.
+ *
+ * v1.1 G: NOT IN 1.0. Off unless PEER_PRICES_ENABLED=true; when off nothing is collected (any rows are deleted) and
+ * nothing is shown. TODO(CHANGES-v1.1.md §4 item 2): needs written sign-off from a lawyer and Xero's partner team.
+ * If enabled later: range only (p25–p75) rounded to the nearest £5, never a single value or a count below 10.
  */
 import { and, eq, gte, inArray, ne } from "drizzle-orm";
 import { detectedApps, orgs, priceObservations, statements } from "@/db/schema";
 import { adminDb } from "@/lib/db/client";
 import type { PeerBand } from "@/lib/checkins/evaluate";
+import { env } from "@/lib/env";
+
+export const peerPricesEnabled = () => env().PEER_PRICES_ENABLED;
 
 export const K = 10;
 
@@ -58,7 +65,7 @@ export async function recordObservations(orgId: string) {
   const db = await adminDb();
   const [o] = await db.select().from(orgs).where(eq(orgs.id, orgId));
   await db.delete(priceObservations).where(eq(priceObservations.orgId, orgId));
-  if (!o || !o.sharePrices || o.sample) return 0;
+  if (!peerPricesEnabled() || !o || !o.sharePrices || o.sample) return 0;
   const band = await orgSizeBand(orgId);
   const det = await db.select().from(detectedApps).where(eq(detectedApps.orgId, orgId));
   const rows = det.flatMap((d) =>
@@ -97,6 +104,7 @@ async function perOrg(appId: string, where: { sizeBand?: string; excludeOrg?: st
  * The asking business is left out of its own comparison. Null when fewer than 10.
  */
 export async function peerBand(appId: string, orgId?: string): Promise<(PeerBand & { scope: string }) | null> {
+  if (!peerPricesEnabled()) return null;
   const band = orgId ? await orgSizeBand(orgId) : null;
   if (band) {
     const b = bandOf(await perOrg(appId, { sizeBand: band, excludeOrg: orgId }));
@@ -109,7 +117,7 @@ export async function peerBand(appId: string, orgId?: string): Promise<(PeerBand
 /** Bands for many apps at once (directory/dossier pages). */
 export async function peerBands(appIds: string[]) {
   const out = new Map<string, PeerBand & { scope: string }>();
-  if (!appIds.length) return out;
+  if (!appIds.length || !peerPricesEnabled()) return out;
   const db = await adminDb();
   const rows = await db
     .select({ appId: priceObservations.appId, orgId: priceObservations.orgId, amount: priceObservations.amount })

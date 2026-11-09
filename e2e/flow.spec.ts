@@ -15,7 +15,7 @@ async function visit(page: Page, url: string) {
 
 async function signIn(page: Page) {
   await visit(page, "/api/dev/login?next=/");
-  await expect(page.getByRole("heading", { name: "Your organisations" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Your businesses" })).toBeVisible();
 }
 
 async function firstOrgPath(page: Page): Promise<string> {
@@ -63,7 +63,8 @@ test("connect → diagnosis → recommendations → stack map", async ({ page })
   await expect(page.getByText("Day 90")).toBeVisible();
 
   await visit(page, `${org}/settings`);
-  await expect(page.getByText("Help other businesses compare prices")).toBeVisible();
+  await expect(page.getByText("Written answers in Ask")).toBeVisible();
+  await expect(page.getByText("Help other businesses compare prices")).toHaveCount(0);
 
   // Ask: rules answer (no consent, LLM off in e2e) lists payroll apps.
   const answer = await (await page.request.post(`/api/orgs/${org.split("/").pop()}/ask`, { data: { question: "which payroll app works with Deputy?" } })).json();
@@ -82,7 +83,8 @@ test("public apps directory and a dossier", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Apps that work with Xero" })).toBeVisible();
   await visit(page, (await page.locator("a.dir-link").first().getAttribute("href"))!);
   await expect(page.getByRole("heading", { name: "Price" })).toBeVisible();
-  await expect(page.getByText("What similar businesses pay")).toBeVisible();
+  // v1.1 G: peer prices are out of 1.0, so the dossier never shows them.
+  await expect(page.getByText("What similar businesses pay")).toHaveCount(0);
 });
 
 /** Practice pages found in the practice test, checked at 400px below. */
@@ -122,9 +124,9 @@ test("practice: start a firm, add the client, playbook, proposal by link", async
   }).toPass({ timeout: 90_000 });
   await client.close();
 
-  await visit(page, `/practice/${firm.id}/digest`);
-  await expect(page.getByRole("heading", { name: "Answered this week" })).toBeVisible();
-  practicePaths.push("/practice", `/practice/${firm.id}`, `/practice/${firm.id}/playbooks`, `/practice/${firm.id}/clients/${org}`, `/practice/${firm.id}/digest`, `/p/${p.token}`);
+  // v1.1 H: the Monday digest is parked: no tab, and its page is not found.
+  await expect(page.getByRole("link", { name: "Monday digest" })).toHaveCount(0);
+  practicePaths.push("/practice", `/practice/${firm.id}`, `/practice/${firm.id}/playbooks`, `/practice/${firm.id}/clients/${org}`, `/p/${p.token}`);
 });
 
 /** CLAUDE.md §10 definition of done: works in both themes at 400px width (no sideways scrolling). */

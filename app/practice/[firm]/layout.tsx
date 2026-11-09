@@ -1,3 +1,4 @@
+import { env } from "@/lib/env";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { HttpError } from "@/lib/api";
@@ -40,7 +41,7 @@ export default async function FirmLayout({ children, params }: { children: React
           <Link href="/apps" className="top-link">Apps</Link>
           <SignOut />
         </div>
-        <div className="wrap"><FirmNav firm={firm} /></div>
+        <div className="wrap"><FirmNav firm={firm} digest={env().MONDAY_DIGEST_ENABLED} /></div>
       </header>
       <main className="wrap">{children}</main>
     </>

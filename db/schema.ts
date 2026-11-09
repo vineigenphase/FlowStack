@@ -38,6 +38,8 @@ export const users = pgTable("users", {
   name: text("name"),
   xeroUserId: text("xero_user_id"),
   isAdmin: boolean("is_admin").notNull().default(false),
+  /** v1.1 A: asked once (finance director, financial controller, ...). Changes no permissions. */
+  jobTitle: text("job_title"),
   createdAt: ts("created_at").notNull().defaultNow(),
 });
 

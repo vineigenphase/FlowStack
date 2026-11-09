@@ -1,11 +1,14 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
+import { env } from "@/lib/env";
 import { digest, requireFirmMember } from "@/lib/firms";
 import { gbp } from "@/lib/ui/format";
 
 export const dynamic = "force-dynamic";
 
-/** The Monday digest (CLAUDE.md §1 Firm UX 6), as a page. Sending it by email or Slack needs a provider. */
+/** The Monday digest (CLAUDE.md §1 Firm UX 6), as a page. Parked in 1.0 (v1.1 H): off unless MONDAY_DIGEST_ENABLED=true. */
 export default async function DigestPage({ params }: { params: Promise<{ firm: string }> }) {
+  if (!env().MONDAY_DIGEST_ENABLED) notFound();
   const { firm } = await params;
   try {
     await requireFirmMember(firm);

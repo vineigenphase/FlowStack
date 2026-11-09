@@ -6,14 +6,14 @@ import { adminDb, withOrg } from "@/lib/db/client";
 import { recordObservations } from "@/lib/prices";
 
 export const INDUSTRIES = [
+  { key: "ecommerce", label: "Ecommerce" },
+  { key: "saas", label: "SaaS and software" }, // v1.1 P (was saas_tech; migration 0013 renames stored values)
   { key: "hospitality", label: "Hospitality" },
   { key: "retail", label: "Retail" },
-  { key: "ecommerce", label: "Ecommerce" },
   { key: "professional_services", label: "Professional services" },
   { key: "construction_trades", label: "Construction and trades" },
   { key: "manufacturing", label: "Manufacturing" },
   { key: "wholesale", label: "Wholesale and distribution" },
-  { key: "saas_tech", label: "Software and tech" },
   { key: "healthcare", label: "Healthcare" },
   { key: "charity", label: "Charity and non-profit" },
   { key: "other", label: "Other" },

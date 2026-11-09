@@ -4,7 +4,7 @@ import { appCategories } from "@/lib/catalog/load";
 import { getApp } from "@/lib/catalog/directory";
 import { SiteHeader } from "@/components/site-header";
 import { FACT_GROUPS, factText } from "@/lib/ui/facts";
-import { peerBand } from "@/lib/prices";
+import { peerBand, peerPricesEnabled } from "@/lib/prices";
 import { PRICE_BANDS, publicReviews, ROLES, SCORE_LABELS } from "@/lib/reviews";
 import { MIN_FOR_RESPONSE_TIME, responseTime } from "@/lib/quotes";
 
@@ -100,7 +100,7 @@ export default async function AppPage({ params }: { params: Promise<{ id: string
                   </dd>
                 </div>
               ) : null}
-              {g.label === "Price" ? (
+              {g.label === "Price" && peerPricesEnabled() ? (
                 <div className="fact missing">
                   <dt>What similar businesses pay</dt>
                   <dd>

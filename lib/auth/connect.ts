@@ -3,10 +3,10 @@
  * code → tokens → verified identity → tenants → user/org/connection rows (tokens encrypted).
  */
 import { randomUUID } from "node:crypto";
-import { and, eq, ne } from "drizzle-orm";
+import { and, count, eq, ne } from "drizzle-orm";
 import { orgMembers, orgs, users, xeroConnections } from "@/db/schema";
 import { adminDb } from "@/lib/db/client";
-import { adminEmails } from "@/lib/env";
+import { adminEmails, env } from "@/lib/env";
 import { seal } from "@/lib/crypto";
 import {
   deleteConnection,
@@ -42,7 +42,12 @@ export async function completeConnect(code: string, verifier: string, deps: Conn
   const expiresAt = new Date(Date.now() + tokens.expires_in * 1000);
   const scopes = tokens.scope?.split(" ") ?? [];
 
+  const cap = env().XERO_CONNECTION_CAP;
   return db.transaction(async (tx) => {
+    // v1.1 I: the plan cap (Starter 5) counts every business on our app, not per user.
+    const [c0] = await tx.select({ n: count() }).from(xeroConnections).where(ne(xeroConnections.status, "revoked"));
+    let used = Number(c0?.n ?? 0);
+    const capped: string[] = [];
     const [user] = await tx
       .insert(users)
       .values({ email, name, xeroUserId: who.xero_userid ?? who.sub, isAdmin })
@@ -60,7 +65,12 @@ export async function completeConnect(code: string, verifier: string, deps: Conn
           .update(xeroConnections)
           .set({ connectionId: t.id, grantKey, encAccess, encRefresh, expiresAt, scopes, status: "active", lastError: null, updatedAt: new Date() })
           .where(eq(xeroConnections.id, existing.id));
+      } else if (used >= cap) {
+        // Over the cap: don't take on a new business. Reconnecting one we already have always works.
+        capped.push(t.tenantName ?? "Xero organisation");
+        continue;
       } else {
+        used++;
         const [o] = await tx.insert(orgs).values({ name: t.tenantName ?? "Xero organisation" }).returning();
         orgId = o!.id;
         created.push(orgId);
@@ -69,7 +79,7 @@ export async function completeConnect(code: string, verifier: string, deps: Conn
       await tx.insert(orgMembers).values({ orgId, userId: user!.id, role: existing ? "member" : "owner" }).onConflictDoNothing();
       orgIds.push(orgId);
     }
-    return { user: user!, orgIds, created };
+    return { user: user!, orgIds, created, capped };
   });
 }
 

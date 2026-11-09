@@ -8,6 +8,7 @@ import { runRefresh } from "@/lib/sync/refresh";
 import { FixtureXeroClient } from "@/lib/xero/client";
 import { addDays, evaluateCheckin, schedule, typicalMonthly, type CheckinCtx } from "@/lib/checkins/evaluate";
 import { afterInstallView, detectInstalls, evaluateDue, markInstalled, removeInstall, setRenewal } from "@/lib/checkins";
+import { resetEnv } from "@/lib/env";
 import { bandOf, peerBand, percentile, recordObservations, sizeBand } from "@/lib/prices";
 
 const base: CheckinCtx = {
@@ -146,7 +147,17 @@ describe("installs and check-ins (db)", () => {
     expect(await withOrg(orgId, (tx) => detectInstalls(tx, orgId, asAt))).toBe(0);
   });
 
-  it("peer prices: opt-in only, sample orgs never count, and nothing shows under 10 businesses", async () => {
+  it("v1.1 G: peer prices are off by default: nothing collected, nothing shown", async () => {
+    const db = await adminDb();
+    await db.update(orgs).set({ sharePrices: true, sample: false }).where(eq(orgs.id, orgId));
+    expect(await recordObservations(orgId)).toBe(0);
+    expect(await peerBand("dext")).toBeNull();
+    await db.update(orgs).set({ sharePrices: false, sample: true }).where(eq(orgs.id, orgId));
+  });
+
+  it("peer prices (when enabled): opt-in only, sample orgs never count, and nothing shows under 10 businesses", async () => {
+    process.env.PEER_PRICES_ENABLED = "true";
+    resetEnv();
     const db = await adminDb();
     // The sample org opting in still records nothing.
     await db.update(orgs).set({ sharePrices: true }).where(eq(orgs.id, orgId));
@@ -166,5 +177,7 @@ describe("installs and check-ins (db)", () => {
     // Withdrawn consent removes a business at once, even before its rows are rewritten.
     await db.update(orgs).set({ sharePrices: false }).where(eq(orgs.id, peers[1]!));
     expect(await peerBand("dext")).toBeNull();
+    delete process.env.PEER_PRICES_ENABLED;
+    resetEnv();
   });
 });
