@@ -138,7 +138,7 @@ for (const scheme of ["light", "dark"] as const) {
       await visit(page, org);
       return page.locator("a.card-link[href*='/lines/']").first().getAttribute("href");
     })();
-    const paths = ["/", org, `${org}/map`, `${org}/statements/pl`, `${org}/statements/bs`, `${org}/statements/cf`, lineHref!, `${org}/after`, `${org}/reviews`, `${org}/settings`, `${org}/ask`, `${lineHref!}?priority=cost`, "/apps", "/apps/autoentry", ...practicePaths];
+    const paths = ["/", org, `${org}/map`, `${org}/statements/pl`, `${org}/statements/bs`, `${org}/statements/cf`, lineHref!, `${org}/after`, `${org}/reviews`, `${org}/settings`, `${org}/ask`, `${lineHref!}?priority=cost`, "/apps", "/apps/autoentry", "/admin/queue", ...practicePaths];
     for (const p of paths) {
       await visit(page, p);
       await page.waitForLoadState("networkidle");

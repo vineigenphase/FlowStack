@@ -283,3 +283,17 @@ td a { font-weight: 600; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .two-col input { width: 100%; }
+
+/* Admin review queue */
+.queue-list .card { gap: 8px; }
+.queue-quote { margin: 0; padding: 8px 12px; border-left: 3px solid var(--line); white-space: pre-wrap; overflow-wrap: anywhere; }
+.queue-situation { display: grid; grid-template-columns: max-content 1fr; gap: 2px 12px; margin: 0; }
+.queue-situation div { display: contents; }
+.queue-situation dt { color: var(--muted); }
+.queue-situation dd { margin: 0; overflow-wrap: anywhere; }
+.queue-ref { overflow-x: auto; font-size: 0.8rem; max-width: 100%; }
+.queue-actions { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+.queue-actions .choices { display: flex; flex-wrap: wrap; gap: 6px; border: 0; padding: 0; margin: 0; flex-basis: 100%; }
+.queue-actions .chip { padding: 4px 10px; border: 1px solid var(--line); font-size: 0.875rem; cursor: pointer; }
+.queue-actions .chip:has(input:checked) { border-color: var(--ink); font-weight: 600; }
+.queue-actions label input:not([type="radio"]), .queue-actions select { max-width: 100%; }

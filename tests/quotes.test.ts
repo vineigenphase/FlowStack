@@ -8,6 +8,7 @@ import { runRefresh } from "@/lib/sync/refresh";
 import { FixtureXeroClient } from "@/lib/xero/client";
 import { addReply, medianDays, orgQuotes, requestQuotes, responseTime } from "@/lib/quotes";
 import { resolveItem } from "@/lib/queue/resolve";
+import { queueView } from "@/lib/queue/view";
 
 let close: () => Promise<void>;
 let orgId: string;
@@ -38,6 +39,16 @@ describe("quote requests", () => {
     const db = await adminDb();
     const [q] = await db.select().from(reviewQueue).where(eq(reviewQueue.kind, "quote_request"));
     expect(q!.reason).toContain("Staffology Payroll, BrightPay");
+  });
+
+  it("the admin queue page shows the situation and the actions, not ledger figures", async () => {
+    const groups = await queueView();
+    const g = groups.find((x) => x.kind === "quote_request")!;
+    expect(g.label).toBe("Quote requests to send");
+    expect(g.items[0]!.orgName).toBe("Copperpot (sample)");
+    expect(g.items[0]!.quote).toMatchObject({ appNames: ["Staffology Payroll", "BrightPay"], replyTo: "fd@copperpot.test" });
+    expect(g.items[0]!.actions).toEqual(["mark_sent", "dismiss"]);
+    expect(groups.map((x) => x.kind).indexOf("quote_request")).toBeLessThanOrEqual(1);
   });
 
   it("replies need the request to be sent, and only from vendors that were asked", async () => {

@@ -34,7 +34,7 @@ export const Resolution = z.discriminatedUnion("action", [
 export type Resolution = z.infer<typeof Resolution>;
 
 /** Which actions make sense for each kind. */
-const ALLOWED: Record<QueueKind, Resolution["action"][]> = {
+export const ALLOWED: Record<QueueKind, Resolution["action"][]> = {
   account_mapping: ["map", "dismiss"],
   fingerprint_check: ["confirm", "dismiss"],
   unknown_supplier: ["add_alias", "dismiss"],

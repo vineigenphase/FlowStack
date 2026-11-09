@@ -16,10 +16,11 @@ Read this first, after CLAUDE.md, BACKEND.md and NOTES.md. NOTES.md "Rest of the
   - Summary-page measures
   - Ranking priorities
   - Quote requests
+  - Admin review queue page at `/admin/queue` (admins only, not linked from the header): reviews to check, quote requests to send, mappings and facts
 - **Production** (`main`) is still at c5841a8.
   - Merging `dev` → `main` deploys, and Vercel runs `pnpm db:migrate`, applying migrations 0006–0011 to production. They only add tables, columns and row-level security.
   - The owner runs the merge: `! cd ~/flowstack && git checkout main && git merge dev && git push origin main && git checkout dev`
-- **Checks:** `pnpm lint`, `pnpm test` (20 files, 162 tests), `pnpm test:e2e`.
+- **Checks:** `pnpm lint`, `pnpm test` (20 files, 163 tests), `pnpm test:e2e`.
 
 ## Owner decisions waiting
 
@@ -33,7 +34,6 @@ Read this first, after CLAUDE.md, BACKEND.md and NOTES.md. NOTES.md "Rest of the
 ## Could still be built (smaller)
 
 - Must-have filters in ranking. Quote requests already collect sites, headcount and must-haves.
-- An admin UI for the review queue. Today it's the API (`/api/admin/queue`) or `pnpm queue`.
 - A vendor "claim your listing" flow. Vendor replies are entered by an admin today.
 - Tracking categories and market auto-detection (BACKEND 2.0). Both need new Xero calls and recorded fixtures.
 
