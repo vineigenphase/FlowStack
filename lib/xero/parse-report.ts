@@ -35,10 +35,15 @@ export function parseAmount(v: string | undefined): number {
  */
 export const XERO_PLACEHOLDER_ACCOUNT_ID = "abababab-abab-abab-abab-abababababab";
 
+const GUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 function accountIdOf(cells: { Attributes?: { Id: string; Value: string }[] }[] | undefined): string | null {
   for (const c of cells ?? []) {
     const a = c.Attributes?.find((x) => x.Id.toLowerCase() === "account");
-    if (a) return a.Value.toLowerCase() === XERO_PLACEHOLDER_ACCOUNT_ID ? null : a.Value;
+    if (!a) continue;
+    // Only a real AccountID counts. Placeholders and anything not shaped like a GUID are computed rows.
+    const v = a.Value.trim();
+    return v.toLowerCase() === XERO_PLACEHOLDER_ACCOUNT_ID || !GUID.test(v) ? null : v;
   }
   return null;
 }

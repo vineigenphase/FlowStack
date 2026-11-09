@@ -20,6 +20,14 @@ export function RefreshButton({ org, busy = false }: { org: string; busy?: boole
     return () => clearInterval(t);
   }, [state.kind]);
 
+  // While a refresh runs server-side (e.g. the first one after connecting), the button is disabled. Re-read the
+  // page every few seconds so it comes back on its own, instead of needing a tab switch or reload.
+  useEffect(() => {
+    if (!busy) return;
+    const t = setInterval(() => router.refresh(), 3000);
+    return () => clearInterval(t);
+  }, [busy, router]);
+
   async function refresh() {
     const since = Date.now();
     setNow(since);
@@ -50,7 +58,7 @@ export function RefreshButton({ org, busy = false }: { org: string; busy?: boole
         : state.kind === "error"
           ? state.message
           : busy
-            ? "A refresh is running. Reload in a few seconds."
+            ? "A refresh is running. This page updates when it finishes."
             : "";
 
   return (

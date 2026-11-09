@@ -19,6 +19,7 @@ import {
 import { adminDb, withOrg, type Db } from "@/lib/db/client";
 import { env } from "@/lib/env";
 import { log } from "@/lib/log";
+import { errorText } from "./error-text";
 import { accountCategories } from "@/lib/catalog/load";
 import { mapAccounts } from "@/lib/mapping";
 import { buildBS, buildPL, type Statement, type StatementLine } from "@/lib/statements/build";
@@ -91,7 +92,7 @@ export async function runRefresh(orgId: string, opts: RefreshOpts = {}) {
       await save();
       return out;
     } catch (e) {
-      Object.assign(s, { status: "error", error: (e as Error).message.slice(0, 300) });
+      Object.assign(s, { status: "error", error: errorText(e, 300) });
       await save();
       throw e;
     }
@@ -217,7 +218,7 @@ export async function runRefresh(orgId: string, opts: RefreshOpts = {}) {
   } catch (e) {
     await admin
       .update(syncRuns)
-      .set({ status: "error", finishedAt: new Date(), error: (e as Error).message.slice(0, 500), calls: client.meter.calls, egressBytes: client.meter.bytes })
+      .set({ status: "error", finishedAt: new Date(), error: errorText(e, 500), calls: client.meter.calls, egressBytes: client.meter.bytes })
       .where(eq(syncRuns.id, runId));
     throw e;
   }
@@ -324,7 +325,7 @@ async function afterInstall(orgId: string) {
     await recordObservations(orgId);
     await evaluateDue(orgId, { peer: peerBand });
   } catch (e) {
-    log.error({ err: { message: (e as Error).message }, orgId }, "after-install step failed");
+    log.error({ err: { message: errorText(e) }, orgId }, "after-install step failed");
   }
 }
 

@@ -202,3 +202,28 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
   vendor on app pages from 3+ replies.
 - **Not buildable here (owner):** Xero App Store listing/certification, Core/Plus plan, QuickBooks (needs an Intuit
   developer app), email/Slack provider, Stripe decision, terms/consent wording, CMA check, §11 open questions.
+
+## First live connect: Jenki Drinks (7 Nov 2026), and owner review notes (9 Nov 2026)
+
+- **What failed.** Xero consent, token exchange and all 6 report calls succeeded. The run then failed saving
+  `statement_lines` (7 attempts, same step). The stored error was drizzle's "Failed query: …" text cut at 300/500
+  characters, so the database's reason was lost.
+- **Fixes (on dev):**
+  - The report parser accepts only GUID-shaped account ids. Placeholders and anything else become computed rows.
+  - Summary rows never become lines. An account on two rows becomes one line, with the rows added together, so
+    the (statement, line) primary key can't clash.
+  - `lib/sync/error-text.ts` stores and logs the Postgres code, message and detail. It never stores the SQL or its
+    parameters, which are ledger values; `lib/api.ts` was logging them in full.
+  - The refresh button re-reads the page while a server-side refresh is running, so it comes back without a tab switch.
+- **The real cause is not yet confirmed.** If the next live refresh still fails, the stored error now names it.
+- **Owner decisions in the review:**
+  - Stripe for billing.
+  - "Add & change", never "drop".
+  - Audience: the finance team (FD, financial controller, finance manager, head of finance), not just the FD.
+  - E-commerce and SaaS first.
+- **Waiting on owner:** see the reply in the session log of 9 Nov.
+  - Weights split (0.05 or 0.1 each).
+  - Add vs fix preference.
+  - Definition of "Not a problem" reasons.
+  - Drop-off rule for apps that stop billing.
+  - Pricing and margins.

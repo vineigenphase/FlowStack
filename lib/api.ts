@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { log } from "@/lib/log";
+import { errorText } from "@/lib/sync/error-text";
 
 export class HttpError extends Error {
   constructor(
@@ -21,7 +22,9 @@ export function handle<A extends unknown[]>(fn: (...args: A) => Promise<Response
     } catch (e) {
       if (e instanceof HttpError) return NextResponse.json({ error: e.message, details: e.details }, { status: e.status });
       if (e instanceof z.ZodError) return NextResponse.json({ error: "Invalid request", details: e.issues }, { status: 400 });
-      log.error({ err: { message: (e as Error).message, stack: (e as Error).stack } }, "route error");
+      // errorText drops SQL parameters (ledger values); the stack's first line repeats the message, so skip it.
+      const stack = String((e as Error).stack ?? "").split("\n").slice(1).join("\n");
+      log.error({ err: { message: errorText(e, 1000), stack } }, "route error");
       return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
     }
   };

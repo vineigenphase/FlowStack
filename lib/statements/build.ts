@@ -77,11 +77,20 @@ export const lineKeyFor = (kind: StatementKind, a: { code: string | null; xeroAc
 
 function linesFrom(kind: StatementKind, rep: ParsedReport, accounts: Map<string, AcctInfo>): StatementLine[] {
   const out: StatementLine[] = [];
+  const byKey = new Map<string, StatementLine>();
   rep.rows.forEach((r, i) => {
-    if (!r.accountId) return;
+    if (!r.accountId || r.isSummary) return;
     const a = accounts.get(r.accountId);
-    out.push({
-      lineKey: lineKeyFor(kind, { code: a?.code ?? null, xeroAccountId: r.accountId }),
+    const lineKey = lineKeyFor(kind, { code: a?.code ?? null, xeroAccountId: r.accountId });
+    // If the same account appears on more than one row of a report, a second line with the same key would fail
+    // the save (statement_lines primary key). One line per account: add the rows together.
+    const seen = byKey.get(lineKey);
+    if (seen) {
+      seen.value = Math.round((seen.value + (r.values[0] ?? 0)) * 100) / 100;
+      return;
+    }
+    const line: StatementLine = {
+      lineKey,
       xeroAccountId: r.accountId,
       code: a?.code ?? null,
       name: a?.name ?? r.label,
@@ -89,7 +98,9 @@ function linesFrom(kind: StatementKind, rep: ParsedReport, accounts: Map<string,
       category: a?.category ?? null,
       value: r.values[0] ?? 0,
       sort: i,
-    });
+    };
+    byKey.set(lineKey, line);
+    out.push(line);
   });
   return out;
 }

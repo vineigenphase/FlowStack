@@ -14,15 +14,15 @@ const XERO_PLACEHOLDER_ACCOUNT_ID = "abababab-abab-abab-abab-abababababab";
 
 type Acct = AcctInfo & { section: string };
 const A: Record<string, Acct> = {
-  bank: { xeroAccountId: "a-090", code: "090", name: "Business Bank Account", type: "BANK", systemAccount: null, category: "bank", section: "Bank" },
-  ar: { xeroAccountId: "a-610", code: "610", name: "Accounts Receivable", type: "CURRENT", systemAccount: "DEBTORS", category: "trade_debtors", section: "Current Assets" },
-  office: { xeroAccountId: "a-710", code: "710", name: "Office Equipment", type: "FIXED", systemAccount: null, category: "fixed_assets", section: "Fixed Assets" },
-  computers: { xeroAccountId: "a-720", code: "720", name: "Computer Equipment", type: "FIXED", systemAccount: null, category: "fixed_assets", section: "Fixed Assets" },
-  ap: { xeroAccountId: "a-800", code: "800", name: "Accounts Payable", type: "CURRLIAB", systemAccount: "CREDITORS", category: "trade_creditors", section: "Current Liabilities" },
-  claims: { xeroAccountId: "a-801", code: "801", name: "Unpaid Expense Claims", type: "CURRLIAB", systemAccount: null, category: "unmapped", section: "Current Liabilities" },
-  vat: { xeroAccountId: "a-820", code: "820", name: "VAT", type: "CURRLIAB", systemAccount: "GST", category: "vat", section: "Current Liabilities" },
-  hist: { xeroAccountId: "a-840", code: "840", name: "Historical Adjustment", type: "CURRLIAB", systemAccount: "HISTORICAL", category: "unmapped", section: "Current Liabilities" },
-  re: { xeroAccountId: "a-960", code: "960", name: "Retained Earnings", type: "EQUITY", systemAccount: "RETAINEDEARNINGS", category: "retained_earnings", section: "Equity" },
+  bank: { xeroAccountId: "00000000-0000-4000-8000-000000000090", code: "090", name: "Business Bank Account", type: "BANK", systemAccount: null, category: "bank", section: "Bank" },
+  ar: { xeroAccountId: "00000000-0000-4000-8000-000000000610", code: "610", name: "Accounts Receivable", type: "CURRENT", systemAccount: "DEBTORS", category: "trade_debtors", section: "Current Assets" },
+  office: { xeroAccountId: "00000000-0000-4000-8000-000000000710", code: "710", name: "Office Equipment", type: "FIXED", systemAccount: null, category: "fixed_assets", section: "Fixed Assets" },
+  computers: { xeroAccountId: "00000000-0000-4000-8000-000000000720", code: "720", name: "Computer Equipment", type: "FIXED", systemAccount: null, category: "fixed_assets", section: "Fixed Assets" },
+  ap: { xeroAccountId: "00000000-0000-4000-8000-000000000800", code: "800", name: "Accounts Payable", type: "CURRLIAB", systemAccount: "CREDITORS", category: "trade_creditors", section: "Current Liabilities" },
+  claims: { xeroAccountId: "00000000-0000-4000-8000-000000000801", code: "801", name: "Unpaid Expense Claims", type: "CURRLIAB", systemAccount: null, category: "unmapped", section: "Current Liabilities" },
+  vat: { xeroAccountId: "00000000-0000-4000-8000-000000000820", code: "820", name: "VAT", type: "CURRLIAB", systemAccount: "GST", category: "vat", section: "Current Liabilities" },
+  hist: { xeroAccountId: "00000000-0000-4000-8000-000000000840", code: "840", name: "Historical Adjustment", type: "CURRLIAB", systemAccount: "HISTORICAL", category: "unmapped", section: "Current Liabilities" },
+  re: { xeroAccountId: "00000000-0000-4000-8000-000000000960", code: "960", name: "Retained Earnings", type: "EQUITY", systemAccount: "RETAINEDEARNINGS", category: "retained_earnings", section: "Equity" },
 };
 const accounts = new Map<string, AcctInfo>(Object.values(A).map((a) => [a.xeroAccountId, a]));
 
