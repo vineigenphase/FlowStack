@@ -99,20 +99,25 @@ describe("buildStackMap", () => {
     expect(m.fixes[0]!.why).toContain("works directly with Deputy");
   });
 
-  it("an app reaching Xero by CSV is part by hand, and its fix comes before any add", () => {
-    const m2 = buildStackMap({
+  it("v1.1 F: an app reaching Xero by CSV is part by hand; no Fix step, a Change only when another app ranks higher", () => {
+    const base = {
       categories,
       apps,
-      rules,
+      rules: [...rules, Rule.parse({ id: "rota", account_categories: ["casual"], app_categories: ["rota"], statements: ["pl"] })],
       inUse: [{ appId: "rotaready", spend12m: 900, monthsSeen: 12, present: true }],
-      lines: [line({ key: "pl:477", ruleId: "payroll", value: 690000 })],
-      recs: [],
-    });
+      lines: [line({ key: "pl:477", ruleId: "payroll", value: 690000 }), line({ key: "pl:478", ruleId: "rota", value: 5000 })],
+    };
+    const m2 = buildStackMap({ ...base, recs: [] });
     expect(m2.functions.find((f) => f.key === "rota")!.status).toBe("part_manual");
-    expect(m2.fixes.map((f) => [f.n, f.kind, f.fn])).toEqual([
-      [1, "fix", "rota"],
-      [2, "add", "payroll"],
+    expect(m2.fixes.map((f) => [f.n, f.kind, f.fn])).toEqual([[1, "add", "payroll"]]);
+
+    const m3 = buildStackMap({ ...base, recs: [{ lineKey: "pl:478", appId: "deputy", rank: 1, match: 80, inUse: false }] });
+    // Biggest £ first, whatever the kind: payroll (£690k) before rota (£5k).
+    expect(m3.fixes.map((f) => [f.n, f.kind, f.fn])).toEqual([
+      [1, "add", "payroll"],
+      [2, "change", "rota"],
     ]);
-    expect(m2.fixes[0]!.title).toBe("Connect Rotaready to Xero directly");
+    expect(m3.fixes[1]!.title).toBe("Consider changing Rotaready to Deputy");
+    expect(m3.fixes[1]!.why).toContain("CSV import");
   });
 });

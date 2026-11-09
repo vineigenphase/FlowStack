@@ -30,7 +30,7 @@ export default async function ProposalPage({ params }: { params: Promise<{ token
       <main className="wrap">
         <h1>Fixes for your finance stack</h1>
         <p className="meta">
-          From your own Xero figures. Each fix is numbered in the order to do it: getting the apps you already pay for working comes first.
+          From your own Xero figures. Each step is numbered, biggest £ first: add an app where nothing does the job, or change one where another fits better.
         </p>
         <ol className="fixes">
           {p.items.map((i) => (

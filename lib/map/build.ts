@@ -25,7 +25,7 @@ export type MapFunction = {
   atStake: number;
   suggestion: { id: string; name: string; match: number; worksWith: string[]; sample: boolean } | null;
 };
-export type MapFix = { n: number; kind: "fix" | "add"; fn: string; fnLabel: string; title: string; why: string; lineKeys: string[]; atStake: number };
+export type MapFix = { n: number; kind: "add" | "change"; fn: string; fnLabel: string; title: string; why: string; lineKeys: string[]; atStake: number };
 
 /** Categories that aren't finance functions on the map. */
 const OFF_MAP = new Set(["accounting", "other_software"]);
@@ -117,31 +117,35 @@ export function buildStackMap(i: {
       };
     });
 
-  // Fixes in order: make the apps you already pay for work first (CLAUDE.md §7.3 "fix before add"), then add
-  // apps for the gaps. Within each group, biggest £ first.
-  const ordered = [
-    ...functions.filter((f) => f.status === "part_manual").sort(byWeight),
-    ...functions.filter((f) => f.status === "gap").sort(byWeight),
-  ];
-  const fixes: MapFix[] = ordered.map((f, idx) => {
+  // Steps in order (v1.1 F): Add where nothing covers a function, Change where an app is in use but a different
+  // one ranks higher there. No built-in preference between the two: biggest £ at stake first. A function whose
+  // in-use app is still the best match gets no step (its card already shows the lines worth a look).
+  const steps = functions
+    .filter((f) => f.status === "gap" || (f.status === "part_manual" && f.suggestion))
+    .sort(byWeight);
+  const fixes: MapFix[] = steps.map((f, idx) => {
     const flaggedKeys = f.lines.filter((l) => l.state === "flagged").map((l) => l.key);
-    if (f.status === "part_manual") {
-      const csv = f.apps.find((a) => a.link === "csv");
+    const s = f.suggestion;
+    if (f.status === "part_manual" && s) {
       const names = f.apps.map((a) => a.name).join(" and ");
+      const csv = f.apps.find((a) => a.link === "csv");
       return {
         n: idx + 1,
-        kind: "fix",
+        kind: "change",
         fn: f.key,
         fnLabel: f.label,
-        title: csv ? `Connect ${csv.name} to Xero directly` : `Get more out of ${names}`,
-        why: csv
-          ? `${csv.name} reaches Xero by CSV import, which someone does by hand.`
-          : `You pay for ${names}, but ${flaggedKeys.length === 1 ? "a line here is" : `${flaggedKeys.length} lines here are`} still worth a look.`,
+        title: `Consider changing ${names} to ${s.name}`,
+        why: [
+          csv ? `${csv.name} reaches Xero by CSV import, which someone does by hand.` : `${s.name} scores higher here than ${names} (${s.match}%).`,
+          s.worksWith.length ? `It works directly with ${s.worksWith.join(" and ")}, which you keep.` : "",
+          "Your current app is shown next to it, so it's your call.",
+        ]
+          .filter(Boolean)
+          .join(" "),
         lineKeys: flaggedKeys,
         atStake: f.atStake,
       };
     }
-    const s = f.suggestion;
     return {
       n: idx + 1,
       kind: "add",

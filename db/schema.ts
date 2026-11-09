@@ -274,6 +274,8 @@ export const recommendations = pgTable(
     match: real("match").notNull(),
     components: jsonb("components").notNull(),
     inUse: boolean("in_use").notNull(),
+    /** v1.1 F: "add" | "change"; null for the app already in use. */
+    kind: text("kind", { enum: ["add", "change"] }),
     reason: text("reason").notNull(),
   },
   (t) => [primaryKey({ columns: [t.flagId, t.appId] })],
@@ -618,7 +620,8 @@ export const playbooks = pgTable(
   (t) => [primaryKey({ columns: [t.firmId, t.industry, t.jobKey] })],
 );
 
-export type ProposalItem = { n: number; kind: "fix" | "add"; fn: string; title: string; why: string; atStake: number; lines: string[] };
+export type ProposalItem = { n: number; kind: "add" | "change" | "fix"; // "fix" only on proposals drafted before v1.1
+  fn: string; title: string; why: string; atStake: number; lines: string[] };
 
 /** A firm-branded list of fixes for one client, shared by link. The client ticks the fixes they want. */
 export const proposals = pgTable(

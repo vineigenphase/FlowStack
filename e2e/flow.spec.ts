@@ -44,7 +44,7 @@ test("connect → diagnosis → recommendations → stack map", async ({ page })
 
   // After install: mark the top suggestion as started, then it's on the After install page with day 7/30/90.
   const firstRec = page.locator("ol.cards li").filter({ has: page.getByRole("button", { name: "We've started using it" }) }).first();
-  const appName = (await firstRec.locator(".card-head b").first().innerText()).split("\n")[0]!.replace(/(you use this|draft entry)/g, "").trim();
+  const appName = (await firstRec.locator(".card-head b").first().innerText()).split("\n")[0]!.replace(/(you use this|draft entry|change|add)$/gm, "").trim();
   // The dev server compiles the installs route on first use and may reload the page, which wipes the
   // "Saved" message. So judge by the result: the install shows on the After install page (saving is idempotent).
   // A click before hydration does nothing, so click until the POST goes out.

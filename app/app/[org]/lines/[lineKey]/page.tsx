@@ -129,7 +129,7 @@ export default async function LinePage({ params, searchParams }: { params: Promi
                 <span className="card-head">
                   <b>
                     {r.app.name}
-                    {r.inUse ? <span className="tag">you use this</span> : null}
+                    {r.inUse ? <span className="tag">you use this</span> : r.kind === "change" ? <span className="tag">change</span> : r.kind === "add" ? <span className="tag">add</span> : null}
                     {r.app.sample ? <span className="tag">draft entry</span> : null}
                   </b>
                   <span className="num">{r.p ? `${r.p.score}% for ${PRIORITIES[priority!].label.toLowerCase()}` : `${r.match}% match`}</span>

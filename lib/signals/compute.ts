@@ -48,6 +48,9 @@ export type FlagCtx = {
   scoring: Scoring;
 };
 
+/** Recommendation kinds in 1.0 (v1.1 F). No "drop"; "fix" is reserved for 2.0 (needs transaction volumes). */
+export type RecKind = "add" | "change";
+
 export type FlagOut = {
   kind: LineIn["kind"];
   lineKey: string;
@@ -63,7 +66,8 @@ export type FlagOut = {
   state: LineState;
   evidence: Record<string, unknown>;
   cause: string | null;
-  recommendations: (Scored & { rank: number })[];
+  /** v1.1 F: `add` = nothing in use covers the line; `change` = an in-use app covers it and this one would replace it. The in-use app itself has kind null. */
+  recommendations: (Scored & { rank: number; kind: RecKind | null })[];
 };
 
 const r4 = (n: number) => Math.round(n * 10_000) / 10_000;
@@ -153,7 +157,8 @@ export function computeFlags(lines: LineIn[], ctx: FlagCtx): FlagOut[] {
     if (w.state !== "flagged" && w.state !== "covered") continue;
     const strengthNorm = maxStrength > 0 ? r4(w.strength / maxStrength) : 0;
     const scored = scoreCandidates({ candidates: w.candidates, strengthNorm, kept, inUse: ctx.inUse, prices: ctx.prices, peer: ctx.peer, annualRevenue, scoring: ctx.scoring });
-    w.recommendations = shortlistOf(scored).map((s, i) => ({ ...s, rank: i + 1 }));
+    const kindOf = (s: Scored): RecKind | null => (s.inUse ? null : w.state === "covered" ? "change" : "add");
+    w.recommendations = shortlistOf(scored).map((s, i) => ({ ...s, rank: i + 1, kind: kindOf(s) }));
     if (w.state === "covered") {
       const rule = w.rule!;
       const coveredBy = rule.covered_by ?? rule.app_categories;

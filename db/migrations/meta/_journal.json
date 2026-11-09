@@ -85,6 +85,13 @@
       "when": 1794151108951,
       "tag": "0011_quotes",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1794240883265,
+      "tag": "0012_rec_kind",
+      "breakpoints": true
     }
   ]
 }

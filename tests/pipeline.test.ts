@@ -8,6 +8,7 @@ import { and, eq, sql } from "drizzle-orm";
 import { rowsOf } from "@/lib/db/rows";
 import { freshDb } from "./helpers/db";
 import { adminDb, withOrg } from "@/lib/db/client";
+import { rulesFile } from "@/lib/catalog/load";
 import { detectedApps, flags, orgs, recommendations, reviewQueue, statements, syncRuns } from "@/db/schema";
 import { runRefresh } from "@/lib/sync/refresh";
 import { FixtureXeroClient } from "@/lib/xero/client";
@@ -161,6 +162,16 @@ describe("M5 flags", () => {
     const c = recs[0]!.components as Record<string, number>;
     expect(c.price_fit).toBe(0.5); // no price facts yet → neutral, never estimated
     expect(c.peer_results).toBe(0.5);
+    // v1.1 F: nothing covers payroll (Deputy is a rota app), so the others are Adds; the in-use app has no kind.
+    expect(recs.filter((r) => !r.inUse).every((r) => r.kind === "add")).toBe(true);
+    expect(recs.find((r) => r.inUse)!.kind).toBeNull();
+  });
+
+  it("v1.1 K: weights 0.50 / 0.35 / 0.10 / 0.05 from rules.yaml, and a covered line's alternatives are Changes", async () => {
+    expect(rulesFile().scoring.weights).toEqual({ strength: 0.5, fit_with_in_use: 0.35, peer_results: 0.1, price_fit: 0.05 });
+    const f = (await flagsByKey()).get("pl:200")!;
+    const recs = await withOrg(orgId, (tx) => tx.select().from(recommendations).where(eq(recommendations.flagId, f.id)));
+    expect(recs.filter((r) => !r.inUse).every((r) => r.kind === "change")).toBe(true);
   });
 
   it("covered lines name the app; BS lines use total assets as the base", async () => {

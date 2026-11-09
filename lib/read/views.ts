@@ -147,7 +147,7 @@ export async function lineView(orgId: string, lineKey: string) {
       evidence: { ...(f.evidence as object), run_id: runId },
       recommendations: recs
         .sort((a, b) => a.rank - b.rank)
-        .map((r) => ({ app: { id: r.appId, name: appName(r.appId), sample: catalogApps().find((a) => a.id === r.appId)?.sample ?? true }, rank: r.rank, match: Math.round(r.match), inUse: r.inUse, reason: r.reason, components: r.components })),
+        .map((r) => ({ app: { id: r.appId, name: appName(r.appId), sample: catalogApps().find((a) => a.id === r.appId)?.sample ?? true }, rank: r.rank, match: Math.round(r.match), inUse: r.inUse, kind: r.kind, reason: r.reason, components: r.components })),
       detectedInArea: det.filter((d) => (rule?.app_categories ?? []).some((c) => catalogApps().find((a) => a.id === d.appId)?.categories.includes(c))).map((d) => ({ id: d.appId, name: appName(d.appId), spend12m: d.spend12m, monthsSeen: d.monthsSeen, present: d.present })),
     };
   });

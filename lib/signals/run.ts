@@ -128,6 +128,7 @@ export async function computeFlags(orgId: string, runId: string) {
             match: r.match,
             components: r.components,
             inUse: r.inUse,
+            kind: r.kind,
             reason: r.reason,
           })),
         );

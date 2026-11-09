@@ -146,7 +146,7 @@ export default async function MapPage({ params }: { params: Promise<{ org: strin
           ))}
         </ol>
       ) : (
-        <p className="muted">Nothing to fix on your latest figures.</p>
+        <p className="muted">Nothing to add or change on your latest figures.</p>
       )}
       <p className="muted small">
         Apps you already pay for come first: getting them working properly usually beats adding another. Links to Xero come from our

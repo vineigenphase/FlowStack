@@ -232,7 +232,7 @@ async function requireClient(firmId: string, orgId: string) {
   if (!c) throw new HttpError(404, "Client not found in this practice");
 }
 
-/** Draft a proposal from the client's numbered fixes (the stack map order: fixes before adds). */
+/** Draft a proposal from the client's numbered steps (the stack map order: Add and Change, biggest £ first). */
 export async function createProposal(firmId: string, orgId: string, userId: string, feeText: string | null) {
   await requireClient(firmId, orgId);
   const map = await stackMapView(orgId);

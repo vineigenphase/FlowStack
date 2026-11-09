@@ -9,7 +9,8 @@
 #                  another app ranks higher (that becomes a "could switch" note, not a flag).
 
 scoring:
-  weights: { strength: 0.40, fit_with_in_use: 0.25, peer_results: 0.20, price_fit: 0.15 }
+  # v1.1 K (9 Nov 2026): was 0.40 / 0.25 / 0.20 / 0.15. Price still shows in full on every option.
+  weights: { strength: 0.50, fit_with_in_use: 0.35, peer_results: 0.10, price_fit: 0.05 }
   fit: { native: 1.0, via_app: 0.8, csv: 0.6, none: 0.3, no_apps: 0.5 }
   neutral: 0.5
 
