@@ -4,18 +4,19 @@
 > When something here conflicts with a request in chat, ask before deviating.
 > **Backend 1.0 is specified in BACKEND.md.** Where it conflicts with §3, §6 or §7 below (reports-first, derived cash flow, no Finance API, materiality, review queue), BACKEND.md wins.
 > **Local dev deviations from the specs are recorded in NOTES.md.** Read it too.
+> **v1.1 (9 Nov 2026):** cofounder review applied from CHANGES-v1.1.md; changelog at the top of BACKEND.md. Items tagged OPEN there are not built.
 
 ## 1. What we're building
 
-**Stacksmith tells a Xero business which apps to add, fix or drop — based on what its own ledger says — and then checks the app is actually working after install.**
+**FlowStack tells a Xero business which apps to add or change — based on what its own ledger says — and then checks the app is actually working after install.** (v1.1 F: no "drop"; "fix" is reserved for 2.0.)
 
-The finance director connects Xero (read-only). We read bills, invoices, manual journals, contacts and bank transactions and produce:
+The finance lead (FD, financial controller, finance manager or head of finance) connects Xero (read-only). Accountants and bookkeepers with several businesses switch between them (BACKEND §3.5). We read bills, invoices, manual journals, contacts and bank transactions and produce:
 
 1. **Diagnosis** — apps already in use (detected from supplier bills), and *signals* in the books that show manual work (e.g. 14 manual payroll journals/month, £62k receivables >30 days, 61% of bills keyed by hand).
 2. **Recommendations** — ranked apps per gap, including **integration chains** (e.g. legacy Deputy → Staffology → Xero), price band for a business their size, time saved, and peer reviews.
 3. **Stack map** — Xero at the core, every finance function around it, gaps highlighted.
 4. **Ask** — natural-language questions ("inventory app for Xero for hospitality") answered against *their* ledger and stack, not a generic directory.
-5. **Verified reviews** — you can only review an app whose bills appear in your own ledger. Reviews include price paid and a 90-day "support after go-live" re-rate.
+5. **Verified reviews** — you can only review an app whose bills appear in your own ledger. Reviews include price band paid and a 90-day "support after go-live" re-rate.
 6. **After install** — day 7 / 30 / 90 check-ins computed from the ledger (is the target workflow now flowing through the app? did the signal move?), plus a price check 60 days before renewal.
 
 ### Why this wins (the gaps we exploit)
@@ -39,10 +40,10 @@ The finance director connects Xero (read-only). We read bills, invoices, manual 
 3. **Client money flow**: where money starts → what carries it → which Xero account it lands in (real account codes, e.g. 477 Wages and Salaries). Broken flows dashed. Fixes are numbered in the order to do them (dependencies matter: fix Dext before adding Procure Wizard), each with the ledger evidence behind it.
 4. **Client proposal**: firm-branded, the client toggles fixes and sees time back and its value; the firm's fee is the firm's to set. "No app pays to appear" footer.
 5. **After install**: adoption chart against target + day 7/30/90/renewal check-ins.
-6. **Monday digest** (phone/email/Slack): wins, clients that need the partner, proposals waiting.
+6. **Later: firm plan — Monday digest** (parked, v1.1 H): a weekly email for accountancy firms summarising all their clients — wins (e.g. "debtor days fell 9 days after adding Chaser"), clients that need the partner, proposals still waiting. Only makes sense once firms connect many clients. Not in 1.0.
 - Visual system: ink rail, white working surface, highlighter yellow `#FFE04A` only for "needs action" or the number that matters; orange `#C2410C` dashed for by-hand flows; Archivo at 125% width for headings, Instrument Sans for body, IBM Plex Mono for figures and codes. No gradients, emoji or icon-per-heading.
 - Note: Xero's **Bulk Connections** (one OAuth for many client orgs) is Advanced-plan only. Until then, onboard firm clients one connection at a time and make that flow fast.
-- **Never** sell ranking. Vendors may claim and correct their listing for free; paid placement would destroy the product. Any future vendor revenue must be clearly separated from ranking (e.g. paid analytics on anonymised demand), and disclosed.
+- **Never** sell ranking. Vendors may claim and correct their listing for free **once we have meaningful usage** (v1.1 J: keep `apps.claimed_by`, no vendor portal in 1.0); paid placement would destroy the product. Any future vendor revenue must be clearly separated from ranking (e.g. paid analytics on anonymised demand), and disclosed.
 
 ## 2. Hard constraints (do not violate)
 
@@ -85,7 +86,7 @@ Verify against https://developer.xero.com/pricing before relying on numbers — 
 - **Jobs:** Inngest (or Trigger.dev) for sync, signal computation, check-ins. No long work in request handlers.
 - **Xero:** official `xero-node` SDK wrapped in our own `lib/xero/` client (rate limit, retries, egress metering).
 - **LLM:** Anthropic API (Claude), inference only, behind `lib/llm/` with feature-only prompts. Log prompts without ledger rows.
-- **Billing:** Stripe subscriptions (Pro, Advisor). Xero App Store billing is retired, so we bill directly.
+- **Billing:** Stripe (v1.1 E, DECIDED): Checkout, Billing, Customer Portal, Stripe Tax once VAT-registered. Plans and prices live in `catalog/plans.yaml`, never in code; prices are OPEN (CHANGES-v1.1 §4 item 1), so test mode only. Xero App Store billing is retired, so we bill directly.
 - **Auth:** "Sign in with Xero" for FDs + email magic link for advisors' team members.
 - **Hosting:** Vercel (web) + Inngest cloud. Secrets in the platform's secret store; token encryption with libsodium sealed boxes, key from env.
 - **Observability:** Sentry + structured logs (pino). Never log tokens or raw ledger payloads.
@@ -121,7 +122,7 @@ fingerprints(app_id, pattern, kind: contact_name|bank_descriptor|journal_attachm
 integrations(from_app, to_app, kind: native|via_app|csv, direction, notes)    -- e.g. deputy→staffology native
 detected_apps(org_id, app_id, first_seen, last_seen, monthly_cost, state: ok|underused|legacy, evidence jsonb)
 signals(org_id, key, value numeric, severity, period, evidence jsonb, computed_at)
-recommendations(org_id, app_id, fit, hours_saved, chain jsonb, reasons jsonb, kind: add|fix|replace, status)
+recommendations(org_id, app_id, fit, hours_saved, chain jsonb, reasons jsonb, kind: add|change, status)   -- v1.1 F
 reviews(id, app_id, org_id, user_id, role, scores jsonb, price_paid_band, body, verified_months, incentivised bool, created_at)
 review_followups(review_id, day, support_score, outcome_note)
 checkins(org_id, app_id, day, metric_key, metric_value, status)
@@ -129,7 +130,7 @@ checkins(org_id, app_id, day, metric_key, metric_value, status)
 
 ### Catalogue sources
 1. Our own curation in `/catalog/*.yaml` (category taxonomy aligned with how FDs talk: Spend/AP, Billing/AR, Payroll, Rota, Inventory, Data ingestion, Reporting, Consolidation, FP&A, Cash forecasting, FX, Payments, Job management, EPOS).
-2. Vendors claim and correct their own listing (free, moderated, never affects rank).
+2. Vendors claim and correct their own listing (free, moderated, never affects rank) — once we have users (v1.1 J).
 3. Members submit missing apps and integration edges.
 Check the Xero App Store terms before importing anything from it; prefer manual entry.
 
@@ -158,12 +159,13 @@ Each signal is a pure function with a fixture-based unit test. Thresholds live i
 
 ### 7.3 Ranking (`lib/rank`)
 ```
-fit = 0.40 * signal_strength      (0–1, from rules.yaml severity curves)
-    + 0.25 * compatibility        (integration graph: works with apps they keep; chains allowed up to 2 hops)
-    + 0.20 * peer_outcome         (verified review scores + measured check-in outcomes, size/industry matched)
-    + 0.15 * price_fit            (price band vs. headcount/revenue band)
+fit = 0.50 * signal_strength      (coverage × materiality)
+    + 0.35 * compatibility        (integration graph: works with apps they keep; chains allowed up to 2 hops)
+    + 0.10 * peer_outcome         (verified review scores + measured check-in outcomes; neutral 0.5 until 3.0)
+    + 0.05 * price_fit            (price band vs. revenue band; neutral 0.5 when price is missing)
 ```
-- Always prefer **fix** (better adoption of an app they already pay for) over **add** when the gap category is covered by a detected app.
+(v1.1 K. Weights live in `catalog/rules.yaml → scoring:`.)
+- No built-in preference: the score decides. The app in use is always scored and shown next to the alternatives, so a **Change** is a visible choice, never a silent swap. Kinds are `add` and `change` (v1.1 F; confirm: CHANGES-v1.1 §4 item 6).
 - Output 3–5 recommendations max, each with ledger evidence the user can click into.
 - Exclusions: apps whose `industries` exclude the org's industry (e.g. manufacturing MRP for hospitality).
 
@@ -182,7 +184,7 @@ Goal: an FD never has to dig through vendor sites, book demos or "request pricin
 Every rank shows its one-line reason. An option that breaks a must-have is marked, never silently dropped.
 
 **Dossier fields** (each stores `value`, `source`, `checked_at`; show source + date in the UI):
-- Price: pricing model, setup fee, published or quote-only, **what peers actually pay** (median + p25–p75 per size band)
+- Price: pricing model, setup fee, published or quote-only. 1.0 shows **published prices only** (with source and date) or "Not published · we're checking". Peer prices are out of 1.0 (v1.1 G, see below)
 - Contract: minimum term, notice period, auto-renewal, data export on exit
 - Fit: integrations with the apps they keep (direct sync / CSV / replaces it), industry must-haves, what posts to Xero and how (journal vs invoice, tracking categories)
 - Going live: days to first use (peer median from check-ins), partner needed or not
@@ -191,7 +193,7 @@ Every rank shows its one-line reason. An option that breaks a must-have is marke
 - Vendor: age, ownership changes, price-rise history
 
 **Where prices come from** (the moat: no vendor has to cooperate):
-1. Ledger bills: the monthly amount each connected org pays a fingerprinted vendor → `price_observations(app_id, size_band, industry, month, amount)`. Show only aggregates with ≥10 orgs (k-anonymity); under 10, show "not enough peers yet". This is plain statistics, not model training. Put the aggregate use in our terms and customer consent.
+1. **OPEN, not in 1.0 (v1.1 G; CHANGES-v1.1 §4 item 2).** Ledger bills: the monthly amount each connected org pays a fingerprinted vendor → `price_observations`. One business's price must never be shown or inferable by another. If ever built: opt-in, a range (p25–p75) rounded to the nearest £5, only where ≥10 businesses contribute in that size band, never a single value, never a count below 10. Before building: written sign-off from a lawyer **and** Xero's partner team (Xero's terms treat combined data as user data and ban combining and supplying it to other apps or third parties).
 2. Vendor-claimed listings (free, moderated; published price lists).
 3. **Quote requests**: one click sends the situation (no ledger data) to the top 3 vendors; replies are entered in the same structure and land in the comparison. Track response time per vendor and show it.
 
@@ -208,7 +210,7 @@ Design reference: `Compare` artboard on the FlowStack canvas.
 - **Proof of use:** reviewer's org must have ≥2 months of bills from the app's fingerprint. Badge shows verified tenure.
 - Fields: role, scores (setup, support after go-live, value, Xero sync), price paid band, free text.
 - 90-day follow-up email to re-rate support after go-live.
-- Incentive: 1 month of Pro per approved review, shown as "incentivised" on the review.
+- Incentive ("activators", v1.1 O, 3.0): active reviewers earn free months; it takes more than one review per month (proposed 3 approved reviews = 1 free month, max 3 a year; threshold OPEN, CHANGES-v1.1 §4 item 3). The reward never depends on rating or tone, every rewarded review is labelled "incentivised", rewards are audited (`reward_ledger`).
 - Vendors can reply publicly; cannot edit, hide or reorder.
 
 ### 7.6 Check-ins (`lib/checkins`)
@@ -218,7 +220,7 @@ Design reference: `Compare` artboard on the FlowStack canvas.
 ## 8. UX rules (prototype is the reference)
 - Open on a working state: after connect, the diagnosis page renders with real numbers within 2 minutes (show progress per endpoint).
 - Every recommendation links to its evidence ("14 manual journals → see them").
-- Write for finance people: plain words, £ figures, months, no "AI-powered".
+- Write for finance people: plain words, £ figures, months, no "AI-powered". Address the user as "you" or "the finance lead", not "the FD" (v1.1 A).
 - Light and dark themes from tokens; mobile works.
 
 ## 9. Build plan
@@ -252,5 +254,5 @@ Design reference: `Compare` artboard on the FlowStack canvas.
 ## 11. Open questions (decide with the founders, don't guess)
 1. Single-org Pro vs. advisor-first go-to-market?
 2. Is £100/mo justified once the initial stack is chosen, or does monitoring + renewal price checks carry it? Consider £100/mo with annual discount vs. a one-off audit fee + lower monitoring tier.
-3. Which industries first? (Hospitality has a clear app gap story; SaaS has the most Xero-native FDs.)
+3. ~~Which industries first?~~ **Answered (v1.1 P): ecommerce and SaaS first** (the most Xero- and tech-native finance teams). Hospitality later.
 4. How to cold-start reviews before we have members: invite reviewers from finance communities with proof-of-use, never write any ourselves.

@@ -4,11 +4,28 @@
 > **Where this file conflicts with CLAUDE.md §3, §6 or §7, this file wins for release 1.0.** Everything else in CLAUDE.md still applies: read-only, no AI training on Xero data, tenant isolation, sample data labelled, no scraping of competitors.
 > Written 4 Nov 2026. Re-check the Xero facts in §3 against developer.xero.com before you rely on them.
 
+### Changelog
+- **v1.1 (9 Nov 2026), cofounder review** (CHANGES-v1.1.md). Tags: DECIDED = build; PROPOSED = build, may change; OPEN = seam + TODO only (CHANGES-v1.1 §4).
+  - **A:** users are any finance lead; optional `users.job_title`.
+  - **B:** monthly BS + P&L (12 months), per-month cash flow, trend signals §7.3.
+  - **C (PROPOSED):** app lifecycle (cycle, states, lapsing question) §6.
+  - **D (PROPOSED):** four feedback answers and three metrics §10.
+  - **E:** Stripe billing §20 (prices OPEN).
+  - **F:** kinds are Add and Change only.
+  - **G:** peer prices out of 1.0 (legal OPEN).
+  - **I:** several businesses per user, switcher, firms, connection cap.
+  - **K:** weights 0.50 / 0.35 / 0.10 / 0.05.
+  - **L (PROPOSED):** 7 crawl pages + Companies House §11.
+  - **M:** mapping led by reporting code + tax rate + synonyms §5.
+  - **O:** reward ledger only (threshold OPEN).
+  - **P:** ecommerce + SaaS first.
+- **v1.0 (4 Nov 2026):** first version.
+
 ---
 
 ## 0. The goal in one paragraph
 
-A finance director connects Xero (read-only). FlowStack pulls a handful of **reports**, builds the P&L (year to date), balance sheet (latest month end) and cash flow (year to date), and maps every account to a standard category. Then it flags each line that is **material** and has **no app covering it**, with the trial balance figure as evidence. It ranks apps for that line, including the app the business already uses. Anything the system is unsure about goes to a **review queue** for a person. Nothing is ever estimated or made up. The metric we run on is the **false-positive rate**: flags users mark "Not a problem" ÷ flags they answered.
+The finance lead (FD, financial controller, finance manager or head of finance) connects Xero (read-only). FlowStack pulls a handful of **reports**, builds the P&L (year to date and by month), balance sheet (each of the last 12 month ends) and cash flow (year to date and by month), and maps every account to a standard category. Then it flags each line that is **material** and has **no app covering it**, and each **trend** that has moved the wrong way (debtor, creditor and stock days, cash headroom), with the trial balance figure as evidence. It ranks apps for that line, including the app the business already uses. Anything the system is unsure about goes to a **review queue** for a person. Nothing is ever estimated or made up. The metric we run on is the **false-positive rate** (§10): flags users answer "We don't need an app" or "The numbers are wrong" ÷ flags they answered.
 
 **Dev mode** means the whole backend runs locally against Xero's free Starter plan and the Demo Company, or with no Xero at all from recorded fixtures (`XERO_MODE=fixtures`). The same code deploys to Vercel + Neon with no changes.
 
@@ -79,8 +96,11 @@ Every call sends the header `xero-tenant-id`.
 | 1 | `GET /Organisation` | – | base currency, country, financial year end, org name |
 | 2 | `GET /Accounts` | – | codes, names, `Type`, `Class`, `ReportingCode`, `SystemAccount` → mapping |
 | 3 | `GET /Reports/ProfitAndLoss` | `fromDate`=FY start, `toDate`=latest month end, `standardLayout=true` | P&L YTD; revenue = materiality base |
-| 4 | `GET /Reports/BalanceSheet` | `date`=latest month end, `standardLayout=true` | BS; total assets = base |
-| 5 | `GET /Reports/BalanceSheet` | `date`=prior FY end, `standardLayout=true` | opening balances for derived cash flow |
+| 4 | `GET /Reports/BalanceSheet` | `date`=latest month end, `periods=11`, `timeframe=MONTH`, `standardLayout=true` | 12 month-end balance sheets in one call (column 0 = latest; total assets = base) (v1.1 B) |
+| 4b | `GET /Reports/ProfitAndLoss` | `fromDate`/`toDate`=latest month, `periods=11`, `timeframe=MONTH`, `standardLayout=true` | 12 months of P&L for days ratios (v1.1 B) |
+| 5 | `GET /Reports/BalanceSheet` | `date`=prior FY end, `standardLayout=true` | opening balances for YTD cash flow; **skipped when the prior FY end is inside the 12-month window** |
+
+- `periods` max is 11 (check the current docs). If lower, page backwards with more calls.
 | 6 | `GET /Reports/TrialBalance` | `date`=latest month end | evidence on every flag |
 | 7+ | `GET /Invoices` | `where=Type=="ACCPAY" AND Date>=DateTime(y,m,d)`, `Statuses=AUTHORISED,PAID`, `summaryOnly=true`, `page=n` | supplier spend (aggregate, discard) |
 | 8+ | `GET /BankTransactions` | `where=Type=="SPEND" AND Date>=DateTime(y,m,d)`, `page=n` | card/DD spend (aggregate, discard) |
@@ -97,6 +117,10 @@ Every call sends the header `xero-tenant-id`.
 - Revoke: `POST https://identity.xero.com/connect/revocation`; disconnect a tenant: `DELETE https://api.xero.com/connections/{connectionId}`
 - Access token lasts ~30 minutes. The refresh token rotates on every use; store the new one atomically. Refresh under a **Postgres advisory lock per connection** (`pg_advisory_xact_lock(hashtext(connection_id))`) so two requests never both spend the same refresh token.
 - Verify `id_token` with `jose` against JWKS `https://identity.xero.com/.well-known/openid-configuration/jwks`.
+- **Several businesses per user (v1.1 I).**
+  - Each Xero business is its own consent (connecting many at once needs Xero's Advanced plan).
+  - "Connect another business" is one click that returns to the same screen. After each callback, call `GET /connections` and upsert every tenant the user has authorised.
+  - **Connection cap:** Starter allows 5 connections in total across all businesses (Core: 50). Count active `xero_connections` before starting OAuth (`XERO_CONNECTION_CAP`, default 5) and show a friendly message at the cap. Firm onboarding copy states the limit.
 
 ### 3.6 Parsing Xero reports
 Reports come back as `Reports[0].Rows[]` with `RowType` ∈ `Header | Section | Row | SummaryRow`. Each `Row.Cells[]` has `Value`, and the first cell's `Attributes[]` carries `{Id:"account", Value:<AccountID UUID>}`. Write one parser, `parseReport(json) → ReportRow[]`:
@@ -125,6 +149,8 @@ check = CFO + CFI + CFF − Δ BANK
 - If `|check| ≤ max(£100, 0.5% of |Δ BANK|)`, the statement is `reconciled`.
 - Otherwise, show the statement as "Cash flow doesn't reconcile yet: £X unexplained", open a review-queue item (`kind=cashflow_unreconciled`), and **do not flag cash flow lines** for that org until it is resolved.
 - Label the statement "Cash flow (derived from your balance sheet)" in the API payload.
+- **Per month (v1.1 B):** the same formula over each pair of consecutive month-end balance sheets and that month's P&L, giving a monthly cash flow trend. The reconciliation rule applies per month. Unreconciled months open **one** `cashflow_unreconciled` item per org (not one per month), listing the months.
+- CFI covers capital expenditure net of disposals. CFF covers short- and long-term loans (drawdowns and repayments), directors' loans and equity.
 - Tests: hand-built fixture where the answer is known; Demo Company; a fixture with a missing account type that must fail the reconciliation and open a queue item.
 
 ---
@@ -133,11 +159,31 @@ check = CFO + CFI + CFF − Δ BANK
 
 Each Xero account gets an **account category** (about 40, in `catalog/account-categories.yaml`). Signals work off categories, never raw codes.
 
+Names are written by each business ("Labour", "Salaries", "Wages") and vary. The **reporting code** (Xero's standard tagging) and the **tax rate** are far more reliable, so they lead (v1.1 M).
+
 The pipeline, in order, stopping at the first confident match:
 1. **Confirmed map** from a previous user or admin answer (`account_maps.source = confirmed`), confidence 1.0.
-2. **Rules:** `Type` + `ReportingCode` (UK reporting codes are rich, e.g. wages vs. rent) + code range + name keywords. Confidence from the rule (0.7–0.95).
-3. **LLM suggestion** (only if `LLM_ENABLED`): send **account names and types only, no amounts, no org name**. The response must be JSON `{category, confidence}` validated by Zod. Capped at 0.8.
-4. Below `MAP_CONFIDENCE_MIN` (default 0.75): category `unmapped`, open a review-queue item `kind=account_mapping`. **Lines on unmapped accounts are never flagged.**
+2. **Reporting code** (the tagging) → category via `catalog/reporting-codes.yaml`, confidence 0.9.
+3. **Type + tax rate + name synonyms** (`catalog/account-synonyms.yaml`, plus each category's `name_any`), confidence 0.6–0.85.
+4. **LLM suggestion** (only if `LLM_ENABLED`): send **account names and types only, no amounts, no org name**. The response must be JSON `{category, confidence}` validated by Zod. Capped at 0.8.
+5. Below `MAP_CONFIDENCE_MIN` (default 0.75): category `unmapped`, open a review-queue item `kind=account_mapping`. **Lines on unmapped accounts are never flagged.**
+
+**Tax-rate checks:**
+- A wages account normally carries No VAT. An account named like wages that uses 20% VAT is probably agency labour or contractors: map it to `agency_staff` at confidence ≤ 0.7, which queues it.
+- Any category whose `expected_tax` disagrees with the account's `TaxType` loses 0.15 confidence.
+
+**Inputs:**
+- Store `tax_type`, `reporting_code` and `reporting_code_name` on `accounts`; `/Accounts` returns them.
+- Three recorded charts of accounts with different naming in `/fixtures/xero/`; the mapping is unit tested across all three.
+
+```yaml
+# catalog/account-synonyms.yaml (excerpt)
+wages:        [wages, salaries, salary, labour, labor, payroll, staff costs, staff wages, gross pay]
+employer_ni:  [employers ni, er ni, national insurance, nic]
+pensions:     [pension, pensions, auto enrolment, nest]
+agency_staff: [agency, temp staff, contractors, freelancers]
+software:     [software, subscriptions, saas, it costs, computer costs]
+```
 
 ```yaml
 # catalog/account-categories.yaml (excerpt)
@@ -167,7 +213,29 @@ The pipeline, in order, stopping at the first confident match:
 3. Normalise names: lowercase; strip `ltd limited inc llc plc pty gmbh uk`, punctuation, `*`, `dd`, trailing reference numbers.
 4. Match against `fingerprints` (in `catalog/apps.yaml`): exact → alias → fuzzy (Jaro-Winkler ≥ 0.93). Fuzzy matches below 0.97 open a queue item `kind=fingerprint_check` instead of counting as detected.
 5. Suppliers in "software / subscriptions" account categories that match nothing open a queue item `kind=unknown_supplier`, so the fingerprint list grows.
-6. `detected_apps` rows: `app_id, spend_12m, months_seen, last_seen, evidence {contact names, sources}`. **Present** = paid in ≥2 of the last 4 months.
+6. `detected_apps` rows: `app_id, spend_12m, months_seen, last_seen, evidence {contact names, sources}, cycle, state, next_expected`.
+
+### 6.1 App lifecycle: when payments stop (v1.1 C, PROPOSED; the rule itself is OPEN item 4)
+1. **Billing cycle** from the payment history: `monthly` (median gap 25–35 days), `quarterly` (80–100), `annual` (330–400), else `unknown`. Annual apps look back 13 months, not 4.
+2. **States:**
+
+   | State | When |
+   |---|---|
+   | `new` | first payment in the last 60 days |
+   | `active` | paid within one cycle + 15 days' grace |
+   | `lapsing` | one expected payment missed (past cycle + 15 days) |
+   | `inactive` | two expected payments missed, or the user says they stopped |
+   | `declared` | the user says they use it but we can't see payments (personal card, parent company, free plan) |
+
+3. **On `lapsing`, ask in the app** (never outside it): "We haven't seen a payment to Pleo since August. Do you still use it?" The answers:
+   - **Yes, still use it** → `declared`, ask again in 6 months.
+   - **We moved to …** (pick an app) → old app `inactive`, new app `declared`, plus a `fingerprint_check` item.
+   - **We stopped using it** → `inactive`.
+4. **No answer:** `new`, `active`, `lapsing` and `declared` all count as coverage. `inactive` does not. One missed payment never produces a "you have no app" flag.
+5. **New app in a category where another is active** → ask "Is Ramp replacing Pleo?" The answer feeds the change history (3.0 switch stats).
+6. **Internal:** an unanswered `lapsing` older than 30 days opens `kind=app_lapsing`, to review the pattern.
+
+Tables: `app_status_answers(org_id, app_id, answer, replaced_by_app_id null, user_id, created_at)`.
 
 ---
 
@@ -208,8 +276,11 @@ Line states:
 | `flagged` | the rule has app categories, value ≥ min, gap > 0, mapping is confident |
 | `covered` | gap = 0; show "Covered · <app>", plus "Could switch to <app>" when `switch_option` is set |
 | `fine` | the rule has no app categories, or no rule applies |
-| `marked_fine` | the user answered "Not a problem" (persisted per org + line + rule) |
-| `queued` | the mapping is unsure or cash flow is unreconciled; the line shows as "Checking" |
+| `marked_fine` | the user answered "We don't need an app for this" (persisted per org + line + rule) |
+| `snoozed` | the user answered "Right, but not now": hidden for 90 days, then shown again (v1.1 D) |
+| `queued` | the mapping is unsure, the user said the numbers are wrong, or cash flow is unreconciled; the line shows as "Checking" |
+
+A line the user says an app already handles becomes `covered` by a `declared` app (§6.1).
 
 - **Order:** flagged lines by `|value|` descending (the £ value is the cost of getting it wrong), then covered, then fine.
 - **Hero number "£ at stake":** Σ |value| of `flagged` P&L cost lines (exclude revenue categories).
@@ -220,6 +291,29 @@ Line states:
     detected_in_area: [{app, spend_12m, months_seen}],
     rule_id, rule_version }
   ```
+
+### 7.3 Trend signals (v1.1 B)
+Pure functions over the 12 monthly statements (`lib/signals/trends.ts`), each tested against fixtures. Thresholds in `catalog/rules.yaml → trends:`. "Last 3m" figures are annualised (× 4).
+
+| key | Calculation | App categories |
+|---|---|---|
+| `debtor_days` | trade debtors ÷ (revenue last 3m × 4) × 365 | billing & receivables (chasing) |
+| `creditor_days` | trade creditors ÷ ((cost of sales + overheads) last 3m × 4) × 365 | spend & payables |
+| `stock_days` | inventory ÷ (cost of sales last 3m × 4) × 365 | inventory |
+| `cash_headroom_months` | bank balance ÷ average monthly net cash outflow (last 3m) | cash flow forecasting (4.0 funding later) |
+
+- **Fires when:**
+  - the latest value is past the rule threshold (above it for days; below it for headroom), **and**
+  - it has moved the wrong way by at least `min_change` (e.g. 7 days) over 3 months.
+
+  Movement matters, not just level.
+- **Materiality:**
+  - The £ value is the extra balance tied up by the rise: (days now − days 3 months ago) ÷ 365 × the annualised base.
+  - The base is revenue for debtors, and costs or cost of sales for creditors and stock.
+  - It is then banded and ordered like any other flag.
+- **Evidence:** the 12-month series, the trial balance line for the balance, and the formula with the numbers filled in.
+- **Coverage:** a detected app in the rule's `covered_by` categories covers the trend, as in §7.2.
+- **Line key:** `trend:<key>`.
 
 ---
 
@@ -259,13 +353,20 @@ Each row: `value, state, quote, source_url, checked_at, checked_by, sample`.
 ### 8.3 Scoring (`lib/rank/score.ts`)
 For each flagged line, candidates = apps in the rule's app categories, filtered by the org's markets. **Include the detected app even if it would not otherwise qualify.**
 ```
-match = 100 × ( 0.40 × strength_norm          # strength ÷ max strength across this org's flags
-              + 0.25 × fit_with_in_use        # native integration with an app they keep 1.0 | via app 0.8 | CSV 0.6 | none 0.3 | no apps to fit 0.5
-              + 0.20 × peer_results           # 0.5 neutral until 3.0 feedback exists
-              + 0.15 × price_fit )            # band vs revenue band; 0.5 neutral when price is missing (never estimated)
+match = 100 × ( 0.50 × strength_norm          # strength ÷ max strength across this org's flags (coverage × materiality)
+              + 0.35 × fit_with_in_use        # native integration with an app they keep 1.0 | via app 0.8 | CSV 0.6 | none 0.3 | no apps to fit 0.5
+              + 0.10 × peer_results           # 0.5 neutral until 3.0 feedback exists
+              + 0.05 × price_fit )            # band vs revenue band; 0.5 neutral when price is missing (never estimated)
 ```
+Weights v1.1 K; they live in `catalog/rules.yaml → scoring:`. Price is still shown in full on every option; it just barely moves the rank.
 - Return the top 3 plus the in-use app if it isn't in the top 3. Each comes with `components` and a one-line `reason`.
-- Coverage is decided by `covered_by` (§7.2), not by rank. When the line is covered but a same-job app ranks higher, both are shown (e.g. Pleo vs Ramp) and the higher one is recorded as `switch_option`.
+- **Recommendation kinds (v1.1 F):**
+  - `add`: no app covers the line.
+  - `change`: an app is in use and a different one outranks it.
+  - No `drop`.
+  - `fix` is reserved for 2.0, because adoption needs transaction volumes 1.0 doesn't read.
+  - No built-in preference: the score decides. The in-use app is always scored and shown next to the alternatives, so a Change is a visible choice, never a silent swap. (Confirm: CHANGES-v1.1 §4 item 6.)
+- Coverage is decided by `covered_by` (§7.2), not by rank. When the line is covered but a same-job app ranks higher, both are shown (e.g. Pleo vs Ramp) and the higher one is recorded as `switch_option` (a Change).
 - Priority presets (Balanced, Lowest cost, Fastest live, Best support) from CLAUDE.md §7.3b come later. Keep the weights in `catalog/rules.yaml → scoring:`.
 
 ---
@@ -282,7 +383,8 @@ The `review_queue` table is the single inbox for people (Vinu and Luke).
 | `fact_missing` / `fact_conflicting` / `fact_stale` | crawl results | enter verified value + source, or confirm missing |
 | `fact_spot_check` | random 20% of changed `found` facts | verify or correct |
 | `cashflow_unreconciled` | §4 check fails | fix the account mapping or accept with a note |
-| `flag_disputed` | user answers "Not a problem" | tune the rule, or note why the flag stands |
+| `flag_disputed` | user answers "We don't need an app for this" | tune the rule, or note why the flag stands |
+| `app_lapsing` | a `lapsing` question unanswered for 30 days (§6.1) | note the pattern, or dismiss |
 
 Rules:
 - Items dedupe on `(kind, ref_hash)`.
@@ -293,9 +395,28 @@ Rules:
 
 ## 10. False positives
 
-- `POST /api/flags/:id/feedback {answer: "yes" | "no", note?}`. "no" sets the line `marked_fine` for that org and opens `flag_disputed`.
-- FP rate = `count(no) / count(answered)` overall, per rule, and per week: `GET /api/admin/fp-report`.
-- **Labelled test set:** `/fixtures/labelled/<org>.json` holds a chart of accounts + report fixtures + the expected state for every line, labelled by us. `pnpm eval` runs the full pipeline on each and prints FP rate and missed-flag rate per rule. **CI fails if the FP rate is above `FP_GATE` (0.15 for 1.0).**
+"Not a problem" mixed different failures, so it is split into four answers, alongside **"Yes, this is right"** (v1.1 D, PROPOSED; confirm: CHANGES-v1.1 §4 item 5).
+
+| Answer | Meaning | Counts as | What happens |
+|---|---|---|---|
+| `yes` | "Yes, this is right" | correct | nothing |
+| `already_use_app` | "We already use an app for this" (pick it, or type a name) | **detection miss** | line → covered by a `declared` app; `fingerprint_check` item if the app isn't recognised |
+| `no_app_needed` | "We don't need an app for this" | **false positive** | line → `marked_fine`; `flag_disputed` item |
+| `numbers_wrong` | "This line or figure isn't right" | **false positive** (mapping/data) | line → `queued`; `account_mapping` item |
+| `not_now` | "Right, but not a priority now" | neither | line → `snoozed` for 90 days |
+
+- `POST /api/flags/:id/feedback`. Body:
+  ```
+  { answer: "yes" | "already_use_app" | "no_app_needed" | "numbers_wrong" | "not_now", app_id?, app_name?, note? }
+  ```
+  The old `"no"` is accepted as `no_app_needed` for one release.
+- **Metrics,** overall, per rule and per week (`GET /api/admin/fp-report`):
+  ```
+  false-positive rate = (no_app_needed + numbers_wrong) ÷ (yes + no_app_needed + numbers_wrong + already_use_app)
+  detection miss rate = already_use_app ÷ same denominator
+  not_now             = excluded from both; reported as a count
+  ```
+- **Labelled test set:** `/fixtures/labelled/<org>.json` holds a chart of accounts + report fixtures + the expected state (and `expected_reason` where it isn't flagged) for every line, labelled by us. `pnpm eval` runs the full pipeline on each and prints FP rate and missed-flag rate per rule. **CI fails if the false-positive rate is above `FP_GATE` (0.15 for 1.0).** The gate uses the FP rate only.
 - Every flag stores `rule_id` + `rule_version`, so rate changes can be traced to rule edits.
 
 ---
@@ -303,13 +424,25 @@ Rules:
 ## 11. Crawl (monthly, `pnpm crawl` / cron)
 
 For each app in `apps.yaml`:
-1. Fetch the 4 pages (home, services, pricing, product) via Tavily Extract. If there is no key, use `fetch` + Readability. Respect `robots.txt`; skip disallowed pages and record `blocked`.
+1. Fetch up to 7 pages (home, services, pricing, product, **integrations, security/trust, terms**; v1.1 L) via Tavily Extract. Page URLs are found once by a person and written into `apps.yaml`, never guessed. If there is no key, use `fetch` + Readability. Respect `robots.txt`; skip disallowed pages and record `blocked`.
 2. Store page text + hash in `crawl_pages`. Unchanged hash → skip extraction.
 3. Extraction (`claude-haiku-5-5`, if enabled) returns JSON `[{field, value, quote}]`, validated by Zod.
 4. **Quote check:** keep a fact only if `quote` appears verbatim in the normalised page text (whitespace and case folded). No quote match, no fact.
 5. Compare with the current fact. New or changed → `found` (+20% sampled to `fact_spot_check`). Fields not found anywhere → `missing` + queue. Disagreement between pages → `conflicting` + queue.
 6. Facts not confirmed for 90 days → `stale` (nightly job).
-7. **Never auto-promote to `verified`.**
+7. **Never auto-promote to `verified`.** The one exception is official registry data: **Companies House** (`lib/vendors/companies-house.ts`, `COMPANIES_HOUSE_API_KEY`). It gives incorporation date, officers, persons with significant control and filing history. These are stored as `verified` facts (`vendor_incorporated`, `vendor_ownership_changes`) with the Companies House URL as the source.
+
+**What can be automated (v1.1 L, PROPOSED).** Expect about half the fields; the rest stay Missing until a person or our users fill them.
+
+| Field | Automatable? | How |
+|---|---|---|
+| Pricing model, published price, free trial, setup fee | Yes, often | pricing page + quote check |
+| Integrations with apps they keep | Mostly | vendor integrations page; Xero App Store listing entered by hand |
+| Security certifications, data location | Often | security/trust page |
+| Contract: minimum term, notice, auto-renew, data export | Sometimes | terms page (many fields will be Missing → queue) |
+| Vendor age, ownership changes | Yes (UK) | Companies House API |
+| What posts to Xero and how | Partly | help centre; often a person |
+| Days to go live, support after go-live, what peers pay | No | our users (3.0) |
 
 ---
 
@@ -318,32 +451,45 @@ For each app in `apps.yaml`:
 All tenant tables have `org_id` and **RLS on**.
 
 ```ts
-users(id uuid pk, email text unique, name text, xero_user_id text, is_admin bool, created_at)
+users(id uuid pk, email text unique, name text, xero_user_id text, is_admin bool, job_title text null, created_at)
+                                                                   -- job_title: asked once; changes no permissions (v1.1 A)
 orgs(id uuid pk, name, base_currency, country, fy_end_month int, fy_end_day int, industry text null,
-     markets text[] default '{UK}', created_at)
+     markets text[] default '{UK}', firm_id uuid null, created_at)     -- industry gains 'ecommerce', 'saas' (v1.1 P)
 org_members(org_id, user_id, role: 'owner'|'member', pk(org_id,user_id))
+firms(id uuid pk, name, created_at) · firm_members(firm_id, user_id, role)                    -- v1.1 I
+-- session carries active_org_id (v1.1 I)
 xero_connections(id uuid pk, org_id, tenant_id text unique, connection_id text, enc_access bytea, enc_refresh bytea,
                  expires_at timestamptz, scopes text[], status: 'active'|'revoked'|'error', last_error text, updated_at)
 sync_runs(id uuid pk, org_id, started_at, finished_at, status: 'running'|'ok'|'partial'|'error',
           calls int, egress_bytes bigint, error text)
 sync_cursors(org_id, endpoint text, modified_since timestamptz, pk(org_id, endpoint))
 accounts(org_id, xero_account_id uuid, code text, name text, type text, class text, reporting_code text,
-         system_account text, status text, pk(org_id, xero_account_id))
+         reporting_code_name text, tax_type text, system_account text, status text, pk(org_id, xero_account_id))
 account_maps(org_id, xero_account_id, category text, confidence real, source: 'rule'|'llm'|'confirmed', rule_id text, updated_at)
-statements(id uuid pk, org_id, run_id, kind: 'pl'|'bs'|'cf', period_from date, period_to date,
-           derived bool, reconciled bool null, recon_diff numeric null, created_at)
-statement_lines(statement_id, org_id, xero_account_id null, code, name, section text, value numeric(14,2), sort int)
+statements(id uuid pk, org_id, run_id, kind: 'pl'|'bs'|'cf'|'bs_monthly'|'pl_monthly'|'cf_monthly', period_from date,
+           period_to date, derived bool, reconciled bool null, recon_diff numeric null, created_at)
+statement_lines(statement_id, org_id, xero_account_id null, code, name, section text, value numeric(14,2), sort int,
+                period_index int null, period_end date null)   -- monthly kinds: one row per line per month (0 = latest)
 trial_balance(org_id, run_id, xero_account_id, code, name, ytd_debit numeric, ytd_credit numeric, as_at date)
 supplier_spend(org_id, contact_id uuid, contact_name text, name_norm text, month date, amount numeric,
                source: 'bill'|'bank', pk(org_id, contact_id, month, source))
-detected_apps(org_id, app_id, spend_12m numeric, months_seen int, last_seen date, evidence jsonb, pk(org_id, app_id))
+detected_apps(org_id, app_id, spend_12m numeric, months_seen int, last_seen date, evidence jsonb,
+              cycle text, state text, next_expected date, pk(org_id, app_id))                        -- v1.1 C
+app_status_answers(org_id, app_id, answer, replaced_by_app_id null, user_id, created_at)          -- v1.1 C
 flags(id uuid pk, org_id, run_id, statement_kind, line_key text, xero_account_id, rule_id, rule_version int,
       value numeric, base numeric, materiality real, band 'high'|'medium'|'low', coverage_gap real, strength real,
       state text, evidence jsonb, created_at)
-recommendations(flag_id, app_id, rank int, match real, components jsonb, in_use bool, reason text)
-flag_feedback(id uuid pk, flag_id, org_id, user_id, answer 'yes'|'no', note text, created_at)
-line_overrides(org_id, line_key, rule_id, state 'marked_fine', user_id, created_at, pk(org_id,line_key,rule_id))
-apps(id text pk, name, website, categories text[], markets text[], crawl jsonb, sample bool, updated_at)
+recommendations(flag_id, app_id, rank int, match real, components jsonb, in_use bool, kind 'add'|'change', reason text)
+flag_feedback(id uuid pk, flag_id, org_id, user_id,
+              answer 'yes'|'already_use_app'|'no_app_needed'|'numbers_wrong'|'not_now', app_id, app_name, note, created_at)
+line_overrides(org_id, line_key, rule_id, state 'marked_fine'|'snoozed', until date null, user_id, created_at,
+               pk(org_id,line_key,rule_id))
+apps(id text pk, name, website, categories text[], markets text[], crawl jsonb, sample bool, claimed_by text null, updated_at)
+                                                                   -- claimed_by kept; no vendor portal in 1.0 (v1.1 J)
+subscriptions(org_id null, firm_id null, stripe_customer_id, stripe_subscription_id, plan, status, current_period_end)
+payments_log(id, stripe_event_id unique, type, payload_summary jsonb, created_at)               -- v1.1 E (§20)
+reward_ledger(user_id, reviews_counted int, months_granted int, granted_at)                       -- v1.1 O, 3.0
+price_observations                                                 -- OPEN (CHANGES-v1.1 §4 item 2): not shown in 1.0
 fingerprints(app_id, pattern text, kind 'name'|'alias')
 integrations(from_app, to_app, kind 'native'|'via_app'|'csv')
 app_facts(app_id, field text, value jsonb, state text, quote text, source_url text, checked_at, checked_by, sample bool,
@@ -381,9 +527,14 @@ audit_log(id bigserial, actor, action, target jsonb, at)
 | POST | `/api/orgs/:org/refresh` | run a refresh (inline in dev mode) → `{runId, status}` |
 | GET | `/api/orgs/:org/refresh/:runId` | progress per step |
 | GET | `/api/orgs/:org/summary` | hero £ at stake, flagged/total lines, apps in use, apps matched, shortlist monthly cost |
-| GET | `/api/orgs/:org/statements/:kind` | `kind=pl|bs|cf`: period label, sections, lines with state/band/share |
+| GET | `/api/orgs/:org/statements/:kind` | `kind=pl|bs|cf`: period label, sections, lines with state/band/share. `?months=12` returns the monthly series (v1.1 B) |
 | GET | `/api/orgs/:org/lines/:lineKey` | evidence, cause, recommendations, detected apps in area |
-| POST | `/api/flags/:id/feedback` | `{answer, note?}` |
+| POST | `/api/flags/:id/feedback` | `{answer, app_id?, app_name?, note?}` (§10) |
+| GET | `/api/me/orgs` | the user's businesses: name, last refresh, £ at stake (v1.1 I) |
+| POST | `/api/me/active-org` | `{orgId}` → session `active_org_id` (member check) |
+| POST | `/api/orgs/:org/apps/:appId/status` | lapsing answer `{answer: still_use|moved|stopped, replaced_by_app_id?}` (§6.1) |
+| POST | `/api/billing/checkout` · `/api/billing/portal` | Stripe Checkout / Customer Portal (§20) |
+| POST | `/api/stripe/webhook` | signature-verified Stripe events (§20) |
 | GET / PUT | `/api/orgs/:org/settings` | markets, industry, "include current month" |
 | GET / PUT | `/api/orgs/:org/essentials` | list + covered toggles |
 | GET / POST / DELETE | `/api/orgs/:org/shortlist` | shortlist |
@@ -450,10 +601,25 @@ Example `GET /api/orgs/:org/statements/pl`:
 - Seed 25 apps from the ledger prototype with `sample: true`, fact states, directory endpoints, crawl script with the quote check.
 - *Done when* a crawl on 3 apps produces found/missing facts and queue items, and no fact without a matching quote is stored.
 
+**v1.1 additions to milestones (CHANGES-v1.1 §3):**
+- **M2:** multi-business membership, the switcher, `firms`, and the connection-cap check (I).
+- **M3:** monthly BS and P&L calls, per-month cash flow, and `statements/bs?months=12` (B).
+- **M4:** billing cycle, lifecycle states, lapsing questions and declared apps (C).
+- **M5:** trend signals (B), the new weights (K), and Add/Change kinds (F).
+- **M7:** four answers and three metrics (D).
+- **M8:**
+  - ecommerce/SaaS apps first (P)
+  - 7 crawl pages and Companies House (L)
+  - `reporting-codes.yaml` + `account-synonyms.yaml` + tax-rate checks (M)
+
 **M9 — Deploy (½ day)**
 - Vercel project + Neon, env vars, `pnpm db:migrate` on deploy, Vercel Cron (`nightly` 02:17, `monthly` 1st 03:41), Sentry.
 - Optionally move refresh to Inngest if cold-start time matters.
 - *Done when* the preview URL connects the Demo Company end to end.
+
+**M10 — Billing (new, v1.1 E)**
+- Stripe in **test mode only** and `catalog/plans.yaml` (§20). Prices stay OPEN.
+- *Done when* a test-mode checkout creates a `subscriptions` row via the webhook, and the portal link opens.
 
 ---
 
@@ -497,6 +663,11 @@ ANTHROPIC_API_KEY=
 TAVILY_API_KEY=
 CRON_SECRET=
 SENTRY_DSN=
+XERO_CONNECTION_CAP=5              # Starter 5, Core 50 (v1.1 I)
+COMPANIES_HOUSE_API_KEY=           # v1.1 L
+STRIPE_SECRET_KEY=                 # test mode until prices are decided (v1.1 E)
+STRIPE_WEBHOOK_SECRET=
+STRIPE_PRICE_IDS_JSON=
 HIGH_BAND=0.10
 MED_BAND=0.02
 MAP_CONFIDENCE_MIN=0.75
@@ -557,10 +728,39 @@ FP_GATE=0.15
   - Vendor self-edits once uptake is strong.
   - Inngest + webhooks.
 - **4.0:** runway and working-capital funding offers, triggered by cash headroom or stock days. Disclosed, separate from ranking. Revisit Finance API access here.
-- **Firm plan (CLAUDE.md §1):** `firms` table + firm members across orgs. Bulk Connections need Xero's Advanced tier, so onboard one connection at a time until then.
+- **Firm plan (CLAUDE.md §1):** `firms` table + firm members across orgs (built, v1.1 I). Bulk Connections need Xero's Advanced tier, so onboard one connection at a time until then. The **Monday digest** is parked here (v1.1 H).
+- **Peer price ranges** (OPEN, CHANGES-v1.1 §4 item 2): opt-in, p25–p75 rounded to £5, ≥10 businesses per size band, never a single value. Needs written sign-off from a lawyer and from Xero's partner team first.
+- **Activators** (3.0; threshold OPEN, item 3): `reward_ledger` only.
 
 ## 19. Sources (checked 4 Nov 2026)
 - Xero developer pricing and tiers: https://developer.xero.com/pricing
 - Granular scopes (apps created after 2 Mar 2026): https://devblog.xero.com/upcoming-changes-to-xero-accounting-api-scopes-705c5a9621a0 and https://apideck.com/blog/xero-scopes
 - Finance API restricted to financial institutions: https://kiwix.lema.org/stackoverflow.com_en_all_2023-11/questions/76610125/why-is-finance-statements-read-scope-not-accepted-by-xero-api
 - Xero developer terms (AI/ML): https://developer.xero.com/xero-developer-platform-terms-conditions
+
+## 20. Billing (v1.1 E: Stripe DECIDED; prices OPEN, CHANGES-v1.1 §4 item 1 and §N)
+
+- **Stripe products:**
+  - Checkout for sign-up
+  - Billing for subscriptions
+  - Customer Portal for card changes and cancellation
+  - Stripe Tax once VAT-registered
+- **Code:**
+  - `lib/billing/` and `POST /api/billing/checkout`
+  - `POST /api/billing/portal`
+  - `POST /api/stripe/webhook`: verify the signature; handle `checkout.session.completed`, `customer.subscription.updated|deleted` and `invoice.payment_failed`
+- **Plans live in `catalog/plans.yaml`**, never in code. Seed it with **test-mode** prices only until prices are decided.
+  - The audit is a one-off price; "audit waived" is a Stripe coupon.
+  - The 12-month option is an annual price.
+- **Fees (re-check before setting prices):**
+  - UK standard cards: 1.5% + 20p
+  - Premium/corporate cards: 1.9% + 20p
+  - Billing: 0.7% of recurring volume
+
+  That's about 72p on £19.99 (≈3.6%).
+- **Unit costs (rough, OPEN §N):**
+  - Xero Core: $35 AUD / 50 connections, ≈ £0.36 per business when full
+  - Crawl LLM: a few £ a month for the whole catalogue
+  - Hosting: tens of £, fixed
+
+  Gross margin is above 90%. The real constraints are churn after the first stack decision, and queue time.
