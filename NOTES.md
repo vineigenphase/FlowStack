@@ -255,3 +255,13 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
   - Tax checks: wages-like + VAT → contractors at 0.70 (queued), or at 0.80 when also named agency/contractors. Otherwise a category with `expected_tax` that disagrees loses 0.15.
   - Cost of sales now uses `type_default` (0.76) so a specific name beats "any direct cost". Direct wages map to wages.
   - There are 3 synthetic charts in `fixtures/xero/charts/`, tested in `tests/mapping.test.ts`. They are synthetic, not recorded, because recording real charts needs live connections.
+- **B:**
+  - The monthly BalanceSheet (`periods=11`, `timeframe=MONTH`) replaces the closing balance sheet, and the opening one when the prior year end is inside the 12 months. The monthly P&L is one extra call.
+  - Sources without monthly reports (older fixtures, labelled sets) fall back to single-date calls.
+  - **Deviation:** one statement row per month (`kind` `bs_monthly` / `pl_monthly` / `cf_monthly`, month in `period_to`) instead of `period_index`/`period_end` columns on `statement_lines`. It's the same data, and the line primary key is unchanged.
+  - Monthly cash flow covers only months in the current financial year (the year-end roll isn't a monthly movement). The one `cashflow_unreconciled` item for months opens only when the year to date reconciles.
+  - Trends live in `lib/signals/trends.ts` with flags `trend:<key>` (statement kind `trend`). Thresholds are in `rules.yaml → trends:` and are PROPOSED starting points (debtor 45 days, creditor 60, stock 60, headroom 6 months; min change 7 days or 1 month).
+  - Headroom's £ value is the cash needed to get back to the threshold.
+  - The line page shows the 12-month series.
+  - `GET /api/orgs/:org/statements/:kind?months=12`.
+  - Sample monthly fixtures come from `scripts/make-monthly-fixtures.py`, derived from the YTD fixtures.

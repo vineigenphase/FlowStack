@@ -22,13 +22,15 @@ export type LineOverride = { state: "marked_fine" | "snoozed" | "queued" | "decl
 export type Band = "high" | "medium" | "low";
 
 export type LineIn = {
-  kind: "pl" | "bs" | "cf";
+  kind: "pl" | "bs" | "cf" | "trend";
   lineKey: string;
   xeroAccountId: string | null;
   code: string | null;
   name: string;
   category: string | null; // "unmapped" when the mapping is unsure
   value: number;
+  /** Extra evidence (e.g. a trend's 12-month series and formula). */
+  extra?: Record<string, unknown>;
 };
 
 export type TbRow = { code: string | null; name: string; ytd_net: number; as_at: string };
@@ -121,6 +123,7 @@ export function computeFlags(lines: LineIn[], ctx: FlagCtx): FlagOut[] {
       state: "fine",
       cause: rule?.cause ?? null,
       evidence: {
+        ...(l.extra ?? {}),
         trial_balance: tb,
         statement_value: l.value,
         base_label: l.kind === "bs" ? "Total assets" : "Revenue",

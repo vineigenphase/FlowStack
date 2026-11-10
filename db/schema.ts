@@ -164,7 +164,8 @@ export const statements = pgTable(
     id: uuid("id").primaryKey().defaultRandom(),
     orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
     runId: uuid("run_id").notNull().references(() => syncRuns.id, { onDelete: "cascade" }),
-    kind: text("kind", { enum: ["pl", "bs", "cf"] }).notNull(),
+    /** v1.1 B: *_monthly = one statement per month end (period_to), for trends and the monthly cash flow. */
+    kind: text("kind", { enum: ["pl", "bs", "cf", "pl_monthly", "bs_monthly", "cf_monthly"] }).notNull(),
     periodFrom: date("period_from"),
     periodTo: date("period_to").notNull(),
     derived: boolean("derived").notNull().default(false),
@@ -246,7 +247,8 @@ export const flags = pgTable(
     id: uuid("id").primaryKey().defaultRandom(),
     orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
     runId: uuid("run_id").notNull().references(() => syncRuns.id, { onDelete: "cascade" }),
-    statementKind: text("statement_kind", { enum: ["pl", "bs", "cf"] }).notNull(),
+    /** v1.1 B: "trend" = a trend signal (debtor/creditor/stock days, cash headroom), line key trend:<key>. */
+    statementKind: text("statement_kind", { enum: ["pl", "bs", "cf", "trend"] }).notNull(),
     lineKey: text("line_key").notNull(),
     xeroAccountId: uuid("xero_account_id"),
     ruleId: text("rule_id"),

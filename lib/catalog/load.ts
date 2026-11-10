@@ -38,7 +38,7 @@ export const Rule = z.object({
   app_categories: strs,
   /** Categories that, when an app in them is in use, mean the line is handled. Defaults to app_categories. */
   covered_by: z.array(z.string()).optional(),
-  statements: z.array(z.enum(["pl", "bs", "cf"])).default(["pl", "bs", "cf"]),
+  statements: z.array(z.enum(["pl", "bs", "cf", "trend"])).default(["pl", "bs", "cf"]),
   min_value_gbp: z.number().default(0),
   cause: z.string().optional(),
 });
@@ -51,7 +51,13 @@ export const Scoring = z.object({
 });
 export type Scoring = z.infer<typeof Scoring>;
 
-export const RulesFile = z.object({ scoring: Scoring, rules: list(Rule) });
+const TrendRule = z.object({ threshold: z.number(), min_change: z.number() });
+/** v1.1 B: trend thresholds (BACKEND §7.3). Each trend also needs a rule whose account_categories has trend:<key>. */
+export const RulesFile = z.object({
+  scoring: Scoring,
+  rules: list(Rule),
+  trends: z.object({ debtor_days: TrendRule, creditor_days: TrendRule, stock_days: TrendRule, cash_headroom_months: TrendRule }).partial().default({}),
+});
 
 export const App = z.object({
   id: z.string().regex(/^[a-z0-9_-]+$/),
@@ -131,7 +137,10 @@ export function validateCatalog(): string[] {
     seen.add(c.key);
   }
   for (const r of rulesFile().rules) {
-    for (const k of r.account_categories) if (!acc.has(k)) errs.push(`rule ${r.id}: unknown account category ${k}`);
+    for (const k of r.account_categories) {
+      const trend = k.startsWith("trend:") ? k.slice(6) : null;
+      if (trend ? !(trend in rulesFile().trends) : !acc.has(k)) errs.push(`rule ${r.id}: unknown ${trend ? "trend" : "account category"} ${k}`);
+    }
     for (const k of r.app_categories) if (!appCats.has(k)) errs.push(`rule ${r.id}: unknown app category ${k}`);
     for (const k of r.covered_by ?? []) if (!r.app_categories.includes(k)) errs.push(`rule ${r.id}: covered_by ${k} is not one of its app_categories`);
   }

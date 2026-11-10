@@ -81,6 +81,32 @@ rules:
     min_value_gbp: 500
     cause: "Currency gains and losses point to foreign payments that an FX account can make cheaper."
 
+  # Trend rules (v1.1 B): line keys trend:<key>, base = revenue. Covered by an app in covered_by, as for lines.
+  - id: trend_debtor_days
+    version: 1
+    account_categories: [trend:debtor_days]
+    app_categories: [billing_receivables]
+    statements: [trend]
+    cause: "Customers are taking longer to pay than three months ago. A chasing app usually brings this back down."
+  - id: trend_creditor_days
+    version: 1
+    account_categories: [trend:creditor_days]
+    app_categories: [spend_payables]
+    statements: [trend]
+    cause: "You're taking longer to pay suppliers than three months ago. Worth checking bills aren't stuck waiting for approval."
+  - id: trend_stock_days
+    version: 1
+    account_categories: [trend:stock_days]
+    app_categories: [inventory]
+    statements: [trend]
+    cause: "Stock is sitting longer than three months ago. An inventory app shows what's slow-moving."
+  - id: trend_cash_headroom
+    version: 1
+    account_categories: [trend:cash_headroom_months]
+    app_categories: [cash_forecasting]
+    statements: [trend]
+    cause: "At the current rate cash runs out sooner than it did three months ago. A cash flow forecast shows when and why."
+
   - id: fine_as_is
     version: 2
     account_categories:
@@ -89,3 +115,12 @@ rules:
        directors_loan, share_capital, retained_earnings, dividends, other_equity, other_income, staff_other,
        contractors, card_fees, bad_debts, other_debtors]
     app_categories: []
+
+# ---------------- Trends (v1.1 B, BACKEND.md §7.3) ----------------
+# A trend fires when the latest value is past `threshold` AND it moved the wrong way by `min_change` over 3 months.
+# Thresholds are PROPOSED starting points (owner to tune with real ledgers); they live here, not in code.
+trends:
+  debtor_days: { threshold: 45, min_change: 7 }
+  creditor_days: { threshold: 60, min_change: 7 }
+  stock_days: { threshold: 60, min_change: 7 }
+  cash_headroom_months: { threshold: 6, min_change: 1 }

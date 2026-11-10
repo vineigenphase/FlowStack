@@ -41,13 +41,14 @@ export default async function LinePage({ params, searchParams }: { params: Promi
   const ranked = priority ? rankByPriority(await priorityInputs(l.recommendations.map((r) => ({ appId: r.app.id, name: r.app.name, match: r.match }))), priority) : null;
   const recs = ranked ? ranked.map((x) => ({ ...l.recommendations.find((r) => r.app.id === x.appId)!, p: x })) : l.recommendations.map((r) => ({ ...r, p: null }));
   const here = `/app/${org}/lines/${encodeURIComponent(l.key)}`;
+  const trend = (l.evidence as { trend?: { key: string; latest: number | null; three_months_ago: number | null; formula: string; series: { end: string; value: number | null }[] } }).trend ?? null;
   const quoteApps = l.recommendations.filter((r) => !r.inUse).map((r) => ({ id: r.app.id, name: r.app.name }));
   const [quotes, situation] = await Promise.all([orgQuotes(org, l.key), quoteApps.length ? situationFor(org, {}) : null]);
 
   return (
     <>
       <p className="meta">
-        <Link href={`/app/${org}/statements/${l.statement}`}>← {KIND_LABEL[l.statement]}</Link>
+        {l.statement === "trend" ? <Link href={`/app/${org}`}>← Summary</Link> : <Link href={`/app/${org}/statements/${l.statement}`}>← {KIND_LABEL[l.statement]}</Link>}
       </p>
       <h1>
         {l.name}
@@ -80,6 +81,27 @@ export default async function LinePage({ params, searchParams }: { params: Promi
           <h2>Why we flagged it</h2>
           <p>{l.cause}</p>
         </>
+      ) : null}
+
+      {trend ? (
+        <section className="trend">
+          <h2>The last 12 months</h2>
+          <p className="small">
+            {trend.key === "cash_headroom_months" ? "Months of cash left" : "Days"}: <b className="num">{trend.latest}</b> now, <span className="num">{trend.three_months_ago}</span> three
+            months ago. Worked out as {trend.formula}.
+          </p>
+          <div className="table-scroll">
+            <table className="trend-table">
+              <thead>
+                <tr>{[...trend.series].reverse().map((p) => <th key={p.end} scope="col">{new Date(p.end).toLocaleDateString("en-GB", { month: "short", year: "2-digit", timeZone: "UTC" })}</th>)}</tr>
+              </thead>
+              <tbody>
+                <tr>{[...trend.series].reverse().map((p) => <td key={p.end} className="num">{p.value ?? "–"}</td>)}</tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="muted small">A dash means there weren&apos;t three months of figures before that month to work it out from.</p>
+        </section>
       ) : null}
 
       {l.state === "queued" ? (

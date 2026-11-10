@@ -17,7 +17,8 @@ export const STATE_LABEL: Record<string, string> = {
   snoozed: "Hidden for now (you said not now)",
   queued: "Being checked",
 };
-export const KIND_LABEL = { pl: "Profit and loss", bs: "Balance sheet", cf: "Cash flow" } as const;
+export const KIND_LABEL = { pl: "Profit and loss", bs: "Balance sheet", cf: "Cash flow", trend: "Trend over 12 months" } as const;
 export type Kind = keyof typeof KIND_LABEL;
-export const isKind = (k: string): k is Kind => k in KIND_LABEL;
+/** Statement pages: P&L, balance sheet, cash flow. Trends have no statement page (they show on the summary and line pages). */
+export const isKind = (k: string): k is Exclude<Kind, "trend"> => k in KIND_LABEL && k !== "trend";
 export const lineHref = (org: string, lineKey: string) => `/app/${org}/lines/${encodeURIComponent(lineKey)}`;

@@ -50,7 +50,7 @@ export async function runLabelled(file: string): Promise<LineResult[]> {
       lineKey: f.lineKey,
       ruleId: f.ruleId,
       predicted: f.state,
-      expected: l.expected[f.lineKey] ?? l.defaults[f.statementKind],
+      expected: l.expected[f.lineKey] ?? (f.statementKind === "trend" ? "fine" : l.defaults[f.statementKind]),
       labelled: f.lineKey in l.expected,
     }));
     // A label for a line the pipeline never produced is a mismatch too (e.g. a mapping went missing).

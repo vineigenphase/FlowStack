@@ -35,3 +35,21 @@ export function monthsBack(asAt: string, n: number): string {
   const d = new Date(asAt + "T00:00:00Z");
   return ymd(d.getUTCFullYear(), d.getUTCMonth() - n + 1, 1);
 }
+
+/** v1.1 B: the month end `i` months before `asAt`'s month (i = 0 → that month's end). */
+export function monthEndBack(asAt: string, i: number): string {
+  const d = new Date(asAt + "T00:00:00Z");
+  return ymd(d.getUTCFullYear(), d.getUTCMonth() - i + 1, 0);
+}
+
+/** First day of `asAt`'s month. */
+export function monthStart(asAt: string): string {
+  const d = new Date(asAt + "T00:00:00Z");
+  return ymd(d.getUTCFullYear(), d.getUTCMonth(), 1);
+}
+
+/** How many month ends `date` is before `asAt` (0 = same month), or null if it isn't a month end in range. */
+export function monthIndex(asAt: string, date: string, max = 11): number | null {
+  for (let i = 0; i <= max; i++) if (monthEndBack(asAt, i) === date) return i;
+  return null;
+}

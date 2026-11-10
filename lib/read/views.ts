@@ -231,3 +231,35 @@ export async function stackMapView(orgId: string) {
     });
   });
 }
+
+/**
+ * v1.1 B: the monthly series for one statement kind, newest first: each month's period and its lines
+ * (key, code, name, section, category, value). Cash flow months exist only within the current financial year.
+ */
+export async function monthlyView(orgId: string, kind: "pl" | "bs" | "cf", months = 12) {
+  return withOrg(orgId, async (tx) => {
+    const runId = await latestRun(tx);
+    if (!runId) return null;
+    const mk = `${kind}_monthly` as "pl_monthly" | "bs_monthly" | "cf_monthly";
+    const ss = (await tx.select().from(statements).where(and(eq(statements.runId, runId), eq(statements.kind, mk))))
+      .sort((a, b) => b.periodTo.localeCompare(a.periodTo))
+      .slice(0, months);
+    if (!ss.length) return null;
+    const lines = await tx.select().from(statementLines).where(inArray(statementLines.statementId, ss.map((s) => s.id)));
+    const [org] = await tx.select({ sample: orgs.sample }).from(orgs).where(eq(orgs.id, orgId));
+    return {
+      kind,
+      months: ss.map((s) => ({
+        from: s.periodFrom,
+        to: s.periodTo,
+        reconciled: kind === "cf" ? s.reconciled : undefined,
+        totals: s.totals,
+        lines: lines
+          .filter((l) => l.statementId === s.id)
+          .sort((a, b) => a.sort - b.sort)
+          .map((l) => ({ key: l.lineKey, code: l.code, name: l.name, section: l.section, category: l.category, value: l.value })),
+      })),
+      sample: org?.sample ?? false,
+    };
+  });
+}

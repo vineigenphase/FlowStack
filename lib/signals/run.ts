@@ -1,4 +1,5 @@
 /** Load what flag computation needs for one run, compute, and store flags + recommendations. */
+import { computeTrends, type Month, type TrendKey } from "./trends";
 import { and, eq, inArray } from "drizzle-orm";
 import { appFacts, cashflowAcceptances, detectedApps, flags, lineOverrides, orgs, recommendations, statementLines, statements, trialBalance } from "@/db/schema";
 import { withOrg } from "@/lib/db/client";
@@ -16,6 +17,15 @@ export function monthsBetween(from: string, to: string) {
   const b = new Date(to + "T00:00:00Z");
   return (b.getUTCFullYear() - a.getUTCFullYear()) * 12 + (b.getUTCMonth() - a.getUTCMonth()) + 1;
 }
+
+const TREND_NAMES: Record<TrendKey, string> = {
+  debtor_days: "Debtor days rising",
+  creditor_days: "Creditor days rising",
+  stock_days: "Stock days rising",
+  cash_headroom_months: "Cash headroom falling",
+};
+/** Trends need a P&L for every month used; months without one give no trend. */
+const plsComplete = (ms: Month[]) => ms.slice(0, 6).every((m) => m.revenue !== 0 || m.costOfSales !== 0 || m.overheads !== 0);
 
 export async function computeFlags(orgId: string, runId: string) {
   // Verified-review results are global (owner connection), so read them before the tenant transaction opens.
@@ -36,7 +46,7 @@ export async function computeFlags(orgId: string, runId: string) {
     const lines: LineIn[] = rawLines
       .filter((l) => l.lineKey !== "bs:current_year_earnings" && l.lineKey !== "cf:net_profit")
       .map((l) => ({
-        kind: kindOf.get(l.statementId)!,
+        kind: kindOf.get(l.statementId)! as LineIn["kind"],
         lineKey: l.lineKey,
         xeroAccountId: l.xeroAccountId,
         code: l.code,
@@ -44,6 +54,43 @@ export async function computeFlags(orgId: string, runId: string) {
         category: l.xeroAccountId ? (info.get(l.xeroAccountId)?.category ?? null) : l.category,
         value: l.value,
       }));
+
+    // v1.1 B: trends from the 12 monthly statements (when the source had them).
+    const monthly = stmts.filter((s) => s.kind === "bs_monthly" || s.kind === "pl_monthly");
+    const monthlyLines = monthly.length ? await tx.select().from(statementLines).where(inArray(statementLines.statementId, monthly.map((s) => s.id))) : [];
+    const ends = [...new Set(monthly.filter((s) => s.kind === "bs_monthly").map((s) => s.periodTo))].sort().reverse();
+    const months: Month[] = ends.map((end) => {
+      const bsS = monthly.find((s) => s.kind === "bs_monthly" && s.periodTo === end);
+      const plS = monthly.find((s) => s.kind === "pl_monthly" && s.periodTo === end);
+      const bsByCat: Record<string, number> = {};
+      for (const l of monthlyLines.filter((x) => x.statementId === bsS?.id)) {
+        const cat = l.xeroAccountId ? (info.get(l.xeroAccountId)?.category ?? null) : l.category;
+        if (cat) bsByCat[cat] = (bsByCat[cat] ?? 0) + l.value;
+      }
+      const pls = monthlyLines.filter((x) => x.statementId === plS?.id);
+      const inSec = (k: string[]) => pls.filter((l) => k.includes(l.section)).reduce((t, l) => t + l.value, 0);
+      return { end, bs: bsByCat, revenue: inSec(["income"]), costOfSales: inSec(["cost_of_sales"]), overheads: inSec(["opex", "other_expenses"]) };
+    });
+    const trends = months.length >= 6 && plsComplete(months) ? computeTrends(months, rulesFile().trends) : [];
+    // The biggest account behind each trend's balance, for the trial balance evidence.
+    const latestBs = monthly.find((s) => s.kind === "bs_monthly" && s.periodTo === ends[0]);
+    const balanceAccount = (cat: string) =>
+      monthlyLines
+        .filter((l) => l.statementId === latestBs?.id && l.xeroAccountId && info.get(l.xeroAccountId)?.category === cat)
+        .sort((a, b) => Math.abs(b.value) - Math.abs(a.value))[0] ?? null;
+    for (const t of trends.filter((x) => x.fires)) {
+      const acct = balanceAccount(t.balanceCategory);
+      lines.push({
+        kind: "trend",
+        lineKey: `trend:${t.key}`,
+        xeroAccountId: acct?.xeroAccountId ?? null,
+        code: acct?.code ?? null,
+        name: TREND_NAMES[t.key],
+        category: `trend:${t.key}`,
+        value: t.value,
+        extra: { trend: { key: t.key, latest: t.latest, three_months_ago: t.threeMonthsAgo, change: t.change, series: t.series, formula: t.formula } },
+      });
+    }
 
     const tbRows = await tx.select().from(trialBalance).where(eq(trialBalance.runId, runId));
     const classOf = new Map(

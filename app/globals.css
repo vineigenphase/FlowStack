@@ -308,3 +308,8 @@ td a { font-weight: 600; }
 
 /* v1.1 D: four feedback answers */
 .feedback-answers { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* v1.1 B: trend series */
+.table-scroll { overflow-x: auto; max-width: 100%; }
+.trend-table { border-collapse: collapse; font-size: 0.8rem; }
+.trend-table th, .trend-table td { padding: 4px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }

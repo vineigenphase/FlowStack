@@ -28,9 +28,12 @@ import { deriveCashFlow } from "@/lib/statements/cashflow";
 import { autoClose, enqueueAll, type QueueItem } from "@/lib/queue/enqueue";
 import { clientForOrg } from "@/lib/xero";
 import type { XeroClient } from "@/lib/xero/client";
-import { getAccounts, getBalanceSheet, getOrganisation, getProfitAndLoss, getTrialBalance } from "@/lib/xero/endpoints";
+import { getAccounts, getBalanceSheet,
+  getBalanceSheetMonthly,
+  getProfitAndLossMonthly,
+  columnOf, getOrganisation, getProfitAndLoss, getTrialBalance } from "@/lib/xero/endpoints";
 import type { ParsedReport } from "@/lib/xero/parse-report";
-import { periodsFor } from "./periods";
+import { monthEndBack, monthIndex, monthStart, periodsFor } from "./periods";
 import { syncAppsInUse } from "@/lib/detect";
 import { computeFlags } from "@/lib/signals/run";
 import { detectInstalls, evaluateDue } from "@/lib/checkins";
@@ -135,13 +138,18 @@ export async function runRefresh(orgId: string, opts: RefreshOpts = {}) {
     });
 
     const reports = await step("reports", async () => {
-      const [pl, bsClose, bsOpen, tb] = await Promise.all([
+      // v1.1 B: one monthly balance sheet call (12 month ends) replaces the closing and, when the prior year end is
+      // inside the window, the opening balance sheet. Sources without monthly reports fall back to single dates.
+      const [pl, tb, bsMonthly, plMonthly] = await Promise.all([
         getProfitAndLoss(client, new Date(p.from), new Date(p.to)),
-        getBalanceSheet(client, new Date(p.to), "bs-close"),
-        getBalanceSheet(client, new Date(p.priorFyEnd), "bs-open"),
         getTrialBalance(client, new Date(p.to)),
+        getBalanceSheetMonthly(client, new Date(p.to)),
+        getProfitAndLossMonthly(client, new Date(monthStart(p.to)), new Date(p.to)),
       ]);
-      return { pl, bsClose, bsOpen, tb };
+      const openIdx = monthIndex(p.to, p.priorFyEnd);
+      const bsClose = (bsMonthly && columnOf(bsMonthly, 0)) || (await getBalanceSheet(client, new Date(p.to), "bs-close"));
+      const bsOpen = (bsMonthly && openIdx !== null && columnOf(bsMonthly, openIdx)) || (await getBalanceSheet(client, new Date(p.priorFyEnd), "bs-open"));
+      return { pl, bsClose, bsOpen, tb, bsMonthly, plMonthly };
     });
 
     await step("mapping", async () => {
@@ -192,6 +200,14 @@ export async function runRefresh(orgId: string, opts: RefreshOpts = {}) {
         for (const s of [pl, bs, bsOpen]) {
           if (s.checks.length) log.warn({ orgId, kind: s.kind, checks: s.checks }, "statement checks");
           await insertStatement(tx, orgId, runId, s);
+        }
+        // v1.1 B: one statement per month end, newest first, for trends and the monthly cash flow.
+        for (let i = 0; i < 12; i++) {
+          const end = monthEndBack(p.to, i);
+          const bsCol = reports.bsMonthly && columnOf(reports.bsMonthly, i);
+          if (bsCol) await insertStatement(tx, orgId, runId, buildBS(bsCol, info, end), "bs_monthly");
+          const plCol = reports.plMonthly && columnOf(reports.plMonthly, i);
+          if (plCol) await insertStatement(tx, orgId, runId, buildPL(plCol, info, { from: monthStart(end), to: end }), "pl_monthly");
         }
         const tbRows = reports.tb.rows
           .filter((r) => r.accountId)
@@ -258,10 +274,7 @@ export async function recompute(orgId: string, runId?: string, opts: { stepper?:
           }
         }
       }
-      const load = async (kind: "pl" | "bs", which: "latest" | "earliest" = "latest"): Promise<Statement | null> => {
-        const cands = stmts.filter((s) => s.kind === kind).sort((a, b) => a.periodTo.localeCompare(b.periodTo));
-        const s = which === "latest" ? cands.at(-1) : cands[0];
-        if (!s || (which === "earliest" && cands.length < 2)) return null;
+      const toStatement = async (s: (typeof stmts)[number], kind: "pl" | "bs"): Promise<Statement> => {
         const lines = await tx.select().from(statementLines).where(eq(statementLines.statementId, s.id));
         return {
           kind,
@@ -284,6 +297,12 @@ export async function recompute(orgId: string, runId?: string, opts: { stepper?:
           ),
         };
       };
+      const load = async (kind: "pl" | "bs", which: "latest" | "earliest" = "latest"): Promise<Statement | null> => {
+        const cands = stmts.filter((s) => s.kind === kind).sort((a, b) => a.periodTo.localeCompare(b.periodTo));
+        const s = which === "latest" ? cands.at(-1) : cands[0];
+        if (!s || (which === "earliest" && cands.length < 2)) return null;
+        return toStatement(s, kind);
+      };
       const pl = await load("pl");
       const close = await load("bs", "latest");
       const open = await load("bs", "earliest");
@@ -294,6 +313,40 @@ export async function recompute(orgId: string, runId?: string, opts: { stepper?:
       if (old.length) await tx.delete(statements).where(inArray(statements.id, old));
       await insertStatement(tx, orgId, id, cf);
       if (cf.reconciled) reconciledTo = cf.periodTo;
+
+      // v1.1 B: the same cash flow for each month of this financial year, from consecutive month-end balance sheets.
+      // Months before the year end are left out: the year-end roll into retained earnings isn't a monthly movement.
+      const oldMonthly = stmts.filter((s) => s.kind === "cf_monthly").map((s) => s.id);
+      if (oldMonthly.length) await tx.delete(statements).where(inArray(statements.id, oldMonthly));
+      const bsM = stmts.filter((s) => s.kind === "bs_monthly").sort((a, b) => b.periodTo.localeCompare(a.periodTo));
+      const plM = new Map(stmts.filter((s) => s.kind === "pl_monthly").map((s) => [s.periodTo, s]));
+      const fyStart = pl.periodFrom ?? null;
+      const unreconciledMonths: string[] = [];
+      for (let i = 0; i + 1 < bsM.length; i++) {
+        const closeS = bsM[i]!;
+        const openS = bsM[i + 1]!;
+        const plS = plM.get(closeS.periodTo);
+        if (!plS || !fyStart || openS.periodTo < monthEndBack(fyStart, 1)) break;
+        const mClose = await toStatement(closeS, "bs");
+        const mOpenRaw = await toStatement(openS, "bs");
+        // Only the prior year end carries last year's earnings that roll into retained earnings.
+        const atYearEnd = openS.periodTo === open.periodTo;
+        const mOpen = atYearEnd ? mOpenRaw : { ...mOpenRaw, totals: { ...mOpenRaw.totals, current_year_earnings: 0 } };
+        const mPl = await toStatement(plS, "pl");
+        const m = deriveCashFlow({ pl: mPl, open: mOpen, close: mClose, accounts: info, period: { from: plS.periodFrom ?? closeS.periodTo, to: closeS.periodTo } });
+        await insertStatement(tx, orgId, id, m, "cf_monthly");
+        if (!m.reconciled) unreconciledMonths.push(closeS.periodTo);
+      }
+      // One item per org, not one per month (BACKEND §4), and only when the year to date reconciles: otherwise the
+      // year-to-date item already covers the same cause.
+      if (unreconciledMonths.length && cf.reconciled) {
+        pending.push({
+          kind: "cashflow_unreconciled",
+          orgId,
+          ref: { org_id: orgId, monthly: true },
+          reason: `Monthly cash flow doesn't reconcile for ${unreconciledMonths.length} month${unreconciledMonths.length === 1 ? "" : "s"}: ${unreconciledMonths.join(", ")}. The year-to-date figures are unaffected.`,
+        });
+      }
       if (!cf.reconciled) {
         pending.push({
           kind: "cashflow_unreconciled",
@@ -340,13 +393,13 @@ async function latestRunId(orgId: string): Promise<string | null> {
   });
 }
 
-async function insertStatement(tx: Db, orgId: string, runId: string, s: Statement) {
+async function insertStatement(tx: Db, orgId: string, runId: string, s: Statement, kind: Statement["kind"] | "pl_monthly" | "bs_monthly" | "cf_monthly" = s.kind) {
   const [row] = await tx
     .insert(statements)
     .values({
       orgId,
       runId,
-      kind: s.kind,
+      kind,
       periodFrom: s.periodFrom,
       periodTo: s.periodTo,
       derived: s.derived,

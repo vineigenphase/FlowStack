@@ -43,6 +43,29 @@ export async function getBalanceSheet(c: XeroClient, date: Date, key: "bs-close"
   return parseReport(must(r, key));
 }
 
+/**
+ * v1.1 B: 12 month-end balance sheets in one call (column 0 = `date`, then each month before it).
+ * Returns null when the source has no such report (e.g. an older fixture set), so the caller can fall back.
+ */
+export async function getBalanceSheetMonthly(c: XeroClient, date: Date): Promise<ParsedReport | null> {
+  const r = await c.get({ key: "bs-monthly", path: "/Reports/BalanceSheet", query: { date: iso(date), periods: "11", timeframe: "MONTH", standardLayout: "true" } });
+  if (r.status === 404) return null;
+  return parseReport(must(r, "bs-monthly"));
+}
+
+/** v1.1 B: 12 monthly P&L columns (column 0 = the month from..to, then the 11 months before). Null when unavailable. */
+export async function getProfitAndLossMonthly(c: XeroClient, from: Date, to: Date): Promise<ParsedReport | null> {
+  const r = await c.get({ key: "pl-monthly", path: "/Reports/ProfitAndLoss", query: { fromDate: iso(from), toDate: iso(to), periods: "11", timeframe: "MONTH", standardLayout: "true" } });
+  if (r.status === 404) return null;
+  return parseReport(must(r, "pl-monthly"));
+}
+
+/** One column of a multi-period report, as a single-period report (so the normal builders apply). */
+export function columnOf(rep: ParsedReport, i: number): ParsedReport | null {
+  if (rep.columns.length && i + 1 >= rep.columns.length) return null;
+  return { ...rep, columns: rep.columns.length ? [rep.columns[0]!, rep.columns[i + 1]!] : rep.columns, rows: rep.rows.map((r) => ({ ...r, values: [r.values[i] ?? 0] })) };
+}
+
 export async function getTrialBalance(c: XeroClient, date: Date): Promise<ParsedReport> {
   const r = await c.get({ key: "tb", path: "/Reports/TrialBalance", query: { date: iso(date) } });
   return parseReport(must(r, "tb"));

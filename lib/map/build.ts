@@ -11,7 +11,7 @@ import type { App, AppCategory, Rule } from "@/lib/catalog/load";
 export type Link = "native" | "via_app" | "csv" | "unknown";
 export type FunctionStatus = "gap" | "part_manual" | "connected" | "checking" | "quiet";
 
-export type MapLine = { key: string; name: string; code: string | null; kind: "pl" | "bs" | "cf"; state: string; value: number; materiality: number; ruleId: string | null; revenue?: boolean };
+export type MapLine = { key: string; name: string; code: string | null; kind: "pl" | "bs" | "cf" | "trend"; state: string; value: number; materiality: number; ruleId: string | null; revenue?: boolean };
 export type MapInUse = { appId: string; spend12m: number; monthsSeen: number; present: boolean };
 export type MapRec = { lineKey: string; appId: string; rank: number; match: number; inUse: boolean };
 
