@@ -133,6 +133,9 @@ export const accounts = pgTable(
     type: text("type").notNull(),
     class: text("class"),
     reportingCode: text("reporting_code"),
+    /** v1.1 M: the tagging's label and the account's default tax rate (e.g. INPUT2 = 20% VAT on expenses, NONE). */
+    reportingCodeName: text("reporting_code_name"),
+    taxType: text("tax_type"),
     systemAccount: text("system_account"),
     status: text("status"),
   },

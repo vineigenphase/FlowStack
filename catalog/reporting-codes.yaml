@@ -1,0 +1,58 @@
+# Xero reporting codes (the account's "tagging", chosen from Xero's standard UK list) → our account category.
+# BACKEND.md §5 step 2 (v1.1 M): confidence 0.9, ahead of names. The longest matching prefix wins.
+#
+# Source: codes as they appear on Xero's own UK Demo Company chart of accounts (live connection, 6 Nov 2026).
+# Only codes we have seen are listed. Broad codes ("EXP", "ASS", "LIA", "REV", "ASS.CUR", "LIA.CUR", "EQU") are left
+# out on purpose: many real charts tag most accounts only that far (one live UK chart: 96 accounts tagged just
+# "EXP"), so they say nothing about the account. Those fall through to type + tax rate + names.
+
+# ---- Profit and loss
+REV.TUR: sales
+REV.OTH: other_income
+EXP.COS: cost_of_sales
+EXP.COS.WAG: wages            # direct wages are still payroll
+EXP.STF.WAG: wages
+EXP.STF.DIR: wages            # directors' remuneration through payroll
+EXP.STF.ENI: employer_ni
+EXP.STF.PEN: pensions
+EXP.STF.TRN: staff_other
+EXP.STF.BEN: staff_other      # staff benefits, e.g. medical insurance
+EXP.EST.REN: rent
+EXP.EST.RAT: rent
+EXP.EST.UTI: utilities
+EXP.EST.CLE: cleaning
+EXP.ADM.HIR: rent             # operating lease payments
+EXP.ADM.FEE: professional_fees
+EXP.ADM.FIN.BNK: bank_charges
+EXP.ADM.FOR: fx_gains_losses
+EXP.ADM.INS: insurance
+EXP.ADM.PRI: office_general
+EXP.ADM.REP: repairs
+EXP.ADM.SOF: software_subscriptions
+EXP.ADM.SUB: software_subscriptions
+EXP.ADM.SUN: office_general
+EXP.ADM.TEL: telephone_internet
+EXP.ADM.TRA: travel
+EXP.ADM.VEH: motor
+EXP.ADM.ENT: entertainment
+EXP.DEP: depreciation
+EXP.INT: interest
+EXP.TAX.COR: corporation_tax
+
+# ---- Balance sheet
+ASS.CUR.BAN: bank
+ASS.CUR.INY: inventory
+ASS.CUR.REC.TRA: trade_debtors
+ASS.CUR.REC.PRE: prepayments
+ASS.NCA.FIX: fixed_assets
+ASS.NCA.INT: fixed_assets
+LIA.CUR.TRA: trade_creditors
+LIA.CUR.ACC: accruals
+LIA.CUR.TAX.VAT: vat
+LIA.CUR.TAX.COR: corporation_tax_payable
+LIA.CUR.TAX.OTH: payroll_liabilities   # PAYE, NIC and student loan deductions payable
+LIA.NCL: long_term_loans
+EQU.RET: retained_earnings
+EQU.SHA: share_capital
+EQU.DRA: dividends            # drawings
+EQU.OWN: other_equity         # funds introduced

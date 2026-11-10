@@ -1,0 +1,78 @@
+{
+  "_note": "SAMPLE: synthetic chart of accounts for mapping tests (v1.1 M). Well-tagged chart: Xero default names and detailed reporting codes. Not real customer data.",
+  "Accounts": [
+    {
+      "AccountID": "58e63e50-0b51-5a49-be71-19c52feefc7e",
+      "Name": "Wages and Salaries",
+      "Type": "OVERHEADS",
+      "Code": "477",
+      "ReportingCode": "EXP.STF.WAG",
+      "TaxType": "NONE"
+    },
+    {
+      "AccountID": "11cabafc-87ea-577d-89b4-0e5d5718fe64",
+      "Name": "Employers National Insurance",
+      "Type": "OVERHEADS",
+      "Code": "478",
+      "ReportingCode": "EXP.STF.ENI",
+      "TaxType": "NONE"
+    },
+    {
+      "AccountID": "f202c635-991d-550f-b85a-659333b94ba1",
+      "Name": "Pensions Costs",
+      "Type": "OVERHEADS",
+      "Code": "479",
+      "ReportingCode": "EXP.STF.PEN",
+      "TaxType": "NONE"
+    },
+    {
+      "AccountID": "faa5dd12-c7d5-5b7e-862d-22ed569d51c4",
+      "Name": "Direct Wages",
+      "Type": "DIRECTCOSTS",
+      "Code": "320",
+      "ReportingCode": "EXP.COS.WAG",
+      "TaxType": "NONE"
+    },
+    {
+      "AccountID": "7f408981-b766-578f-9b25-a32385345f92",
+      "Name": "Purchases",
+      "Type": "DIRECTCOSTS",
+      "Code": "300",
+      "ReportingCode": "EXP.COS.PUR",
+      "TaxType": "INPUT2"
+    },
+    {
+      "AccountID": "2b6d1b61-2cc8-5e42-958b-166cfef2d0a9",
+      "Name": "Rent",
+      "Type": "OVERHEADS",
+      "Code": "469",
+      "ReportingCode": "EXP.EST.REN",
+      "TaxType": "EXEMPTINPUT"
+    },
+    {
+      "AccountID": "9660b4a3-743d-5dda-9097-48200a689a8b",
+      "Name": "Subscriptions",
+      "Type": "OVERHEADS",
+      "Code": "485",
+      "ReportingCode": "EXP.ADM.SUB",
+      "TaxType": "INPUT2"
+    },
+    {
+      "AccountID": "280062a7-63f1-5aef-8ae2-5d0e517b3e89",
+      "Name": "Accounts Receivable",
+      "Type": "CURRENT",
+      "Code": "610",
+      "ReportingCode": "ASS.CUR.REC.TRA"
+    }
+  ],
+  "expected": {
+    "Wages and Salaries": "wages",
+    "Employers National Insurance": "employer_ni",
+    "Pensions Costs": "pensions",
+    "Direct Wages": "wages",
+    "Purchases": "cost_of_sales",
+    "Rent": "rent",
+    "Subscriptions": "software_subscriptions",
+    "Accounts Receivable": "trade_debtors"
+  }
+}

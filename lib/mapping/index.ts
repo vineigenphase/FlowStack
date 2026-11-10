@@ -3,7 +3,7 @@
  * Lines on unmapped accounts are never flagged.
  */
 import type { AccountCategory } from "@/lib/catalog/load";
-import { matchAccount, type AccountIn } from "./rules";
+import { matchAccount, type AccountIn, type MappingCatalog } from "./rules";
 
 export type MapSource = "rule" | "llm" | "confirmed";
 export type AccountMap = {
@@ -25,8 +25,10 @@ export async function mapAccounts(opts: {
   confirmed: Map<string, string>; // xeroAccountId → category
   minConfidence: number;
   llm?: LlmSuggest;
+  /** v1.1 M: reporting codes + name synonyms. */
+  catalog?: MappingCatalog;
 }): Promise<{ maps: AccountMap[]; unmapped: AccountIn[] }> {
-  const { accounts, categories, confirmed, minConfidence, llm } = opts;
+  const { accounts, categories, confirmed, minConfidence, llm, catalog } = opts;
   const known = new Set(categories.map((c) => c.key));
   const out = new Map<string, AccountMap>();
   const pending: AccountIn[] = [];
@@ -37,7 +39,7 @@ export async function mapAccounts(opts: {
       out.set(a.xeroAccountId, { xeroAccountId: a.xeroAccountId, category: conf, confidence: 1, source: "confirmed", ruleId: null });
       continue;
     }
-    const m = matchAccount(a, categories);
+    const m = matchAccount(a, categories, catalog);
     if (m && m.confidence >= minConfidence) {
       out.set(a.xeroAccountId, { xeroAccountId: a.xeroAccountId, category: m.category, confidence: m.confidence, source: "rule", ruleId: m.ruleId });
     } else {

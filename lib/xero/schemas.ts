@@ -40,6 +40,8 @@ export const AccountsResponse = z.object({
       Type: z.string().optional().default(""),
       Class: z.string().optional(),
       ReportingCode: z.string().optional(),
+      ReportingCodeName: z.string().optional(),
+      TaxType: z.string().optional(),
       SystemAccount: z.string().optional(),
       Status: z.string().optional(),
     }),

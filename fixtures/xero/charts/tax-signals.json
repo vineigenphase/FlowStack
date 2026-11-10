@@ -1,0 +1,56 @@
+{
+  "_note": "SAMPLE: synthetic chart of accounts for mapping tests (v1.1 M). Names that mislead: the tax rate tells wages from agency labour. Not real customer data.",
+  "Accounts": [
+    {
+      "AccountID": "21449087-2282-58c2-8a6c-907ec8b765b4",
+      "Name": "Salaries",
+      "Type": "OVERHEADS",
+      "Code": "500",
+      "TaxType": "NONE"
+    },
+    {
+      "AccountID": "31a6aed1-caac-59d8-bf8d-71b441f805d2",
+      "Name": "Salaries - temps",
+      "Type": "OVERHEADS",
+      "Code": "501",
+      "TaxType": "INPUT2"
+    },
+    {
+      "AccountID": "e7fcbcf5-4c97-55f6-bad0-db025c4ea898",
+      "Name": "Payroll",
+      "Type": "OVERHEADS",
+      "Code": "502",
+      "TaxType": "INPUT2"
+    },
+    {
+      "AccountID": "95a933dd-9f6f-5fde-b2d4-4d6508b9c6ac",
+      "Name": "Gross Pay",
+      "Type": "OVERHEADS",
+      "Code": "503",
+      "ReportingCode": "EXP.STF.WAG",
+      "TaxType": "INPUT2"
+    },
+    {
+      "AccountID": "309224c3-d47f-57b7-985f-0b64e8748ea3",
+      "Name": "Pension",
+      "Type": "OVERHEADS",
+      "Code": "504",
+      "TaxType": "INPUT2"
+    },
+    {
+      "AccountID": "d6852a4e-1906-5196-bce8-ba7d6861ce03",
+      "Name": "Computer costs",
+      "Type": "OVERHEADS",
+      "Code": "505",
+      "TaxType": "INPUT2"
+    }
+  ],
+  "expected": {
+    "Salaries": "wages",
+    "Salaries - temps": "unmapped",
+    "Payroll": "unmapped",
+    "Gross Pay": "unmapped",
+    "Pension": "unmapped",
+    "Computer costs": "software_subscriptions"
+  }
+}

@@ -1,0 +1,9 @@
+# Name synonyms per account category (BACKEND.md §5 step 3, v1.1 M). Businesses write their own account names
+# ("Labour", "Salaries", "Wages"), so these add to each category's name_any. Matched at the start of a word.
+# CHANGES-v1.1 calls the contractors category "agency_staff"; it is our `contractors` key.
+
+wages: [wages, salaries, salary, labour, labor, payroll, staff costs, staff wages, gross pay]
+employer_ni: [employers ni, employer's ni, er ni, national insurance, nic]
+pensions: [pension, pensions, auto enrolment, auto-enrolment, nest]
+contractors: [agency, temp staff, contractors, freelancers, subcontractors]
+software_subscriptions: [software, subscriptions, saas, it costs, computer costs]

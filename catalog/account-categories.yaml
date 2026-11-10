@@ -4,12 +4,15 @@
 #   system_account equal                         → 0.95
 #   reporting_code prefix + type allowed         → 0.90
 #   type_only (the Xero Type alone is decisive)  → 0.90
+#   type_default (the type suggests it)          → 0.76  (v1.1 M: a specific name beats a generic type)
 #   name keyword + type allowed                  → 0.80
 #   name keyword, no types listed                → 0.70   (below MAP_CONFIDENCE_MIN 0.75 → review queue)
 # The highest score wins; ties go to the entry listed first.
 #
-# Reporting codes are UK Xero codes as used in our synthetic fixtures. VERIFY against the real
-# Demo Company chart (`pnpm xero:record`) before relying on them; names back them up meanwhile.
+# v1.1 M: real Xero reporting codes now live in catalog/reporting-codes.yaml (from the live Demo Company chart),
+# checked first at 0.90. The reporting_codes below are those of our synthetic fixtures and stay as a fallback.
+# expected_tax: the VAT treatment an account like this normally has; a mismatch costs 0.15 confidence, and a
+# wages-like account with VAT is treated as contractors/agency (≤ 0.70, so it goes to the review queue).
 
 # ---------------- Profit and loss ----------------
 - key: sales
@@ -25,19 +28,22 @@
 - key: cost_of_sales
   label: Cost of sales
   statement: pl
-  match: { types: [DIRECTCOSTS], reporting_codes: [EXP.COS], name_any: [cost of goods, cost of sales, purchases, food cost, drink cost], type_only: true }
+  match: { types: [DIRECTCOSTS], reporting_codes: [EXP.COS], name_any: [cost of goods, cost of sales, purchases, food cost, drink cost], type_default: true }
 - key: wages
   label: Wages and salaries
   statement: pl
   match: { types: [EXPENSE, OVERHEADS, DIRECTCOSTS], reporting_codes: [EXP.EMP.WAG], name_any: [wage, salar, payroll, staff cost, tronc] }
+  expected_tax: no_vat
 - key: employer_ni
   label: Employer's National Insurance
   statement: pl
   match: { types: [EXPENSE, OVERHEADS, DIRECTCOSTS], reporting_codes: [EXP.EMP.NIC], name_any: [national insurance, employers ni, employer ni, payroll tax] }
+  expected_tax: no_vat
 - key: pensions
   label: Pensions
   statement: pl
   match: { types: [EXPENSE, OVERHEADS, DIRECTCOSTS], reporting_codes: [EXP.EMP.PEN], name_any: [pension, 401k, superannuation] }
+  expected_tax: no_vat
 - key: staff_other
   label: Other staff costs
   statement: pl

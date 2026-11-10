@@ -248,3 +248,10 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
   - A switcher in the org header when the user has 2+ businesses.
   - `XERO_CONNECTION_CAP` (default 5) is checked before OAuth (→ `/connect/limit`) and in the callback: new tenants over the cap are skipped, and reconnecting always works.
   - **Deviation:** firms link to clients through the existing `firm_orgs` table (many-to-many) rather than `orgs.firm_id`. It's the same grouping, and a client can sit with more than one firm.
+- **M:**
+  - `catalog/reporting-codes.yaml` holds only codes seen on Xero's real UK Demo Company. Broad codes (EXP, ASS, LIA, REV) are left out: a live UK chart had 96 accounts tagged just "EXP" and 117 just "ASS", so names + type + tax carry most real charts.
+  - `catalog/account-synonyms.yaml`. The spec's `agency_staff` is our `contractors` key.
+  - `accounts.tax_type` and `reporting_code_name` (migration 0015).
+  - Tax checks: wages-like + VAT → contractors at 0.70 (queued), or at 0.80 when also named agency/contractors. Otherwise a category with `expected_tax` that disagrees loses 0.15.
+  - Cost of sales now uses `type_default` (0.76) so a specific name beats "any direct cost". Direct wages map to wages.
+  - There are 3 synthetic charts in `fixtures/xero/charts/`, tested in `tests/mapping.test.ts`. They are synthetic, not recorded, because recording real charts needs live connections.

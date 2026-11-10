@@ -1,0 +1,70 @@
+{
+  "_note": "SAMPLE: synthetic chart of accounts for mapping tests (v1.1 M). Lightly tagged chart (most accounts just 'EXP'): own names, tax rates do the work. Not real customer data.",
+  "Accounts": [
+    {
+      "AccountID": "c333588f-cc21-5477-8104-c482f8634c5b",
+      "Name": "Labour",
+      "Type": "OVERHEADS",
+      "Code": "400",
+      "ReportingCode": "EXP",
+      "TaxType": "NONE"
+    },
+    {
+      "AccountID": "9a157ea3-3f36-53b9-a462-66f427bebb83",
+      "Name": "Staff Wages",
+      "Type": "DIRECTCOSTS",
+      "Code": "310",
+      "ReportingCode": "EXP",
+      "TaxType": "NONE"
+    },
+    {
+      "AccountID": "58477a1f-e6f3-5450-a712-0dbcbfb4b130",
+      "Name": "Er NI",
+      "Type": "OVERHEADS",
+      "Code": "401",
+      "ReportingCode": "EXP",
+      "TaxType": "NONE"
+    },
+    {
+      "AccountID": "fd9d0efb-351b-5b34-b5d5-c5a156c3c7ac",
+      "Name": "Auto Enrolment",
+      "Type": "OVERHEADS",
+      "Code": "402",
+      "ReportingCode": "EXP",
+      "TaxType": "NONE"
+    },
+    {
+      "AccountID": "4c0db315-79c6-565c-bc9e-2695e81c8110",
+      "Name": "Agency Labour",
+      "Type": "OVERHEADS",
+      "Code": "403",
+      "ReportingCode": "EXP",
+      "TaxType": "INPUT2"
+    },
+    {
+      "AccountID": "ffbfc7ee-c2f0-5816-84b9-ff64c1742aa9",
+      "Name": "IT Costs",
+      "Type": "OVERHEADS",
+      "Code": "404",
+      "ReportingCode": "EXP",
+      "TaxType": "INPUT2"
+    },
+    {
+      "AccountID": "6870c839-9467-54bc-91bb-10873bdfe971",
+      "Name": "Freelancers",
+      "Type": "OVERHEADS",
+      "Code": "405",
+      "ReportingCode": "EXP",
+      "TaxType": "NONE"
+    }
+  ],
+  "expected": {
+    "Labour": "wages",
+    "Staff Wages": "wages",
+    "Er NI": "employer_ni",
+    "Auto Enrolment": "pensions",
+    "Agency Labour": "contractors",
+    "IT Costs": "software_subscriptions",
+    "Freelancers": "contractors"
+  }
+}

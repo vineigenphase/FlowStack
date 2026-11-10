@@ -20,7 +20,11 @@ export const AccountCategory = z.object({
     name_any: strs,
     system_account: z.string().optional(),
     type_only: z.boolean().default(false),
+    /** v1.1 M: the type suggests this category but a specific name should win (0.76). */
+    type_default: z.boolean().default(false),
   }),
+  /** v1.1 M: the tax rate this kind of account normally carries. A disagreeing account loses 0.15 confidence. */
+  expected_tax: z.enum(["no_vat", "vat"]).optional(),
 });
 export type AccountCategory = z.infer<typeof AccountCategory>;
 
@@ -101,6 +105,10 @@ export const rulesFile = () => loadFile("rules.yaml", RulesFile);
 export const apps = () => loadFile("apps.yaml", list(App));
 export const markets = () => loadFile("markets.yaml", list(Market));
 export const essentials = () => loadFile("essentials.yaml", list(Essential));
+/** v1.1 M: reporting code prefix → category, and extra name synonyms per category (BACKEND §5). */
+export const reportingCodes = () => loadFile("reporting-codes.yaml", z.record(z.string(), z.string()));
+export const accountSynonyms = () => loadFile("account-synonyms.yaml", z.record(z.string(), z.array(z.string())));
+export const mappingCatalog = () => ({ reportingCodes: reportingCodes(), synonyms: accountSynonyms() });
 
 export function clearCatalogCache() {
   cache.clear();
@@ -108,6 +116,11 @@ export function clearCatalogCache() {
 
 /** Cross-file checks: every referenced key exists. Run in tests and on seed. */
 export function validateCatalog(): string[] {
+  const mapCats = new Set(accountCategories().map((c) => c.key));
+  const mapErrs: string[] = [];
+  for (const [code, cat] of Object.entries(reportingCodes())) if (!mapCats.has(cat)) mapErrs.push(`reporting-codes.yaml: ${code} → unknown category ${cat}`);
+  for (const cat of Object.keys(accountSynonyms())) if (!mapCats.has(cat)) mapErrs.push(`account-synonyms.yaml: unknown category ${cat}`);
+  if (mapErrs.length) return mapErrs;
   const errs: string[] = [];
   const acc = new Set(accountCategories().map((c) => c.key));
   const appCats = new Set(appCategories().map((c) => c.key));

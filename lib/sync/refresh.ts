@@ -20,7 +20,7 @@ import { adminDb, withOrg, type Db } from "@/lib/db/client";
 import { env } from "@/lib/env";
 import { log } from "@/lib/log";
 import { errorText } from "./error-text";
-import { accountCategories } from "@/lib/catalog/load";
+import { accountCategories, mappingCatalog } from "@/lib/catalog/load";
 import { mapAccounts } from "@/lib/mapping";
 import { buildBS, buildPL, type Statement, type StatementLine } from "@/lib/statements/build";
 import { accountInfo } from "@/lib/statements/accounts";
@@ -123,6 +123,8 @@ export async function runRefresh(orgId: string, opts: RefreshOpts = {}) {
             type: a.Type,
             class: a.Class ?? null,
             reportingCode: a.ReportingCode ?? null,
+            reportingCodeName: a.ReportingCodeName ?? null,
+            taxType: a.TaxType ?? null,
             systemAccount: a.SystemAccount ?? null,
             status: a.Status ?? null,
           };
@@ -155,9 +157,11 @@ export async function runRefresh(orgId: string, opts: RefreshOpts = {}) {
             name: a.Name,
             type: a.Type,
             reportingCode: a.ReportingCode,
+            taxType: a.TaxType,
             systemAccount: a.SystemAccount,
           })),
           categories: accountCategories(),
+          catalog: mappingCatalog(),
           confirmed,
           minConfidence: env().MAP_CONFIDENCE_MIN,
         });
