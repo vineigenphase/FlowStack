@@ -272,3 +272,7 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
   - Apps with one payment or irregular gaps count while recent and are never asked about.
   - Questions appear on the summary page, answered via `POST /api/orgs/:org/apps/:appId/status`: still_use, moved, stopped, replacing, both.
   - `app_lapsing` queue items appear after 30 days unanswered, which in practice only happens for quarterly and annual apps.
+- **L (PROPOSED):**
+  - Crawl page kinds now include integrations, security and terms (`apps.yaml → crawl:`). **No URLs have been added yet:** the spec says a person finds them, never guesses.
+  - `lib/vendors/companies-house.ts` stores `vendor_incorporated` and `vendor_ownership_changes` as verified, with the register page as the source. These facts appear in a "Vendor" group on the dossier and are refreshed by the monthly cron.
+  - Each app needs `companies_house: <number>` in apps.yaml, entered by hand (none yet), plus `COMPANIES_HOUSE_API_KEY`.

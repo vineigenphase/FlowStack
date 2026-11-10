@@ -22,7 +22,11 @@ export const FACT_FIELDS = [
   "support_hours",
   "days_to_go_live",
 ] as const;
-export type FactField = (typeof FACT_FIELDS)[number];
+/** v1.1 L: from Companies House only (verified, register as source). Never crawled or extracted from vendor pages. */
+export const REGISTRY_FIELDS = ["vendor_incorporated", "vendor_ownership_changes"] as const;
+export type FactField = (typeof FACT_FIELDS)[number] | (typeof REGISTRY_FIELDS)[number];
+/** Everything shown on a dossier: crawled facts, then register facts. */
+export const DISPLAY_FIELDS: readonly FactField[] = [...FACT_FIELDS, ...REGISTRY_FIELDS];
 
 export const FACT_LABELS: Record<FactField, string> = {
   price_model: "Pricing model",
@@ -39,6 +43,8 @@ export const FACT_LABELS: Record<FactField, string> = {
   data_location: "Data location",
   support_hours: "Support hours",
   days_to_go_live: "Days to go live",
+  vendor_incorporated: "Company founded",
+  vendor_ownership_changes: "Changes of control",
 };
 
 export type FactState = "verified" | "found" | "missing" | "conflicting" | "stale";

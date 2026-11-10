@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 import { appFacts } from "@/db/schema";
 import { adminDb } from "@/lib/db/client";
 import { appCategories, apps as catalogApps } from "./load";
-import { displayFact, FACT_FIELDS, type FactRow } from "./facts";
+import { DISPLAY_FIELDS, displayFact, FACT_FIELDS, type FactRow } from "./facts";
 
 const DIRECTORY_EXCLUDE = new Set(["accounting", "other_software"]);
 
@@ -59,7 +59,7 @@ export async function getApp(id: string) {
     categories: a.categories,
     markets: a.markets,
     integrations: a.integrations.map((i) => ({ to: i.to, name: byId.get(i.to) ?? i.to, kind: i.kind })),
-    facts: FACT_FIELDS.map((field) => displayFact(f?.get(field), field)),
+    facts: DISPLAY_FIELDS.map((field) => displayFact(f?.get(field), field)),
     sample: a.sample,
     source: a.source ?? null,
   };

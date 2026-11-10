@@ -20,6 +20,11 @@ export function factText(field: string, value: unknown): string {
     return m === 0 ? (field === "min_term" ? "None (cancel any time)" : "None") : `${m} month${m === 1 ? "" : "s"}`;
   }
   if (field === "days_to_go_live" && typeof value === "number") return `${value} days`;
+  if (field === "vendor_incorporated" && typeof value === "string") return new Date(value + "T00:00:00Z").toLocaleDateString("en-GB", { month: "long", year: "numeric", timeZone: "UTC" });
+  if (field === "vendor_ownership_changes" && typeof value === "object" && value && "changes" in value) {
+    const v = value as { changes: number; last: string | null };
+    return v.changes === 0 ? "None on the register" : `${v.changes} on the register${v.last ? `, latest ${v.last.slice(0, 7)}` : ""}`;
+  }
   if (Array.isArray(value)) return value.join(", ");
   if (typeof value === "object") return Object.values(value as Record<string, unknown>).join(", ");
   return String(value);
@@ -31,4 +36,5 @@ export const FACT_GROUPS: { label: string; fields: string[] }[] = [
   { label: "Fit with Xero", fields: ["posts_to_xero_as", "tracking_categories"] },
   { label: "Security", fields: ["security_certs", "data_location"] },
   { label: "Support and going live", fields: ["support_hours", "days_to_go_live"] },
+  { label: "Vendor", fields: ["vendor_incorporated", "vendor_ownership_changes"] },
 ];

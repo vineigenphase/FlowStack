@@ -66,12 +66,23 @@ export const App = z.object({
   markets: z.array(z.enum(["UK", "US", "CA", "AU"])).min(1),
   website: z.string().url().optional(),
   crawl: z
-    .object({ home: z.string().nullable().optional(), pricing: z.string().nullable().optional(), product: z.string().nullable().optional(), services: z.string().nullable().optional() })
+    .object({
+      home: z.string().nullable().optional(),
+      pricing: z.string().nullable().optional(),
+      product: z.string().nullable().optional(),
+      services: z.string().nullable().optional(),
+      // v1.1 L: up to 7 pages, found once by a person and written here, never guessed.
+      integrations: z.string().nullable().optional(),
+      security: z.string().nullable().optional(),
+      terms: z.string().nullable().optional(),
+    })
     .optional(),
   fingerprints: z.array(z.string()).default([]),
   integrations: z.array(z.object({ to: z.string(), kind: z.enum(["native", "via_app", "csv"]) })).default([]),
   /** Price band this app suits, by annual revenue (£). Hand-entered, sample until verified. */
   revenue_band: z.object({ min: z.number().default(0), max: z.number().nullable().default(null) }).optional(),
+  /** v1.1 L: UK company number for Companies House facts, entered by a person (8 characters, e.g. 09876543 or SC123456). */
+  companies_house: z.string().regex(/^[A-Z0-9]{8}$/).optional(),
   sample: z.boolean().default(true),
   source: z.string().optional(),
 });

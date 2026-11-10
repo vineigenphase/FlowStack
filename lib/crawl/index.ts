@@ -13,7 +13,8 @@ import { makeFetcher, type PageFetcher } from "./fetch";
 import { llmExtractor, rulesExtractor, type Extracted, type Extractor, type Page } from "./extract";
 import { quoteFound } from "./quote-check";
 
-const PAGE_KINDS = ["home", "services", "pricing", "product"] as const;
+/** v1.1 L: up to 7 pages per vendor (BACKEND §11). */
+const PAGE_KINDS = ["home", "services", "pricing", "product", "integrations", "security", "terms"] as const;
 export const SPOT_CHECK_SHARE = 0.2;
 export const STALE_DAYS = 90;
 const MOVE_LIMIT = 0.3;
