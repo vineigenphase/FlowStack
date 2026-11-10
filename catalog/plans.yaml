@@ -1,0 +1,33 @@
+# Plans (BACKEND.md §20, v1.1 E). Prices live here and in Stripe, never in code.
+#
+# TODO(CHANGES-v1.1.md §4 item 1): prices are OPEN (subscription level, audit fee, annual discount, firm
+# per-client price). Until they are decided Stripe runs in TEST MODE ONLY: lib/billing refuses live keys.
+# Hypotheses to test (CHANGES-v1.1 §N): £9.99–£24.99 per business per month; up-front audit £99–£249.
+#
+# stripe_price / coupon are keys into STRIPE_PRICE_IDS_JSON (e.g. {"pro_monthly":"price_...","audit_waived":"..."}),
+# so each environment points at its own Stripe test-mode prices. price_gbp is display only and stays null until
+# decided; the page then says "price to be confirmed".
+
+plans:
+  - key: pro_monthly
+    label: FlowStack, monthly
+    interval: month
+    price_gbp: null
+    stripe_price: pro_monthly
+  - key: pro_annual
+    label: FlowStack, 12 months
+    interval: year
+    price_gbp: null
+    stripe_price: pro_annual
+
+one_off:
+  - key: audit
+    label: Up-front audit of your stack
+    price_gbp: null
+    stripe_price: audit
+
+coupons:
+  # "Audit waived" opening offer: a Stripe coupon applied at checkout.
+  - key: audit_waived
+    label: Audit waived (opening offer)
+    stripe_coupon: audit_waived

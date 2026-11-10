@@ -46,6 +46,12 @@ const EnvSchema = z.object({
   MONDAY_DIGEST_ENABLED: bool,
   /** v1.1 I: Xero plan connection cap (Starter 5, Core 50). */
   XERO_CONNECTION_CAP: num(5),
+  /** v1.1 E: Stripe, test mode only until prices are decided (CHANGES-v1.1.md §4 item 1). */
+  STRIPE_SECRET_KEY: z.string().optional().default(""),
+  STRIPE_WEBHOOK_SECRET: z.string().optional().default(""),
+  STRIPE_PRICE_IDS_JSON: z.string().optional().default(""),
+  /** v1.1 L: Companies House public data API. */
+  COMPANIES_HOUSE_API_KEY: z.string().optional().default(""),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

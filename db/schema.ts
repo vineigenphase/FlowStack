@@ -703,6 +703,42 @@ export const auditLog = pgTable("audit_log", {
 });
 
 /** Tables that hold one org's data. RLS is enabled on each (see the rls migration). */
+// ---------- billing (v1.1 E) and review rewards (v1.1 O). Owner connection only: RLS on, no grant. ----------
+
+/** One Stripe subscription per org or firm. Card details never reach us. */
+export const subscriptions = pgTable("subscriptions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  orgId: uuid("org_id").references(() => orgs.id, { onDelete: "cascade" }),
+  firmId: uuid("firm_id"),
+  stripeCustomerId: text("stripe_customer_id").notNull(),
+  stripeSubscriptionId: text("stripe_subscription_id").notNull().unique(),
+  plan: text("plan").notNull(),
+  status: text("status").notNull(),
+  currentPeriodEnd: ts("current_period_end"),
+  updatedAt: ts("updated_at").notNull().defaultNow(),
+});
+
+/** Each Stripe webhook event once: ids, type and statuses only (no card or address data). */
+export const paymentsLog = pgTable("payments_log", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  stripeEventId: text("stripe_event_id").notNull().unique(),
+  type: text("type").notNull(),
+  payloadSummary: jsonb("payload_summary").notNull(),
+  createdAt: ts("created_at").notNull().defaultNow(),
+});
+
+/**
+ * v1.1 O ("activators", 3.0): free months earned for approved reviews. Table only; nothing grants rewards yet.
+ * TODO(CHANGES-v1.1.md §4 item 3): threshold OPEN (proposed 3 approved reviews = 1 free month, max 3 a year).
+ */
+export const rewardLedger = pgTable("reward_ledger", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id").notNull(),
+  reviewsCounted: integer("reviews_counted").notNull(),
+  monthsGranted: integer("months_granted").notNull(),
+  grantedAt: ts("granted_at").notNull().defaultNow(),
+});
+
 export const TENANT_TABLES = [
   "orgs",
   "org_members",
