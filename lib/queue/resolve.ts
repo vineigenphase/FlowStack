@@ -46,6 +46,7 @@ export const ALLOWED: Record<QueueKind, Resolution["action"][]> = {
   fact_spot_check: ["verify", "note", "dismiss"],
   review_moderation: ["publish", "reject"],
   quote_request: ["mark_sent", "dismiss"],
+  app_lapsing: ["note", "dismiss"],
 };
 
 export async function listQueue(opts: { kind?: string; status?: "open" | "done" | "dismissed"; limit?: number } = {}) {

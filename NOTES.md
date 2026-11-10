@@ -265,3 +265,10 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
   - The line page shows the 12-month series.
   - `GET /api/orgs/:org/statements/:kind?months=12`.
   - Sample monthly fixtures come from `scripts/make-monthly-fixtures.py`, derived from the YTD fixtures.
+- **C (PROPOSED rule, CHANGES §4 item 4):**
+  - `lib/detect/lifecycle.ts` works at month granularity, since supplier spend is monthly aggregates. "Cycle + 15 days' grace" means a payment counts as missed from the month end after the month it was due. So a monthly app is lapsing for one month, then inactive.
+  - Supplier spend now looks back 13 months for annual apps; `spend_12m` stays 12 months.
+  - `detected_apps.present` now means the state counts as coverage (new, active, lapsing, declared). It used to mean "paid in 2 of the last 4 months".
+  - Apps with one payment or irregular gaps count while recent and are never asked about.
+  - Questions appear on the summary page, answered via `POST /api/orgs/:org/apps/:appId/status`: still_use, moved, stopped, replacing, both.
+  - `app_lapsing` queue items appear after 30 days unanswered, which in practice only happens for quarterly and annual apps.

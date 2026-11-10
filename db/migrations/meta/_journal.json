@@ -113,6 +113,13 @@
       "when": 1794242550208,
       "tag": "0015_v11_accounts_tax",
       "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1794306391988,
+      "tag": "0016_v11_app_lifecycle",
+      "breakpoints": true
     }
   ]
 }

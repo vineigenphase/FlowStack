@@ -6,8 +6,8 @@
  * patched with deltas (the original rows are gone), so when something changed the 12-month window
  * is rebuilt in full; when nothing changed we skip both list calls' full pull.
  */
-import { and, eq, gte, lt } from "drizzle-orm";
-import { accountMaps, accounts, detectedApps, fingerprints, supplierSpend, syncCursors } from "@/db/schema";
+import { and, desc, eq, gte, lt } from "drizzle-orm";
+import { accountMaps, accounts, appStatusAnswers, detectedApps, fingerprints, supplierSpend, syncCursors } from "@/db/schema";
 import { withOrg, type Db } from "@/lib/db/client";
 import { apps as catalogApps } from "@/lib/catalog/load";
 import { enqueueAll, type QueueItem } from "@/lib/queue/enqueue";
@@ -16,6 +16,10 @@ import { bills, spendTransactions } from "@/lib/xero/endpoints";
 import { monthsBack } from "@/lib/sync/periods";
 import { SpendAggregator, type SupplierHints } from "./aggregate";
 import { matchSupplier, type Fingerprint, type Match } from "./match";
+import { COUNTS_AS_COVERAGE, lapsingNeedsReview, lifecycleOf, type StatusAnswer } from "./lifecycle";
+
+/** v1.1 C: 13 months of supplier spend, so annual billing shows two payments. */
+export const LOOKBACK_MONTHS = 13;
 
 export function catalogFingerprints(): Fingerprint[] {
   return catalogApps().flatMap((a) => a.fingerprints.map((pattern) => ({ appId: a.id, pattern })));
@@ -35,7 +39,8 @@ async function changedSince(c: XeroClient, since: Date, cursor: Date | null) {
 
 export async function syncAppsInUse(orgId: string, client: XeroClient, opts: { asAt: string; now?: Date }) {
   const started = opts.now ?? new Date();
-  const since = monthsBack(opts.asAt, 12);
+  // v1.1 C: 13 months, so an annual app shows two payments.
+  const since = monthsBack(opts.asAt, LOOKBACK_MONTHS);
   const sinceDate = new Date(since + "T00:00:00Z");
 
   const cursor = await withOrg(orgId, async (tx) => {
@@ -72,8 +77,7 @@ export async function syncAppsInUse(orgId: string, client: XeroClient, opts: { a
 
 /** Match stored supplier aggregates to the catalogue and rewrite detected_apps. */
 export async function detect(tx: Db, orgId: string, asAt: string, hints: SupplierHints | null) {
-  const since = monthsBack(asAt, 12);
-  const recent = new Set(Array.from({ length: 4 }, (_, i) => monthsBack(asAt, i + 1)));
+  const since = monthsBack(asAt, LOOKBACK_MONTHS);
   const rows = await tx.select().from(supplierSpend).where(gte(supplierSpend.month, since));
   // Catalogue YAML plus aliases people confirmed from the review queue.
   const confirmed = await tx.select({ appId: fingerprints.appId, pattern: fingerprints.pattern }).from(fingerprints);
@@ -136,21 +140,57 @@ export async function detect(tx: Db, orgId: string, asAt: string, hints: Supplie
     perApp.set(c.match.appId, a);
   }
 
+  // v1.1 C: each app's latest answer (still use / moved / stopped / replacing), newest first.
+  const answers = await tx.select().from(appStatusAnswers).orderBy(desc(appStatusAnswers.createdAt));
+  const latestAnswer = new Map<string, StatusAnswer>();
+  for (const r of answers) if (!latestAnswer.has(r.appId)) latestAnswer.set(r.appId, { answer: r.answer, at: r.createdAt.toISOString().slice(0, 10), replacedBy: r.replacedByAppId });
+
   await tx.delete(detectedApps).where(eq(detectedApps.orgId, orgId));
-  const out = [...perApp].map(([appId, a]) => ({
+  const yearAgo = monthsBack(asAt, 12);
+  const out = [...perApp].map(([appId, a]) => {
+    const life = lifecycleOf([...a.months], asAt, latestAnswer.get(appId));
+    if (lapsingNeedsReview(life, asAt) && !latestAnswer.has(appId)) {
+      pending.push({
+        kind: "app_lapsing",
+        orgId,
+        ref: { org_id: orgId, app_id: appId, last_paid: a.last },
+        reason: `No payment to ${catalogApps().find((x) => x.id === appId)?.name ?? appId} since ${a.last.slice(0, 7)} and the business hasn't answered "Do you still use it?" for 30 days. Look at the pattern; we don't contact customers outside the app.`,
+      });
+    }
+    const row: typeof detectedApps.$inferInsert & { evidence: Record<string, unknown> } = {
     orgId,
     appId,
-    spend12m: Math.round(a.spend * 100) / 100,
+    // spend_12m stays a 12-month figure even though we look back 13 months for annual billing.
+    spend12m: Math.round([...a.byMonth].filter(([m]) => m >= yearAgo).reduce((t, [, v]) => t + v, 0) * 100) / 100,
     monthsSeen: a.months.size,
     lastSeen: a.last,
-    present: [...a.months].filter((m) => recent.has(m)).length >= 2,
+    present: COUNTS_AS_COVERAGE.has(life.state),
+    cycle: life.cycle,
+    state: life.state,
+    nextExpected: life.nextExpected,
     // Monthly totals (aggregates only) feed the after-install chart, renewal checks and peer prices.
     evidence: {
       contacts: [...a.contacts.values()],
       sources: [...a.sources],
       monthly: Object.fromEntries([...a.byMonth].sort(([x], [y]) => x.localeCompare(y)).map(([m, v]) => [m, Math.round(v * 100) / 100])),
+      ...(life.ask ? { ask: "still_use" } : {}),
     },
-  }));
+  };
+    return row;
+  });
+  // Apps the user told us they use but we can't see paying (personal card, parent company, free plan).
+  for (const [appId, ans] of latestAnswer) {
+    if (perApp.has(appId) || ans.answer !== "declared" || !catalogApps().some((x) => x.id === appId)) continue;
+    const life = lifecycleOf([], asAt, ans);
+    if (life.state !== "declared") continue;
+    out.push({ orgId, appId, spend12m: 0, monthsSeen: 0, lastSeen: ans.at, present: true, cycle: life.cycle, state: life.state, nextExpected: null, evidence: { contacts: [], sources: [], monthly: {}, declared: true } });
+  }
+  // A new app in the same job as one still in use: ask "Is X replacing Y?" (once).
+  const job = (id: string) => (catalogApps().find((x) => x.id === id)?.categories ?? []).filter((c) => c !== "accounting" && c !== "other_software");
+  for (const n of out.filter((o) => o.state === "new" && !latestAnswer.has(o.appId))) {
+    const old = out.find((o) => o.appId !== n.appId && (o.state === "active" || o.state === "lapsing") && job(o.appId).some((c) => job(n.appId).includes(c)));
+    if (old) (n.evidence as Record<string, unknown>).ask = { replacing: old.appId };
+  }
   if (out.length) await tx.insert(detectedApps).values(out);
   return { suppliers: byContact.size, detected: out.length, present: out.filter((o) => o.present).length, pending };
 }

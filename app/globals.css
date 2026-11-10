@@ -313,3 +313,7 @@ td a { font-weight: 600; }
 .table-scroll { overflow-x: auto; max-width: 100%; }
 .trend-table { border-collapse: collapse; font-size: 0.8rem; }
 .trend-table th, .trend-table td { padding: 4px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+
+/* v1.1 C: app lifecycle questions */
+.app-questions .card { display: flex; flex-direction: column; gap: 8px; }
+.app-questions .actions { display: flex; flex-wrap: wrap; gap: 6px; }

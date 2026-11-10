@@ -233,11 +233,27 @@ export const detectedApps = pgTable(
     spend12m: money("spend_12m").notNull(),
     monthsSeen: integer("months_seen").notNull(),
     lastSeen: date("last_seen").notNull(),
+    /** Counts as coverage: state new | active | lapsing | declared (v1.1 C). */
     present: boolean("present").notNull(),
     evidence: jsonb("evidence").notNull(),
+    /** v1.1 C: billing cycle, lifecycle state and when the next payment was due (BACKEND §6.1). */
+    cycle: text("cycle", { enum: ["monthly", "quarterly", "annual", "unknown"] }),
+    state: text("state", { enum: ["new", "active", "lapsing", "inactive", "declared"] }),
+    nextExpected: date("next_expected"),
   },
   (t) => [primaryKey({ columns: [t.orgId, t.appId] })],
 );
+
+/** v1.1 C: the user's answers about an app: "still use it", "moved to …", "stopped", "is X replacing Y?". */
+export const appStatusAnswers = pgTable("app_status_answers", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
+  appId: text("app_id").notNull(),
+  answer: text("answer", { enum: ["still_use", "moved", "stopped", "replacing", "both", "declared"] }).notNull(),
+  replacedByAppId: text("replaced_by_app_id"),
+  userId: uuid("user_id"),
+  createdAt: ts("created_at").notNull().defaultNow(),
+});
 
 // ---------- flags & recommendations ----------
 
@@ -700,6 +716,7 @@ export const TENANT_TABLES = [
   "trial_balance",
   "supplier_spend",
   "detected_apps",
+  "app_status_answers",
   "flags",
   "recommendations",
   "flag_feedback",

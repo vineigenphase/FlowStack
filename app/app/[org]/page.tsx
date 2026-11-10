@@ -2,6 +2,9 @@ import Link from "next/link";
 import { requireOrgMember } from "@/lib/auth/session";
 import { flaggedLines, kpiView, summaryView } from "@/lib/read/views";
 import { RefreshButton } from "@/components/refresh-button";
+import { AppQuestions } from "@/components/app-questions";
+import { appQuestions } from "@/lib/detect/status";
+import { apps as catalogApps } from "@/lib/catalog/load";
 import { gbp, KIND_LABEL, lineHref, pct, when } from "@/lib/ui/format";
 
 export const dynamic = "force-dynamic";
@@ -19,6 +22,7 @@ export default async function OrgPage({ params }: { params: Promise<{ org: strin
   const run = s.lastRun;
   const top = s.ready ? await flaggedLines(org) : [];
   const k = s.ready ? await kpiView(org) : null;
+  const questions = s.ready ? await appQuestions(org) : [];
 
   return (
     <>
@@ -80,6 +84,8 @@ export default async function OrgPage({ params }: { params: Promise<{ org: strin
               </p>
             </section>
           ) : null}
+
+          <AppQuestions org={org} questions={questions} apps={catalogApps().map((a) => ({ id: a.id, name: a.name })).sort((x, y) => x.name.localeCompare(y.name))} />
 
           <h2>Lines worth a look</h2>
           {top.length === 0 ? (
