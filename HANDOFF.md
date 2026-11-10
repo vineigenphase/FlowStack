@@ -1,10 +1,28 @@
-# HANDOFF: where the build is (8 Nov 2026)
+# HANDOFF: where the build is (10 Nov 2026)
 
 Read this first, after CLAUDE.md, BACKEND.md and NOTES.md. NOTES.md "Rest of the spec, no Stripe" has the detail.
 
 ## State
 
-- **Stripe is paused.** The owner is rethinking it, so build no billing until they decide.
+- **Spec v1.1 (cofounder review, CHANGES-v1.1.md) is applied** to CLAUDE.md and BACKEND.md (changelog at the top of BACKEND.md), and every DECIDED/PROPOSED item is built on `dev`. NOTES.md "v1.1 build log" has the detail:
+  - **A:** finance lead, job title
+  - **B:** monthly BS/P&L, monthly cash flow, trend signals
+  - **C:** app lifecycle and questions
+  - **D:** four feedback answers
+  - **E:** Stripe in test mode
+  - **F:** Add/Change
+  - **G:** peer prices off
+  - **H:** digest parked
+  - **I:** switcher and connection cap
+  - **K:** weights
+  - **L:** 7 crawl pages and Companies House
+  - **M:** mapping by reporting code and tax rate
+  - **O:** reward ledger table
+  - **P:** ecommerce/SaaS apps and sample companies
+- **Billing:** Stripe is the provider. Prices are OPEN, so only `sk_test_` keys work (`catalog/plans.yaml`, `STRIPE_PRICE_IDS_JSON`).
+- **OPEN, not built** (CHANGES-v1.1 §4): prices, peer price sign-off, activator threshold, confirming the lapsing rule, the four answers, and add-vs-change.
+- **First live connect** (Jenki Drinks, 7 Nov): Xero worked, our statements save failed. Fixed and hardened on dev (fb7a443). The real cause is confirmed only after the merge and a refresh.
+- **Tests:** run them in two batches with `--maxWorkers=2`. The full suite in one go has been killed for low memory.
 - All of the spec's in-app features are now built on `dev`:
   - Playwright end-to-end tests and the phone-width (400px) check
   - Check-ins after install
@@ -17,10 +35,10 @@ Read this first, after CLAUDE.md, BACKEND.md and NOTES.md. NOTES.md "Rest of the
   - Ranking priorities
   - Quote requests
   - Admin review queue page at `/admin/queue` (admins only, not linked from the header): reviews to check, quote requests to send, mappings and facts
-- **Production** (`main`) is still at c5841a8.
-  - Merging `dev` → `main` deploys, and Vercel runs `pnpm db:migrate`, applying migrations 0006–0011 to production. They only add tables, columns and row-level security.
+- **Production** (`main`) is still at c5841a8. dev is at 918c64c.
+  - Merging `dev` → `main` deploys, and Vercel runs `pnpm db:migrate`, applying migrations 0006–0017 to production. They only add tables, columns and row-level security.
   - The owner runs the merge: `! cd ~/flowstack && git checkout main && git merge dev && git push origin main && git checkout dev`
-- **Checks:** `pnpm lint`, `pnpm test` (20 files, 163 tests), `pnpm test:e2e`.
+- **Checks:** `pnpm lint`, `pnpm test` (28 files, 220 tests), `pnpm test:e2e` (not run since v1.1).
 
 ## Owner decisions waiting
 
