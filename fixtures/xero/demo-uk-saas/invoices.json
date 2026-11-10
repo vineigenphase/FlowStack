@@ -1,0 +1,900 @@
+{
+  "Invoices": [
+    {
+      "InvoiceID": "ac34ee86-1623-4f5e-af45-f59a7d5e1dd0",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "abde467d-dea1-4b84-a010-435de82ffb26",
+        "Name": "Amazon Web Services EMEA SARL"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "DateString": "2025-11-15T00:00:00",
+      "Status": "PAID",
+      "Total": 24000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "f9528199-9da1-4600-afa1-a3a749409564",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "abde467d-dea1-4b84-a010-435de82ffb26",
+        "Name": "Amazon Web Services EMEA SARL"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "DateString": "2025-12-15T00:00:00",
+      "Status": "PAID",
+      "Total": 24000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "06c42c6b-0188-4ac4-ad75-aafe7eb080e7",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "abde467d-dea1-4b84-a010-435de82ffb26",
+        "Name": "Amazon Web Services EMEA SARL"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "DateString": "2026-01-15T00:00:00",
+      "Status": "PAID",
+      "Total": 24000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "c1d9fa34-3937-42db-a680-4ec0e636f8cd",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "abde467d-dea1-4b84-a010-435de82ffb26",
+        "Name": "Amazon Web Services EMEA SARL"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "DateString": "2026-02-15T00:00:00",
+      "Status": "PAID",
+      "Total": 24000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "fc6264f1-7079-4c2b-a0a9-b5631e0af032",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "abde467d-dea1-4b84-a010-435de82ffb26",
+        "Name": "Amazon Web Services EMEA SARL"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "DateString": "2026-03-15T00:00:00",
+      "Status": "PAID",
+      "Total": 24000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "38f2bfd6-3710-43e8-ab7b-cfde07734d1d",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "abde467d-dea1-4b84-a010-435de82ffb26",
+        "Name": "Amazon Web Services EMEA SARL"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "DateString": "2026-04-15T00:00:00",
+      "Status": "PAID",
+      "Total": 24000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "cd84d51b-8066-486e-a031-53b2fb07d8a1",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "abde467d-dea1-4b84-a010-435de82ffb26",
+        "Name": "Amazon Web Services EMEA SARL"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "DateString": "2026-05-15T00:00:00",
+      "Status": "PAID",
+      "Total": 24000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "06708031-b186-425f-aa5e-b62744f80af2",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "abde467d-dea1-4b84-a010-435de82ffb26",
+        "Name": "Amazon Web Services EMEA SARL"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "DateString": "2026-06-15T00:00:00",
+      "Status": "PAID",
+      "Total": 24000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "befa02f9-c345-49ed-a205-734d7f7647c9",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "abde467d-dea1-4b84-a010-435de82ffb26",
+        "Name": "Amazon Web Services EMEA SARL"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "DateString": "2026-07-15T00:00:00",
+      "Status": "PAID",
+      "Total": 24000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "2cec54f1-7e9d-441e-a27d-4018091cf524",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "abde467d-dea1-4b84-a010-435de82ffb26",
+        "Name": "Amazon Web Services EMEA SARL"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "DateString": "2026-08-15T00:00:00",
+      "Status": "PAID",
+      "Total": 24000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "e4615c3a-30ab-4aa6-a5f4-171f5ff64b87",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "abde467d-dea1-4b84-a010-435de82ffb26",
+        "Name": "Amazon Web Services EMEA SARL"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "DateString": "2026-09-15T00:00:00",
+      "Status": "PAID",
+      "Total": 24000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "594a77b8-7d83-461d-afb1-67e2dd22fbb9",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "abde467d-dea1-4b84-a010-435de82ffb26",
+        "Name": "Amazon Web Services EMEA SARL"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "DateString": "2026-10-15T00:00:00",
+      "Status": "AUTHORISED",
+      "Total": 24000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "2bf8f02a-0fc8-416a-a274-3219923b36a1",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "7783e20b-d986-433e-a125-264f53b0005f",
+        "Name": "Regus Management Ltd"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "DateString": "2025-11-15T00:00:00",
+      "Status": "PAID",
+      "Total": 24000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "d9f28b3f-2d17-4c14-a9a3-a8cd38d115cb",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "7783e20b-d986-433e-a125-264f53b0005f",
+        "Name": "Regus Management Ltd"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "DateString": "2026-02-15T00:00:00",
+      "Status": "PAID",
+      "Total": 24000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "a1a529e1-1789-408b-aa1e-b1991d48ea99",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "7783e20b-d986-433e-a125-264f53b0005f",
+        "Name": "Regus Management Ltd"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "DateString": "2026-05-15T00:00:00",
+      "Status": "PAID",
+      "Total": 24000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "6a435ab2-cced-49e7-a185-dc82f0c66bd5",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "7783e20b-d986-433e-a125-264f53b0005f",
+        "Name": "Regus Management Ltd"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "DateString": "2026-08-15T00:00:00",
+      "Status": "PAID",
+      "Total": 24000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "5ac8465b-1f8e-4f94-a16a-66836f5bddca",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4f4b4995-5545-4bf1-aa6d-717a698568e8",
+        "Name": "Chargebee Inc"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "DateString": "2025-11-15T00:00:00",
+      "Status": "PAID",
+      "Total": 549,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "205074b7-fc1a-4c85-a76f-99e3fb68c6fd",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4f4b4995-5545-4bf1-aa6d-717a698568e8",
+        "Name": "Chargebee Inc"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "DateString": "2025-12-15T00:00:00",
+      "Status": "PAID",
+      "Total": 549,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "d8db7257-8235-407d-a7af-22608e890d7d",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4f4b4995-5545-4bf1-aa6d-717a698568e8",
+        "Name": "Chargebee Inc"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "DateString": "2026-01-15T00:00:00",
+      "Status": "PAID",
+      "Total": 549,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "62447c79-56a0-46f5-a55f-a78b1749e06f",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4f4b4995-5545-4bf1-aa6d-717a698568e8",
+        "Name": "Chargebee Inc"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "DateString": "2026-02-15T00:00:00",
+      "Status": "PAID",
+      "Total": 549,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "710d081b-9b9e-4d92-a3c1-164b0144da90",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4f4b4995-5545-4bf1-aa6d-717a698568e8",
+        "Name": "Chargebee Inc"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "DateString": "2026-03-15T00:00:00",
+      "Status": "PAID",
+      "Total": 549,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "5aa93936-ec2f-469d-aa64-890d1f365a3f",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4f4b4995-5545-4bf1-aa6d-717a698568e8",
+        "Name": "Chargebee Inc"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "DateString": "2026-04-15T00:00:00",
+      "Status": "PAID",
+      "Total": 549,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "08bd7396-96cb-4126-a06e-126e270bb67a",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4f4b4995-5545-4bf1-aa6d-717a698568e8",
+        "Name": "Chargebee Inc"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "DateString": "2026-05-15T00:00:00",
+      "Status": "PAID",
+      "Total": 549,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "18edf6e0-04e9-4cc9-a51d-6b78de530085",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4f4b4995-5545-4bf1-aa6d-717a698568e8",
+        "Name": "Chargebee Inc"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "DateString": "2026-06-15T00:00:00",
+      "Status": "PAID",
+      "Total": 549,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "ec7554c7-b813-4c1b-ae0d-77c935cfb7b3",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4f4b4995-5545-4bf1-aa6d-717a698568e8",
+        "Name": "Chargebee Inc"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "DateString": "2026-07-15T00:00:00",
+      "Status": "PAID",
+      "Total": 549,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "5a60919e-de8c-4bce-aac6-d0348377ad2c",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4f4b4995-5545-4bf1-aa6d-717a698568e8",
+        "Name": "Chargebee Inc"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "DateString": "2026-08-15T00:00:00",
+      "Status": "PAID",
+      "Total": 549,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "a18dab62-2f53-4705-a444-6601744aa6b7",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4f4b4995-5545-4bf1-aa6d-717a698568e8",
+        "Name": "Chargebee Inc"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "DateString": "2026-09-15T00:00:00",
+      "Status": "PAID",
+      "Total": 549,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "b539c1a9-0883-4954-aae3-4515638f9440",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "4f4b4995-5545-4bf1-aa6d-717a698568e8",
+        "Name": "Chargebee Inc"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "DateString": "2026-10-15T00:00:00",
+      "Status": "AUTHORISED",
+      "Total": 549,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "a094a430-c99b-4cce-ae82-efa93d0e57c0",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "b97d1855-79a4-418b-ac05-6d3077158aac",
+        "Name": "HubSpot Ireland Ltd"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "DateString": "2025-11-15T00:00:00",
+      "Status": "PAID",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "b8487ed3-c22a-4be6-a352-459ac53c4425",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "b97d1855-79a4-418b-ac05-6d3077158aac",
+        "Name": "HubSpot Ireland Ltd"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "DateString": "2025-12-15T00:00:00",
+      "Status": "PAID",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "982eb745-5eb1-4d16-a2e7-7f04ccdbcc9a",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "b97d1855-79a4-418b-ac05-6d3077158aac",
+        "Name": "HubSpot Ireland Ltd"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "DateString": "2026-01-15T00:00:00",
+      "Status": "PAID",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "29d33c26-1107-43c6-ae43-5a2a9143190d",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "b97d1855-79a4-418b-ac05-6d3077158aac",
+        "Name": "HubSpot Ireland Ltd"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "DateString": "2026-02-15T00:00:00",
+      "Status": "PAID",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "60bd152d-7201-41ed-a4df-b86fcb0815a6",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "b97d1855-79a4-418b-ac05-6d3077158aac",
+        "Name": "HubSpot Ireland Ltd"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "DateString": "2026-03-15T00:00:00",
+      "Status": "PAID",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "2f634441-9c36-44ce-a840-0e5cef9b83da",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "b97d1855-79a4-418b-ac05-6d3077158aac",
+        "Name": "HubSpot Ireland Ltd"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "DateString": "2026-04-15T00:00:00",
+      "Status": "PAID",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "81c116b0-818b-4340-ae7d-7394307b2312",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "b97d1855-79a4-418b-ac05-6d3077158aac",
+        "Name": "HubSpot Ireland Ltd"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "DateString": "2026-05-15T00:00:00",
+      "Status": "PAID",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "64ded015-8702-447b-a018-92c8969a50c9",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "b97d1855-79a4-418b-ac05-6d3077158aac",
+        "Name": "HubSpot Ireland Ltd"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "DateString": "2026-06-15T00:00:00",
+      "Status": "PAID",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "80b7ae26-6a71-4ed2-a070-5b9602a154bc",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "b97d1855-79a4-418b-ac05-6d3077158aac",
+        "Name": "HubSpot Ireland Ltd"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "DateString": "2026-07-15T00:00:00",
+      "Status": "PAID",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "b0a2d5c8-d38a-4b09-ad71-da292e75d791",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "b97d1855-79a4-418b-ac05-6d3077158aac",
+        "Name": "HubSpot Ireland Ltd"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "DateString": "2026-08-15T00:00:00",
+      "Status": "PAID",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "f15ba251-267d-4960-a83a-3f285fff8dcb",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "b97d1855-79a4-418b-ac05-6d3077158aac",
+        "Name": "HubSpot Ireland Ltd"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "DateString": "2026-09-15T00:00:00",
+      "Status": "PAID",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "08a09416-e78d-452a-a6a3-2254b9b7fa13",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "b97d1855-79a4-418b-ac05-6d3077158aac",
+        "Name": "HubSpot Ireland Ltd"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "DateString": "2026-10-15T00:00:00",
+      "Status": "AUTHORISED",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "116e95b8-a655-4b4f-af16-7712547670dc",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d2bde36-27d7-4966-a45f-57cdd78e6872",
+        "Name": "Deel Inc"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "DateString": "2025-11-15T00:00:00",
+      "Status": "PAID",
+      "Total": 3000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "fcd39b78-a3da-4ae0-a2c2-3281e1006a71",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d2bde36-27d7-4966-a45f-57cdd78e6872",
+        "Name": "Deel Inc"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "DateString": "2025-12-15T00:00:00",
+      "Status": "PAID",
+      "Total": 3000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "46dc9fde-8051-4ca8-ac39-0d6d602b9809",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d2bde36-27d7-4966-a45f-57cdd78e6872",
+        "Name": "Deel Inc"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "DateString": "2026-01-15T00:00:00",
+      "Status": "PAID",
+      "Total": 3000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "be13821c-38a4-481f-abb6-0111f8dc9a49",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d2bde36-27d7-4966-a45f-57cdd78e6872",
+        "Name": "Deel Inc"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "DateString": "2026-02-15T00:00:00",
+      "Status": "PAID",
+      "Total": 3000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "622511bd-45de-47b7-aaf5-42b0a278df95",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d2bde36-27d7-4966-a45f-57cdd78e6872",
+        "Name": "Deel Inc"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "DateString": "2026-03-15T00:00:00",
+      "Status": "PAID",
+      "Total": 3000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "256ea6dc-0467-42fb-a5dc-99fd3328ef27",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d2bde36-27d7-4966-a45f-57cdd78e6872",
+        "Name": "Deel Inc"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "DateString": "2026-04-15T00:00:00",
+      "Status": "PAID",
+      "Total": 3000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "a81b4454-7197-4925-aaf8-b2de7d136a0d",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d2bde36-27d7-4966-a45f-57cdd78e6872",
+        "Name": "Deel Inc"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "DateString": "2026-05-15T00:00:00",
+      "Status": "PAID",
+      "Total": 3000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "6f444c32-639c-42a5-add2-52acce27c99e",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d2bde36-27d7-4966-a45f-57cdd78e6872",
+        "Name": "Deel Inc"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "DateString": "2026-06-15T00:00:00",
+      "Status": "PAID",
+      "Total": 3000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "3d6526ed-92b7-4775-aa30-17bb4f2f96e0",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d2bde36-27d7-4966-a45f-57cdd78e6872",
+        "Name": "Deel Inc"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "DateString": "2026-07-15T00:00:00",
+      "Status": "PAID",
+      "Total": 3000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "0a83bc31-3c92-4d4a-a2a4-39795f326fcd",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d2bde36-27d7-4966-a45f-57cdd78e6872",
+        "Name": "Deel Inc"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "DateString": "2026-08-15T00:00:00",
+      "Status": "PAID",
+      "Total": 3000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "8b2bdde5-5541-451d-a0eb-98025e8aae3a",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d2bde36-27d7-4966-a45f-57cdd78e6872",
+        "Name": "Deel Inc"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "DateString": "2026-09-15T00:00:00",
+      "Status": "PAID",
+      "Total": 3000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "7ec70221-67e2-45d6-afd6-3d0dbd532f18",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "1d2bde36-27d7-4966-a45f-57cdd78e6872",
+        "Name": "Deel Inc"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "DateString": "2026-10-15T00:00:00",
+      "Status": "AUTHORISED",
+      "Total": 3000,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "56f9ebeb-cee2-45ac-a181-02d6996f18f1",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "DateString": "2025-11-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "a30c2643-4475-48c3-aeca-852bd48c0f6c",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "DateString": "2025-12-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "4a626865-168e-45b1-ad2e-2790cd1113ec",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "DateString": "2026-01-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "043b9a31-ce64-407b-a956-26c67797a009",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "DateString": "2026-02-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "04597471-f5b4-49be-a7d7-ab6a30f4221a",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "DateString": "2026-03-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "f533583a-e087-4905-a8fb-2f974f73ed33",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "DateString": "2026-04-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "e9263cad-71d8-433b-a0e5-de847aa41afd",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "DateString": "2026-05-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "083f9601-8602-4afb-ac80-7054d0782d39",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "DateString": "2026-06-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "558a0947-35b3-4a67-a3e6-1a4dc253e900",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "DateString": "2026-07-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "232e8ec8-bc3a-4f0c-a895-b3752f6852f8",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "DateString": "2026-08-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "6026d4f7-22a8-470b-a10c-da252ba0d78a",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "DateString": "2026-09-15T00:00:00",
+      "Status": "PAID",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    },
+    {
+      "InvoiceID": "44dc8627-cf3f-418a-a398-d1ce1a6cbe20",
+      "Type": "ACCPAY",
+      "Contact": {
+        "ContactID": "9e75f136-b305-4149-a15e-f12a28130c09",
+        "Name": "Xero (UK) Ltd"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "DateString": "2026-10-15T00:00:00",
+      "Status": "AUTHORISED",
+      "Total": 59,
+      "CurrencyCode": "GBP",
+      "CurrencyRate": 1
+    }
+  ]
+}

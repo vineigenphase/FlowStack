@@ -9,7 +9,6 @@ import fs from "node:fs";
 import path from "node:path";
 import { createHash } from "node:crypto";
 
-const OUT = path.resolve("fixtures/xero/demo-uk-synthetic");
 const CLOSE = "2026-10-31";
 const OPEN = "2026-03-31";
 const FY_FROM = "2026-04-01";
@@ -32,7 +31,7 @@ type Acc = {
   close?: number; // BS balance at CLOSE
 };
 
-const A: Acc[] = [
+const COPPERPOT: Acc[] = [
   // ---- P&L ----
   { code: "200", name: "Sales", type: "REVENUE", cls: "REVENUE", rc: "REV.TRA.GOO", section: "Income", pl: 2_554_000 },
   { code: "260", name: "Other Revenue", type: "REVENUE", cls: "REVENUE", rc: "REV.OTH", section: "Income", pl: 12_400 },
@@ -77,21 +76,57 @@ const A: Acc[] = [
   { code: "970", name: "Dividends Paid", type: "EQUITY", cls: "EQUITY", rc: "EQU.DIV", section: "Equity", open: 0, close: -60_000 },
 ];
 
-const by = (code: string) => A.find((a) => a.code === code)!;
-const id = (a: Acc) => uuid(`account:${a.code}`);
+type B = { name: string; amount: number; every?: number; from?: number; ccy?: string; rate?: number };
+const COPPERPOT_BILLS: B[] = [
+  { name: "Brakes Bros Ltd", amount: 61_200 },
+  { name: "Bidfood UK Ltd", amount: 48_700 },
+  { name: "Hollis Estates Ltd", amount: 72_000, every: 3 },
+  { name: "British Gas Business", amount: 7_760 },
+  { name: "Xero (UK) Ltd", amount: 59 },
+  { name: "Dext Software Ltd", amount: 54 },
+  { name: "Deputy", amount: 214.5 },
+  { name: "Pleo Technologies ApS", amount: 105.3, ccy: "EUR", rate: 1.17 },
+  { name: "Lightspeed (UK) Ltd", amount: 189 },
+  { name: "Hiscox Insurance", amount: 2_200 },
+];
+type S = { name: string; amount: number; account: string; from?: number };
+const COPPERPOT_SPEND: S[] = [
+  { name: "GOOGLE*GSUITE COPPERPOT", amount: 118.8, account: "485" },
+  { name: "MSFT * E0300ABCD", amount: 96.4, account: "485" },
+  { name: "Slack Technologies", amount: 64.0, account: "485" },
+  { name: "Tillflow Ltd", amount: 79.0, account: "485", from: 6 }, // unknown software supplier → queue
+  { name: "Fathum Ltd", amount: 45.0, account: "485", from: 8 }, // misspelt "Fathom": fuzzy 0.93–0.97 → fingerprint_check
+  { name: "AMAZON MKTPLACE PMTS", amount: 212.37, account: "429" },
+  { name: "EE Limited DD", amount: 410.0, account: "489" },
+];
+type Spec = { set: string; orgName: string; accounts: Acc[]; cyeOpen: number; bankCode: string; bills: B[]; spend: S[]; readme: string; idPrefix: string };
+
+function generate(spec: Spec) {
+const A = spec.accounts.map((a) => ({ ...a }));
+const OUT = path.resolve("fixtures/xero", spec.set);
+const CYE_OPEN = spec.cyeOpen;
+const retained = A.find((a) => a.sys === "RETAINEDEARNINGS")!;
+const mainBank = A.find((a) => a.code === spec.bankCode)!;
+// A spec may leave the main bank's opening balance out: it then follows from the opening balance sheet.
+if (mainBank.open === undefined) {
+  const eqOpen = A.filter((a) => a.cls === "EQUITY").reduce((t, a) => t + (a.open ?? 0), 0) + CYE_OPEN;
+  const liabOpen = A.filter((a) => a.cls === "LIABILITY").reduce((t, a) => t + (a.open ?? 0), 0);
+  const otherOpen = A.filter((a) => a.cls === "ASSET" && a.code !== mainBank.code).reduce((t, a) => t + (a.open ?? 0), 0);
+  mainBank.open = Math.round((eqOpen + liabOpen - otherOpen) * 100) / 100;
+}
+const id = (a: Acc) => uuid(`account:${spec.idPrefix}${a.code}`);
 const plAccs = A.filter((a) => a.pl !== undefined);
 const revenue = plAccs.filter((a) => a.cls === "REVENUE").reduce((s, a) => s + a.pl!, 0);
 const expenses = plAccs.filter((a) => a.cls === "EXPENSE").reduce((s, a) => s + a.pl!, 0);
-const cogs = by("310").pl!;
+const cogs = plAccs.filter((a) => a.section === "Less Cost of Sales").reduce((t, a) => t + a.pl!, 0);
 const netProfit = revenue - expenses;
-const CYE_OPEN = 140_000;
 
 // Close balances that follow from the model.
-by("960").close = by("960").open! + CYE_OPEN;
+retained.close = retained.open! + CYE_OPEN;
 const equityClose = A.filter((a) => a.cls === "EQUITY").reduce((s, a) => s + a.close!, 0) + netProfit;
 const liabClose = A.filter((a) => a.cls === "LIABILITY").reduce((s, a) => s + a.close!, 0);
-const nonBankAssetsClose = A.filter((a) => a.cls === "ASSET" && a.code !== "090").reduce((s, a) => s + a.close!, 0);
-by("090").close = round(equityClose + liabClose - nonBankAssetsClose);
+const nonBankAssetsClose = A.filter((a) => a.cls === "ASSET" && a.code !== mainBank.code).reduce((s, a) => s + a.close!, 0);
+mainBank.close = round(equityClose + liabClose - nonBankAssetsClose);
 
 function round(n: number) {
   return Math.round(n * 100) / 100;
@@ -104,8 +139,8 @@ const cell = (v: string, a?: Acc) => (a ? { Value: v, Attributes: attr(a) } : { 
 const organisation = {
   Organisations: [
     {
-      OrganisationID: uuid("org"),
-      Name: "Copperpot Kitchens Ltd (sample)",
+      OrganisationID: uuid(`org${spec.idPrefix}`),
+      Name: spec.orgName,
       BaseCurrency: "GBP",
       CountryCode: "GB",
       FinancialYearEndDay: 31,
@@ -278,21 +313,8 @@ const months = Array.from({ length: 12 }, (_, i) => new Date(Date.UTC(2025, 10 +
 const msDate = (d: Date) => `/Date(${d.getTime()}+0000)/`;
 const contact = (name: string) => ({ ContactID: uuid(`contact:${name}`), Name: name });
 
-type B = { name: string; amount: number; every?: number; from?: number; ccy?: string; rate?: number };
-const billSpec: B[] = [
-  { name: "Brakes Bros Ltd", amount: 61_200 },
-  { name: "Bidfood UK Ltd", amount: 48_700 },
-  { name: "Hollis Estates Ltd", amount: 72_000, every: 3 },
-  { name: "British Gas Business", amount: 7_760 },
-  { name: "Xero (UK) Ltd", amount: 59 },
-  { name: "Dext Software Ltd", amount: 54 },
-  { name: "Deputy", amount: 214.5 },
-  { name: "Pleo Technologies ApS", amount: 105.3, ccy: "EUR", rate: 1.17 },
-  { name: "Lightspeed (UK) Ltd", amount: 189 },
-  { name: "Hiscox Insurance", amount: 2_200 },
-];
 const invoices = {
-  Invoices: billSpec.flatMap((b) =>
+  Invoices: spec.bills.flatMap((b) =>
     months
       .map((m, i) => ({ m, i }))
       .filter(({ i }) => i >= (b.from ?? 0) && i % (b.every ?? 1) === 0)
@@ -310,18 +332,8 @@ const invoices = {
   ),
 };
 
-type S = { name: string; amount: number; account: string; from?: number };
-const spendSpec: S[] = [
-  { name: "GOOGLE*GSUITE COPPERPOT", amount: 118.8, account: "485" },
-  { name: "MSFT * E0300ABCD", amount: 96.4, account: "485" },
-  { name: "Slack Technologies", amount: 64.0, account: "485" },
-  { name: "Tillflow Ltd", amount: 79.0, account: "485", from: 6 }, // unknown software supplier → queue
-  { name: "Fathum Ltd", amount: 45.0, account: "485", from: 8 }, // misspelt "Fathom": fuzzy 0.93–0.97 → fingerprint_check
-  { name: "AMAZON MKTPLACE PMTS", amount: 212.37, account: "429" },
-  { name: "EE Limited DD", amount: 410.0, account: "489" },
-];
 const banktransactions = {
-  BankTransactions: spendSpec.flatMap((s) =>
+  BankTransactions: spec.spend.flatMap((s) =>
     months
       .map((m, i) => ({ m, i }))
       .filter(({ i }) => i >= (s.from ?? 0))
@@ -346,8 +358,8 @@ const expected = {
   expenses,
   netProfit,
   grossProfit: revenue - cogs,
-  bankOpen: by("090").open! + by("091").open!,
-  bankClose: by("090").close! + by("091").close!,
+  bankOpen: A.filter((a) => a.type === "BANK").reduce((t, a) => t + a.open!, 0),
+  bankClose: A.filter((a) => a.type === "BANK").reduce((t, a) => t + a.close!, 0),
 };
 
 fs.mkdirSync(OUT, { recursive: true });
@@ -363,7 +375,147 @@ write("banktransactions.json", banktransactions);
 write("_expected.json", expected);
 fs.writeFileSync(
   path.join(OUT, "README.md"),
-  "# demo-uk-synthetic (SAMPLE)\n\nHand-built by `scripts/make-synthetic.ts` in Xero's JSON shapes. Not real data.\n" +
-    "Replace with the real Demo Company via `pnpm xero:record` (writes `fixtures/xero/demo-uk/`).\n",
+  spec.readme,
 );
 console.log(`wrote ${OUT}`, expected);
+}
+
+// ---------------------------------------------------------------------------------------------------------
+// Companies. Copperpot stays exactly as it was (tests depend on it). v1.1 P adds an ecommerce and a SaaS
+// SAMPLE company, so the first industries have their own demo books. All numbers are invented.
+// ---------------------------------------------------------------------------------------------------------
+const README = (set: string, name: string, about: string) =>
+  `# ${set} (SAMPLE)\n\n${name}: ${about}\n\nHand-built by scripts/make-synthetic.ts in Xero's JSON shapes. Not real data.\n`;
+
+generate({
+  set: "demo-uk-synthetic",
+  orgName: "Copperpot Kitchens Ltd (sample)",
+  accounts: COPPERPOT,
+  cyeOpen: 140_000,
+  bankCode: "090",
+  bills: COPPERPOT_BILLS,
+  spend: COPPERPOT_SPEND,
+  idPrefix: "",
+  readme:
+    "# demo-uk-synthetic (SAMPLE)\n\nHand-built by `scripts/make-synthetic.ts` in Xero's JSON shapes. Not real data.\n" +
+    "Replace with the real Demo Company via `pnpm xero:record` (writes `fixtures/xero/demo-uk/`).\n",
+});
+
+const pl = (code: string, name: string, type: string, rc: string, section: string, amount: number, cls: Acc["cls"] = "EXPENSE"): Acc => ({ code, name, type, cls, rc, section, pl: amount });
+const OPEX = "Less Operating Expenses";
+const COS = "Less Cost of Sales";
+
+generate({
+  set: "demo-uk-ecommerce",
+  orgName: "Northwind Goods Ltd (sample)",
+  idPrefix: "ecom:",
+  cyeOpen: 55_000,
+  bankCode: "090",
+  accounts: [
+    pl("200", "Sales - Shopify", "REVENUE", "REV.TUR.SAL", "Income", 1_150_000, "REVENUE"),
+    pl("201", "Sales - Amazon", "REVENUE", "REV.TUR.SAL", "Income", 640_000, "REVENUE"),
+    pl("260", "Other Revenue", "REVENUE", "REV.OTH", "Income", 3_200, "REVENUE"),
+    pl("310", "Cost of Goods Sold", "DIRECTCOSTS", "EXP.COS.PUR", COS, 905_000),
+    pl("320", "Postage and Fulfilment", "DIRECTCOSTS", "EXP.COS", COS, 96_000),
+    pl("325", "Marketplace and Payment Fees", "DIRECTCOSTS", "EXP.COS", COS, 88_000),
+    pl("400", "Advertising & Marketing", "OVERHEADS", "EXP", OPEX, 142_000),
+    pl("404", "Bank Fees", "OVERHEADS", "EXP.ADM.FIN.BNK", OPEX, 2_100),
+    pl("412", "Accountancy", "OVERHEADS", "EXP.ADM.FEE.AUD", OPEX, 9_000),
+    pl("416", "Depreciation", "DEPRECIATN", "EXP.DEP", OPEX, 6_000),
+    pl("433", "Insurance", "OVERHEADS", "EXP.ADM.INS", OPEX, 4_800),
+    pl("469", "Warehouse Rent", "OVERHEADS", "EXP.EST.REN", OPEX, 54_000),
+    pl("477", "Wages and Salaries", "OVERHEADS", "EXP.STF.WAG", OPEX, 168_000),
+    pl("478", "Employers National Insurance", "OVERHEADS", "EXP.STF.ENI", OPEX, 17_500),
+    pl("479", "Pensions Costs", "OVERHEADS", "EXP.STF.PEN", OPEX, 5_000),
+    pl("485", "Software Subscriptions", "OVERHEADS", "EXP.ADM.SUB", OPEX, 11_400),
+    pl("489", "Telephone & Internet", "OVERHEADS", "EXP.ADM.TEL", OPEX, 1_800),
+    pl("500", "Corporation Tax", "OVERHEADS", "EXP.TAX.COR", OPEX, 30_000),
+    { code: "090", name: "Business Bank Account", type: "BANK", cls: "ASSET", section: "Bank" },
+    { code: "091", name: "Business Savings Account", type: "BANK", cls: "ASSET", section: "Bank", open: 40_000, close: 40_000 },
+    { code: "610", name: "Accounts Receivable", type: "CURRENT", cls: "ASSET", sys: "DEBTORS", rc: "ASS.CUR.REC.TRA", section: "Current Assets", open: 18_000, close: 24_500 },
+    // Stock building up faster than sales: stock days rise (a trend the v1.1 B signal should catch).
+    { code: "630", name: "Inventory", type: "INVENTORY", cls: "ASSET", rc: "ASS.CUR.INY", section: "Current Assets", open: 210_000, close: 330_000 },
+    { code: "710", name: "Warehouse Equipment", type: "FIXED", cls: "ASSET", rc: "ASS.NCA.FIX.PLA", section: "Fixed Assets", open: 36_000, close: 42_000 },
+    { code: "711", name: "Less Accumulated Depreciation on Warehouse Equipment", type: "FIXED", cls: "ASSET", rc: "ASS.NCA.FIX.PLA.ACC", section: "Fixed Assets", open: -12_000, close: -18_000 },
+    { code: "800", name: "Accounts Payable", type: "CURRLIAB", cls: "LIABILITY", sys: "CREDITORS", rc: "LIA.CUR.TRA", section: "Current Liabilities", open: 74_000, close: 96_000 },
+    { code: "820", name: "VAT", type: "CURRLIAB", cls: "LIABILITY", sys: "GST", rc: "LIA.CUR.TAX.VAT", section: "Current Liabilities", open: 31_000, close: 38_500 },
+    { code: "825", name: "PAYE & NI Payable", type: "CURRLIAB", cls: "LIABILITY", rc: "LIA.CUR.TAX.OTH", section: "Current Liabilities", open: 9_000, close: 9_800 },
+    { code: "830", name: "Corporation Tax Payable", type: "CURRLIAB", cls: "LIABILITY", rc: "LIA.CUR.TAX.COR", section: "Current Liabilities", open: 24_000, close: 30_000 },
+    { code: "840", name: "Short-term Loan", type: "CURRLIAB", cls: "LIABILITY", section: "Current Liabilities", open: 60_000, close: 45_000 },
+    { code: "950", name: "Share Capital", type: "EQUITY", cls: "EQUITY", rc: "EQU.SHA", section: "Equity", open: 100, close: 100 },
+    { code: "960", name: "Retained Earnings", type: "EQUITY", cls: "EQUITY", sys: "RETAINEDEARNINGS", rc: "EQU.RET", section: "Equity", open: 80_000 },
+    { code: "970", name: "Dividends Paid", type: "EQUITY", cls: "EQUITY", section: "Equity", open: 0, close: -20_000 },
+  ],
+  bills: [
+    { name: "Yiwu Trading Co Ltd", amount: 120_000 },
+    { name: "Royal Mail Group Ltd", amount: 8_000 },
+    { name: "Packaging Direct Ltd", amount: 3_100 },
+    { name: "Warehouse Estates Ltd", amount: 18_000, every: 3 },
+    { name: "Shopify International Limited", amount: 299 },
+    { name: "A2X Ltd", amount: 49 },
+    { name: "Xero (UK) Ltd", amount: 59 },
+  ],
+  spend: [
+    { name: "AMAZON SELLER SERVICES", amount: 1_200, account: "325" },
+    { name: "PAYPAL *NORTHWIND", amount: 85, account: "325" },
+    { name: "FACEBK *ADS", amount: 6_500, account: "400" },
+    { name: "GOOGLE *ADS", amount: 4_200, account: "400" },
+    { name: "Klaviyo Inc", amount: 300, account: "485", from: 5 }, // not in the catalogue: unknown supplier → queue
+  ],
+  readme: README("demo-uk-ecommerce", "Northwind Goods Ltd (sample)", "online retailer selling through Shopify and Amazon, reconciled into Xero by A2X; stock building up."),
+});
+
+generate({
+  set: "demo-uk-saas",
+  orgName: "Lumen Analytics Ltd (sample)",
+  idPrefix: "saas:",
+  cyeOpen: 90_000,
+  bankCode: "090",
+  accounts: [
+    pl("200", "Subscription Revenue", "REVENUE", "REV.TUR.SAL", "Income", 2_100_000, "REVENUE"),
+    pl("210", "Services Revenue", "REVENUE", "REV.TUR", "Income", 140_000, "REVENUE"),
+    pl("310", "Hosting & Infrastructure", "DIRECTCOSTS", "EXP.COS", COS, 168_000),
+    pl("320", "Payment Processing Fees", "DIRECTCOSTS", "EXP.COS", COS, 52_000),
+    pl("400", "Advertising & Marketing", "OVERHEADS", "EXP", OPEX, 96_000),
+    pl("412", "Legal and Professional Fees", "OVERHEADS", "EXP.ADM.FEE", OPEX, 38_000),
+    pl("416", "Depreciation", "DEPRECIATN", "EXP.DEP", OPEX, 12_000),
+    pl("433", "Insurance", "OVERHEADS", "EXP.ADM.INS", OPEX, 9_000),
+    pl("469", "Rent", "OVERHEADS", "EXP.EST.REN", OPEX, 72_000),
+    pl("477", "Salaries", "OVERHEADS", "EXP.STF.WAG", OPEX, 1_150_000),
+    pl("478", "Employers National Insurance", "OVERHEADS", "EXP.STF.ENI", OPEX, 128_000),
+    pl("479", "Pensions Costs", "OVERHEADS", "EXP.STF.PEN", OPEX, 46_000),
+    pl("480", "Contractors", "OVERHEADS", "EXP", OPEX, 84_000),
+    pl("485", "Software Subscriptions", "OVERHEADS", "EXP.ADM.SUB", OPEX, 61_000),
+    pl("489", "Telephone & Internet", "OVERHEADS", "EXP.ADM.TEL", OPEX, 4_200),
+    pl("493", "Travel", "OVERHEADS", "EXP.ADM.TRA", OPEX, 18_000),
+    pl("500", "Corporation Tax", "OVERHEADS", "EXP.TAX.COR", OPEX, 40_000),
+    { code: "090", name: "Business Bank Account", type: "BANK", cls: "ASSET", section: "Bank" },
+    // Customers paying more slowly: debtor days rise (a trend the v1.1 B signal should catch).
+    { code: "610", name: "Accounts Receivable", type: "CURRENT", cls: "ASSET", sys: "DEBTORS", rc: "ASS.CUR.REC.TRA", section: "Current Assets", open: 240_000, close: 560_000 },
+    { code: "620", name: "Prepayments", type: "PREPAYMENT", cls: "ASSET", rc: "ASS.CUR.REC.PRE", section: "Current Assets", open: 30_000, close: 38_000 },
+    { code: "710", name: "Computer Equipment", type: "FIXED", cls: "ASSET", rc: "ASS.NCA.FIX.OFF", section: "Fixed Assets", open: 64_000, close: 76_000 },
+    { code: "711", name: "Less Accumulated Depreciation on Computer Equipment", type: "FIXED", cls: "ASSET", rc: "ASS.NCA.FIX.OFF.ACC", section: "Fixed Assets", open: -28_000, close: -40_000 },
+    { code: "800", name: "Accounts Payable", type: "CURRLIAB", cls: "LIABILITY", sys: "CREDITORS", rc: "LIA.CUR.TRA", section: "Current Liabilities", open: 58_000, close: 71_000 },
+    { code: "820", name: "VAT", type: "CURRLIAB", cls: "LIABILITY", sys: "GST", rc: "LIA.CUR.TAX.VAT", section: "Current Liabilities", open: 92_000, close: 118_000 },
+    { code: "825", name: "PAYE & NI Payable", type: "CURRLIAB", cls: "LIABILITY", rc: "LIA.CUR.TAX.OTH", section: "Current Liabilities", open: 61_000, close: 66_000 },
+    { code: "830", name: "Corporation Tax Payable", type: "CURRLIAB", cls: "LIABILITY", rc: "LIA.CUR.TAX.COR", section: "Current Liabilities", open: 36_000, close: 40_000 },
+    { code: "835", name: "Deferred Revenue", type: "CURRLIAB", cls: "LIABILITY", rc: "LIA.CUR.ACC", section: "Current Liabilities", open: 380_000, close: 455_000 },
+    { code: "950", name: "Share Capital", type: "EQUITY", cls: "EQUITY", rc: "EQU.SHA", section: "Equity", open: 1_000, close: 1_000 },
+    { code: "960", name: "Retained Earnings", type: "EQUITY", cls: "EQUITY", sys: "RETAINEDEARNINGS", rc: "EQU.RET", section: "Equity", open: 120_000 },
+  ],
+  bills: [
+    { name: "Amazon Web Services EMEA SARL", amount: 24_000 },
+    { name: "Regus Management Ltd", amount: 24_000, every: 3 },
+    { name: "Chargebee Inc", amount: 549 },
+    { name: "HubSpot Ireland Ltd", amount: 1_200 },
+    { name: "Deel Inc", amount: 3_000 },
+    { name: "Xero (UK) Ltd", amount: 59 },
+  ],
+  spend: [
+    { name: "STRIPE PAYMENTS UK", amount: 7_400, account: "320" },
+    { name: "GOOGLE*GSUITE LUMEN", amount: 640, account: "485" },
+    { name: "Slack Technologies", amount: 480, account: "485" },
+    { name: "ChartMogul", amount: 250, account: "485" },
+  ],
+  readme: README("demo-uk-saas", "Lumen Analytics Ltd (sample)", "B2B SaaS billing through Chargebee and Stripe; customers paying more slowly."),
+});

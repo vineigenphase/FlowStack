@@ -1,0 +1,12 @@
+{
+  "Organisations": [
+    {
+      "OrganisationID": "3280f11f-530d-40e9-af2b-2f906efad9de",
+      "Name": "Lumen Analytics Ltd (sample)",
+      "BaseCurrency": "GBP",
+      "CountryCode": "GB",
+      "FinancialYearEndDay": 31,
+      "FinancialYearEndMonth": 3
+    }
+  ]
+}

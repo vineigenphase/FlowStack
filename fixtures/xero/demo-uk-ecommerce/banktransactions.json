@@ -1,0 +1,994 @@
+{
+  "BankTransactions": [
+    {
+      "BankTransactionID": "d2fe4f31-f078-47f1-acfa-9f476c19d79b",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d05910d8-72e3-48d2-a1ce-9ee698f26cab",
+        "Name": "AMAZON SELLER SERVICES"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 1200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "7c04b4e8-fea9-496b-a82f-1bbf29c3fcd6",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d05910d8-72e3-48d2-a1ce-9ee698f26cab",
+        "Name": "AMAZON SELLER SERVICES"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 1200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "b9dacff0-be32-4346-aa72-dbfe8256350b",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d05910d8-72e3-48d2-a1ce-9ee698f26cab",
+        "Name": "AMAZON SELLER SERVICES"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 1200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "dbc5dcf0-43c3-40e7-ad1e-5054cecd3cf8",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d05910d8-72e3-48d2-a1ce-9ee698f26cab",
+        "Name": "AMAZON SELLER SERVICES"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 1200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "52632d91-725d-4e5e-ac08-880b54f0c9c6",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d05910d8-72e3-48d2-a1ce-9ee698f26cab",
+        "Name": "AMAZON SELLER SERVICES"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 1200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "1807202a-158d-4089-aaa2-217a89645dbf",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d05910d8-72e3-48d2-a1ce-9ee698f26cab",
+        "Name": "AMAZON SELLER SERVICES"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 1200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "334e9b96-70b3-4bf8-a17f-5b28324a2b16",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d05910d8-72e3-48d2-a1ce-9ee698f26cab",
+        "Name": "AMAZON SELLER SERVICES"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 1200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "07ff33e2-b90d-43d7-ac05-e78b7729fe8e",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d05910d8-72e3-48d2-a1ce-9ee698f26cab",
+        "Name": "AMAZON SELLER SERVICES"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 1200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "6cd49192-5b4a-4ac9-aadd-0e94e0246100",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d05910d8-72e3-48d2-a1ce-9ee698f26cab",
+        "Name": "AMAZON SELLER SERVICES"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 1200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "b06188e4-4082-4e67-a09c-7291661aa5f3",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d05910d8-72e3-48d2-a1ce-9ee698f26cab",
+        "Name": "AMAZON SELLER SERVICES"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 1200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "9afcce31-3080-4d16-af1a-73003ebeda7f",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d05910d8-72e3-48d2-a1ce-9ee698f26cab",
+        "Name": "AMAZON SELLER SERVICES"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 1200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "2b438a06-d0e7-40e8-a6d5-943ced3e2a30",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d05910d8-72e3-48d2-a1ce-9ee698f26cab",
+        "Name": "AMAZON SELLER SERVICES"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 1200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 1200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "0eaa4af7-bbda-446a-a52d-2bff1bbb3bef",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "ac9cdc03-5c7a-4f6e-a89f-fb08dead9fb2",
+        "Name": "PAYPAL *NORTHWIND"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 85,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 85
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "57dfbf65-808f-4010-a76f-d3833cf9c00d",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "ac9cdc03-5c7a-4f6e-a89f-fb08dead9fb2",
+        "Name": "PAYPAL *NORTHWIND"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 85,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 85
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "1873798e-5136-45eb-a9c0-fb183b684eed",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "ac9cdc03-5c7a-4f6e-a89f-fb08dead9fb2",
+        "Name": "PAYPAL *NORTHWIND"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 85,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 85
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "90c5d29c-3ee0-46e7-a2cc-c7f2be6b71a2",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "ac9cdc03-5c7a-4f6e-a89f-fb08dead9fb2",
+        "Name": "PAYPAL *NORTHWIND"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 85,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 85
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "460e9077-878f-4d18-ab9d-82049c97f6fa",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "ac9cdc03-5c7a-4f6e-a89f-fb08dead9fb2",
+        "Name": "PAYPAL *NORTHWIND"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 85,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 85
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "bd233fe2-8508-4296-a76e-e7410915b13e",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "ac9cdc03-5c7a-4f6e-a89f-fb08dead9fb2",
+        "Name": "PAYPAL *NORTHWIND"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 85,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 85
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "f721eb2f-5fd6-4e01-a656-f56391a38260",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "ac9cdc03-5c7a-4f6e-a89f-fb08dead9fb2",
+        "Name": "PAYPAL *NORTHWIND"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 85,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 85
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "72f61fe7-26d8-4596-a177-37dcbc62eb56",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "ac9cdc03-5c7a-4f6e-a89f-fb08dead9fb2",
+        "Name": "PAYPAL *NORTHWIND"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 85,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 85
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "873319f8-4bfe-44f3-aa99-5c12e7551af1",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "ac9cdc03-5c7a-4f6e-a89f-fb08dead9fb2",
+        "Name": "PAYPAL *NORTHWIND"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 85,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 85
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "4100ba04-2ff4-4d44-a79c-6c7a8e77f55f",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "ac9cdc03-5c7a-4f6e-a89f-fb08dead9fb2",
+        "Name": "PAYPAL *NORTHWIND"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 85,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 85
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "d3cb4a67-3783-41d4-a9e1-ac0b0f889115",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "ac9cdc03-5c7a-4f6e-a89f-fb08dead9fb2",
+        "Name": "PAYPAL *NORTHWIND"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 85,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 85
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "3e90d41e-2be3-4b31-a54b-fcabbe233c25",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "ac9cdc03-5c7a-4f6e-a89f-fb08dead9fb2",
+        "Name": "PAYPAL *NORTHWIND"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 85,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "325",
+          "LineAmount": 85
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "5875f5b8-b33b-47f2-abdd-46285a5b1d36",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "940cd140-02c1-4c24-ac30-a55f11b4cdfc",
+        "Name": "FACEBK *ADS"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 6500,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 6500
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "112d0a72-7704-4d42-ac06-4bb8cb90a094",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "940cd140-02c1-4c24-ac30-a55f11b4cdfc",
+        "Name": "FACEBK *ADS"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 6500,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 6500
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "6022795c-5e87-4939-acfe-e87b8d8a71cf",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "940cd140-02c1-4c24-ac30-a55f11b4cdfc",
+        "Name": "FACEBK *ADS"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 6500,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 6500
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "d5b7c46d-9b0f-4ebd-a732-2737ddff21f2",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "940cd140-02c1-4c24-ac30-a55f11b4cdfc",
+        "Name": "FACEBK *ADS"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 6500,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 6500
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "a2c5c91b-6e2c-4364-a1e2-2f6f91b9c6c4",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "940cd140-02c1-4c24-ac30-a55f11b4cdfc",
+        "Name": "FACEBK *ADS"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 6500,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 6500
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "4335ca97-6564-4e02-a6bd-55a67ce2fea0",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "940cd140-02c1-4c24-ac30-a55f11b4cdfc",
+        "Name": "FACEBK *ADS"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 6500,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 6500
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "090b3b27-42a0-41d3-a05b-be2fe67679d4",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "940cd140-02c1-4c24-ac30-a55f11b4cdfc",
+        "Name": "FACEBK *ADS"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 6500,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 6500
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "6672768b-2ab1-4379-ac50-0a3df40adbb1",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "940cd140-02c1-4c24-ac30-a55f11b4cdfc",
+        "Name": "FACEBK *ADS"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 6500,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 6500
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "2ddb7aa5-c71f-421b-acf4-e2857ffc784a",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "940cd140-02c1-4c24-ac30-a55f11b4cdfc",
+        "Name": "FACEBK *ADS"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 6500,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 6500
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "671b52c0-b14b-498e-a6e7-c0f0e706fee3",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "940cd140-02c1-4c24-ac30-a55f11b4cdfc",
+        "Name": "FACEBK *ADS"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 6500,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 6500
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "6d584ea5-9a68-47c2-a533-dea4e25b5ef8",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "940cd140-02c1-4c24-ac30-a55f11b4cdfc",
+        "Name": "FACEBK *ADS"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 6500,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 6500
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "cb2cc498-3a5e-466f-a766-9c195d28c5c3",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "940cd140-02c1-4c24-ac30-a55f11b4cdfc",
+        "Name": "FACEBK *ADS"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 6500,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 6500
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "fc7007cb-6a4d-43c0-abcf-9d0285d88df0",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "f6be57fd-bc67-4bbf-a63e-433520966787",
+        "Name": "GOOGLE *ADS"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 4200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 4200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "147d6b55-f4fe-4d73-ac87-39a3b39c687e",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "f6be57fd-bc67-4bbf-a63e-433520966787",
+        "Name": "GOOGLE *ADS"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 4200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 4200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "0aa0c715-7ede-4a10-ab8d-d044088ebfec",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "f6be57fd-bc67-4bbf-a63e-433520966787",
+        "Name": "GOOGLE *ADS"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 4200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 4200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "ba6c6cbb-f26f-46d3-a2e0-1b36ca5020a2",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "f6be57fd-bc67-4bbf-a63e-433520966787",
+        "Name": "GOOGLE *ADS"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 4200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 4200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "ec6e94b5-7eda-46ec-a3fe-57e33eb94b1f",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "f6be57fd-bc67-4bbf-a63e-433520966787",
+        "Name": "GOOGLE *ADS"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 4200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 4200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "7a95a6b5-e0cb-408b-a3bf-8010f4ca6108",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "f6be57fd-bc67-4bbf-a63e-433520966787",
+        "Name": "GOOGLE *ADS"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 4200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 4200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "4d291333-64e1-4c12-a850-d578d828c5a2",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "f6be57fd-bc67-4bbf-a63e-433520966787",
+        "Name": "GOOGLE *ADS"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 4200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 4200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "73591b8c-2143-411e-ad1c-97dc0691b96f",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "f6be57fd-bc67-4bbf-a63e-433520966787",
+        "Name": "GOOGLE *ADS"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 4200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 4200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "32a98e4d-6747-424e-aeac-0bd9052b4d2f",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "f6be57fd-bc67-4bbf-a63e-433520966787",
+        "Name": "GOOGLE *ADS"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 4200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 4200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "e8663e67-043d-4cb8-a546-3964e4f1c8db",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "f6be57fd-bc67-4bbf-a63e-433520966787",
+        "Name": "GOOGLE *ADS"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 4200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 4200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "dabc66d9-5a42-409a-a428-83e1a734162d",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "f6be57fd-bc67-4bbf-a63e-433520966787",
+        "Name": "GOOGLE *ADS"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 4200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 4200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "933a22e3-08d5-458f-acdf-0c65ac11ad1b",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "f6be57fd-bc67-4bbf-a63e-433520966787",
+        "Name": "GOOGLE *ADS"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 4200,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "400",
+          "LineAmount": 4200
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "39a240d2-5b05-4ce9-a539-000299926269",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "daa2a171-932c-4393-a1a7-e1e630848d0d",
+        "Name": "Klaviyo Inc"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 300,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 300
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "e33507a0-ebb9-4dac-a68e-a8df213032b0",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "daa2a171-932c-4393-a1a7-e1e630848d0d",
+        "Name": "Klaviyo Inc"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 300,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 300
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "3ece5294-fd56-452c-abc4-a397bce1013b",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "daa2a171-932c-4393-a1a7-e1e630848d0d",
+        "Name": "Klaviyo Inc"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 300,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 300
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "c3407a06-4881-4110-abab-a43134e7bb90",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "daa2a171-932c-4393-a1a7-e1e630848d0d",
+        "Name": "Klaviyo Inc"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 300,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 300
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "b4ede208-5e87-48d8-a30c-3c8b639ecae9",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "daa2a171-932c-4393-a1a7-e1e630848d0d",
+        "Name": "Klaviyo Inc"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 300,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 300
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "045456b5-13de-445c-ad7b-a72fdf723914",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "daa2a171-932c-4393-a1a7-e1e630848d0d",
+        "Name": "Klaviyo Inc"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 300,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 300
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "b1f65b48-ac31-47e9-ad2a-ddecf910ae25",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "daa2a171-932c-4393-a1a7-e1e630848d0d",
+        "Name": "Klaviyo Inc"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 300,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 300
+        }
+      ]
+    }
+  ]
+}

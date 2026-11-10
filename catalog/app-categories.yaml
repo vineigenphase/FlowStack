@@ -13,5 +13,6 @@
 - { key: cash_forecasting, label: Cash flow forecasting }
 - { key: epos_ecommerce, label: EPOS and ecommerce sales }
 - { key: compliance, label: Compliance }
+- { key: month_end, label: Month-end close }   # v1.1 P: e.g. Easy Month End
 # Not a finance gap; lets detection recognise common software so it doesn't flood the review queue.
 - { key: other_software, label: Other software }

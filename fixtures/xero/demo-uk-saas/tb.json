@@ -1,0 +1,1543 @@
+{
+  "Reports": [
+    {
+      "ReportID": "TrialBalance",
+      "ReportName": "Trial Balance",
+      "ReportType": "TrialBalance",
+      "ReportTitles": [
+        "Trial Balance",
+        "Lumen Analytics Ltd (sample)",
+        "As at 31 October 2026"
+      ],
+      "ReportDate": "4 November 2026",
+      "Rows": [
+        {
+          "RowType": "Header",
+          "Cells": [
+            {
+              "Value": "Account"
+            },
+            {
+              "Value": "Debit"
+            },
+            {
+              "Value": "Credit"
+            },
+            {
+              "Value": "YTD Debit"
+            },
+            {
+              "Value": "YTD Credit"
+            }
+          ]
+        },
+        {
+          "RowType": "Section",
+          "Title": "Revenue",
+          "Rows": [
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Subscription Revenue (200)",
+                  "Attributes": [
+                    {
+                      "Value": "c5be0938-75d5-4f82-a863-663309453f6f",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "c5be0938-75d5-4f82-a863-663309453f6f",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "300000.00",
+                  "Attributes": [
+                    {
+                      "Value": "c5be0938-75d5-4f82-a863-663309453f6f",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "c5be0938-75d5-4f82-a863-663309453f6f",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "2100000.00",
+                  "Attributes": [
+                    {
+                      "Value": "c5be0938-75d5-4f82-a863-663309453f6f",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Services Revenue (210)",
+                  "Attributes": [
+                    {
+                      "Value": "56f9c3a0-b435-4881-a203-2c4c2b40b628",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "56f9c3a0-b435-4881-a203-2c4c2b40b628",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "20000.00",
+                  "Attributes": [
+                    {
+                      "Value": "56f9c3a0-b435-4881-a203-2c4c2b40b628",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "56f9c3a0-b435-4881-a203-2c4c2b40b628",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "140000.00",
+                  "Attributes": [
+                    {
+                      "Value": "56f9c3a0-b435-4881-a203-2c4c2b40b628",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "RowType": "Section",
+          "Title": "Expenses",
+          "Rows": [
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Hosting & Infrastructure (310)",
+                  "Attributes": [
+                    {
+                      "Value": "c46aacb4-b741-4dd6-acc6-118a34db1e82",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "24000.00",
+                  "Attributes": [
+                    {
+                      "Value": "c46aacb4-b741-4dd6-acc6-118a34db1e82",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "c46aacb4-b741-4dd6-acc6-118a34db1e82",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "168000.00",
+                  "Attributes": [
+                    {
+                      "Value": "c46aacb4-b741-4dd6-acc6-118a34db1e82",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "c46aacb4-b741-4dd6-acc6-118a34db1e82",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Payment Processing Fees (320)",
+                  "Attributes": [
+                    {
+                      "Value": "a75d35a1-1f4c-431f-a31a-5b1b8e474a8e",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "7428.57",
+                  "Attributes": [
+                    {
+                      "Value": "a75d35a1-1f4c-431f-a31a-5b1b8e474a8e",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "a75d35a1-1f4c-431f-a31a-5b1b8e474a8e",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "52000.00",
+                  "Attributes": [
+                    {
+                      "Value": "a75d35a1-1f4c-431f-a31a-5b1b8e474a8e",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "a75d35a1-1f4c-431f-a31a-5b1b8e474a8e",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Advertising & Marketing (400)",
+                  "Attributes": [
+                    {
+                      "Value": "9f5baf9d-ffdd-402c-a508-34c424276f3e",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "13714.29",
+                  "Attributes": [
+                    {
+                      "Value": "9f5baf9d-ffdd-402c-a508-34c424276f3e",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "9f5baf9d-ffdd-402c-a508-34c424276f3e",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "96000.00",
+                  "Attributes": [
+                    {
+                      "Value": "9f5baf9d-ffdd-402c-a508-34c424276f3e",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "9f5baf9d-ffdd-402c-a508-34c424276f3e",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Legal and Professional Fees (412)",
+                  "Attributes": [
+                    {
+                      "Value": "68801359-1df6-4302-ac2b-c9d8ca58fd3d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "5428.57",
+                  "Attributes": [
+                    {
+                      "Value": "68801359-1df6-4302-ac2b-c9d8ca58fd3d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "68801359-1df6-4302-ac2b-c9d8ca58fd3d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "38000.00",
+                  "Attributes": [
+                    {
+                      "Value": "68801359-1df6-4302-ac2b-c9d8ca58fd3d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "68801359-1df6-4302-ac2b-c9d8ca58fd3d",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Depreciation (416)",
+                  "Attributes": [
+                    {
+                      "Value": "5564c192-1769-4746-a6de-2d2d593a1ed1",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "1714.29",
+                  "Attributes": [
+                    {
+                      "Value": "5564c192-1769-4746-a6de-2d2d593a1ed1",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "5564c192-1769-4746-a6de-2d2d593a1ed1",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "12000.00",
+                  "Attributes": [
+                    {
+                      "Value": "5564c192-1769-4746-a6de-2d2d593a1ed1",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "5564c192-1769-4746-a6de-2d2d593a1ed1",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Insurance (433)",
+                  "Attributes": [
+                    {
+                      "Value": "b15e2f19-d6c0-4be7-a803-3c1f4fe1f713",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "1285.71",
+                  "Attributes": [
+                    {
+                      "Value": "b15e2f19-d6c0-4be7-a803-3c1f4fe1f713",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "b15e2f19-d6c0-4be7-a803-3c1f4fe1f713",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "9000.00",
+                  "Attributes": [
+                    {
+                      "Value": "b15e2f19-d6c0-4be7-a803-3c1f4fe1f713",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "b15e2f19-d6c0-4be7-a803-3c1f4fe1f713",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Rent (469)",
+                  "Attributes": [
+                    {
+                      "Value": "fdeb1eff-09c5-46f8-a0a6-24d5157115c4",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "10285.71",
+                  "Attributes": [
+                    {
+                      "Value": "fdeb1eff-09c5-46f8-a0a6-24d5157115c4",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "fdeb1eff-09c5-46f8-a0a6-24d5157115c4",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "72000.00",
+                  "Attributes": [
+                    {
+                      "Value": "fdeb1eff-09c5-46f8-a0a6-24d5157115c4",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "fdeb1eff-09c5-46f8-a0a6-24d5157115c4",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Salaries (477)",
+                  "Attributes": [
+                    {
+                      "Value": "bc01edf9-6364-4189-a6c7-1f586113138c",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "164285.71",
+                  "Attributes": [
+                    {
+                      "Value": "bc01edf9-6364-4189-a6c7-1f586113138c",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "bc01edf9-6364-4189-a6c7-1f586113138c",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "1150000.00",
+                  "Attributes": [
+                    {
+                      "Value": "bc01edf9-6364-4189-a6c7-1f586113138c",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "bc01edf9-6364-4189-a6c7-1f586113138c",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Employers National Insurance (478)",
+                  "Attributes": [
+                    {
+                      "Value": "f1456e4f-0c38-4c5e-a131-3707d412930d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "18285.71",
+                  "Attributes": [
+                    {
+                      "Value": "f1456e4f-0c38-4c5e-a131-3707d412930d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "f1456e4f-0c38-4c5e-a131-3707d412930d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "128000.00",
+                  "Attributes": [
+                    {
+                      "Value": "f1456e4f-0c38-4c5e-a131-3707d412930d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "f1456e4f-0c38-4c5e-a131-3707d412930d",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Pensions Costs (479)",
+                  "Attributes": [
+                    {
+                      "Value": "c8da8b64-2fbe-4879-a490-ac4cdec78c5f",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "6571.43",
+                  "Attributes": [
+                    {
+                      "Value": "c8da8b64-2fbe-4879-a490-ac4cdec78c5f",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "c8da8b64-2fbe-4879-a490-ac4cdec78c5f",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "46000.00",
+                  "Attributes": [
+                    {
+                      "Value": "c8da8b64-2fbe-4879-a490-ac4cdec78c5f",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "c8da8b64-2fbe-4879-a490-ac4cdec78c5f",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Contractors (480)",
+                  "Attributes": [
+                    {
+                      "Value": "0c56d385-4957-4370-a537-4ade5e520659",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "12000.00",
+                  "Attributes": [
+                    {
+                      "Value": "0c56d385-4957-4370-a537-4ade5e520659",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "0c56d385-4957-4370-a537-4ade5e520659",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "84000.00",
+                  "Attributes": [
+                    {
+                      "Value": "0c56d385-4957-4370-a537-4ade5e520659",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "0c56d385-4957-4370-a537-4ade5e520659",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Software Subscriptions (485)",
+                  "Attributes": [
+                    {
+                      "Value": "c0f2f763-780a-40fd-a215-103be0656ace",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "8714.29",
+                  "Attributes": [
+                    {
+                      "Value": "c0f2f763-780a-40fd-a215-103be0656ace",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "c0f2f763-780a-40fd-a215-103be0656ace",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "61000.00",
+                  "Attributes": [
+                    {
+                      "Value": "c0f2f763-780a-40fd-a215-103be0656ace",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "c0f2f763-780a-40fd-a215-103be0656ace",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Telephone & Internet (489)",
+                  "Attributes": [
+                    {
+                      "Value": "c5654950-1486-4417-a283-22b21ab763ae",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "600.00",
+                  "Attributes": [
+                    {
+                      "Value": "c5654950-1486-4417-a283-22b21ab763ae",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "c5654950-1486-4417-a283-22b21ab763ae",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "4200.00",
+                  "Attributes": [
+                    {
+                      "Value": "c5654950-1486-4417-a283-22b21ab763ae",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "c5654950-1486-4417-a283-22b21ab763ae",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Travel (493)",
+                  "Attributes": [
+                    {
+                      "Value": "85f9f319-ef31-41b2-aad6-ca78ee52f64f",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "2571.43",
+                  "Attributes": [
+                    {
+                      "Value": "85f9f319-ef31-41b2-aad6-ca78ee52f64f",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "85f9f319-ef31-41b2-aad6-ca78ee52f64f",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "18000.00",
+                  "Attributes": [
+                    {
+                      "Value": "85f9f319-ef31-41b2-aad6-ca78ee52f64f",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "85f9f319-ef31-41b2-aad6-ca78ee52f64f",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Corporation Tax (500)",
+                  "Attributes": [
+                    {
+                      "Value": "71862034-27b4-452e-a66c-d994311d399d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "5714.29",
+                  "Attributes": [
+                    {
+                      "Value": "71862034-27b4-452e-a66c-d994311d399d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "71862034-27b4-452e-a66c-d994311d399d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "40000.00",
+                  "Attributes": [
+                    {
+                      "Value": "71862034-27b4-452e-a66c-d994311d399d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "71862034-27b4-452e-a66c-d994311d399d",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "RowType": "Section",
+          "Title": "Assets",
+          "Rows": [
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Business Bank Account (090)",
+                  "Attributes": [
+                    {
+                      "Value": "71097b58-7980-4d32-a294-0b925229f7c1",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "71097b58-7980-4d32-a294-0b925229f7c1",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "71097b58-7980-4d32-a294-0b925229f7c1",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "588800.00",
+                  "Attributes": [
+                    {
+                      "Value": "71097b58-7980-4d32-a294-0b925229f7c1",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "71097b58-7980-4d32-a294-0b925229f7c1",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Accounts Receivable (610)",
+                  "Attributes": [
+                    {
+                      "Value": "2cfeb132-78a5-454b-a493-a6948e64c5d3",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "2cfeb132-78a5-454b-a493-a6948e64c5d3",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "2cfeb132-78a5-454b-a493-a6948e64c5d3",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "560000.00",
+                  "Attributes": [
+                    {
+                      "Value": "2cfeb132-78a5-454b-a493-a6948e64c5d3",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "2cfeb132-78a5-454b-a493-a6948e64c5d3",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Prepayments (620)",
+                  "Attributes": [
+                    {
+                      "Value": "07ea8d86-9c8b-4a1c-abd7-24b633c21b2b",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "07ea8d86-9c8b-4a1c-abd7-24b633c21b2b",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "07ea8d86-9c8b-4a1c-abd7-24b633c21b2b",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "38000.00",
+                  "Attributes": [
+                    {
+                      "Value": "07ea8d86-9c8b-4a1c-abd7-24b633c21b2b",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "07ea8d86-9c8b-4a1c-abd7-24b633c21b2b",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Computer Equipment (710)",
+                  "Attributes": [
+                    {
+                      "Value": "97565b7c-56b6-4b48-ad55-13f79705f9bd",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "97565b7c-56b6-4b48-ad55-13f79705f9bd",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "97565b7c-56b6-4b48-ad55-13f79705f9bd",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "76000.00",
+                  "Attributes": [
+                    {
+                      "Value": "97565b7c-56b6-4b48-ad55-13f79705f9bd",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "97565b7c-56b6-4b48-ad55-13f79705f9bd",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Less Accumulated Depreciation on Computer Equipment (711)",
+                  "Attributes": [
+                    {
+                      "Value": "48ba6e75-613b-4fee-a064-0d7e542bd380",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "48ba6e75-613b-4fee-a064-0d7e542bd380",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "48ba6e75-613b-4fee-a064-0d7e542bd380",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "48ba6e75-613b-4fee-a064-0d7e542bd380",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "40000.00",
+                  "Attributes": [
+                    {
+                      "Value": "48ba6e75-613b-4fee-a064-0d7e542bd380",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "RowType": "Section",
+          "Title": "Liabilities",
+          "Rows": [
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Accounts Payable (800)",
+                  "Attributes": [
+                    {
+                      "Value": "3bcdce81-79de-4fd0-a771-369f5d7bec09",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "3bcdce81-79de-4fd0-a771-369f5d7bec09",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "3bcdce81-79de-4fd0-a771-369f5d7bec09",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "3bcdce81-79de-4fd0-a771-369f5d7bec09",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "71000.00",
+                  "Attributes": [
+                    {
+                      "Value": "3bcdce81-79de-4fd0-a771-369f5d7bec09",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "VAT (820)",
+                  "Attributes": [
+                    {
+                      "Value": "3bd03e23-7836-4db3-a580-2491c4520785",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "3bd03e23-7836-4db3-a580-2491c4520785",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "3bd03e23-7836-4db3-a580-2491c4520785",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "3bd03e23-7836-4db3-a580-2491c4520785",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "118000.00",
+                  "Attributes": [
+                    {
+                      "Value": "3bd03e23-7836-4db3-a580-2491c4520785",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "PAYE & NI Payable (825)",
+                  "Attributes": [
+                    {
+                      "Value": "182ad315-ad66-4672-a0ed-c771cb2348f7",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "182ad315-ad66-4672-a0ed-c771cb2348f7",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "182ad315-ad66-4672-a0ed-c771cb2348f7",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "182ad315-ad66-4672-a0ed-c771cb2348f7",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "66000.00",
+                  "Attributes": [
+                    {
+                      "Value": "182ad315-ad66-4672-a0ed-c771cb2348f7",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Corporation Tax Payable (830)",
+                  "Attributes": [
+                    {
+                      "Value": "1a5f6719-cd4a-45bd-ac6b-6a98d5bd5ab4",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "1a5f6719-cd4a-45bd-ac6b-6a98d5bd5ab4",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "1a5f6719-cd4a-45bd-ac6b-6a98d5bd5ab4",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "1a5f6719-cd4a-45bd-ac6b-6a98d5bd5ab4",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "40000.00",
+                  "Attributes": [
+                    {
+                      "Value": "1a5f6719-cd4a-45bd-ac6b-6a98d5bd5ab4",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Deferred Revenue (835)",
+                  "Attributes": [
+                    {
+                      "Value": "aec33ac6-17e8-46ce-abcf-acf5b5d66978",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "aec33ac6-17e8-46ce-abcf-acf5b5d66978",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "aec33ac6-17e8-46ce-abcf-acf5b5d66978",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "aec33ac6-17e8-46ce-abcf-acf5b5d66978",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "455000.00",
+                  "Attributes": [
+                    {
+                      "Value": "aec33ac6-17e8-46ce-abcf-acf5b5d66978",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "RowType": "Section",
+          "Title": "Equity",
+          "Rows": [
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Share Capital (950)",
+                  "Attributes": [
+                    {
+                      "Value": "c998ea10-3815-47c2-ab62-041196031f25",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "c998ea10-3815-47c2-ab62-041196031f25",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "c998ea10-3815-47c2-ab62-041196031f25",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "c998ea10-3815-47c2-ab62-041196031f25",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "1000.00",
+                  "Attributes": [
+                    {
+                      "Value": "c998ea10-3815-47c2-ab62-041196031f25",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Retained Earnings (960)",
+                  "Attributes": [
+                    {
+                      "Value": "7b7983fa-4685-4d28-a85a-f350154bd10d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "7b7983fa-4685-4d28-a85a-f350154bd10d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "7b7983fa-4685-4d28-a85a-f350154bd10d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "",
+                  "Attributes": [
+                    {
+                      "Value": "7b7983fa-4685-4d28-a85a-f350154bd10d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "210000.00",
+                  "Attributes": [
+                    {
+                      "Value": "7b7983fa-4685-4d28-a85a-f350154bd10d",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "RowType": "Section",
+          "Title": "",
+          "Rows": [
+            {
+              "RowType": "SummaryRow",
+              "Cells": [
+                {
+                  "Value": "Total"
+                },
+                {
+                  "Value": ""
+                },
+                {
+                  "Value": ""
+                },
+                {
+                  "Value": "3241000.00"
+                },
+                {
+                  "Value": "3241000.00"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

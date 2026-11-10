@@ -11,19 +11,24 @@ How the numbers are made (synthetic, not real data):
     (close × (7 − i) / 7) and Retained Earnings stays at its closing value until the year end, as in a real ledger.
   - Months 8–11 (before the year end) repeat the opening balance sheet.
   - Each monthly P&L column is the year-to-date P&L ÷ 7, so the months reconcile to the cash flow.
-Run: python scripts/make-monthly-fixtures.py
+Run: python scripts/make-monthly-fixtures.py [set ...]   (default: demo-uk-synthetic)
 """
 import io
 import json
 from datetime import date, timedelta
 
-DIR = "fixtures/xero/demo-uk-synthetic"
+import sys
+
+SETS = sys.argv[1:] or ["demo-uk-synthetic"]
 MONTHS = 12
 FY_INDEX = 7  # 31 Mar 2026 is 7 month ends before 31 Oct 2026
 
 
 def load(name):
     return json.load(io.open(f"{DIR}/{name}.json", encoding="utf-8"))
+
+
+DIR = ""
 
 
 def month_end(y, m):
@@ -90,56 +95,63 @@ def with_columns(template, values_for, header):
     return rep
 
 
-close, opening = load("bs-close"), load("bs-open")
-c, o = flat(close), flat(opening)
+def run():
+    global c, o, p, retained
+    ORG = json.load(io.open(f"{DIR}/organisation.json", encoding="utf-8"))["Organisations"][0]["Name"]
+    close, opening = load("bs-close"), load("bs-open")
+    c, o = flat(close), flat(opening)
 
 
-def bs_values(section, key, label=None):
-    cv, ov = c.get((section, key), 0.0), o.get((section, key), 0.0)
-    label = (label or key).lower()
-    out = []
-    for i in range(MONTHS):
-        if i >= FY_INDEX:
-            out.append(ov)
-        elif "current year earnings" in label:
-            out.append(cv * (FY_INDEX - i) / FY_INDEX)
-        elif "retained earnings" in label:
-            out.append(cv)
-        else:
-            out.append(cv + (ov - cv) * i / FY_INDEX)
-    return out
+    def bs_values(section, key, label=None):
+        cv, ov = c.get((section, key), 0.0), o.get((section, key), 0.0)
+        label = (label or key).lower()
+        out = []
+        for i in range(MONTHS):
+            if i >= FY_INDEX:
+                out.append(ov)
+            elif "current year earnings" in label:
+                out.append(cv * (FY_INDEX - i) / FY_INDEX)
+            elif "retained earnings" in label:
+                out.append(cv)
+            else:
+                out.append(cv + (ov - cv) * i / FY_INDEX)
+        return out
 
 
-# Retained earnings is an account row; find its id by name in the close report to treat it as "retained earnings".
-def tag_retained(report):
-    ids = set()
+    # Retained earnings is an account row; find its id by name in the close report to treat it as "retained earnings".
+    def tag_retained(report):
+        ids = set()
 
-    def walk(rows):
-        for r in rows:
-            if r["RowType"] == "Section":
-                walk(r.get("Rows", []))
-            elif r["RowType"] == "Row" and "retained earnings" in r["Cells"][0]["Value"].lower():
-                ids.add(key_of(r))
+        def walk(rows):
+            for r in rows:
+                if r["RowType"] == "Section":
+                    walk(r.get("Rows", []))
+                elif r["RowType"] == "Row" and "retained earnings" in r["Cells"][0]["Value"].lower():
+                    ids.add(key_of(r))
 
-    walk(report["Reports"][0]["Rows"])
-    return ids
-
-
-retained = tag_retained(close)
+        walk(report["Reports"][0]["Rows"])
+        return ids
 
 
-def bs_values_tagged(section, key):
-    return bs_values(section, key, "retained earnings" if key in retained else None)
+    retained = tag_retained(close)
 
 
-bs = with_columns(close, bs_values_tagged, [d.strftime("%-d %b %Y") if False else f"{d.day} {d.strftime('%b %Y')}" for d in ends])
-bs["Reports"][0]["ReportTitles"] = ["Balance Sheet", "Copperpot Kitchens Ltd (sample)", "As at 31 Oct 2026"]
+    def bs_values_tagged(section, key):
+        return bs_values(section, key, "retained earnings" if key in retained else None)
 
-pl_t = load("pl")
-p = flat(pl_t)
-pl = with_columns(pl_t, lambda s, k: [p.get((s, k), 0.0) / FY_INDEX] * MONTHS, [d.strftime("%b %y") for d in ends])
-pl["Reports"][0]["ReportTitles"] = ["Profit & Loss", "Copperpot Kitchens Ltd (sample)", "1 October 2026 to 31 October 2026"]
 
-for name, rep in (("bs-monthly", bs), ("pl-monthly", pl)):
-    io.open(f"{DIR}/{name}.json", "w", encoding="utf-8", newline="\n").write(json.dumps(rep, indent=1) + "\n")
-print("wrote bs-monthly.json, pl-monthly.json")
+    bs = with_columns(close, bs_values_tagged, [d.strftime("%-d %b %Y") if False else f"{d.day} {d.strftime('%b %Y')}" for d in ends])
+    bs["Reports"][0]["ReportTitles"] = ["Balance Sheet", ORG, "As at 31 Oct 2026"]
+
+    pl_t = load("pl")
+    p = flat(pl_t)
+    pl = with_columns(pl_t, lambda s, k: [p.get((s, k), 0.0) / FY_INDEX] * MONTHS, [d.strftime("%b %y") for d in ends])
+    pl["Reports"][0]["ReportTitles"] = ["Profit & Loss", ORG, "1 October 2026 to 31 October 2026"]
+
+    for name, rep in (("bs-monthly", bs), ("pl-monthly", pl)):
+        io.open(f"{DIR}/{name}.json", "w", encoding="utf-8", newline="\n").write(json.dumps(rep, indent=1) + "\n")
+    print("wrote bs-monthly.json, pl-monthly.json")
+
+
+for DIR in [f"fixtures/xero/{x}" for x in SETS]:
+    run()

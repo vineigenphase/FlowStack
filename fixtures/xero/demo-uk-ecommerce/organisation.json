@@ -1,0 +1,12 @@
+{
+  "Organisations": [
+    {
+      "OrganisationID": "fc93f635-52b3-4c86-a04c-8b2f7ce5433b",
+      "Name": "Northwind Goods Ltd (sample)",
+      "BaseCurrency": "GBP",
+      "CountryCode": "GB",
+      "FinancialYearEndDay": 31,
+      "FinancialYearEndMonth": 3
+    }
+  ]
+}

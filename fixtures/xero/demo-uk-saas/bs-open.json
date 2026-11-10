@@ -1,0 +1,478 @@
+{
+  "Reports": [
+    {
+      "ReportID": "BalanceSheet",
+      "ReportName": "Balance Sheet",
+      "ReportType": "BalanceSheet",
+      "ReportTitles": [
+        "Balance Sheet",
+        "Lumen Analytics Ltd (sample)",
+        "As at 31 Mar 2026"
+      ],
+      "ReportDate": "4 November 2026",
+      "Rows": [
+        {
+          "RowType": "Header",
+          "Cells": [
+            {
+              "Value": ""
+            },
+            {
+              "Value": "31 Mar 2026"
+            }
+          ]
+        },
+        {
+          "RowType": "Section",
+          "Title": "Assets",
+          "Rows": []
+        },
+        {
+          "RowType": "Section",
+          "Title": "Bank",
+          "Rows": [
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Business Bank Account",
+                  "Attributes": [
+                    {
+                      "Value": "71097b58-7980-4d32-a294-0b925229f7c1",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "532000.00",
+                  "Attributes": [
+                    {
+                      "Value": "71097b58-7980-4d32-a294-0b925229f7c1",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "SummaryRow",
+              "Cells": [
+                {
+                  "Value": "Total Bank"
+                },
+                {
+                  "Value": "532000.00"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "RowType": "Section",
+          "Title": "Current Assets",
+          "Rows": [
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Accounts Receivable",
+                  "Attributes": [
+                    {
+                      "Value": "2cfeb132-78a5-454b-a493-a6948e64c5d3",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "240000.00",
+                  "Attributes": [
+                    {
+                      "Value": "2cfeb132-78a5-454b-a493-a6948e64c5d3",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Prepayments",
+                  "Attributes": [
+                    {
+                      "Value": "07ea8d86-9c8b-4a1c-abd7-24b633c21b2b",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "30000.00",
+                  "Attributes": [
+                    {
+                      "Value": "07ea8d86-9c8b-4a1c-abd7-24b633c21b2b",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "SummaryRow",
+              "Cells": [
+                {
+                  "Value": "Total Current Assets"
+                },
+                {
+                  "Value": "270000.00"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "RowType": "Section",
+          "Title": "Fixed Assets",
+          "Rows": [
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Computer Equipment",
+                  "Attributes": [
+                    {
+                      "Value": "97565b7c-56b6-4b48-ad55-13f79705f9bd",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "64000.00",
+                  "Attributes": [
+                    {
+                      "Value": "97565b7c-56b6-4b48-ad55-13f79705f9bd",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Less Accumulated Depreciation on Computer Equipment",
+                  "Attributes": [
+                    {
+                      "Value": "48ba6e75-613b-4fee-a064-0d7e542bd380",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "-28000.00",
+                  "Attributes": [
+                    {
+                      "Value": "48ba6e75-613b-4fee-a064-0d7e542bd380",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "SummaryRow",
+              "Cells": [
+                {
+                  "Value": "Total Fixed Assets"
+                },
+                {
+                  "Value": "36000.00"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "RowType": "Section",
+          "Title": "",
+          "Rows": [
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Total Assets"
+                },
+                {
+                  "Value": "838000.00"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "RowType": "Section",
+          "Title": "Liabilities",
+          "Rows": []
+        },
+        {
+          "RowType": "Section",
+          "Title": "Current Liabilities",
+          "Rows": [
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Accounts Payable",
+                  "Attributes": [
+                    {
+                      "Value": "3bcdce81-79de-4fd0-a771-369f5d7bec09",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "58000.00",
+                  "Attributes": [
+                    {
+                      "Value": "3bcdce81-79de-4fd0-a771-369f5d7bec09",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "VAT",
+                  "Attributes": [
+                    {
+                      "Value": "3bd03e23-7836-4db3-a580-2491c4520785",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "92000.00",
+                  "Attributes": [
+                    {
+                      "Value": "3bd03e23-7836-4db3-a580-2491c4520785",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "PAYE & NI Payable",
+                  "Attributes": [
+                    {
+                      "Value": "182ad315-ad66-4672-a0ed-c771cb2348f7",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "61000.00",
+                  "Attributes": [
+                    {
+                      "Value": "182ad315-ad66-4672-a0ed-c771cb2348f7",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Corporation Tax Payable",
+                  "Attributes": [
+                    {
+                      "Value": "1a5f6719-cd4a-45bd-ac6b-6a98d5bd5ab4",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "36000.00",
+                  "Attributes": [
+                    {
+                      "Value": "1a5f6719-cd4a-45bd-ac6b-6a98d5bd5ab4",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Deferred Revenue",
+                  "Attributes": [
+                    {
+                      "Value": "aec33ac6-17e8-46ce-abcf-acf5b5d66978",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "380000.00",
+                  "Attributes": [
+                    {
+                      "Value": "aec33ac6-17e8-46ce-abcf-acf5b5d66978",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "SummaryRow",
+              "Cells": [
+                {
+                  "Value": "Total Current Liabilities"
+                },
+                {
+                  "Value": "627000.00"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "RowType": "Section",
+          "Title": "Non-current Liabilities",
+          "Rows": [
+            {
+              "RowType": "SummaryRow",
+              "Cells": [
+                {
+                  "Value": "Total Non-current Liabilities"
+                },
+                {
+                  "Value": "0.00"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "RowType": "Section",
+          "Title": "",
+          "Rows": [
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Total Liabilities"
+                },
+                {
+                  "Value": "627000.00"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "RowType": "Section",
+          "Title": "",
+          "Rows": [
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Net Assets"
+                },
+                {
+                  "Value": "211000.00"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "RowType": "Section",
+          "Title": "Equity",
+          "Rows": [
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Share Capital",
+                  "Attributes": [
+                    {
+                      "Value": "c998ea10-3815-47c2-ab62-041196031f25",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "1000.00",
+                  "Attributes": [
+                    {
+                      "Value": "c998ea10-3815-47c2-ab62-041196031f25",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Retained Earnings",
+                  "Attributes": [
+                    {
+                      "Value": "7b7983fa-4685-4d28-a85a-f350154bd10d",
+                      "Id": "account"
+                    }
+                  ]
+                },
+                {
+                  "Value": "120000.00",
+                  "Attributes": [
+                    {
+                      "Value": "7b7983fa-4685-4d28-a85a-f350154bd10d",
+                      "Id": "account"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "RowType": "Row",
+              "Cells": [
+                {
+                  "Value": "Current Year Earnings"
+                },
+                {
+                  "Value": "90000.00"
+                }
+              ]
+            },
+            {
+              "RowType": "SummaryRow",
+              "Cells": [
+                {
+                  "Value": "Total Equity"
+                },
+                {
+                  "Value": "211000.00"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

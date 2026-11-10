@@ -299,8 +299,8 @@
 # checked on each vendor's own site with FlowStackBot (robots.txt respected; pnpm crawl:probe). A `to: xero`
 # edge is only set where the vendor's own page mentions Xero; that is not proof of a native integration.
 # Categories and markets are hand-entered by us. Everything stays sample: true until a person verifies it.
-# Not added: Derive (no vendor site found), Pento (now redirects to HiBob), Mayday + Easy Month End
-# (month-end tools; no matching finance job in our taxonomy).
+# Not added: Derive (no vendor site found), Pento (now redirects to HiBob), Mayday. (Easy Month End added 10 Nov 2026, v1.1 P.)
+#
 # ======================================================================================================
 
 # ---------- reporting / consolidation ----------
@@ -812,3 +812,69 @@
   integrations: [{ to: xero, kind: native }]
   sample: true
   source: hand-entered; vendor Xero page checked 2026-11-06
+
+# ---------- v1.1 P: ecommerce + SaaS first (cofounder review, 9 Nov 2026) ----------
+# Added 10 Nov 2026. Websites and pricing paths checked on each vendor's own site with FlowStackBot
+# (pnpm crawl:probe, robots.txt respected). A `to: xero` edge only where the vendor's own page mentions Xero.
+# Stripe Billing is covered by the `stripe` entry. Everything stays sample: true until a person verifies it.
+- id: shopify
+  name: Shopify
+  categories: [epos_ecommerce]
+  markets: [UK, US, CA, AU]
+  website: https://www.shopify.com/uk
+  crawl: { home: /uk, pricing: /pricing, product: null, services: null }
+  fingerprints: ["shopify", "shopify *"]
+  integrations: []
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-10 (no Xero mention on the pricing page; usually reaches Xero through A2X or Link My Books)
+- id: amazon_seller
+  name: Amazon (selling on Amazon)
+  categories: [epos_ecommerce]
+  markets: [UK, US, CA, AU]
+  website: https://sell.amazon.co.uk
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  # Narrow on purpose: plain "amazon" is everyday purchasing, not selling fees.
+  fingerprints: ["amazon seller services", "amazon services europe"]
+  integrations: []
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-10
+- id: paypal
+  name: PayPal
+  categories: [epos_ecommerce, billing_receivables]
+  markets: [UK, US, CA, AU]
+  website: https://www.paypal.com/uk
+  crawl: { home: null, pricing: null, product: null, services: null }   # site didn't answer FlowStackBot (2026-11-10)
+  fingerprints: ["paypal", "paypal *"]
+  integrations: []
+  sample: true
+  source: hand-entered 2026-11-10; site not reachable by our crawler, facts to be entered by a person
+- id: chartmogul
+  name: ChartMogul
+  categories: [management_reporting]
+  markets: [UK, US, CA, AU]
+  website: https://chartmogul.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["chartmogul", "chartmogul *"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-10 (pricing page mentions Xero)
+- id: baremetrics
+  name: Baremetrics
+  categories: [management_reporting]
+  markets: [UK, US, CA, AU]
+  website: https://baremetrics.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["baremetrics", "baremetrics *"]
+  integrations: []
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-10 (no Xero mention on the pricing page)
+- id: easymonthend
+  name: Easy Month End
+  categories: [month_end]
+  markets: [UK]
+  website: https://www.easymonthend.com
+  crawl: { home: /, pricing: /pricing, product: null, services: null }
+  fingerprints: ["easy month end", "easymonthend"]
+  integrations: [{ to: xero, kind: native }]
+  sample: true
+  source: hand-entered; vendor site checked 2026-11-10 (pricing page mentions Xero)

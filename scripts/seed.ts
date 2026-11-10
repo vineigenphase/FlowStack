@@ -1,6 +1,7 @@
 /**
  * pnpm db:seed              → catalogue (sample-labelled) into apps / fingerprints / integrations / app_facts
  * pnpm db:seed --demo-org   → also creates a SAMPLE org and refreshes it from XERO_FIXTURE_SET
+ * pnpm db:seed --samples    → also creates the three SAMPLE companies (hospitality, ecommerce, SaaS: v1.1 P)
  */
 import { loadEnvFiles } from "./_env";
 loadEnvFiles();
@@ -33,5 +34,19 @@ if (process.argv.includes("--demo-org")) {
   const [o] = await db.insert(orgs).values({ name: `Demo org from ${set} (sample)`, sample: true }).returning();
   const r = await runRefresh(o!.id, { client: new FixtureXeroClient(set, o!.id), now: new Date("2026-11-04T12:00:00Z") });
   console.log(`demo org ${o!.id} refreshed: ${r.status} (run ${r.runId})`);
+}
+if (process.argv.includes("--samples")) {
+  const { runRefresh } = await import("@/lib/sync/refresh");
+  const { FixtureXeroClient } = await import("@/lib/xero/client");
+  const samples = [
+    { set: "demo-uk-ecommerce", name: "Northwind Goods Ltd (sample)", industry: "ecommerce" },
+    { set: "demo-uk-saas", name: "Lumen Analytics Ltd (sample)", industry: "saas" },
+    { set: "demo-uk-synthetic", name: "Copperpot Kitchens Ltd (sample)", industry: "hospitality" },
+  ];
+  for (const x of samples) {
+    const [o] = await db.insert(orgs).values({ name: x.name, sample: true, industry: x.industry }).returning();
+    const r = await runRefresh(o!.id, { client: new FixtureXeroClient(x.set, o!.id), now: new Date("2026-11-04T12:00:00Z") });
+    console.log(`${x.name} ${o!.id} refreshed: ${r.status}`);
+  }
 }
 process.exit(0);

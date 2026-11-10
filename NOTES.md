@@ -276,3 +276,9 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
   - Crawl page kinds now include integrations, security and terms (`apps.yaml → crawl:`). **No URLs have been added yet:** the spec says a person finds them, never guesses.
   - `lib/vendors/companies-house.ts` stores `vendor_incorporated` and `vendor_ownership_changes` as verified, with the register page as the source. These facts appear in a "Vendor" group on the dossier and are refreshed by the monthly cron.
   - Each app needs `companies_house: <number>` in apps.yaml, entered by hand (none yet), plus `COMPANIES_HOUSE_API_KEY`.
+- **P:**
+  - Added Shopify, Amazon (selling), PayPal, ChartMogul, Baremetrics and Easy Month End (new app category `month_end`). All are sample: true, with sites probed by FlowStackBot and a Xero edge only where the vendor page mentions Xero. PayPal's site didn't answer the crawler, so its facts need a person. The other apps on the cofounder list were already in the catalogue.
+  - `scripts/make-synthetic.ts` is now one generator with three company specs. Copperpot's output is byte-identical; new are `demo-uk-ecommerce` (Northwind Goods, stock days rising) and `demo-uk-saas` (Lumen Analytics, debtor days rising). Both reconcile.
+  - `pnpm db:seed --samples` creates all three.
+  - Industry keys `ecommerce` / `saas`.
+- **O:** `reward_ledger` table only.

@@ -1,0 +1,868 @@
+{
+  "BankTransactions": [
+    {
+      "BankTransactionID": "2c06dc85-f90e-4717-ab5c-6d5858145f48",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "72aecf6f-7bd3-44cc-a91f-08d4cfa11a74",
+        "Name": "STRIPE PAYMENTS UK"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 7400,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "320",
+          "LineAmount": 7400
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "10dc895e-669c-4cf2-a995-a7d61e1fb26c",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "72aecf6f-7bd3-44cc-a91f-08d4cfa11a74",
+        "Name": "STRIPE PAYMENTS UK"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 7400,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "320",
+          "LineAmount": 7400
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "884046fd-da64-4766-a0a9-88082c0d15b8",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "72aecf6f-7bd3-44cc-a91f-08d4cfa11a74",
+        "Name": "STRIPE PAYMENTS UK"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 7400,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "320",
+          "LineAmount": 7400
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "99924e2b-e1b1-4b16-a61d-2cbb5c2322da",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "72aecf6f-7bd3-44cc-a91f-08d4cfa11a74",
+        "Name": "STRIPE PAYMENTS UK"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 7400,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "320",
+          "LineAmount": 7400
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "977d99ff-1c04-47f8-a0e0-aa1700a258c7",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "72aecf6f-7bd3-44cc-a91f-08d4cfa11a74",
+        "Name": "STRIPE PAYMENTS UK"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 7400,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "320",
+          "LineAmount": 7400
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "ec4c7d86-2573-4a17-a7c5-ec888c44f7c1",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "72aecf6f-7bd3-44cc-a91f-08d4cfa11a74",
+        "Name": "STRIPE PAYMENTS UK"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 7400,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "320",
+          "LineAmount": 7400
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "4a032b28-e63b-4d52-ad64-933c4895d25c",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "72aecf6f-7bd3-44cc-a91f-08d4cfa11a74",
+        "Name": "STRIPE PAYMENTS UK"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 7400,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "320",
+          "LineAmount": 7400
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "6f86911a-371e-443d-ab77-4762a05c2230",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "72aecf6f-7bd3-44cc-a91f-08d4cfa11a74",
+        "Name": "STRIPE PAYMENTS UK"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 7400,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "320",
+          "LineAmount": 7400
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "a03b7335-3855-43c4-af46-79264968d0e5",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "72aecf6f-7bd3-44cc-a91f-08d4cfa11a74",
+        "Name": "STRIPE PAYMENTS UK"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 7400,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "320",
+          "LineAmount": 7400
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "5f0141ad-2a2f-441d-a319-4f4e3cee165f",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "72aecf6f-7bd3-44cc-a91f-08d4cfa11a74",
+        "Name": "STRIPE PAYMENTS UK"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 7400,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "320",
+          "LineAmount": 7400
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "68461fa1-e571-4e15-a695-d67830d36add",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "72aecf6f-7bd3-44cc-a91f-08d4cfa11a74",
+        "Name": "STRIPE PAYMENTS UK"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 7400,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "320",
+          "LineAmount": 7400
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "d205a032-63f4-455d-a2e4-4ed7d81c33dc",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "72aecf6f-7bd3-44cc-a91f-08d4cfa11a74",
+        "Name": "STRIPE PAYMENTS UK"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 7400,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "320",
+          "LineAmount": 7400
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "4f07057a-6d53-4cfa-a51e-0b5d3ed19e7a",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "714c7eb4-7a2a-4231-afc1-8661b181f071",
+        "Name": "GOOGLE*GSUITE LUMEN"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 640,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 640
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "5f574510-3dd1-435d-a315-c00210540f40",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "714c7eb4-7a2a-4231-afc1-8661b181f071",
+        "Name": "GOOGLE*GSUITE LUMEN"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 640,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 640
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "177404b4-677b-4890-aae0-bc9e6e2562c6",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "714c7eb4-7a2a-4231-afc1-8661b181f071",
+        "Name": "GOOGLE*GSUITE LUMEN"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 640,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 640
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "3a49668e-58db-49c7-a881-94a76bab2cec",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "714c7eb4-7a2a-4231-afc1-8661b181f071",
+        "Name": "GOOGLE*GSUITE LUMEN"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 640,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 640
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "6ba8f24f-1368-4c24-a0a5-0726515ddaf1",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "714c7eb4-7a2a-4231-afc1-8661b181f071",
+        "Name": "GOOGLE*GSUITE LUMEN"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 640,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 640
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "2424643b-7f24-4db3-ac96-1e7b418adb43",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "714c7eb4-7a2a-4231-afc1-8661b181f071",
+        "Name": "GOOGLE*GSUITE LUMEN"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 640,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 640
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "c7fbf857-011d-4dc4-a945-95a39f92fb81",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "714c7eb4-7a2a-4231-afc1-8661b181f071",
+        "Name": "GOOGLE*GSUITE LUMEN"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 640,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 640
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "930f7959-c3f0-45a1-a73c-d6cdf4e13e41",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "714c7eb4-7a2a-4231-afc1-8661b181f071",
+        "Name": "GOOGLE*GSUITE LUMEN"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 640,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 640
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "02b11cec-daf7-4f68-ab6e-ab87df833ce7",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "714c7eb4-7a2a-4231-afc1-8661b181f071",
+        "Name": "GOOGLE*GSUITE LUMEN"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 640,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 640
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "2be2fdeb-6a23-4931-abed-f2aa926b77e3",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "714c7eb4-7a2a-4231-afc1-8661b181f071",
+        "Name": "GOOGLE*GSUITE LUMEN"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 640,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 640
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "1a3e56d6-bb95-4220-a76e-71b511f635dd",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "714c7eb4-7a2a-4231-afc1-8661b181f071",
+        "Name": "GOOGLE*GSUITE LUMEN"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 640,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 640
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "9099e489-5b9a-4a64-aa73-f5f584e70f0e",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "714c7eb4-7a2a-4231-afc1-8661b181f071",
+        "Name": "GOOGLE*GSUITE LUMEN"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 640,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 640
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "4dbba39e-f32b-4f1f-a9b9-0e6f2e593919",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d2e64d48-6ed3-496f-a665-17329acee126",
+        "Name": "Slack Technologies"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 480,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 480
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "05019719-7e51-4813-aa0c-4b77f3f417c7",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d2e64d48-6ed3-496f-a665-17329acee126",
+        "Name": "Slack Technologies"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 480,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 480
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "7bfa3151-c005-44ef-aeec-5dbd9aeff5ae",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d2e64d48-6ed3-496f-a665-17329acee126",
+        "Name": "Slack Technologies"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 480,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 480
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "eee65938-9826-4e31-aa56-88d76ef6a3ba",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d2e64d48-6ed3-496f-a665-17329acee126",
+        "Name": "Slack Technologies"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 480,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 480
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "1057c60c-44d6-4fca-ab52-f4f285852ddd",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d2e64d48-6ed3-496f-a665-17329acee126",
+        "Name": "Slack Technologies"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 480,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 480
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "bb827cd3-3c6b-4d38-adcd-66ad6b657203",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d2e64d48-6ed3-496f-a665-17329acee126",
+        "Name": "Slack Technologies"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 480,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 480
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "b0fb0e9a-b511-4159-aa4d-40f02ae177f8",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d2e64d48-6ed3-496f-a665-17329acee126",
+        "Name": "Slack Technologies"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 480,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 480
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "1d9a6ae1-85e3-4913-a6c7-4292e4eeca65",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d2e64d48-6ed3-496f-a665-17329acee126",
+        "Name": "Slack Technologies"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 480,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 480
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "c95bee17-0d93-4b1c-a7fa-dc325cc9e658",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d2e64d48-6ed3-496f-a665-17329acee126",
+        "Name": "Slack Technologies"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 480,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 480
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "21a69fbf-d56b-4eff-a751-49ef3955d041",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d2e64d48-6ed3-496f-a665-17329acee126",
+        "Name": "Slack Technologies"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 480,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 480
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "e3242993-4f65-4338-ac69-2e9cdb8d617a",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d2e64d48-6ed3-496f-a665-17329acee126",
+        "Name": "Slack Technologies"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 480,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 480
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "3951ee49-084d-4e68-a3ce-c355889c114d",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "d2e64d48-6ed3-496f-a665-17329acee126",
+        "Name": "Slack Technologies"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 480,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 480
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "c5e686fe-f3ed-48b0-aa19-2f9b917cc06e",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "272dc87a-4810-4a14-ac7e-5324cb51fa5c",
+        "Name": "ChartMogul"
+      },
+      "Date": "/Date(1763164800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 250,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 250
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "c06f8a7f-c21e-4833-a5a0-b930dbae62b5",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "272dc87a-4810-4a14-ac7e-5324cb51fa5c",
+        "Name": "ChartMogul"
+      },
+      "Date": "/Date(1765756800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 250,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 250
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "29eeaa31-eaff-4785-a246-8d7ab679c240",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "272dc87a-4810-4a14-ac7e-5324cb51fa5c",
+        "Name": "ChartMogul"
+      },
+      "Date": "/Date(1768435200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 250,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 250
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "4a1276ec-ac6b-4ed9-a770-38de701534e3",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "272dc87a-4810-4a14-ac7e-5324cb51fa5c",
+        "Name": "ChartMogul"
+      },
+      "Date": "/Date(1771113600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 250,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 250
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "b27dab8a-4b0c-41ce-a791-377625a74c4e",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "272dc87a-4810-4a14-ac7e-5324cb51fa5c",
+        "Name": "ChartMogul"
+      },
+      "Date": "/Date(1773532800000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 250,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 250
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "f78befab-f5fd-4e96-abbc-5799d7de0a1c",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "272dc87a-4810-4a14-ac7e-5324cb51fa5c",
+        "Name": "ChartMogul"
+      },
+      "Date": "/Date(1776211200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 250,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 250
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "f3fe8988-606f-42af-a823-6546ed9e52d3",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "272dc87a-4810-4a14-ac7e-5324cb51fa5c",
+        "Name": "ChartMogul"
+      },
+      "Date": "/Date(1778803200000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 250,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 250
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "51f3dad0-4bb9-4662-a602-1a00dd126587",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "272dc87a-4810-4a14-ac7e-5324cb51fa5c",
+        "Name": "ChartMogul"
+      },
+      "Date": "/Date(1781481600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 250,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 250
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "065c8048-7df2-454c-a49a-329274ab1a26",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "272dc87a-4810-4a14-ac7e-5324cb51fa5c",
+        "Name": "ChartMogul"
+      },
+      "Date": "/Date(1784073600000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 250,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 250
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "04568ebe-e290-4a6b-a84b-26d08bf02032",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "272dc87a-4810-4a14-ac7e-5324cb51fa5c",
+        "Name": "ChartMogul"
+      },
+      "Date": "/Date(1786752000000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 250,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 250
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "4ba5d9ee-432b-4405-acac-58eb69659097",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "272dc87a-4810-4a14-ac7e-5324cb51fa5c",
+        "Name": "ChartMogul"
+      },
+      "Date": "/Date(1789430400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 250,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 250
+        }
+      ]
+    },
+    {
+      "BankTransactionID": "feaf9724-2f1f-4589-a68c-142c4e9a7f26",
+      "Type": "SPEND",
+      "Contact": {
+        "ContactID": "272dc87a-4810-4a14-ac7e-5324cb51fa5c",
+        "Name": "ChartMogul"
+      },
+      "Date": "/Date(1792022400000+0000)/",
+      "Status": "AUTHORISED",
+      "Total": 250,
+      "CurrencyCode": "GBP",
+      "LineItems": [
+        {
+          "AccountCode": "485",
+          "LineAmount": 250
+        }
+      ]
+    }
+  ]
+}

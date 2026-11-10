@@ -1,0 +1,15 @@
+{
+  "sample": true,
+  "note": "Totals this synthetic set was built to produce. Used by parser + statement tests.",
+  "period": {
+    "from": "2026-04-01",
+    "to": "2026-10-31",
+    "open": "2026-03-31"
+  },
+  "revenue": 1793200,
+  "expenses": 1540600,
+  "netProfit": 252600,
+  "grossProfit": 704200,
+  "bankOpen": 81100,
+  "bankClose": 208500
+}
