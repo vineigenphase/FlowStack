@@ -153,7 +153,7 @@
   markets: [UK, US, AU]
   website: https://www.chaserhq.com
   fingerprints: ["chaser", "chaserhq", "chaser hq", "chaser technologies *"]
-  integrations: [{ to: xero, kind: native }]
+  integrations: [{ to: stripe, kind: native, source: "https://help.chaserhq.com/connecting-your-stripe-account" }, { to: xero, kind: native }]
   sample: true
   source: hand-entered from vendor site
 - id: gocardless
@@ -691,7 +691,7 @@
   website: https://www.chargebee.com
   crawl: { home: /, pricing: /pricing, product: null, services: null }
   fingerprints: ["chargebee", "chargebee *"]
-  integrations: [{ to: xero, kind: native }]
+  integrations: [{ to: stripe, kind: native, source: "https://www.chargebee.com/docs/payments/stripe.html" }, { to: xero, kind: native }]
   sample: true
   source: hand-entered; vendor site checked 2026-11-06
 
@@ -735,7 +735,7 @@
   website: https://www.a2xaccounting.com
   crawl: { home: /, pricing: /pricing, product: null, services: null }
   fingerprints: ["a2x", "a2x accounting", "a2x *"]
-  integrations: [{ to: xero, kind: native }]
+  integrations: [{ to: shopify, kind: native, source: "https://a2xaccounting.com/xero" }, { to: amazon_seller, kind: native, source: "https://a2xaccounting.com/xero" }, { to: paypal, kind: native, source: "https://a2xaccounting.com/xero" }, { to: xero, kind: native }]
   sample: true
   source: hand-entered; vendor site checked 2026-11-06
 - id: linkmybooks
@@ -745,7 +745,7 @@
   website: https://linkmybooks.com
   crawl: { home: /, pricing: /pricing, product: null, services: null }
   fingerprints: ["link my books", "linkmybooks"]
-  integrations: [{ to: xero, kind: native }]
+  integrations: [{ to: shopify, kind: native, source: "https://linkmybooks.com/pricing" }, { to: amazon_seller, kind: native, source: "https://linkmybooks.com/pricing" }, { to: xero, kind: native }]
   sample: true
   source: hand-entered; vendor site checked 2026-11-06
 - id: zettle
@@ -855,7 +855,7 @@
   website: https://chartmogul.com
   crawl: { home: /, pricing: /pricing, product: null, services: null }
   fingerprints: ["chartmogul", "chartmogul *"]
-  integrations: [{ to: xero, kind: native }]
+  integrations: [{ to: stripe, kind: native, source: "https://chartmogul.com/stripe" }, { to: chargebee, kind: native, source: "https://chargebee.com/integrations/chartmogul" }, { to: xero, kind: native }]
   sample: true
   source: hand-entered; vendor site checked 2026-11-10 (pricing page mentions Xero)
 - id: baremetrics
@@ -865,7 +865,7 @@
   website: https://baremetrics.com
   crawl: { home: /, pricing: /pricing, product: null, services: null }
   fingerprints: ["baremetrics", "baremetrics *"]
-  integrations: []
+  integrations: [{ to: stripe, kind: native, source: "https://baremetrics.com/blog/stripe-and-chargebee-integrations-with-baremetrics" }, { to: chargebee, kind: native, source: "https://baremetrics.com/blog/stripe-and-chargebee-integrations-with-baremetrics" }, ]
   sample: true
   source: hand-entered; vendor site checked 2026-11-10 (no Xero mention on the pricing page)
 - id: easymonthend
