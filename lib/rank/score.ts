@@ -52,6 +52,8 @@ export function scoreCandidates(opts: {
   peer?: Map<string, number>;
   annualRevenue: number;
   scoring: Scoring;
+  /** Apps whose category handles the line (the rule's covered_by). On equal match they rank ahead of helpers. */
+  fixes?: Set<string>;
 }): Scored[] {
   const { scoring: s } = opts;
   const w = s.weights;
@@ -75,7 +77,9 @@ export function scoreCandidates(opts: {
     if (!opts.prices.get(app.id)?.known) parts.push("Price not published · we're checking");
     return { appId: app.id, name: app.name, match, components, inUse: Boolean(used), reason: parts.join(". ") || "Fits this category" };
   });
-  return out.sort((a, b) => b.match - a.match || Number(b.inUse) - Number(a.inUse) || a.name.localeCompare(b.name));
+  // Equal match: an app that handles the line beats one that only helps, then the app in use, then the name.
+  const fixes = (id: string) => Number(opts.fixes?.has(id) ?? false);
+  return out.sort((a, b) => b.match - a.match || fixes(b.appId) - fixes(a.appId) || Number(b.inUse) - Number(a.inUse) || a.name.localeCompare(b.name));
 }
 
 /** Top 3, plus the in-use app if it isn't already there (BACKEND.md §8.3). */

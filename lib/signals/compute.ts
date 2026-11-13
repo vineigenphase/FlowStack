@@ -178,7 +178,9 @@ export function computeFlags(lines: LineIn[], ctx: FlagCtx): FlagOut[] {
   for (const w of work) {
     if ((w.state !== "flagged" && w.state !== "covered") || w.evidence.declared) continue;
     const strengthNorm = maxStrength > 0 ? r4(w.strength / maxStrength) : 0;
-    const scored = scoreCandidates({ candidates: w.candidates, strengthNorm, kept, inUse: ctx.inUse, prices: ctx.prices, peer: ctx.peer, annualRevenue, scoring: ctx.scoring });
+    const handles = w.rule!.covered_by ?? w.rule!.app_categories;
+    const fixes = new Set(w.candidates.filter((a) => a.categories.some((c) => handles.includes(c))).map((a) => a.id));
+    const scored = scoreCandidates({ candidates: w.candidates, strengthNorm, kept, inUse: ctx.inUse, prices: ctx.prices, peer: ctx.peer, annualRevenue, scoring: ctx.scoring, fixes });
     const kindOf = (s: Scored): RecKind | null => (s.inUse ? null : w.state === "covered" ? "change" : "add");
     w.recommendations = shortlistOf(scored).map((s, i) => ({ ...s, rank: i + 1, kind: kindOf(s) }));
     if (w.state === "covered") {

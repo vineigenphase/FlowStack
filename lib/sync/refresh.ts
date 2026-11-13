@@ -12,6 +12,7 @@ import {
   orgs,
   statementLines,
   statements,
+  reviewQueue,
   syncRuns,
   trialBalance,
   type RunStep,
@@ -26,6 +27,18 @@ import { buildBS, buildPL, type Statement, type StatementLine } from "@/lib/stat
 import { accountInfo } from "@/lib/statements/accounts";
 import { deriveCashFlow } from "@/lib/statements/cashflow";
 import { autoClose, enqueueAll, type QueueItem } from "@/lib/queue/enqueue";
+
+/** Reason text of the queue items the refresh raises for unmapped accounts (auto-closed when the rules catch up). */
+const MAPPING_REASON = "Can't tell what ";
+
+/** Xero account ids with an open account_mapping item for this org (owner connection, outside any tenant tx). */
+async function openMappingItems(orgId: string): Promise<Set<string>> {
+  const rows = await (await adminDb())
+    .select({ ref: reviewQueue.ref })
+    .from(reviewQueue)
+    .where(and(eq(reviewQueue.orgId, orgId), eq(reviewQueue.kind, "account_mapping"), eq(reviewQueue.status, "open")));
+  return new Set(rows.map((r) => String((r.ref as { xero_account_id?: string }).xero_account_id)));
+}
 import { clientForOrg } from "@/lib/xero";
 import type { XeroClient } from "@/lib/xero/client";
 import { getAccounts, getBalanceSheet,
@@ -155,6 +168,7 @@ export async function runRefresh(orgId: string, opts: RefreshOpts = {}) {
     await step("mapping", async () => {
       const used = usedAccountIds(reports);
       const pending: QueueItem[] = [];
+      const nowMapped: string[] = [];
       await withOrg(orgId, async (tx) => {
         const existing = await tx.select().from(accountMaps);
         const confirmed = new Map(existing.filter((m) => m.source === "confirmed").map((m) => [m.xeroAccountId, m.category]));
@@ -177,6 +191,7 @@ export async function runRefresh(orgId: string, opts: RefreshOpts = {}) {
           if (m.source === "rule" && confirmed.has(m.xeroAccountId)) continue;
           const row = { orgId, ...m, updatedAt: new Date() };
           await tx.insert(accountMaps).values(row).onConflictDoUpdate({ target: [accountMaps.orgId, accountMaps.xeroAccountId], set: row });
+          if (m.category !== "unmapped") nowMapped.push(m.xeroAccountId);
         }
         for (const a of unmapped) {
           if (!used.has(a.xeroAccountId)) continue; // unused accounts can't produce a flag; don't bother people
@@ -184,11 +199,15 @@ export async function runRefresh(orgId: string, opts: RefreshOpts = {}) {
             kind: "account_mapping",
             orgId,
             ref: { org_id: orgId, xero_account_id: a.xeroAccountId },
-            reason: `Can't tell what "${a.name}"${a.code ? ` (${a.code})` : ""} is for (type ${a.type}).`,
+            reason: `${MAPPING_REASON}"${a.name}"${a.code ? ` (${a.code})` : ""} is for (type ${a.type}).`,
           });
         }
       });
       await enqueueAll(pending);
+      // Accounts the rules now map confidently (e.g. after a catalogue update) leave the queue by themselves.
+      const open = await openMappingItems(orgId);
+      for (const id of nowMapped.filter((x) => open.has(x)))
+        await autoClose("account_mapping", { org_id: orgId, xero_account_id: id }, `Mapped by the rules on run ${runId}`, { reasonPrefix: MAPPING_REASON });
     });
 
     await step("statements", async () => {

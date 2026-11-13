@@ -6,7 +6,7 @@ import { adminDb, withOrg } from "@/lib/db/client";
 import { accounts, auditLog, detectedApps, flags, orgs, reviewQueue, statements } from "@/db/schema";
 import { recompute, runRefresh } from "@/lib/sync/refresh";
 import { FixtureXeroClient } from "@/lib/xero/client";
-import { enqueue } from "@/lib/queue/enqueue";
+import { autoClose, enqueue } from "@/lib/queue/enqueue";
 import { listQueue, resolveItem } from "@/lib/queue/resolve";
 import { HttpError } from "@/lib/api";
 
@@ -35,6 +35,17 @@ describe("enqueue", () => {
   });
 });
 
+describe("autoClose with a reason prefix (13 Nov 2026)", () => {
+  it("closes the system's own mapping item but never a person's dispute about the same account", async () => {
+    const mine = { org_id: orgId, xero_account_id: "00000000-0000-4000-8000-0000000000a1" };
+    const theirs = { org_id: orgId, xero_account_id: "00000000-0000-4000-8000-0000000000a2" };
+    await enqueue({ kind: "account_mapping", orgId, ref: mine, reason: `Can't tell what "Stock - Tea" is for (type CURRENT).` });
+    await enqueue({ kind: "account_mapping", orgId, ref: theirs, reason: "The business says pl:310 isn't right. Check the account's category" });
+    expect(await autoClose("account_mapping", mine, "rules", { reasonPrefix: "Can't tell what " })).toBe(1);
+    expect(await autoClose("account_mapping", theirs, "rules", { reasonPrefix: "Can't tell what " })).toBe(0);
+  });
+});
+
 describe("listQueue", () => {
   it("lists open items oldest first, filterable by kind", async () => {
     const all = await listQueue();
@@ -55,7 +66,7 @@ describe("resolveItem", () => {
     expect(after.state).not.toBe("queued");
     expect(after.ruleId).toBe("card_spend"); // office_general → card_spend rule
     const db = await adminDb();
-    const [a] = await db.select().from(auditLog).where(eq(auditLog.action, "queue.done.account_mapping"));
+    const [a] = await db.select().from(auditLog).where(eq(auditLog.action, "queue.done.account_mapping")).orderBy(desc(auditLog.id)).limit(1);
     expect(a!.actor).toBe("svinujan10@gmail.com");
   });
 

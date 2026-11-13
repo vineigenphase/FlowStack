@@ -231,7 +231,7 @@
   markets: [UK, US, CA, AU]
   website: https://www.unleashedsoftware.com
   fingerprints: ["unleashed software", "unleashed software *"]
-  integrations: [{ to: xero, kind: native }]
+  integrations: [{ to: shopify, kind: native, source: "https://intercom.help/unleashed-support/en/articles/11582153-shopify-integration-introduction" }, { to: xero, kind: native }]
   sample: true
   source: hand-entered from vendor site
 - id: marketman
@@ -703,7 +703,7 @@
   website: https://katanamrp.com
   crawl: { home: /, pricing: /pricing, product: null, services: null }
   fingerprints: ["katana mrp", "katana technologies"]
-  integrations: [{ to: xero, kind: native }]
+  integrations: [{ to: shopify, kind: native, source: "https://support.katanamrp.com/en/articles/5968286-shopify-integration-overview" }, { to: xero, kind: native }]
   sample: true
   source: hand-entered; vendor site checked 2026-11-06
 - id: cin7
@@ -713,7 +713,7 @@
   website: https://www.cin7.com
   crawl: { home: /, pricing: /pricing, product: null, services: null }
   fingerprints: ["cin7", "cin7 *", "dear systems"]
-  integrations: [{ to: xero, kind: native }]
+  integrations: [{ to: shopify, kind: native, source: "https://help.core.cin7.com/hc/en-us/articles/9034589848335-Shopify-Integration" }, { to: square, kind: native, source: "https://help.core.cin7.com/hc/en-us/articles/9034587425807-Square-sales-channel" }, { to: xero, kind: native }]
   sample: true
   source: hand-entered; vendor site checked 2026-11-06
 - id: brightpearl
@@ -723,7 +723,7 @@
   website: https://www.brightpearl.com
   crawl: { home: /, pricing: /pricing, product: null, services: null }
   fingerprints: ["brightpearl", "brightpearl *"]
-  integrations: [{ to: xero, kind: native }]
+  integrations: [{ to: shopify, kind: native, source: "https://apps.shopify.com/brightpearl" }, { to: xero, kind: native }]
   sample: true
   source: hand-entered; vendor site checked 2026-11-06
 

@@ -2,8 +2,21 @@
 # ("Labour", "Salaries", "Wages"), so these add to each category's name_any. Matched at the start of a word.
 # CHANGES-v1.1 calls the contractors category "agency_staff"; it is our `contractors` key.
 
-wages: [wages, salaries, salary, labour, labor, payroll, staff costs, staff wages, gross pay]
+wages: [wages, salaries, salary, labour, labor, payroll, staff costs, staff wages, gross pay, bonus, remuneration, holiday pay]
 employer_ni: [employers ni, employer's ni, er ni, national insurance, nic]
 pensions: [pension, pensions, auto enrolment, auto-enrolment, nest]
 contractors: [agency, temp staff, contractors, freelancers, subcontractors]
 software_subscriptions: [software, subscriptions, saas, it costs, computer costs]
+# Added 13 Nov 2026 from the first live chart (account names only, no figures):
+share_capital: [share premium]
+other_equity: [shareholder funds, shareholders funds, shareholders' funds]
+directors_loan: [shareholder loan, shareholders loan, director loan]
+other_debtors: [deposit, deposits, accrued income, staff advance]
+sales: [discounts, discount, refunds, surcharge, service charges, shipping income, delivery fee revenue]
+card_fees: [commission charge, marketplace fee, selling fee, seller fee, shopify fee, amazon fee, faire fee, paypal fee, ebay fee, etsy fee, credit card charge, card charges, square fee, deliveroo fee, uber fee, fba fee, third party fee, chargeback, shipping fee]
+payroll_liabilities: [pension total payable, pensions payable, earnings attachment, tronc, student loan, net pay]
+professional_fees: [consultancy, consulting]
+rent: [equipment hire, storage cost]
+cleaning: [pest control]
+office_general: [sundries, other expenses]
+short_term_loans: [loans, loan payments]

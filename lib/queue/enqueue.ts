@@ -1,6 +1,6 @@
 /** The review queue: the single inbox for people (BACKEND.md §9). Items dedupe on (kind, ref_hash). */
 import { createHash } from "node:crypto";
-import { and, eq, sql } from "drizzle-orm";
+import { and, eq, like, sql } from "drizzle-orm";
 import { auditLog, reviewQueue } from "@/db/schema";
 import { adminDb, type Db } from "@/lib/db/client";
 
@@ -65,13 +65,21 @@ export async function enqueue(
  * Marked resolution.auto so enqueue() reopens it if the problem returns. Writes an audit_log row per item.
  * Owner connection, so call it after the tenant transaction commits (like enqueueAll).
  */
-export async function autoClose(kind: QueueKind, ref: Record<string, unknown>, note: string): Promise<number> {
+export async function autoClose(kind: QueueKind, ref: Record<string, unknown>, note: string, opts: { reasonPrefix?: string } = {}): Promise<number> {
   const db = await adminDb();
   const resolution = { auto: true, by: "system", note };
   const closed = await db
     .update(reviewQueue)
     .set({ status: "done", resolution, assignee: "system", resolvedAt: new Date() })
-    .where(and(eq(reviewQueue.kind, kind), eq(reviewQueue.refHash, refHash(ref)), eq(reviewQueue.status, "open")))
+    .where(
+      and(
+        eq(reviewQueue.kind, kind),
+        eq(reviewQueue.refHash, refHash(ref)),
+        eq(reviewQueue.status, "open"),
+        // Only close items the system raised itself, never one a person raised about the same thing.
+        opts.reasonPrefix ? like(reviewQueue.reason, `${opts.reasonPrefix.replace(/[%_\\]/g, "\\$&")}%`) : undefined,
+      ),
+    )
     .returning({ id: reviewQueue.id });
   for (const c of closed) {
     await db.insert(auditLog).values({ actor: "system", action: `queue.done.${kind}`, target: { id: c.id, kind, ref, resolution } });

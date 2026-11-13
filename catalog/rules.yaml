@@ -108,11 +108,11 @@ rules:
     cause: "At the current rate cash runs out sooner than it did three months ago. A cash flow forecast shows when and why."
 
   - id: fine_as_is
-    version: 2
+    version: 3          # v3 (13 Nov 2026): + control_clearing
     account_categories:
       [rent, depreciation, interest, corporation_tax, bank_charges, insurance, professional_fees, telephone_internet,
        bank, prepayments, fixed_assets, vat, corporation_tax_payable, accruals, short_term_loans, long_term_loans,
-       directors_loan, share_capital, retained_earnings, dividends, other_equity, other_income, staff_other,
+       directors_loan, share_capital, retained_earnings, dividends, other_equity, other_income, staff_other, control_clearing,
        contractors, card_fees, bad_debts, other_debtors]
     app_categories: []
 

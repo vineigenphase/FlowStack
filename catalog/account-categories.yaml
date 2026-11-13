@@ -8,6 +8,9 @@
 #   name keyword + type allowed                  → 0.80
 #   name keyword, no types listed                → 0.70   (below MAP_CONFIDENCE_MIN 0.75 → review queue)
 # The highest score wins; ties go to the entry listed first.
+# type_only can be a list (v1.1, 13 Nov 2026): only those types are decisive; the category's other types still allow
+# a name match. Real charts put stock, prepayments and depreciation on generic types (CURRENT, OVERHEADS) — the
+# first live chart had "Stock - Matcha" (CURRENT) and "Depreciation" (OVERHEADS) unmapped because of this.
 #
 # v1.1 M: real Xero reporting codes now live in catalog/reporting-codes.yaml (from the live Demo Company chart),
 # checked first at 0.90. The reporting_codes below are those of our synthetic fixtures and stay as a fallback.
@@ -67,7 +70,7 @@
 - key: cleaning
   label: Cleaning
   statement: pl
-  match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.CLE], name_any: [cleaning, laundry, waste] }
+  match: { types: [OVERHEADS, EXPENSE, DIRECTCOSTS], reporting_codes: [EXP.CLE], name_any: [cleaning, laundry, waste] }
 - key: insurance
   label: Insurance
   statement: pl
@@ -113,7 +116,7 @@
   statement: pl
   match: { types: [OVERHEADS, EXPENSE], reporting_codes: [EXP.BAN], name_any: [bank fee, bank charge] }
 - key: card_fees
-  label: Card processing fees
+  label: Card, payment and marketplace fees
   statement: pl
   match: { types: [OVERHEADS, EXPENSE, DIRECTCOSTS], name_any: [merchant fee, card fee, processing fee, stripe fee, payment fee] }
 - key: interest
@@ -123,7 +126,7 @@
 - key: depreciation
   label: Depreciation
   statement: pl
-  match: { types: [DEPRECIATN], reporting_codes: [EXP.DEP], name_any: [depreciation, amortisation, amortization], type_only: true }
+  match: { types: [DEPRECIATN, OVERHEADS, EXPENSE], reporting_codes: [EXP.DEP], name_any: [depreciation, amortisation, amortization], type_only: [DEPRECIATN] }
 - key: corporation_tax
   label: Corporation tax
   statement: pl
@@ -138,6 +141,11 @@
   match: { types: [OVERHEADS, EXPENSE, REVENUE, OTHERINCOME], name_any: [foreign exchange, fx gain, fx loss, currency gain, currency loss, realised currency, unrealised currency] }
 
 # ---------------- Balance sheet ----------------
+# Listed first so it wins ties: "Shopify Gateway Clearing (Bank Deposit)" is a clearing account, not a deposit paid.
+- key: control_clearing
+  label: Control, clearing and suspense accounts
+  statement: bs
+  match: { types: [CURRENT, CURRLIAB, LIABILITY, EQUITY], name_any: [control account, control a/c, clearing, suspense, rounding, split month, tracking transfer, historical adjustment] }
 - key: bank
   label: Bank and cash
   statement: bs
@@ -153,11 +161,11 @@
 - key: prepayments
   label: Prepayments
   statement: bs
-  match: { types: [PREPAYMENT], reporting_codes: [ASS.CUR.REC.PRE], name_any: [prepayment], type_only: true }
+  match: { types: [PREPAYMENT, CURRENT], reporting_codes: [ASS.CUR.REC.PRE], name_any: [prepayment], type_only: [PREPAYMENT] }
 - key: inventory
   label: Stock
   statement: bs
-  match: { types: [INVENTORY], reporting_codes: [ASS.CUR.INY], name_any: [inventory, stock], type_only: true }
+  match: { types: [INVENTORY, CURRENT], reporting_codes: [ASS.CUR.INY], name_any: [inventory, stock], type_only: [INVENTORY] }
 - key: fixed_assets
   label: Fixed assets
   statement: bs
@@ -193,7 +201,7 @@
 - key: long_term_loans
   label: Long-term loans
   statement: bs
-  match: { types: [TERMLIAB], reporting_codes: [LIA.NCL], name_any: [loan, mortgage, hire purchase, finance lease], type_only: true }
+  match: { types: [TERMLIAB, LIABILITY], reporting_codes: [LIA.NCL], name_any: [loan, mortgage, hire purchase, finance lease], type_only: [TERMLIAB] }
 - key: share_capital
   label: Share capital
   statement: bs
@@ -209,4 +217,4 @@
 - key: other_equity
   label: Other equity
   statement: bs
-  match: { types: [EQUITY], name_any: [funds introduced, capital contribution, owner] }
+  match: { types: [EQUITY], name_any: [funds introduced, capital contribution, owner], type_default: true }

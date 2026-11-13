@@ -47,6 +47,24 @@ describe("rules", () => {
     expect(matchAccount(a("Pensions", "OVERHEADS", { taxType: "INPUT2" }), cats, catalog)).toMatchObject({ category: "pensions", confidence: 0.65 });
     expect(matchAccount(a("Pensions", "OVERHEADS", { taxType: "NONE" }), cats, catalog)).toMatchObject({ category: "pensions", confidence: 0.8 });
   });
+  it("names win on generic types where the decisive type is missing (first live chart, 13 Nov 2026)", () => {
+    const cat = (name: string, type: string, rc?: string) => matchAccount(a(name, type, rc ? { reportingCode: rc } : {}), cats, catalog);
+    expect(cat("Stock - Green Tea", "CURRENT", "ASS")).toMatchObject({ category: "inventory", confidence: 0.8 });
+    expect(cat("Prepayments", "CURRENT", "ASS")).toMatchObject({ category: "prepayments", confidence: 0.8 });
+    expect(cat("Deposits - Rent", "CURRENT", "ASS")?.category).toBe("other_debtors");
+    expect(cat("Depreciation", "OVERHEADS")?.category).toBe("depreciation");
+    expect(cat("Share premium", "EQUITY")?.category).toBe("share_capital");
+    expect(cat("Shareholder Funds", "EQUITY", "EQU")?.category).toBe("other_equity");
+    expect(cat("Shareholder Loan", "CURRLIAB", "LIA")?.category).toBe("directors_loan");
+    expect(cat("Discounts", "REVENUE", "REV")?.category).toBe("sales");
+    expect(cat("Concession Commission Charge", "OVERHEADS", "EXP")?.category).toBe("card_fees");
+    expect(cat("Cleaning", "DIRECTCOSTS", "EXP")?.category).toBe("cleaning");
+    // Any equity account is at least "other equity", never left for a person.
+    expect(cat("Reserve XYZ", "EQUITY")).toMatchObject({ category: "other_equity", confidence: 0.76 });
+    // The decisive type alone still maps; a generic type alone does not.
+    expect(cat("Matcha", "INVENTORY")).toMatchObject({ category: "inventory", confidence: 0.9 });
+    expect(cat("Matcha", "CURRENT")).toBeNull();
+  });
   it("tax classes", () => {
     expect([taxClass("INPUT2"), taxClass("NONE"), taxClass("EXEMPTINPUT"), taxClass("ZERORATEDINPUT"), taxClass("REVERSECHARGES"), taxClass(null)]).toEqual([
       "vat", "no_vat", "no_vat", "no_vat", null, null,

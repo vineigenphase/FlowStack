@@ -19,7 +19,8 @@ export const AccountCategory = z.object({
     reporting_codes: strs,
     name_any: strs,
     system_account: z.string().optional(),
-    type_only: z.boolean().default(false),
+    /** true: any listed type is decisive (0.90). A list: only those types are; the others allow name matches only. */
+    type_only: z.union([z.boolean(), z.array(z.string())]).default(false),
     /** v1.1 M: the type suggests this category but a specific name should win (0.76). */
     type_default: z.boolean().default(false),
   }),
@@ -78,7 +79,8 @@ export const App = z.object({
     })
     .optional(),
   fingerprints: z.array(z.string()).default([]),
-  integrations: z.array(z.object({ to: z.string(), kind: z.enum(["native", "via_app", "csv"]) })).default([]),
+  /** source: the vendor page the edge was checked on (required for edges added from 13 Nov 2026; CLAUDE.md §10). */
+  integrations: z.array(z.object({ to: z.string(), kind: z.enum(["native", "via_app", "csv"]), source: z.string().url().optional() })).default([]),
   /** Price band this app suits, by annual revenue (£). Hand-entered, sample until verified. */
   revenue_band: z.object({ min: z.number().default(0), max: z.number().nullable().default(null) }).optional(),
   /** v1.1 L: UK company number for Companies House facts, entered by a person (8 characters, e.g. 09876543 or SC123456). */

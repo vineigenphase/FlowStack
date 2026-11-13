@@ -88,7 +88,7 @@ export function matchAccount(a: AccountIn, categories: AccountCategory[], catalo
     if (typeOk === false) continue;
     if (typeOk && a.reportingCode && m.reporting_codes.some((code) => a.reportingCode!.toUpperCase().startsWith(code.toUpperCase())))
       consider(c.key, CONF.reporting, "reporting_code");
-    if (typeOk && m.type_only) consider(c.key, CONF.typeOnly, "type");
+    if (typeOk && (m.type_only === true || (Array.isArray(m.type_only) && m.type_only.includes(type)))) consider(c.key, CONF.typeOnly, "type");
     if (typeOk && m.type_default) consider(c.key, CONF.typeDefault, "type_default");
     const words = [...m.name_any, ...(catalog?.synonyms[c.key] ?? [])];
     if (words.some((kw) => nameHas(a.name, kw))) consider(c.key, typeOk ? CONF.nameTyped : CONF.nameOnly, "name");

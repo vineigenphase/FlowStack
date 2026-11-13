@@ -207,3 +207,23 @@ describe("flag computation", () => {
 describe("queue dedupe key", () => {
   it("is independent of key order", () => expect(refHash({ a: 1, b: 2 })).toBe(refHash({ b: 2, a: 1 })));
 });
+
+describe("ranking tie-break (13 Nov 2026)", () => {
+  it("on equal match, an app that handles the line ranks ahead of the in-use helper and the alphabet", async () => {
+    const { scoreCandidates } = await import("@/lib/rank/score");
+    const all = apps();
+    const pick = (id: string) => all.find((a) => a.id === id)!;
+    const out = scoreCandidates({
+      candidates: [pick("autoentry"), pick("lightyear"), pick("unleashed"), pick("brightpearl")],
+      strengthNorm: 0.5,
+      kept: [],
+      inUse: new Map([["lightyear", { appId: "lightyear", spend12m: 1000, monthsSeen: 12 }]]),
+      prices: new Map(),
+      annualRevenue: 1_000_000,
+      scoring: rulesFile().scoring,
+      fixes: new Set(["unleashed", "brightpearl"]),
+    });
+    expect(new Set(out.map((o) => o.match)).size).toBe(1);
+    expect(out.map((o) => o.appId)).toEqual(["brightpearl", "unleashed", "lightyear", "autoentry"]);
+  });
+});
