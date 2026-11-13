@@ -282,3 +282,26 @@ lines — on 3 sample orgs with Claude-drafted labels, so treat as "matches the 
   - `pnpm db:seed --samples` creates all three.
   - Industry keys `ecommerce` / `saas`.
 - **O:** `reward_ledger` table only.
+
+## UI-SPEC vs backend (13 Nov 2026)
+
+UI-SPEC.md (front-end spec v1.0, owner) saved as received. Where it differs from what the backend serves today:
+
+**Missing on the backend (to build behind `lib/api/types.ts`):**
+- `lib/api/types.ts`, `lib/api/server.ts`, `lib/api/client.ts`, mock mode (`NEXT_PUBLIC_API_MODE=mock`, `?scenario=`), `ApiError` with `requestId` on every error.
+- Routes: `GET /orgs/:org/detected-apps`, `.../detected-apps/:appId/answer` (we have `/orgs/:org/apps/:appId/status`), `.../detected-apps/declare`, `/orgs/:org/essentials`, `/orgs/:org/shortlist`, `GET /billing/plans`, `GET /orgs/:org/subscription`, `POST /waitlist`, `DELETE /flags/:id/feedback` (undo).
+- Feedback `subReason` for "The numbers are wrong" (wrong_category / figure_mismatch / one_off / miscoded) and `oneOffNote` on lines.
+- Org settings `benchmarkOptIn`, `digestOptIn` (markets and includeCurrentMonth exist).
+
+**Needs an owner decision before building:**
+1. Plans: the spec has monthly / annual (audit included) / audit only; catalog/plans.yaml has pro_monthly / pro_annual + a one-off audit add-on with a waiver coupon. Prices are still OPEN (CHANGES-v1.1 §4 item 1).
+2. The peer-benchmark opt-in on /connect asks consent for peer prices, which are OPEN pending lawyer + Xero partner sign-off (§4 item 2). Storing the tick is harmless; the wording promises a feature we may not ship.
+3. "Monthly email a week before billing" (digestOptIn) is new: not in BACKEND.md. The parked Monday digest is the firm one.
+
+## Live ledger review (13 Nov 2026, Jenki Drinks)
+
+- 94 of 205 lines were "queued": types were applied too strictly (stock/prepayments on CURRENT, depreciation on OVERHEADS, all equity). Fixed with type_only lists, a control/clearing category, EQUITY → other_equity default and synonyms from real names: accounts needing a person 181 → 45 (checked read-only against the live chart).
+- The integration graph had only Xero edges, so 35% of every score was identical and ties fell to the alphabet. Tie-break now prefers apps that handle the line; 5 sourced Shopify/Square edges added. **The graph still needs filling** — the biggest remaining ranking weakness.
+- 12 payroll-related lines (P&L + balance sheet + cash flow) flag the same gap. One "We already use an app" answer declares the app and covers the rest on the next refresh.
+- No trend flags for Jenki; thresholds unchanged (owner to tune).
+- Apps step now incremental (rebuild from the earliest changed month; weekly full rebuild).
