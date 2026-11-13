@@ -1,0 +1,155 @@
+{
+ "line": {
+  "key": "cf:630",
+  "code": "630",
+  "name": "Increase in Inventory",
+  "value": -120000,
+  "share": 0.0669,
+  "band": "medium",
+  "state": "flagged",
+  "flagId": "49fb0953-5bdc-4ba6-bba7-89c7b92b3474",
+  "topApp": {
+   "id": "brightpearl",
+   "name": "Brightpearl",
+   "match": 48
+  },
+  "coveredBy": null,
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "cf",
+ "evidence": {
+  "trialBalance": {
+   "code": "630",
+   "name": "Inventory",
+   "ytdNet": 330000,
+   "asAt": "2026-10-31"
+  },
+  "statementValue": -120000,
+  "base": {
+   "label": "Revenue",
+   "value": 1793200
+  },
+  "materiality": 0.0669,
+  "band": "medium",
+  "ruleId": "cost_of_sales_stock",
+  "ruleVersion": 2,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z"
+ },
+ "cause": "Purchases this size are usually captured and costed by an inventory or bill-capture app.",
+ "detectedInArea": [],
+ "recommendations": [
+  {
+   "rank": 1,
+   "app": {
+    "id": "brightpearl",
+    "name": "Brightpearl",
+    "categories": [
+     "inventory",
+     "epos_ecommerce"
+    ],
+    "markets": [
+     "UK",
+     "US"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 48,
+   "components": {
+    "strength": 0.119,
+    "fit": 1,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "Works directly with Shopify, which you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "add"
+  },
+  {
+   "rank": 2,
+   "app": {
+    "id": "cin7",
+    "name": "Cin7",
+    "categories": [
+     "inventory"
+    ],
+    "markets": [
+     "UK",
+     "US",
+     "CA",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 48,
+   "components": {
+    "strength": 0.119,
+    "fit": 1,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "Works directly with Shopify, which you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "add"
+  },
+  {
+   "rank": 3,
+   "app": {
+    "id": "katana",
+    "name": "Katana",
+    "categories": [
+     "inventory"
+    ],
+    "markets": [
+     "UK",
+     "US",
+     "CA",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 48,
+   "components": {
+    "strength": 0.119,
+    "fit": 1,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "Works directly with Shopify, which you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "add"
+  }
+ ],
+ "feedback": null
+}

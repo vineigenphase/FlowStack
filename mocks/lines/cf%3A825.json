@@ -1,0 +1,40 @@
+{
+ "line": {
+  "key": "cf:825",
+  "code": "825",
+  "name": "Increase in PAYE & NI Payable",
+  "value": 800,
+  "share": 0.0004,
+  "band": null,
+  "state": "fine",
+  "flagId": "26d1a417-0d50-4675-950f-45500c3ec109",
+  "topApp": null,
+  "coveredBy": null,
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "cf",
+ "evidence": {
+  "trialBalance": {
+   "code": "825",
+   "name": "PAYE & NI Payable",
+   "ytdNet": 9800,
+   "asAt": "2026-10-31"
+  },
+  "statementValue": 800,
+  "base": {
+   "label": "Revenue",
+   "value": 1793200
+  },
+  "materiality": 0.0004,
+  "band": null,
+  "ruleId": "payroll_liabilities",
+  "ruleVersion": 2,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z"
+ },
+ "cause": "PAYE, NI and pension balances usually come from a payroll app's journal. Check how these reach Xero.",
+ "detectedInArea": [],
+ "recommendations": [],
+ "feedback": null
+}

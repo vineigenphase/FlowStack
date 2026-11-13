@@ -1,0 +1,90 @@
+{
+ "line": {
+  "key": "bs:960",
+  "code": "960",
+  "name": "Retained Earnings",
+  "value": 135000,
+  "share": 0.23,
+  "band": null,
+  "state": "fine",
+  "flagId": "2f5c3856-bcf5-4b66-813c-ea2a03da1286",
+  "topApp": null,
+  "coveredBy": null,
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "bs",
+ "evidence": {
+  "trialBalance": {
+   "code": "960",
+   "name": "Retained Earnings",
+   "ytdNet": 135000,
+   "asAt": "2026-10-31"
+  },
+  "statementValue": 135000,
+  "base": {
+   "label": "Total assets",
+   "value": 587000
+  },
+  "materiality": 0.23,
+  "band": null,
+  "ruleId": "fine_as_is",
+  "ruleVersion": 3,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z",
+  "series": [
+   {
+    "month": "2025-11-30",
+    "value": 80000
+   },
+   {
+    "month": "2025-12-31",
+    "value": 80000
+   },
+   {
+    "month": "2026-01-31",
+    "value": 80000
+   },
+   {
+    "month": "2026-02-28",
+    "value": 80000
+   },
+   {
+    "month": "2026-03-31",
+    "value": 80000
+   },
+   {
+    "month": "2026-04-30",
+    "value": 135000
+   },
+   {
+    "month": "2026-05-31",
+    "value": 135000
+   },
+   {
+    "month": "2026-06-30",
+    "value": 135000
+   },
+   {
+    "month": "2026-07-31",
+    "value": 135000
+   },
+   {
+    "month": "2026-08-31",
+    "value": 135000
+   },
+   {
+    "month": "2026-09-30",
+    "value": 135000
+   },
+   {
+    "month": "2026-10-31",
+    "value": 135000
+   }
+  ]
+ },
+ "cause": null,
+ "detectedInArea": [],
+ "recommendations": [],
+ "feedback": null
+}

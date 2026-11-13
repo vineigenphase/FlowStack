@@ -1,0 +1,324 @@
+{
+ "line": {
+  "key": "pl:200",
+  "code": "200",
+  "name": "Sales - Shopify",
+  "value": 1150000,
+  "share": 0.6413,
+  "band": "high",
+  "state": "covered",
+  "flagId": "1dfa3d01-383c-4510-a955-4970a53c6bca",
+  "topApp": {
+   "id": "brightpearl",
+   "name": "Brightpearl",
+   "match": 43
+  },
+  "coveredBy": {
+   "id": "a2x",
+   "name": "A2X"
+  },
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "pl",
+ "evidence": {
+  "trialBalance": {
+   "code": "200",
+   "name": "Sales - Shopify",
+   "ytdNet": 1150000,
+   "asAt": "2026-10-31"
+  },
+  "statementValue": 1150000,
+  "base": {
+   "label": "Revenue",
+   "value": 1793200
+  },
+  "materiality": 0.6413,
+  "band": "high",
+  "ruleId": "sales_capture",
+  "ruleVersion": 2,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z",
+  "series": [
+   {
+    "month": "2025-11-30",
+    "value": 164285.71
+   },
+   {
+    "month": "2025-12-31",
+    "value": 164285.71
+   },
+   {
+    "month": "2026-01-31",
+    "value": 164285.71
+   },
+   {
+    "month": "2026-02-28",
+    "value": 164285.71
+   },
+   {
+    "month": "2026-03-31",
+    "value": 164285.71
+   },
+   {
+    "month": "2026-04-30",
+    "value": 164285.71
+   },
+   {
+    "month": "2026-05-31",
+    "value": 164285.71
+   },
+   {
+    "month": "2026-06-30",
+    "value": 164285.71
+   },
+   {
+    "month": "2026-07-31",
+    "value": 164285.71
+   },
+   {
+    "month": "2026-08-31",
+    "value": 164285.71
+   },
+   {
+    "month": "2026-09-30",
+    "value": 164285.71
+   },
+   {
+    "month": "2026-10-31",
+    "value": 164285.71
+   }
+  ]
+ },
+ "cause": "Sales this size usually flow into Xero from an EPOS, ecommerce or invoicing app.",
+ "detectedInArea": [
+  {
+   "appId": "shopify",
+   "name": "Shopify",
+   "category": "EPOS and ecommerce sales",
+   "spend12m": 3588,
+   "monthsSeen": 12,
+   "lastPaid": "2026-10-01",
+   "cycle": "monthly",
+   "state": "active"
+  },
+  {
+   "appId": "a2x",
+   "name": "A2X",
+   "category": "EPOS and ecommerce sales",
+   "spend12m": 588,
+   "monthsSeen": 12,
+   "lastPaid": "2026-10-01",
+   "cycle": "monthly",
+   "state": "active"
+  },
+  {
+   "appId": "paypal",
+   "name": "PayPal",
+   "category": "EPOS and ecommerce sales",
+   "spend12m": 1020,
+   "monthsSeen": 12,
+   "lastPaid": "2026-10-01",
+   "cycle": "monthly",
+   "state": "active"
+  },
+  {
+   "appId": "amazon_seller",
+   "name": "Amazon (selling on Amazon)",
+   "category": "EPOS and ecommerce sales",
+   "spend12m": 14400,
+   "monthsSeen": 12,
+   "lastPaid": "2026-10-01",
+   "cycle": "monthly",
+   "state": "active"
+  }
+ ],
+ "recommendations": [
+  {
+   "rank": 1,
+   "app": {
+    "id": "brightpearl",
+    "name": "Brightpearl",
+    "categories": [
+     "inventory",
+     "epos_ecommerce"
+    ],
+    "markets": [
+     "UK",
+     "US"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 43,
+   "components": {
+    "strength": 0,
+    "fit": 1,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "Works directly with Shopify, which you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "change"
+  },
+  {
+   "rank": 2,
+   "app": {
+    "id": "a2x",
+    "name": "A2X",
+    "categories": [
+     "epos_ecommerce"
+    ],
+    "markets": [
+     "UK",
+     "US",
+     "CA",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 18,
+   "components": {
+    "strength": 0,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "You already pay for it (£588 over 12 months). No integration with the apps you keep. Price not published · we're checking",
+   "inUse": true,
+   "kind": null
+  },
+  {
+   "rank": 3,
+   "app": {
+    "id": "amazon_seller",
+    "name": "Amazon (selling on Amazon)",
+    "categories": [
+     "epos_ecommerce"
+    ],
+    "markets": [
+     "UK",
+     "US",
+     "CA",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 18,
+   "components": {
+    "strength": 0,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "You already pay for it (£14,400 over 12 months). No integration with the apps you keep. Price not published · we're checking",
+   "inUse": true,
+   "kind": null
+  },
+  {
+   "rank": 4,
+   "app": {
+    "id": "paypal",
+    "name": "PayPal",
+    "categories": [
+     "epos_ecommerce",
+     "billing_receivables"
+    ],
+    "markets": [
+     "UK",
+     "US",
+     "CA",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 18,
+   "components": {
+    "strength": 0,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "You already pay for it (£1,020 over 12 months). No integration with the apps you keep. Price not published · we're checking",
+   "inUse": true,
+   "kind": null
+  },
+  {
+   "rank": 5,
+   "app": {
+    "id": "shopify",
+    "name": "Shopify",
+    "categories": [
+     "epos_ecommerce"
+    ],
+    "markets": [
+     "UK",
+     "US",
+     "CA",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 18,
+   "components": {
+    "strength": 0,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "You already pay for it (£3,588 over 12 months). No integration with the apps you keep. Price not published · we're checking",
+   "inUse": true,
+   "kind": null
+  }
+ ],
+ "feedback": null
+}

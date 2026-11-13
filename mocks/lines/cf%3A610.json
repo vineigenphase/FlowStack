@@ -1,0 +1,168 @@
+{
+ "line": {
+  "key": "cf:610",
+  "code": "610",
+  "name": "Increase in Accounts Receivable",
+  "value": -6500,
+  "share": 0.0036,
+  "band": "low",
+  "state": "covered",
+  "flagId": "f251a2c0-ef47-49a5-be98-4ac06b3af5fe",
+  "topApp": {
+   "id": "adfin",
+   "name": "Adfin",
+   "match": 18
+  },
+  "coveredBy": {
+   "id": "paypal",
+   "name": "PayPal"
+  },
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "cf",
+ "evidence": {
+  "trialBalance": {
+   "code": "610",
+   "name": "Accounts Receivable",
+   "ytdNet": 24500,
+   "asAt": "2026-10-31"
+  },
+  "statementValue": -6500,
+  "base": {
+   "label": "Revenue",
+   "value": 1793200
+  },
+  "materiality": 0.0036,
+  "band": "low",
+  "ruleId": "receivables",
+  "ruleVersion": 2,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z"
+ },
+ "cause": "Money owed by customers at this level is usually chased by a collections app.",
+ "detectedInArea": [
+  {
+   "appId": "paypal",
+   "name": "PayPal",
+   "category": "EPOS and ecommerce sales",
+   "spend12m": 1020,
+   "monthsSeen": 12,
+   "lastPaid": "2026-10-01",
+   "cycle": "monthly",
+   "state": "active"
+  }
+ ],
+ "recommendations": [
+  {
+   "rank": 1,
+   "app": {
+    "id": "paypal",
+    "name": "PayPal",
+    "categories": [
+     "epos_ecommerce",
+     "billing_receivables"
+    ],
+    "markets": [
+     "UK",
+     "US",
+     "CA",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 18,
+   "components": {
+    "strength": 0,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "You already pay for it (£1,020 over 12 months). No integration with the apps you keep. Price not published · we're checking",
+   "inUse": true,
+   "kind": null
+  },
+  {
+   "rank": 2,
+   "app": {
+    "id": "adfin",
+    "name": "Adfin",
+    "categories": [
+     "billing_receivables"
+    ],
+    "markets": [
+     "UK"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 18,
+   "components": {
+    "strength": 0,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "No integration with the apps you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "change"
+  },
+  {
+   "rank": 3,
+   "app": {
+    "id": "chargebee",
+    "name": "Chargebee",
+    "categories": [
+     "billing_receivables"
+    ],
+    "markets": [
+     "UK",
+     "US",
+     "CA",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 18,
+   "components": {
+    "strength": 0,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "No integration with the apps you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "change"
+  }
+ ],
+ "feedback": null
+}

@@ -1,0 +1,24 @@
+{
+ "user": {
+  "id": "00000000-0000-4000-8000-0000000000a1",
+  "email": "finance.lead@example.test",
+  "name": "Sam Finance (sample)",
+  "jobTitle": "financial_controller",
+  "isAdmin": false
+ },
+ "orgs": [
+  {
+   "id": "00000000-0000-4000-8000-00000000a001",
+   "name": "Northwind Goods Ltd (sample)",
+   "industry": "ecommerce",
+   "markets": [
+    "UK"
+   ],
+   "lastRefreshAt": "2026-11-13T14:22:33.321Z",
+   "atStake": 1432900,
+   "connection": "active",
+   "sample": true
+  }
+ ],
+ "activeOrgId": "00000000-0000-4000-8000-00000000a001"
+}

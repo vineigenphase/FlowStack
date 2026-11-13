@@ -1,0 +1,72 @@
+{
+ "user": {
+  "id": "00000000-0000-4000-8000-0000000000a1",
+  "email": "finance.lead@example.test",
+  "name": "Sam Finance (sample)",
+  "jobTitle": "financial_controller",
+  "isAdmin": false
+ },
+ "orgs": [
+  {
+   "id": "00000000-0000-4000-8000-00000000a005",
+   "name": "Brightline Software Ltd (sample)",
+   "industry": "saas",
+   "markets": [
+    "UK"
+   ],
+   "lastRefreshAt": "2026-11-13T14:22:36.071Z",
+   "atStake": 395000,
+   "connection": "active",
+   "sample": true
+  },
+  {
+   "id": "00000000-0000-4000-8000-00000000a003",
+   "name": "Copperpot Kitchens Ltd (sample)",
+   "industry": "other",
+   "markets": [
+    "UK"
+   ],
+   "lastRefreshAt": "2026-11-13T14:22:34.683Z",
+   "atStake": 1594200,
+   "connection": "active",
+   "sample": true
+  },
+  {
+   "id": "00000000-0000-4000-8000-00000000a004",
+   "name": "Harbour Supply Co (sample)",
+   "industry": "ecommerce",
+   "markets": [
+    "UK"
+   ],
+   "lastRefreshAt": "2026-11-13T14:22:35.471Z",
+   "atStake": 1432900,
+   "connection": "active",
+   "sample": true
+  },
+  {
+   "id": "00000000-0000-4000-8000-00000000a002",
+   "name": "Lumen Analytics Ltd (sample)",
+   "industry": "saas",
+   "markets": [
+    "UK"
+   ],
+   "lastRefreshAt": "2026-11-13T14:22:33.936Z",
+   "atStake": 395000,
+   "connection": "active",
+   "sample": true
+  },
+  {
+   "id": "00000000-0000-4000-8000-00000000a001",
+   "name": "Northwind Goods Ltd (sample)",
+   "industry": "ecommerce",
+   "markets": [
+    "UK"
+   ],
+   "lastRefreshAt": "2026-11-13T14:22:33.321Z",
+   "atStake": 1432900,
+   "connection": "active",
+   "sample": true
+  }
+ ],
+ "activeOrgId": "00000000-0000-4000-8000-00000000a001"
+}

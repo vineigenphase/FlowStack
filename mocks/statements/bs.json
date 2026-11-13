@@ -1,0 +1,283 @@
+{
+ "kind": "bs",
+ "label": "Balance sheet",
+ "period": {
+  "label": "As at 31 Oct 2026",
+  "from": null,
+  "to": "2026-10-31"
+ },
+ "derived": false,
+ "reconciled": null,
+ "reconDiff": null,
+ "base": {
+  "label": "Total assets",
+  "value": 587000
+ },
+ "sections": [
+  {
+   "key": "bank",
+   "label": "Bank",
+   "total": 208500,
+   "lines": [
+    {
+     "key": "bs:090",
+     "code": "090",
+     "name": "Business Bank Account",
+     "value": 168500,
+     "share": 0.2871,
+     "band": null,
+     "state": "fine",
+     "flagId": "c5c5807c-1ab3-4652-be85-caae735b05c5",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null
+    },
+    {
+     "key": "bs:091",
+     "code": "091",
+     "name": "Business Savings Account",
+     "value": 40000,
+     "share": 0.0681,
+     "band": null,
+     "state": "fine",
+     "flagId": "031cab74-d435-484b-8a49-54cec522ae79",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null
+    }
+   ]
+  },
+  {
+   "key": "current_assets",
+   "label": "Current assets",
+   "total": 354500,
+   "lines": [
+    {
+     "key": "bs:610",
+     "code": "610",
+     "name": "Accounts Receivable",
+     "value": 24500,
+     "share": 0.0417,
+     "band": "medium",
+     "state": "covered",
+     "flagId": "4ab501c8-c357-4b17-be3f-4710a7f77eb9",
+     "topApp": {
+      "id": "adfin",
+      "name": "Adfin",
+      "match": 18
+     },
+     "coveredBy": {
+      "id": "paypal",
+      "name": "PayPal"
+     },
+     "oneOffNote": null,
+     "snoozedUntil": null
+    },
+    {
+     "key": "bs:630",
+     "code": "630",
+     "name": "Inventory",
+     "value": 330000,
+     "share": 0.5622,
+     "band": "high",
+     "state": "flagged",
+     "flagId": "d411e630-dc61-4433-93d3-f8cd0e34a6c9",
+     "topApp": {
+      "id": "brightpearl",
+      "name": "Brightpearl",
+      "match": 93
+     },
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null
+    }
+   ]
+  },
+  {
+   "key": "fixed_assets",
+   "label": "Fixed assets",
+   "total": 24000,
+   "lines": [
+    {
+     "key": "bs:710",
+     "code": "710",
+     "name": "Warehouse Equipment",
+     "value": 42000,
+     "share": 0.0716,
+     "band": null,
+     "state": "fine",
+     "flagId": "621c4c5e-627e-4caa-ad20-02ccb0a8d209",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null
+    },
+    {
+     "key": "bs:711",
+     "code": "711",
+     "name": "Less Accumulated Depreciation on Warehouse Equipment",
+     "value": -18000,
+     "share": 0.0307,
+     "band": null,
+     "state": "fine",
+     "flagId": "27e1ea7e-98b5-4ccb-aae9-e49a6a5324fb",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null
+    }
+   ]
+  },
+  {
+   "key": "current_liabilities",
+   "label": "Current liabilities",
+   "total": 219300,
+   "lines": [
+    {
+     "key": "bs:800",
+     "code": "800",
+     "name": "Accounts Payable",
+     "value": 96000,
+     "share": 0.1635,
+     "band": "high",
+     "state": "flagged",
+     "flagId": "951bf4ad-15bb-4257-a394-a5943cadce66",
+     "topApp": {
+      "id": "airwallex",
+      "name": "Airwallex",
+      "match": 33
+     },
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null
+    },
+    {
+     "key": "bs:820",
+     "code": "820",
+     "name": "VAT",
+     "value": 38500,
+     "share": 0.0656,
+     "band": null,
+     "state": "fine",
+     "flagId": "14b0f8dc-f8b0-4616-b114-08479169bbff",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null
+    },
+    {
+     "key": "bs:825",
+     "code": "825",
+     "name": "PAYE & NI Payable",
+     "value": 9800,
+     "share": 0.0167,
+     "band": "low",
+     "state": "flagged",
+     "flagId": "cc11dbba-bb9f-4491-ad6b-96711bdf6669",
+     "topApp": {
+      "id": "brightpay",
+      "name": "BrightPay",
+      "match": 20
+     },
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null
+    },
+    {
+     "key": "bs:830",
+     "code": "830",
+     "name": "Corporation Tax Payable",
+     "value": 30000,
+     "share": 0.0511,
+     "band": null,
+     "state": "fine",
+     "flagId": "625efaa1-d6ec-46c8-9c5c-5a4f0d41bbfc",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null
+    },
+    {
+     "key": "bs:840",
+     "code": "840",
+     "name": "Short-term Loan",
+     "value": 45000,
+     "share": 0.0767,
+     "band": null,
+     "state": "fine",
+     "flagId": "ba650890-8b66-4f9c-ba2b-72070a7c5fb5",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null
+    }
+   ]
+  },
+  {
+   "key": "equity",
+   "label": "Equity",
+   "total": 367700,
+   "lines": [
+    {
+     "key": "bs:950",
+     "code": "950",
+     "name": "Share Capital",
+     "value": 100,
+     "share": 0.0002,
+     "band": null,
+     "state": "fine",
+     "flagId": "bcbbf28b-50a8-4aa9-b3e2-c6c5810973de",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null
+    },
+    {
+     "key": "bs:960",
+     "code": "960",
+     "name": "Retained Earnings",
+     "value": 135000,
+     "share": 0.23,
+     "band": null,
+     "state": "fine",
+     "flagId": "2f5c3856-bcf5-4b66-813c-ea2a03da1286",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null
+    },
+    {
+     "key": "bs:970",
+     "code": "970",
+     "name": "Dividends Paid",
+     "value": -20000,
+     "share": 0.0341,
+     "band": null,
+     "state": "fine",
+     "flagId": "b0286d29-a501-48e4-b34e-a841593d41c9",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null
+    },
+    {
+     "key": "bs:current_year_earnings",
+     "code": null,
+     "name": "Current Year Earnings",
+     "value": 252600,
+     "share": 0.4303,
+     "band": null,
+     "state": "fine",
+     "flagId": null,
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null
+    }
+   ]
+  }
+ ],
+ "sample": true
+}

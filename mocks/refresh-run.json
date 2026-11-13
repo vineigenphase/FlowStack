@@ -1,0 +1,48 @@
+{
+ "id": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+ "status": "ok",
+ "startedAt": "2026-11-13T14:22:32.454Z",
+ "finishedAt": "2026-11-13T14:22:33.321Z",
+ "steps": [
+  {
+   "key": "organisation",
+   "label": "Business details",
+   "status": "done"
+  },
+  {
+   "key": "accounts",
+   "label": "Chart of accounts",
+   "status": "done"
+  },
+  {
+   "key": "reports",
+   "label": "Profit and loss, balance sheet (12 months) and trial balance",
+   "status": "done"
+  },
+  {
+   "key": "mapping",
+   "label": "Matching your accounts",
+   "status": "done"
+  },
+  {
+   "key": "statements",
+   "label": "Building your statements",
+   "status": "done"
+  },
+  {
+   "key": "apps",
+   "label": "Supplier spend",
+   "status": "done"
+  },
+  {
+   "key": "cashflow",
+   "label": "Cash flow",
+   "status": "done"
+  },
+  {
+   "key": "flags",
+   "label": "Checking lines",
+   "status": "done"
+  }
+ ]
+}

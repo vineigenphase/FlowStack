@@ -1,0 +1,57 @@
+[
+ {
+  "key": "uk_vat_returns",
+  "name": "VAT returns (Making Tax Digital)",
+  "frequency": "quarterly",
+  "nextDue": null,
+  "suggested": {
+   "appId": null,
+   "label": "Filed from Xero under MTD"
+  },
+  "covered": false
+ },
+ {
+  "key": "uk_confirmation_statement",
+  "name": "Confirmation statement",
+  "frequency": "yearly",
+  "nextDue": null,
+  "suggested": {
+   "appId": null,
+   "label": "Companies House fee £50 (check current fee)"
+  },
+  "covered": false
+ },
+ {
+  "key": "uk_month_end_close",
+  "name": "Month-end close calendar",
+  "frequency": "monthly",
+  "nextDue": null,
+  "suggested": {
+   "appId": "easymonthend",
+   "label": "e.g. Easy Month End"
+  },
+  "covered": false
+ },
+ {
+  "key": "uk_corporation_tax_return",
+  "name": "Corporation tax return (CT600)",
+  "frequency": "yearly",
+  "nextDue": null,
+  "suggested": {
+   "appId": null,
+   "label": ""
+  },
+  "covered": false
+ },
+ {
+  "key": "uk_payroll_rti",
+  "name": "Payroll RTI submissions",
+  "frequency": "monthly",
+  "nextDue": null,
+  "suggested": {
+   "appId": null,
+   "label": ""
+  },
+  "covered": false
+ }
+]

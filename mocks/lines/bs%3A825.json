@@ -1,0 +1,202 @@
+{
+ "line": {
+  "key": "bs:825",
+  "code": "825",
+  "name": "PAYE & NI Payable",
+  "value": 9800,
+  "share": 0.0167,
+  "band": "low",
+  "state": "flagged",
+  "flagId": "cc11dbba-bb9f-4491-ad6b-96711bdf6669",
+  "topApp": {
+   "id": "brightpay",
+   "name": "BrightPay",
+   "match": 20
+  },
+  "coveredBy": null,
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "bs",
+ "evidence": {
+  "trialBalance": {
+   "code": "825",
+   "name": "PAYE & NI Payable",
+   "ytdNet": 9800,
+   "asAt": "2026-10-31"
+  },
+  "statementValue": 9800,
+  "base": {
+   "label": "Total assets",
+   "value": 587000
+  },
+  "materiality": 0.0167,
+  "band": "low",
+  "ruleId": "payroll_liabilities",
+  "ruleVersion": 2,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z",
+  "series": [
+   {
+    "month": "2025-11-30",
+    "value": 9000
+   },
+   {
+    "month": "2025-12-31",
+    "value": 9000
+   },
+   {
+    "month": "2026-01-31",
+    "value": 9000
+   },
+   {
+    "month": "2026-02-28",
+    "value": 9000
+   },
+   {
+    "month": "2026-03-31",
+    "value": 9000
+   },
+   {
+    "month": "2026-04-30",
+    "value": 9114.29
+   },
+   {
+    "month": "2026-05-31",
+    "value": 9228.57
+   },
+   {
+    "month": "2026-06-30",
+    "value": 9342.86
+   },
+   {
+    "month": "2026-07-31",
+    "value": 9457.14
+   },
+   {
+    "month": "2026-08-31",
+    "value": 9571.43
+   },
+   {
+    "month": "2026-09-30",
+    "value": 9685.71
+   },
+   {
+    "month": "2026-10-31",
+    "value": 9800
+   }
+  ]
+ },
+ "cause": "PAYE, NI and pension balances usually come from a payroll app's journal. Check how these reach Xero.",
+ "detectedInArea": [],
+ "recommendations": [
+  {
+   "rank": 1,
+   "app": {
+    "id": "brightpay",
+    "name": "BrightPay",
+    "categories": [
+     "payroll"
+    ],
+    "markets": [
+     "UK"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 20,
+   "components": {
+    "strength": 0.0297,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "No integration with the apps you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "add"
+  },
+  {
+   "rank": 2,
+   "app": {
+    "id": "deel",
+    "name": "Deel",
+    "categories": [
+     "payroll"
+    ],
+    "markets": [
+     "UK",
+     "US",
+     "CA",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 20,
+   "components": {
+    "strength": 0.0297,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "No integration with the apps you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "add"
+  },
+  {
+   "rank": 3,
+   "app": {
+    "id": "employmenthero",
+    "name": "Employment Hero",
+    "categories": [
+     "payroll",
+     "rota"
+    ],
+    "markets": [
+     "UK",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 20,
+   "components": {
+    "strength": 0.0297,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "No integration with the apps you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "add"
+  }
+ ],
+ "feedback": null
+}

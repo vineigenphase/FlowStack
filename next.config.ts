@@ -8,9 +8,11 @@ const config: NextConfig = {
   // Read from disk at runtime (fs + process.cwd()), so the bundler can't see them: ship them explicitly.
   outputFileTracingIncludes: {
     "/api/**": ["./catalog/**/*.yaml"],
-    "/app/**": ["./catalog/**/*.yaml"],
+    "/app/**": ["./catalog/**/*.yaml", "./mocks/**/*.json"],
     // Fixture mode on a preview deployment (XERO_MODE=fixtures).
     "/api/orgs/**": ["./fixtures/xero/**/*.json"],
+    // Front-end mock mode (NEXT_PUBLIC_API_MODE=mock, UI-SPEC §3).
+    "/api/mock/**": ["./mocks/**/*.json"],
   },
 };
 

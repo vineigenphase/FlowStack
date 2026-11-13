@@ -1,0 +1,156 @@
+{
+ "line": {
+  "key": "cf:800",
+  "code": "800",
+  "name": "Increase in Accounts Payable",
+  "value": 22000,
+  "share": 0.0123,
+  "band": "low",
+  "state": "flagged",
+  "flagId": "67857223-535b-4189-90d5-c29b9024936f",
+  "topApp": {
+   "id": "airwallex",
+   "name": "Airwallex",
+   "match": 19
+  },
+  "coveredBy": null,
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "cf",
+ "evidence": {
+  "trialBalance": {
+   "code": "800",
+   "name": "Accounts Payable",
+   "ytdNet": 96000,
+   "asAt": "2026-10-31"
+  },
+  "statementValue": 22000,
+  "base": {
+   "label": "Revenue",
+   "value": 1793200
+  },
+  "materiality": 0.0123,
+  "band": "low",
+  "ruleId": "supplier_bills",
+  "ruleVersion": 2,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z"
+ },
+ "cause": "Bills at this volume are usually captured by an app rather than keyed by hand.",
+ "detectedInArea": [],
+ "recommendations": [
+  {
+   "rank": 1,
+   "app": {
+    "id": "airwallex",
+    "name": "Airwallex",
+    "categories": [
+     "fx_banking",
+     "spend_payables"
+    ],
+    "markets": [
+     "UK",
+     "US",
+     "CA",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 19,
+   "components": {
+    "strength": 0.0219,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "No integration with the apps you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "add"
+  },
+  {
+   "rank": 2,
+   "app": {
+    "id": "approvalmax",
+    "name": "ApprovalMax",
+    "categories": [
+     "spend_payables"
+    ],
+    "markets": [
+     "UK",
+     "US",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 19,
+   "components": {
+    "strength": 0.0219,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "No integration with the apps you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "add"
+  },
+  {
+   "rank": 3,
+   "app": {
+    "id": "autoentry",
+    "name": "AutoEntry",
+    "categories": [
+     "data_capture"
+    ],
+    "markets": [
+     "UK",
+     "US",
+     "CA",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 19,
+   "components": {
+    "strength": 0.0219,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "No integration with the apps you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "add"
+  }
+ ],
+ "feedback": null
+}

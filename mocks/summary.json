@@ -1,0 +1,284 @@
+{
+ "period": {
+  "label": "Year to date (1 Apr – 31 Oct 2026)",
+  "from": "2026-04-01",
+  "to": "2026-10-31"
+ },
+ "atStake": 1432900,
+ "atStakeLabel": "of this year's costs run through lines with no app behind them",
+ "flaggedLines": 13,
+ "totalLines": 42,
+ "appsInUse": 4,
+ "appsMatched": 12,
+ "shortlistMonthly": null,
+ "shortlistUnknownPrices": 2,
+ "biggestLines": [
+  {
+   "key": "pl:310",
+   "code": "310",
+   "name": "Cost of Goods Sold",
+   "value": 905000,
+   "share": 0.5047,
+   "band": "high",
+   "state": "flagged",
+   "flagId": "b409817e-3498-4ce8-a4a9-2a68b0424ab9",
+   "topApp": {
+    "id": "brightpearl",
+    "name": "Brightpearl",
+    "match": 87
+   },
+   "coveredBy": null,
+   "oneOffNote": null,
+   "snoozedUntil": null
+  },
+  {
+   "key": "bs:630",
+   "code": "630",
+   "name": "Inventory",
+   "value": 330000,
+   "share": 0.5622,
+   "band": "high",
+   "state": "flagged",
+   "flagId": "d411e630-dc61-4433-93d3-f8cd0e34a6c9",
+   "topApp": {
+    "id": "brightpearl",
+    "name": "Brightpearl",
+    "match": 93
+   },
+   "coveredBy": null,
+   "oneOffNote": null,
+   "snoozedUntil": null
+  },
+  {
+   "key": "pl:477",
+   "code": "477",
+   "name": "Wages and Salaries",
+   "value": 168000,
+   "share": 0.0937,
+   "band": "medium",
+   "state": "flagged",
+   "flagId": "c1656651-151e-420b-9a27-254b214ae873",
+   "topApp": {
+    "id": "brightpay",
+    "name": "BrightPay",
+    "match": 26
+   },
+   "coveredBy": null,
+   "oneOffNote": null,
+   "snoozedUntil": null
+  },
+  {
+   "key": "pl:400",
+   "code": "400",
+   "name": "Advertising & Marketing",
+   "value": 142000,
+   "share": 0.0792,
+   "band": "medium",
+   "state": "flagged",
+   "flagId": "776cdb61-a4ff-414c-9444-4c8d3e8dbc3f",
+   "topApp": {
+    "id": "airwallex",
+    "name": "Airwallex",
+    "match": 25
+   },
+   "coveredBy": null,
+   "oneOffNote": null,
+   "snoozedUntil": null
+  },
+  {
+   "key": "cf:630",
+   "code": "630",
+   "name": "Increase in Inventory",
+   "value": -120000,
+   "share": 0.0669,
+   "band": "medium",
+   "state": "flagged",
+   "flagId": "49fb0953-5bdc-4ba6-bba7-89c7b92b3474",
+   "topApp": {
+    "id": "brightpearl",
+    "name": "Brightpearl",
+    "match": 48
+   },
+   "coveredBy": null,
+   "oneOffNote": null,
+   "snoozedUntil": null
+  }
+ ],
+ "trends": [
+  {
+   "key": "debtor_days",
+   "label": "Debtor days",
+   "unit": "days",
+   "series": [
+    {
+     "month": "2026-01-31",
+     "value": 2.1
+    },
+    {
+     "month": "2026-02-28",
+     "value": 2.1
+    },
+    {
+     "month": "2026-03-31",
+     "value": 2.1
+    },
+    {
+     "month": "2026-04-30",
+     "value": 2.2
+    },
+    {
+     "month": "2026-05-31",
+     "value": 2.4
+    },
+    {
+     "month": "2026-06-30",
+     "value": 2.5
+    },
+    {
+     "month": "2026-07-31",
+     "value": 2.6
+    },
+    {
+     "month": "2026-08-31",
+     "value": 2.7
+    },
+    {
+     "month": "2026-09-30",
+     "value": 2.8
+    },
+    {
+     "month": "2026-10-31",
+     "value": 2.9
+    }
+   ],
+   "latest": 2.9,
+   "change3m": 0.3,
+   "threshold": 45,
+   "flagged": false,
+   "atStake": null,
+   "band": null,
+   "flagId": null,
+   "lineKey": null
+  },
+  {
+   "key": "creditor_days",
+   "label": "Creditor days",
+   "unit": "days",
+   "series": [
+    {
+     "month": "2026-01-31",
+     "value": 10.2
+    },
+    {
+     "month": "2026-02-28",
+     "value": 10.2
+    },
+    {
+     "month": "2026-03-31",
+     "value": 10.2
+    },
+    {
+     "month": "2026-04-30",
+     "value": 10.7
+    },
+    {
+     "month": "2026-05-31",
+     "value": 11.1
+    },
+    {
+     "month": "2026-06-30",
+     "value": 11.5
+    },
+    {
+     "month": "2026-07-31",
+     "value": 12
+    },
+    {
+     "month": "2026-08-31",
+     "value": 12.4
+    },
+    {
+     "month": "2026-09-30",
+     "value": 12.8
+    },
+    {
+     "month": "2026-10-31",
+     "value": 13.3
+    }
+   ],
+   "latest": 13.3,
+   "change3m": 1.3,
+   "threshold": 60,
+   "flagged": false,
+   "atStake": null,
+   "band": null,
+   "flagId": null,
+   "lineKey": null
+  },
+  {
+   "key": "stock_days",
+   "label": "Stock days",
+   "unit": "days",
+   "series": [
+    {
+     "month": "2026-01-31",
+     "value": 41.1
+    },
+    {
+     "month": "2026-02-28",
+     "value": 41.1
+    },
+    {
+     "month": "2026-03-31",
+     "value": 41.1
+    },
+    {
+     "month": "2026-04-30",
+     "value": 44.4
+    },
+    {
+     "month": "2026-05-31",
+     "value": 47.8
+    },
+    {
+     "month": "2026-06-30",
+     "value": 51.1
+    },
+    {
+     "month": "2026-07-31",
+     "value": 54.5
+    },
+    {
+     "month": "2026-08-31",
+     "value": 57.8
+    },
+    {
+     "month": "2026-09-30",
+     "value": 61.2
+    },
+    {
+     "month": "2026-10-31",
+     "value": 64.5
+    }
+   ],
+   "latest": 64.5,
+   "change3m": 10,
+   "threshold": 60,
+   "flagged": true,
+   "atStake": 51146.77,
+   "band": "medium",
+   "flagId": "4a1c9bce-98d7-4545-ae37-5c0fd22884f6",
+   "lineKey": "trend:stock_days"
+  }
+ ],
+ "lastRefreshAt": "2026-11-13T14:22:33.321Z",
+ "refreshing": false,
+ "sample": true,
+ "banners": [
+  {
+   "kind": "sample",
+   "message": "Sample data: not a real business."
+  }
+ ],
+ "questions": []
+}

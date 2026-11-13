@@ -1,0 +1,90 @@
+{
+ "line": {
+  "key": "pl:404",
+  "code": "404",
+  "name": "Bank Fees",
+  "value": 2100,
+  "share": 0.0012,
+  "band": null,
+  "state": "fine",
+  "flagId": "bc9cbd73-8a3e-4f94-8672-b94d36608c8a",
+  "topApp": null,
+  "coveredBy": null,
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "pl",
+ "evidence": {
+  "trialBalance": {
+   "code": "404",
+   "name": "Bank Fees",
+   "ytdNet": 2100,
+   "asAt": "2026-10-31"
+  },
+  "statementValue": 2100,
+  "base": {
+   "label": "Revenue",
+   "value": 1793200
+  },
+  "materiality": 0.0012,
+  "band": null,
+  "ruleId": "fine_as_is",
+  "ruleVersion": 3,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z",
+  "series": [
+   {
+    "month": "2025-11-30",
+    "value": 300
+   },
+   {
+    "month": "2025-12-31",
+    "value": 300
+   },
+   {
+    "month": "2026-01-31",
+    "value": 300
+   },
+   {
+    "month": "2026-02-28",
+    "value": 300
+   },
+   {
+    "month": "2026-03-31",
+    "value": 300
+   },
+   {
+    "month": "2026-04-30",
+    "value": 300
+   },
+   {
+    "month": "2026-05-31",
+    "value": 300
+   },
+   {
+    "month": "2026-06-30",
+    "value": 300
+   },
+   {
+    "month": "2026-07-31",
+    "value": 300
+   },
+   {
+    "month": "2026-08-31",
+    "value": 300
+   },
+   {
+    "month": "2026-09-30",
+    "value": 300
+   },
+   {
+    "month": "2026-10-31",
+    "value": 300
+   }
+  ]
+ },
+ "cause": null,
+ "detectedInArea": [],
+ "recommendations": [],
+ "feedback": null
+}

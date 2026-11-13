@@ -1,0 +1,71 @@
+{
+ "generatedFrom": "fixtures/xero (sample companies only)",
+ "defaultOrg": "00000000-0000-4000-8000-00000000a001",
+ "orgs": [
+  {
+   "id": "00000000-0000-4000-8000-00000000a001",
+   "name": "Northwind Goods Ltd (sample)"
+  },
+  {
+   "id": "00000000-0000-4000-8000-00000000a002",
+   "name": "Lumen Analytics Ltd (sample)"
+  },
+  {
+   "id": "00000000-0000-4000-8000-00000000a003",
+   "name": "Copperpot Kitchens Ltd (sample)"
+  },
+  {
+   "id": "00000000-0000-4000-8000-00000000a004",
+   "name": "Harbour Supply Co (sample)"
+  },
+  {
+   "id": "00000000-0000-4000-8000-00000000a005",
+   "name": "Brightline Software Ltd (sample)"
+  }
+ ],
+ "lines": [
+  "bs:090",
+  "bs:091",
+  "bs:610",
+  "bs:630",
+  "bs:710",
+  "bs:711",
+  "bs:800",
+  "bs:820",
+  "bs:825",
+  "bs:830",
+  "bs:840",
+  "bs:950",
+  "bs:960",
+  "bs:970",
+  "cf:610",
+  "cf:630",
+  "cf:800",
+  "cf:820",
+  "cf:825",
+  "cf:830",
+  "cf:840",
+  "cf:970",
+  "cf:capex",
+  "cf:depreciation",
+  "pl:200",
+  "pl:201",
+  "pl:260",
+  "pl:310",
+  "pl:320",
+  "pl:325",
+  "pl:400",
+  "pl:404",
+  "pl:412",
+  "pl:416",
+  "pl:433",
+  "pl:469",
+  "pl:477",
+  "pl:478",
+  "pl:479",
+  "pl:485",
+  "pl:489",
+  "pl:500",
+  "trend:stock_days"
+ ]
+}

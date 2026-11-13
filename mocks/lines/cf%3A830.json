@@ -1,0 +1,40 @@
+{
+ "line": {
+  "key": "cf:830",
+  "code": "830",
+  "name": "Increase in Corporation Tax Payable",
+  "value": 6000,
+  "share": 0.0033,
+  "band": null,
+  "state": "fine",
+  "flagId": "d3ba3460-415f-40f9-aa30-b4c16350e574",
+  "topApp": null,
+  "coveredBy": null,
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "cf",
+ "evidence": {
+  "trialBalance": {
+   "code": "830",
+   "name": "Corporation Tax Payable",
+   "ytdNet": 30000,
+   "asAt": "2026-10-31"
+  },
+  "statementValue": 6000,
+  "base": {
+   "label": "Revenue",
+   "value": 1793200
+  },
+  "materiality": 0.0033,
+  "band": null,
+  "ruleId": "fine_as_is",
+  "ruleVersion": 3,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z"
+ },
+ "cause": null,
+ "detectedInArea": [],
+ "recommendations": [],
+ "feedback": null
+}

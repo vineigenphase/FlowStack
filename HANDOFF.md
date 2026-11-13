@@ -21,6 +21,7 @@ Read this first, after CLAUDE.md, BACKEND.md and NOTES.md. NOTES.md "Rest of the
   - **P:** ecommerce/SaaS apps and sample companies
 - **Billing:** Stripe is the provider. Prices are OPEN, so only `sk_test_` keys work (`catalog/plans.yaml`, `STRIPE_PRICE_IDS_JSON`).
 - **OPEN, not built** (CHANGES-v1.1 §4): prices, peer price sign-off, activator threshold, confirming the lapsing rule, the four answers, and add-vs-change.
+- **API contract for the front end (13 Nov, dev):** UI-SPEC.md §8 is served: `lib/api/types.ts`, mock mode (`NEXT_PUBLIC_API_MODE=mock`, `pnpm mocks`, `?scenario=`), every endpoint. Deviations and owner questions: NOTES.md "UI-SPEC vs backend". Migration 0018 (waitlist, feedback sub-reason) not yet on prod.
 - **First live connect** (Jenki Drinks, 7 Nov): Xero worked, our statements save failed. Fixed in fb7a443, merged to main (c6d0c1d). **Confirmed 10 Nov 20:56 UTC: the live refresh completed** (all 8 steps). 344 accounts, 0 unmapped, 65 low-confidence mappings and 10 unknown suppliers queued for a person. 38 statements; the YTD cash flow and all 10 monthly cash flows reconcile. 12 detected apps; 5 apps to add, 3 to change. No trend flags. The apps step is heavy (118 Xero calls, ~19 MB, most of the 90 s run). Watch it against rate limits.
 - **Tests:** run them in two batches with `--maxWorkers=2`. The full suite in one go has been killed for low memory.
 - All of the spec's in-app features are now built on `dev`:

@@ -1,0 +1,35 @@
+{
+ "line": {
+  "key": "cf:capex",
+  "code": null,
+  "name": "Purchase of fixed assets (net)",
+  "value": -6000,
+  "share": 0.0033,
+  "band": null,
+  "state": "fine",
+  "flagId": "5e76c3cb-7593-4d87-9bef-1eece034ecdf",
+  "topApp": null,
+  "coveredBy": null,
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "cf",
+ "evidence": {
+  "trialBalance": null,
+  "statementValue": -6000,
+  "base": {
+   "label": "Revenue",
+   "value": 1793200
+  },
+  "materiality": 0.0033,
+  "band": null,
+  "ruleId": "fine_as_is",
+  "ruleVersion": 3,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z"
+ },
+ "cause": null,
+ "detectedInArea": [],
+ "recommendations": [],
+ "feedback": null
+}

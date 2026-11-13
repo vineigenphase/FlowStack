@@ -1,0 +1,90 @@
+{
+ "line": {
+  "key": "bs:090",
+  "code": "090",
+  "name": "Business Bank Account",
+  "value": 168500,
+  "share": 0.2871,
+  "band": null,
+  "state": "fine",
+  "flagId": "c5c5807c-1ab3-4652-be85-caae735b05c5",
+  "topApp": null,
+  "coveredBy": null,
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "bs",
+ "evidence": {
+  "trialBalance": {
+   "code": "090",
+   "name": "Business Bank Account",
+   "ytdNet": 168500,
+   "asAt": "2026-10-31"
+  },
+  "statementValue": 168500,
+  "base": {
+   "label": "Total assets",
+   "value": 587000
+  },
+  "materiality": 0.2871,
+  "band": null,
+  "ruleId": "fine_as_is",
+  "ruleVersion": 3,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z",
+  "series": [
+   {
+    "month": "2025-11-30",
+    "value": 41100
+   },
+   {
+    "month": "2025-12-31",
+    "value": 41100
+   },
+   {
+    "month": "2026-01-31",
+    "value": 41100
+   },
+   {
+    "month": "2026-02-28",
+    "value": 41100
+   },
+   {
+    "month": "2026-03-31",
+    "value": 41100
+   },
+   {
+    "month": "2026-04-30",
+    "value": 59300
+   },
+   {
+    "month": "2026-05-31",
+    "value": 77500
+   },
+   {
+    "month": "2026-06-30",
+    "value": 95700
+   },
+   {
+    "month": "2026-07-31",
+    "value": 113900
+   },
+   {
+    "month": "2026-08-31",
+    "value": 132100
+   },
+   {
+    "month": "2026-09-30",
+    "value": 150300
+   },
+   {
+    "month": "2026-10-31",
+    "value": 168500
+   }
+  ]
+ },
+ "cause": null,
+ "detectedInArea": [],
+ "recommendations": [],
+ "feedback": null
+}

@@ -1,0 +1,117 @@
+{
+ "app": {
+  "id": "calxa",
+  "name": "Calxa",
+  "website": "https://www.calxa.com",
+  "categories": [
+   "fpa",
+   "consolidation",
+   "cash_forecasting"
+  ],
+  "markets": [
+   "UK",
+   "US",
+   "AU"
+  ],
+  "sample": true
+ },
+ "facts": {
+  "price_model": {
+   "value": null,
+   "state": "missing",
+   "group": "price",
+   "label": "Pricing model"
+  },
+  "price_from_gbp": {
+   "value": null,
+   "state": "missing",
+   "group": "price",
+   "label": "Price from (£/month)"
+  },
+  "setup_fee": {
+   "value": null,
+   "state": "missing",
+   "group": "price",
+   "label": "Setup fee"
+  },
+  "quote_only": {
+   "value": null,
+   "state": "missing",
+   "group": "price",
+   "label": "Quote only"
+  },
+  "min_term": {
+   "value": null,
+   "state": "missing",
+   "group": "contract",
+   "label": "Minimum term"
+  },
+  "notice_period": {
+   "value": null,
+   "state": "missing",
+   "group": "contract",
+   "label": "Notice period"
+  },
+  "auto_renew": {
+   "value": null,
+   "state": "missing",
+   "group": "contract",
+   "label": "Auto-renews"
+  },
+  "data_export": {
+   "value": null,
+   "state": "missing",
+   "group": "contract",
+   "label": "Data export on exit"
+  },
+  "posts_to_xero_as": {
+   "value": null,
+   "state": "missing",
+   "group": "fit",
+   "label": "Posts to Xero as"
+  },
+  "tracking_categories": {
+   "value": null,
+   "state": "missing",
+   "group": "fit",
+   "label": "Tracking categories"
+  },
+  "security_certs": {
+   "value": null,
+   "state": "missing",
+   "group": "security",
+   "label": "Security certifications"
+  },
+  "data_location": {
+   "value": null,
+   "state": "missing",
+   "group": "security",
+   "label": "Data location"
+  },
+  "support_hours": {
+   "value": null,
+   "state": "missing",
+   "group": "support",
+   "label": "Support hours"
+  },
+  "days_to_go_live": {
+   "value": null,
+   "state": "missing",
+   "group": "going_live",
+   "label": "Days to go live"
+  },
+  "vendor_incorporated": {
+   "value": null,
+   "state": "missing",
+   "group": "vendor",
+   "label": "Company founded"
+  },
+  "vendor_ownership_changes": {
+   "value": null,
+   "state": "missing",
+   "group": "vendor",
+   "label": "Changes of control"
+  }
+ },
+ "integrations": []
+}

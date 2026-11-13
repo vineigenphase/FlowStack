@@ -1,0 +1,90 @@
+{
+ "line": {
+  "key": "bs:950",
+  "code": "950",
+  "name": "Share Capital",
+  "value": 100,
+  "share": 0.0002,
+  "band": null,
+  "state": "fine",
+  "flagId": "bcbbf28b-50a8-4aa9-b3e2-c6c5810973de",
+  "topApp": null,
+  "coveredBy": null,
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "bs",
+ "evidence": {
+  "trialBalance": {
+   "code": "950",
+   "name": "Share Capital",
+   "ytdNet": 100,
+   "asAt": "2026-10-31"
+  },
+  "statementValue": 100,
+  "base": {
+   "label": "Total assets",
+   "value": 587000
+  },
+  "materiality": 0.0002,
+  "band": null,
+  "ruleId": "fine_as_is",
+  "ruleVersion": 3,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z",
+  "series": [
+   {
+    "month": "2025-11-30",
+    "value": 100
+   },
+   {
+    "month": "2025-12-31",
+    "value": 100
+   },
+   {
+    "month": "2026-01-31",
+    "value": 100
+   },
+   {
+    "month": "2026-02-28",
+    "value": 100
+   },
+   {
+    "month": "2026-03-31",
+    "value": 100
+   },
+   {
+    "month": "2026-04-30",
+    "value": 100
+   },
+   {
+    "month": "2026-05-31",
+    "value": 100
+   },
+   {
+    "month": "2026-06-30",
+    "value": 100
+   },
+   {
+    "month": "2026-07-31",
+    "value": 100
+   },
+   {
+    "month": "2026-08-31",
+    "value": 100
+   },
+   {
+    "month": "2026-09-30",
+    "value": 100
+   },
+   {
+    "month": "2026-10-31",
+    "value": 100
+   }
+  ]
+ },
+ "cause": null,
+ "detectedInArea": [],
+ "recommendations": [],
+ "feedback": null
+}

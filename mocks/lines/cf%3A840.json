@@ -1,0 +1,40 @@
+{
+ "line": {
+  "key": "cf:840",
+  "code": "840",
+  "name": "Repaid: Short-term Loan",
+  "value": -15000,
+  "share": 0.0084,
+  "band": null,
+  "state": "fine",
+  "flagId": "0057e926-2341-498d-b55e-8a1e996218a1",
+  "topApp": null,
+  "coveredBy": null,
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "cf",
+ "evidence": {
+  "trialBalance": {
+   "code": "840",
+   "name": "Short-term Loan",
+   "ytdNet": 45000,
+   "asAt": "2026-10-31"
+  },
+  "statementValue": -15000,
+  "base": {
+   "label": "Revenue",
+   "value": 1793200
+  },
+  "materiality": 0.0084,
+  "band": null,
+  "ruleId": "fine_as_is",
+  "ruleVersion": 3,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z"
+ },
+ "cause": null,
+ "detectedInArea": [],
+ "recommendations": [],
+ "feedback": null
+}

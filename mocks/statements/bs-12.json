@@ -1,0 +1,507 @@
+{
+ "kind": "bs",
+ "label": "Balance sheet",
+ "period": {
+  "label": "As at 31 Oct 2026",
+  "from": null,
+  "to": "2026-10-31"
+ },
+ "derived": false,
+ "reconciled": null,
+ "reconDiff": null,
+ "base": {
+  "label": "Total assets",
+  "value": 587000
+ },
+ "months": [
+  "2025-11-30",
+  "2025-12-31",
+  "2026-01-31",
+  "2026-02-28",
+  "2026-03-31",
+  "2026-04-30",
+  "2026-05-31",
+  "2026-06-30",
+  "2026-07-31",
+  "2026-08-31",
+  "2026-09-30",
+  "2026-10-31"
+ ],
+ "sections": [
+  {
+   "key": "bank",
+   "label": "Bank",
+   "total": 208500,
+   "lines": [
+    {
+     "key": "bs:090",
+     "code": "090",
+     "name": "Business Bank Account",
+     "value": 168500,
+     "share": 0.2871,
+     "band": null,
+     "state": "fine",
+     "flagId": "c5c5807c-1ab3-4652-be85-caae735b05c5",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null,
+     "monthly": [
+      41100,
+      41100,
+      41100,
+      41100,
+      41100,
+      59300,
+      77500,
+      95700,
+      113900,
+      132100,
+      150300,
+      168500
+     ]
+    },
+    {
+     "key": "bs:091",
+     "code": "091",
+     "name": "Business Savings Account",
+     "value": 40000,
+     "share": 0.0681,
+     "band": null,
+     "state": "fine",
+     "flagId": "031cab74-d435-484b-8a49-54cec522ae79",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null,
+     "monthly": [
+      40000,
+      40000,
+      40000,
+      40000,
+      40000,
+      40000,
+      40000,
+      40000,
+      40000,
+      40000,
+      40000,
+      40000
+     ]
+    }
+   ]
+  },
+  {
+   "key": "current_assets",
+   "label": "Current assets",
+   "total": 354500,
+   "lines": [
+    {
+     "key": "bs:610",
+     "code": "610",
+     "name": "Accounts Receivable",
+     "value": 24500,
+     "share": 0.0417,
+     "band": "medium",
+     "state": "covered",
+     "flagId": "4ab501c8-c357-4b17-be3f-4710a7f77eb9",
+     "topApp": {
+      "id": "adfin",
+      "name": "Adfin",
+      "match": 18
+     },
+     "coveredBy": {
+      "id": "paypal",
+      "name": "PayPal"
+     },
+     "oneOffNote": null,
+     "snoozedUntil": null,
+     "monthly": [
+      18000,
+      18000,
+      18000,
+      18000,
+      18000,
+      18928.57,
+      19857.14,
+      20785.71,
+      21714.29,
+      22642.86,
+      23571.43,
+      24500
+     ]
+    },
+    {
+     "key": "bs:630",
+     "code": "630",
+     "name": "Inventory",
+     "value": 330000,
+     "share": 0.5622,
+     "band": "high",
+     "state": "flagged",
+     "flagId": "d411e630-dc61-4433-93d3-f8cd0e34a6c9",
+     "topApp": {
+      "id": "brightpearl",
+      "name": "Brightpearl",
+      "match": 93
+     },
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null,
+     "monthly": [
+      210000,
+      210000,
+      210000,
+      210000,
+      210000,
+      227142.86,
+      244285.71,
+      261428.57,
+      278571.43,
+      295714.29,
+      312857.14,
+      330000
+     ]
+    }
+   ]
+  },
+  {
+   "key": "fixed_assets",
+   "label": "Fixed assets",
+   "total": 24000,
+   "lines": [
+    {
+     "key": "bs:710",
+     "code": "710",
+     "name": "Warehouse Equipment",
+     "value": 42000,
+     "share": 0.0716,
+     "band": null,
+     "state": "fine",
+     "flagId": "621c4c5e-627e-4caa-ad20-02ccb0a8d209",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null,
+     "monthly": [
+      36000,
+      36000,
+      36000,
+      36000,
+      36000,
+      36857.14,
+      37714.29,
+      38571.43,
+      39428.57,
+      40285.71,
+      41142.86,
+      42000
+     ]
+    },
+    {
+     "key": "bs:711",
+     "code": "711",
+     "name": "Less Accumulated Depreciation on Warehouse Equipment",
+     "value": -18000,
+     "share": 0.0307,
+     "band": null,
+     "state": "fine",
+     "flagId": "27e1ea7e-98b5-4ccb-aae9-e49a6a5324fb",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null,
+     "monthly": [
+      -12000,
+      -12000,
+      -12000,
+      -12000,
+      -12000,
+      -12857.14,
+      -13714.29,
+      -14571.43,
+      -15428.57,
+      -16285.71,
+      -17142.86,
+      -18000
+     ]
+    }
+   ]
+  },
+  {
+   "key": "current_liabilities",
+   "label": "Current liabilities",
+   "total": 219300,
+   "lines": [
+    {
+     "key": "bs:800",
+     "code": "800",
+     "name": "Accounts Payable",
+     "value": 96000,
+     "share": 0.1635,
+     "band": "high",
+     "state": "flagged",
+     "flagId": "951bf4ad-15bb-4257-a394-a5943cadce66",
+     "topApp": {
+      "id": "airwallex",
+      "name": "Airwallex",
+      "match": 33
+     },
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null,
+     "monthly": [
+      74000,
+      74000,
+      74000,
+      74000,
+      74000,
+      77142.86,
+      80285.71,
+      83428.57,
+      86571.43,
+      89714.29,
+      92857.14,
+      96000
+     ]
+    },
+    {
+     "key": "bs:820",
+     "code": "820",
+     "name": "VAT",
+     "value": 38500,
+     "share": 0.0656,
+     "band": null,
+     "state": "fine",
+     "flagId": "14b0f8dc-f8b0-4616-b114-08479169bbff",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null,
+     "monthly": [
+      31000,
+      31000,
+      31000,
+      31000,
+      31000,
+      32071.43,
+      33142.86,
+      34214.29,
+      35285.71,
+      36357.14,
+      37428.57,
+      38500
+     ]
+    },
+    {
+     "key": "bs:825",
+     "code": "825",
+     "name": "PAYE & NI Payable",
+     "value": 9800,
+     "share": 0.0167,
+     "band": "low",
+     "state": "flagged",
+     "flagId": "cc11dbba-bb9f-4491-ad6b-96711bdf6669",
+     "topApp": {
+      "id": "brightpay",
+      "name": "BrightPay",
+      "match": 20
+     },
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null,
+     "monthly": [
+      9000,
+      9000,
+      9000,
+      9000,
+      9000,
+      9114.29,
+      9228.57,
+      9342.86,
+      9457.14,
+      9571.43,
+      9685.71,
+      9800
+     ]
+    },
+    {
+     "key": "bs:830",
+     "code": "830",
+     "name": "Corporation Tax Payable",
+     "value": 30000,
+     "share": 0.0511,
+     "band": null,
+     "state": "fine",
+     "flagId": "625efaa1-d6ec-46c8-9c5c-5a4f0d41bbfc",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null,
+     "monthly": [
+      24000,
+      24000,
+      24000,
+      24000,
+      24000,
+      24857.14,
+      25714.29,
+      26571.43,
+      27428.57,
+      28285.71,
+      29142.86,
+      30000
+     ]
+    },
+    {
+     "key": "bs:840",
+     "code": "840",
+     "name": "Short-term Loan",
+     "value": 45000,
+     "share": 0.0767,
+     "band": null,
+     "state": "fine",
+     "flagId": "ba650890-8b66-4f9c-ba2b-72070a7c5fb5",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null,
+     "monthly": [
+      60000,
+      60000,
+      60000,
+      60000,
+      60000,
+      57857.14,
+      55714.29,
+      53571.43,
+      51428.57,
+      49285.71,
+      47142.86,
+      45000
+     ]
+    }
+   ]
+  },
+  {
+   "key": "equity",
+   "label": "Equity",
+   "total": 367700,
+   "lines": [
+    {
+     "key": "bs:950",
+     "code": "950",
+     "name": "Share Capital",
+     "value": 100,
+     "share": 0.0002,
+     "band": null,
+     "state": "fine",
+     "flagId": "bcbbf28b-50a8-4aa9-b3e2-c6c5810973de",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null,
+     "monthly": [
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100
+     ]
+    },
+    {
+     "key": "bs:960",
+     "code": "960",
+     "name": "Retained Earnings",
+     "value": 135000,
+     "share": 0.23,
+     "band": null,
+     "state": "fine",
+     "flagId": "2f5c3856-bcf5-4b66-813c-ea2a03da1286",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null,
+     "monthly": [
+      80000,
+      80000,
+      80000,
+      80000,
+      80000,
+      135000,
+      135000,
+      135000,
+      135000,
+      135000,
+      135000,
+      135000
+     ]
+    },
+    {
+     "key": "bs:970",
+     "code": "970",
+     "name": "Dividends Paid",
+     "value": -20000,
+     "share": 0.0341,
+     "band": null,
+     "state": "fine",
+     "flagId": "b0286d29-a501-48e4-b34e-a841593d41c9",
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null,
+     "monthly": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      -2857.14,
+      -5714.29,
+      -8571.43,
+      -11428.57,
+      -14285.71,
+      -17142.86,
+      -20000
+     ]
+    },
+    {
+     "key": "bs:current_year_earnings",
+     "code": null,
+     "name": "Current Year Earnings",
+     "value": 252600,
+     "share": 0.4303,
+     "band": null,
+     "state": "fine",
+     "flagId": null,
+     "topApp": null,
+     "coveredBy": null,
+     "oneOffNote": null,
+     "snoozedUntil": null,
+     "monthly": [
+      55000,
+      55000,
+      55000,
+      55000,
+      55000,
+      36085.71,
+      72171.43,
+      108257.14,
+      144342.86,
+      180428.57,
+      216514.29,
+      252600
+     ]
+    }
+   ]
+  }
+ ],
+ "sample": true
+}

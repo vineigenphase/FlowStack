@@ -1,0 +1,9 @@
+{
+ "markets": [
+  "UK"
+ ],
+ "industry": "ecommerce",
+ "includeCurrentMonth": false,
+ "benchmarkOptIn": false,
+ "digestOptIn": false
+}

@@ -1,0 +1,45 @@
+{
+ "apps": [
+  {
+   "appId": "amazon_seller",
+   "name": "Amazon (selling on Amazon)",
+   "category": "EPOS and ecommerce sales",
+   "spend12m": 14400,
+   "monthsSeen": 12,
+   "lastPaid": "2026-10-01",
+   "cycle": "monthly",
+   "state": "active"
+  },
+  {
+   "appId": "shopify",
+   "name": "Shopify",
+   "category": "EPOS and ecommerce sales",
+   "spend12m": 3588,
+   "monthsSeen": 12,
+   "lastPaid": "2026-10-01",
+   "cycle": "monthly",
+   "state": "active"
+  },
+  {
+   "appId": "paypal",
+   "name": "PayPal",
+   "category": "EPOS and ecommerce sales",
+   "spend12m": 1020,
+   "monthsSeen": 12,
+   "lastPaid": "2026-10-01",
+   "cycle": "monthly",
+   "state": "active"
+  },
+  {
+   "appId": "a2x",
+   "name": "A2X",
+   "category": "EPOS and ecommerce sales",
+   "spend12m": 588,
+   "monthsSeen": 12,
+   "lastPaid": "2026-10-01",
+   "cycle": "monthly",
+   "state": "active"
+  }
+ ],
+ "questions": []
+}

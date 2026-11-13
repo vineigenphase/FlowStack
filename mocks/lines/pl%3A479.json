@@ -1,0 +1,202 @@
+{
+ "line": {
+  "key": "pl:479",
+  "code": "479",
+  "name": "Pensions Costs",
+  "value": 5000,
+  "share": 0.0028,
+  "band": "low",
+  "state": "flagged",
+  "flagId": "cb7b2b00-d117-4a0e-8153-72589809448a",
+  "topApp": {
+   "id": "brightpay",
+   "name": "BrightPay",
+   "match": 18
+  },
+  "coveredBy": null,
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "pl",
+ "evidence": {
+  "trialBalance": {
+   "code": "479",
+   "name": "Pensions Costs",
+   "ytdNet": 5000,
+   "asAt": "2026-10-31"
+  },
+  "statementValue": 5000,
+  "base": {
+   "label": "Revenue",
+   "value": 1793200
+  },
+  "materiality": 0.0028,
+  "band": "low",
+  "ruleId": "payroll_no_bridge",
+  "ruleVersion": 2,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z",
+  "series": [
+   {
+    "month": "2025-11-30",
+    "value": 714.29
+   },
+   {
+    "month": "2025-12-31",
+    "value": 714.29
+   },
+   {
+    "month": "2026-01-31",
+    "value": 714.29
+   },
+   {
+    "month": "2026-02-28",
+    "value": 714.29
+   },
+   {
+    "month": "2026-03-31",
+    "value": 714.29
+   },
+   {
+    "month": "2026-04-30",
+    "value": 714.29
+   },
+   {
+    "month": "2026-05-31",
+    "value": 714.29
+   },
+   {
+    "month": "2026-06-30",
+    "value": 714.29
+   },
+   {
+    "month": "2026-07-31",
+    "value": 714.29
+   },
+   {
+    "month": "2026-08-31",
+    "value": 714.29
+   },
+   {
+    "month": "2026-09-30",
+    "value": 714.29
+   },
+   {
+    "month": "2026-10-31",
+    "value": 714.29
+   }
+  ]
+ },
+ "cause": "Payroll costs this size usually need a payroll app posting to Xero. Only your team can confirm how it's done today.",
+ "detectedInArea": [],
+ "recommendations": [
+  {
+   "rank": 1,
+   "app": {
+    "id": "brightpay",
+    "name": "BrightPay",
+    "categories": [
+     "payroll"
+    ],
+    "markets": [
+     "UK"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 18,
+   "components": {
+    "strength": 0.005,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "No integration with the apps you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "add"
+  },
+  {
+   "rank": 2,
+   "app": {
+    "id": "deel",
+    "name": "Deel",
+    "categories": [
+     "payroll"
+    ],
+    "markets": [
+     "UK",
+     "US",
+     "CA",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 18,
+   "components": {
+    "strength": 0.005,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "No integration with the apps you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "add"
+  },
+  {
+   "rank": 3,
+   "app": {
+    "id": "employmenthero",
+    "name": "Employment Hero",
+    "categories": [
+     "payroll",
+     "rota"
+    ],
+    "markets": [
+     "UK",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 18,
+   "components": {
+    "strength": 0.005,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "No integration with the apps you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "add"
+  }
+ ],
+ "feedback": null
+}

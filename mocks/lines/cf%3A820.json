@@ -1,0 +1,40 @@
+{
+ "line": {
+  "key": "cf:820",
+  "code": "820",
+  "name": "Increase in VAT",
+  "value": 7500,
+  "share": 0.0042,
+  "band": null,
+  "state": "fine",
+  "flagId": "370d9a7e-bbb0-4113-b5a7-73dbddbd80cf",
+  "topApp": null,
+  "coveredBy": null,
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "cf",
+ "evidence": {
+  "trialBalance": {
+   "code": "820",
+   "name": "VAT",
+   "ytdNet": 38500,
+   "asAt": "2026-10-31"
+  },
+  "statementValue": 7500,
+  "base": {
+   "label": "Revenue",
+   "value": 1793200
+  },
+  "materiality": 0.0042,
+  "band": null,
+  "ruleId": "fine_as_is",
+  "ruleVersion": 3,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z"
+ },
+ "cause": null,
+ "detectedInArea": [],
+ "recommendations": [],
+ "feedback": null
+}

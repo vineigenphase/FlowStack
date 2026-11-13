@@ -1,0 +1,206 @@
+{
+ "line": {
+  "key": "bs:800",
+  "code": "800",
+  "name": "Accounts Payable",
+  "value": 96000,
+  "share": 0.1635,
+  "band": "high",
+  "state": "flagged",
+  "flagId": "951bf4ad-15bb-4257-a394-a5943cadce66",
+  "topApp": {
+   "id": "airwallex",
+   "name": "Airwallex",
+   "match": 33
+  },
+  "coveredBy": null,
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "bs",
+ "evidence": {
+  "trialBalance": {
+   "code": "800",
+   "name": "Accounts Payable",
+   "ytdNet": 96000,
+   "asAt": "2026-10-31"
+  },
+  "statementValue": 96000,
+  "base": {
+   "label": "Total assets",
+   "value": 587000
+  },
+  "materiality": 0.1635,
+  "band": "high",
+  "ruleId": "supplier_bills",
+  "ruleVersion": 2,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z",
+  "series": [
+   {
+    "month": "2025-11-30",
+    "value": 74000
+   },
+   {
+    "month": "2025-12-31",
+    "value": 74000
+   },
+   {
+    "month": "2026-01-31",
+    "value": 74000
+   },
+   {
+    "month": "2026-02-28",
+    "value": 74000
+   },
+   {
+    "month": "2026-03-31",
+    "value": 74000
+   },
+   {
+    "month": "2026-04-30",
+    "value": 77142.86
+   },
+   {
+    "month": "2026-05-31",
+    "value": 80285.71
+   },
+   {
+    "month": "2026-06-30",
+    "value": 83428.57
+   },
+   {
+    "month": "2026-07-31",
+    "value": 86571.43
+   },
+   {
+    "month": "2026-08-31",
+    "value": 89714.29
+   },
+   {
+    "month": "2026-09-30",
+    "value": 92857.14
+   },
+   {
+    "month": "2026-10-31",
+    "value": 96000
+   }
+  ]
+ },
+ "cause": "Bills at this volume are usually captured by an app rather than keyed by hand.",
+ "detectedInArea": [],
+ "recommendations": [
+  {
+   "rank": 1,
+   "app": {
+    "id": "airwallex",
+    "name": "Airwallex",
+    "categories": [
+     "fx_banking",
+     "spend_payables"
+    ],
+    "markets": [
+     "UK",
+     "US",
+     "CA",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 33,
+   "components": {
+    "strength": 0.2908,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "No integration with the apps you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "add"
+  },
+  {
+   "rank": 2,
+   "app": {
+    "id": "approvalmax",
+    "name": "ApprovalMax",
+    "categories": [
+     "spend_payables"
+    ],
+    "markets": [
+     "UK",
+     "US",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 33,
+   "components": {
+    "strength": 0.2908,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "No integration with the apps you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "add"
+  },
+  {
+   "rank": 3,
+   "app": {
+    "id": "autoentry",
+    "name": "AutoEntry",
+    "categories": [
+     "data_capture"
+    ],
+    "markets": [
+     "UK",
+     "US",
+     "CA",
+     "AU"
+    ],
+    "price": {
+     "value": null,
+     "state": "missing"
+    },
+    "sample": true
+   },
+   "match": 33,
+   "components": {
+    "strength": 0.2908,
+    "fit": 0.3,
+    "peers": 0.5,
+    "price": 0.5
+   },
+   "weights": {
+    "strength": 0.5,
+    "fit": 0.35,
+    "peers": 0.1,
+    "price": 0.05
+   },
+   "reason": "No integration with the apps you keep. Price not published · we're checking",
+   "inUse": false,
+   "kind": "add"
+  }
+ ],
+ "feedback": null
+}

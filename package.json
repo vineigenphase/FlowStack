@@ -16,6 +16,7 @@
     "xero:record": "tsx scripts/record.ts",
     "refresh": "tsx scripts/refresh.ts",
     "eval": "tsx scripts/eval.ts",
+    "mocks": "tsx scripts/make-mocks.ts",
     "crawl": "tsx scripts/crawl.ts",
     "crawl:probe": "tsx scripts/probe-paths.ts",
     "queue": "tsx scripts/queue.ts",

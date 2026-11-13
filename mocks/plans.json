@@ -1,0 +1,32 @@
+[
+ {
+  "id": "monthly",
+  "label": "FlowStack, monthly",
+  "priceGbp": null,
+  "interval": "month",
+  "auditIncluded": false,
+  "auditPriceGbp": null,
+  "available": true,
+  "highlight": false
+ },
+ {
+  "id": "annual",
+  "label": "FlowStack, 12 months",
+  "priceGbp": null,
+  "interval": "year",
+  "auditIncluded": false,
+  "auditPriceGbp": null,
+  "available": true,
+  "highlight": true
+ },
+ {
+  "id": "audit_only",
+  "label": "Up-front audit of your stack",
+  "priceGbp": null,
+  "interval": "one_off",
+  "auditIncluded": true,
+  "auditPriceGbp": null,
+  "available": false,
+  "highlight": false
+ }
+]

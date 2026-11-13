@@ -1,0 +1,24 @@
+[
+ {
+  "appId": "brightpearl",
+  "appName": "Brightpearl",
+  "lineKey": "pl:310",
+  "lineName": "Cost of Goods Sold",
+  "price": {
+   "value": null,
+   "state": "missing"
+  },
+  "addedAt": "2026-11-13T14:22:36.307Z"
+ },
+ {
+  "appId": "brightpearl",
+  "appName": "Brightpearl",
+  "lineKey": "bs:630",
+  "lineName": "Inventory",
+  "price": {
+   "value": null,
+   "state": "missing"
+  },
+  "addedAt": "2026-11-13T14:22:36.354Z"
+ }
+]

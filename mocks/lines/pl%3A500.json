@@ -1,0 +1,90 @@
+{
+ "line": {
+  "key": "pl:500",
+  "code": "500",
+  "name": "Corporation Tax",
+  "value": 30000,
+  "share": 0.0167,
+  "band": null,
+  "state": "fine",
+  "flagId": "8fbe7b5f-5655-4a9b-97ea-b914333d08b7",
+  "topApp": null,
+  "coveredBy": null,
+  "oneOffNote": null,
+  "snoozedUntil": null
+ },
+ "statementKind": "pl",
+ "evidence": {
+  "trialBalance": {
+   "code": "500",
+   "name": "Corporation Tax",
+   "ytdNet": 30000,
+   "asAt": "2026-10-31"
+  },
+  "statementValue": 30000,
+  "base": {
+   "label": "Revenue",
+   "value": 1793200
+  },
+  "materiality": 0.0167,
+  "band": null,
+  "ruleId": "fine_as_is",
+  "ruleVersion": 3,
+  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
+  "refreshedAt": "2026-11-13T14:22:33.321Z",
+  "series": [
+   {
+    "month": "2025-11-30",
+    "value": 4285.71
+   },
+   {
+    "month": "2025-12-31",
+    "value": 4285.71
+   },
+   {
+    "month": "2026-01-31",
+    "value": 4285.71
+   },
+   {
+    "month": "2026-02-28",
+    "value": 4285.71
+   },
+   {
+    "month": "2026-03-31",
+    "value": 4285.71
+   },
+   {
+    "month": "2026-04-30",
+    "value": 4285.71
+   },
+   {
+    "month": "2026-05-31",
+    "value": 4285.71
+   },
+   {
+    "month": "2026-06-30",
+    "value": 4285.71
+   },
+   {
+    "month": "2026-07-31",
+    "value": 4285.71
+   },
+   {
+    "month": "2026-08-31",
+    "value": 4285.71
+   },
+   {
+    "month": "2026-09-30",
+    "value": 4285.71
+   },
+   {
+    "month": "2026-10-31",
+    "value": 4285.71
+   }
+  ]
+ },
+ "cause": null,
+ "detectedInArea": [],
+ "recommendations": [],
+ "feedback": null
+}
