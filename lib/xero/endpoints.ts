@@ -78,14 +78,18 @@ export type Bill = z.infer<typeof InvoicesResponse>["Invoices"][number];
 export type SpendTxn = z.infer<typeof BankTransactionsResponse>["BankTransactions"][number];
 
 /** ACCPAY bills since `since`, summaryOnly, one page at a time. Rows are yielded, never stored. */
-export async function* bills(c: XeroClient, since: Date, ifModifiedSince?: Date): AsyncGenerator<Bill[]> {
+/** Bills that count as spend. The change check also asks for voided/deleted ones, so their month is rebuilt. */
+export const SPEND_BILL_STATUSES = "AUTHORISED,PAID";
+export const CHANGED_BILL_STATUSES = "AUTHORISED,PAID,VOIDED,DELETED";
+
+export async function* bills(c: XeroClient, since: Date, ifModifiedSince?: Date, statuses = SPEND_BILL_STATUSES): AsyncGenerator<Bill[]> {
   for (let page = 1; ; page++) {
     const r = await c.get({
       key: "invoices",
       path: "/Invoices",
       page,
       ifModifiedSince,
-      query: { where: `Type=="ACCPAY" AND Date>=${dt(since)}`, Statuses: "AUTHORISED,PAID", summaryOnly: "true" },
+      query: { where: `Type=="ACCPAY" AND Date>=${dt(since)}`, Statuses: statuses, summaryOnly: "true" },
     });
     if (r.notModified || (r.status === 404 && page > 1)) return;
     const list = InvoicesResponse.parse(must(r, "invoices")).Invoices;

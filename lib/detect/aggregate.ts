@@ -16,7 +16,9 @@ export type SpendAgg = {
 
 export type SupplierHints = Map<string, { accountCodes: Set<string> }>;
 
-const monthOf = (d: Date) => `${d.toISOString().slice(0, 7)}-01`;
+export const monthOf = (d: Date) => `${d.toISOString().slice(0, 7)}-01`;
+/** Not spend: voided bills, deleted bank transactions (Xero can return these to a change query). */
+const NOT_SPEND = new Set(["VOIDED", "DELETED", "DRAFT", "SUBMITTED"]);
 /** Xero's CurrencyRate is units of foreign currency per 1 unit of base currency. */
 const toBase = (total: number, rate?: number) => (rate && rate > 0 ? total / rate : total);
 
@@ -26,12 +28,12 @@ export class SpendAggregator {
   readonly hints: SupplierHints = new Map();
 
   addBills(rows: Bill[]) {
-    for (const b of rows) this.add(b.Contact.ContactID, b.Contact.Name, b.Date, toBase(b.Total, b.CurrencyRate), "bill");
+    for (const b of rows) if (!NOT_SPEND.has(b.Status.toUpperCase())) this.add(b.Contact.ContactID, b.Contact.Name, b.Date, toBase(b.Total, b.CurrencyRate), "bill");
   }
 
   addSpend(rows: SpendTxn[]) {
     for (const t of rows) {
-      if (!t.Contact) continue;
+      if (!t.Contact || NOT_SPEND.has((t.Status ?? "").toUpperCase())) continue;
       this.add(t.Contact.ContactID, t.Contact.Name, t.Date, toBase(t.Total, t.CurrencyRate), "bank");
       const h = this.hints.get(t.Contact.ContactID) ?? { accountCodes: new Set<string>() };
       for (const li of t.LineItems) if (li.AccountCode) h.accountCodes.add(li.AccountCode);

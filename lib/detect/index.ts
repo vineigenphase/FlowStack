@@ -2,9 +2,12 @@
  * Apps in use (BACKEND.md §6). Bills (summaryOnly) + bank spend for the last 12 months → per-supplier
  * monthly aggregates → fingerprint match → detected_apps. Individual transactions are never persisted.
  *
- * Incremental: If-Modified-Since is used as a cheap "anything changed?" probe. Aggregates can't be
- * patched with deltas (the original rows are gone), so when something changed the 12-month window
- * is rebuilt in full; when nothing changed we skip both list calls' full pull.
+ * Incremental (13 Nov 2026): aggregates can't be patched with deltas (the original rows are gone), but months
+ * before the earliest change are still right. So: ask Xero for what changed since the last run (If-Modified-Since,
+ * voided bills included), rebuild from the earliest month those records touch, keep older months as stored.
+ * A full 13-month rebuild runs on the first refresh and whenever the last one is older than FULL_REBUILD_DAYS,
+ * to catch the one edit a delta can't show (a record moved out of an older month).
+ * First live ledger: a full pull was 118 calls / 19 MB; a daily refresh now rebuilds about one month.
  */
 import { and, desc, eq, gte, lt } from "drizzle-orm";
 import { accountMaps, accounts, appStatusAnswers, detectedApps, fingerprints, supplierSpend, syncCursors } from "@/db/schema";
@@ -12,9 +15,9 @@ import { withOrg, type Db } from "@/lib/db/client";
 import { apps as catalogApps } from "@/lib/catalog/load";
 import { enqueueAll, type QueueItem } from "@/lib/queue/enqueue";
 import type { XeroClient } from "@/lib/xero/client";
-import { bills, spendTransactions } from "@/lib/xero/endpoints";
+import { CHANGED_BILL_STATUSES, bills, spendTransactions } from "@/lib/xero/endpoints";
 import { monthsBack } from "@/lib/sync/periods";
-import { SpendAggregator, type SupplierHints } from "./aggregate";
+import { SpendAggregator, monthOf, type SupplierHints } from "./aggregate";
 import { matchSupplier, type Fingerprint, type Match } from "./match";
 import { COUNTS_AS_COVERAGE, lapsingNeedsReview, lifecycleOf, type StatusAnswer } from "./lifecycle";
 
@@ -30,18 +33,36 @@ export function dedupeFingerprints(fps: Fingerprint[]): Fingerprint[] {
   return fps.filter((f) => (seen.has(f.pattern) ? false : (seen.add(f.pattern), true)));
 }
 
-async function changedSince(c: XeroClient, since: Date, cursor: Date | null) {
-  if (!cursor) return true;
-  for await (const page of bills(c, since, cursor)) if (page.length) return true;
-  for await (const page of spendTransactions(c, since, cursor)) if (page.length) return true;
-  return false;
+/** A full rebuild at least this often (see the header). */
+export const FULL_REBUILD_DAYS = 7;
+/** Asked a little before the stored cursor, so a clock difference with Xero can't hide a change. */
+const CURSOR_MARGIN_MS = 10 * 60_000;
+
+/** The earliest transaction date among records changed since `cursor`, or null when nothing changed. */
+async function earliestChange(c: XeroClient, since: Date, cursor: Date): Promise<Date | null> {
+  const probe = new Date(cursor.getTime() - CURSOR_MARGIN_MS);
+  let min: Date | null = null;
+  const see = (d: Date) => {
+    if (!min || d < min) min = d;
+  };
+  for await (const page of bills(c, since, probe, CHANGED_BILL_STATUSES)) for (const b of page) see(b.Date);
+  for await (const page of spendTransactions(c, since, probe)) for (const t of page) see(t.Date);
+  return min;
+}
+
+/** Which months to rebuild: all of them, from a month on, or none. Exported for tests. */
+export async function rebuildFrom(c: XeroClient, since: string, cursor: Date | null, now: Date): Promise<string | null> {
+  if (!cursor || now.getTime() - cursor.getTime() > FULL_REBUILD_DAYS * 86_400_000) return since;
+  const min = await earliestChange(c, new Date(since + "T00:00:00Z"), cursor);
+  if (!min) return null;
+  const m = monthOf(min);
+  return m > since ? m : since;
 }
 
 export async function syncAppsInUse(orgId: string, client: XeroClient, opts: { asAt: string; now?: Date }) {
   const started = opts.now ?? new Date();
   // v1.1 C: 13 months, so an annual app shows two payments.
   const since = monthsBack(opts.asAt, LOOKBACK_MONTHS);
-  const sinceDate = new Date(since + "T00:00:00Z");
 
   const cursor = await withOrg(orgId, async (tx) => {
     const rows = await tx.select().from(syncCursors).where(eq(syncCursors.orgId, orgId));
@@ -51,14 +72,17 @@ export async function syncAppsInUse(orgId: string, client: XeroClient, opts: { a
   });
 
   let hints: SupplierHints | null = null;
-  if (await changedSince(client, sinceDate, cursor)) {
+  const from = await rebuildFrom(client, since, cursor, started);
+  if (from) {
+    const fromDate = new Date(from + "T00:00:00Z");
     const agg = new SpendAggregator();
-    for await (const page of bills(client, sinceDate)) agg.addBills(page);
-    for await (const page of spendTransactions(client, sinceDate)) agg.addSpend(page);
+    for await (const page of bills(client, fromDate)) agg.addBills(page);
+    for await (const page of spendTransactions(client, fromDate)) agg.addSpend(page);
     const rows = agg.result();
+    // Partial rebuild: hints only cover the rebuilt months, which is enough to raise new unknown suppliers.
     hints = agg.hints;
     await withOrg(orgId, async (tx) => {
-      await tx.delete(supplierSpend).where(and(eq(supplierSpend.orgId, orgId), gte(supplierSpend.month, since)));
+      await tx.delete(supplierSpend).where(and(eq(supplierSpend.orgId, orgId), gte(supplierSpend.month, from)));
       await tx.delete(supplierSpend).where(and(eq(supplierSpend.orgId, orgId), lt(supplierSpend.month, monthsBack(opts.asAt, 24))));
       if (rows.length) await tx.insert(supplierSpend).values(rows.map((r) => ({ orgId, ...r })));
       for (const endpoint of ["invoices", "banktransactions"]) {
