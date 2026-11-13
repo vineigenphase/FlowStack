@@ -2,7 +2,7 @@
 import { computeTrends, type Month, type TrendKey } from "./trends";
 import { and, eq, inArray } from "drizzle-orm";
 import { appFacts, cashflowAcceptances, detectedApps, flags, lineOverrides, orgs, recommendations, statementLines, statements, trialBalance } from "@/db/schema";
-import { withOrg } from "@/lib/db/client";
+import { withOrg, type Db } from "@/lib/db/client";
 import { env } from "@/lib/env";
 import { apps as catalogApps, rulesFile } from "@/lib/catalog/load";
 import { accountInfo } from "@/lib/statements/accounts";
@@ -26,6 +26,31 @@ const TREND_NAMES: Record<TrendKey, string> = {
 };
 /** Trends need a P&L for every month used; months without one give no trend. */
 const plsComplete = (ms: Month[]) => ms.slice(0, 6).every((m) => m.revenue !== 0 || m.costOfSales !== 0 || m.overheads !== 0);
+
+type Stmt = typeof statements.$inferSelect;
+
+/** v1.1 B: the monthly balance sheet + P&L of a run as trend months, newest first (lines in current categories). */
+export async function trendMonths(tx: Db, stmts: Stmt[], info: Awaited<ReturnType<typeof accountInfo>>) {
+  const monthly = stmts.filter((s) => s.kind === "bs_monthly" || s.kind === "pl_monthly");
+  const monthlyLines = monthly.length ? await tx.select().from(statementLines).where(inArray(statementLines.statementId, monthly.map((s) => s.id))) : [];
+  const ends = [...new Set(monthly.filter((s) => s.kind === "bs_monthly").map((s) => s.periodTo))].sort().reverse();
+  const months: Month[] = ends.map((end) => {
+    const bsS = monthly.find((s) => s.kind === "bs_monthly" && s.periodTo === end);
+    const plS = monthly.find((s) => s.kind === "pl_monthly" && s.periodTo === end);
+    const bsByCat: Record<string, number> = {};
+    for (const l of monthlyLines.filter((x) => x.statementId === bsS?.id)) {
+      const cat = l.xeroAccountId ? (info.get(l.xeroAccountId)?.category ?? null) : l.category;
+      if (cat) bsByCat[cat] = (bsByCat[cat] ?? 0) + l.value;
+    }
+    const pls = monthlyLines.filter((x) => x.statementId === plS?.id);
+    const inSec = (k: string[]) => pls.filter((l) => k.includes(l.section)).reduce((t, l) => t + l.value, 0);
+    return { end, bs: bsByCat, revenue: inSec(["income"]), costOfSales: inSec(["cost_of_sales"]), overheads: inSec(["opex", "other_expenses"]) };
+  });
+  return { months, monthly, monthlyLines, ends };
+}
+
+/** All four trends (fired or not) when there are enough complete months; otherwise none. */
+export const trendsOf = (months: Month[]) => (months.length >= 6 && plsComplete(months) ? computeTrends(months, rulesFile().trends) : []);
 
 export async function computeFlags(orgId: string, runId: string) {
   // Verified-review results are global (owner connection), so read them before the tenant transaction opens.
@@ -56,22 +81,8 @@ export async function computeFlags(orgId: string, runId: string) {
       }));
 
     // v1.1 B: trends from the 12 monthly statements (when the source had them).
-    const monthly = stmts.filter((s) => s.kind === "bs_monthly" || s.kind === "pl_monthly");
-    const monthlyLines = monthly.length ? await tx.select().from(statementLines).where(inArray(statementLines.statementId, monthly.map((s) => s.id))) : [];
-    const ends = [...new Set(monthly.filter((s) => s.kind === "bs_monthly").map((s) => s.periodTo))].sort().reverse();
-    const months: Month[] = ends.map((end) => {
-      const bsS = monthly.find((s) => s.kind === "bs_monthly" && s.periodTo === end);
-      const plS = monthly.find((s) => s.kind === "pl_monthly" && s.periodTo === end);
-      const bsByCat: Record<string, number> = {};
-      for (const l of monthlyLines.filter((x) => x.statementId === bsS?.id)) {
-        const cat = l.xeroAccountId ? (info.get(l.xeroAccountId)?.category ?? null) : l.category;
-        if (cat) bsByCat[cat] = (bsByCat[cat] ?? 0) + l.value;
-      }
-      const pls = monthlyLines.filter((x) => x.statementId === plS?.id);
-      const inSec = (k: string[]) => pls.filter((l) => k.includes(l.section)).reduce((t, l) => t + l.value, 0);
-      return { end, bs: bsByCat, revenue: inSec(["income"]), costOfSales: inSec(["cost_of_sales"]), overheads: inSec(["opex", "other_expenses"]) };
-    });
-    const trends = months.length >= 6 && plsComplete(months) ? computeTrends(months, rulesFile().trends) : [];
+    const { months, monthly, monthlyLines, ends } = await trendMonths(tx, stmts, info);
+    const trends = trendsOf(months);
     // The biggest account behind each trend's balance, for the trial balance evidence.
     const latestBs = monthly.find((s) => s.kind === "bs_monthly" && s.periodTo === ends[0]);
     const balanceAccount = (cat: string) =>

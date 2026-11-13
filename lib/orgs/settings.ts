@@ -25,6 +25,8 @@ export const SettingsInput = z.object({
   markets: z.array(z.enum(["UK", "US", "CA", "AU"])).min(1).optional(),
   sharePrices: z.boolean().optional(),
   askAi: z.boolean().optional(),
+  /** UI-SPEC §5.4: include the month in progress (off = the last full month). Takes effect on the next refresh. */
+  includeCurrentMonth: z.boolean().optional(),
 });
 
 export async function getSettings(orgId: string) {
@@ -40,6 +42,7 @@ export async function saveSettings(orgId: string, userId: string, input: z.infer
   if (input.markets) set.markets = input.markets;
   if (input.sharePrices !== undefined) set.sharePrices = input.sharePrices;
   if (input.askAi !== undefined) set.askAi = input.askAi;
+  if (input.includeCurrentMonth !== undefined) set.includeCurrentMonth = input.includeCurrentMonth;
   if (Object.keys(set).length) await withOrg(orgId, (tx) => tx.update(orgs).set(set).where(eq(orgs.id, orgId)));
   if (input.sharePrices !== undefined && input.sharePrices !== before?.sharePrices) {
     const db = await adminDb();

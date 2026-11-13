@@ -1,14 +1,14 @@
 import { handle, HttpError, type Params } from "@/lib/api";
 import { requireOrgMember } from "@/lib/auth/session";
-import { lineView } from "@/lib/read/views";
+import { lineDetail } from "@/lib/api/contract";
 
 export const dynamic = "force-dynamic";
 
-/** Evidence, cause, recommendations and detected apps for one line (e.g. pl:477). */
+/** Evidence, cause, feedback and ranked apps for one line, e.g. pl:477 (UI-SPEC §5.7 `LineDetail`). */
 export const GET = handle(async (_req: Request, { params }: Params<{ org: string; lineKey: string }>) => {
   const { org, lineKey } = await params;
   await requireOrgMember(org);
-  const l = await lineView(org, decodeURIComponent(lineKey));
+  const l = await lineDetail(org, decodeURIComponent(lineKey));
   if (!l) throw new HttpError(404, "Line not found");
   return l;
 });

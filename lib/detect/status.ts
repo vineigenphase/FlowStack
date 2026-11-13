@@ -52,6 +52,27 @@ export async function answerAppStatus(orgId: string, appId: string, userId: stri
   return { ok: true };
 }
 
+/**
+ * "Add an app you pay for outside Xero" (UI-SPEC §5.9). A catalogue app becomes `declared` (counts as coverage,
+ * re-asked after 6 months); a name we don't list goes to our team to add, with nothing changing meanwhile.
+ */
+export async function declareApp(orgId: string, userId: string | null, input: { appId?: string; name?: string }) {
+  if (input.appId) {
+    if (!known(input.appId)) throw new HttpError(404, "Unknown app");
+    await withOrg(orgId, (tx) => tx.insert(appStatusAnswers).values({ orgId, userId, appId: input.appId!, answer: "declared" }));
+    await redetect(orgId);
+    await recompute(orgId);
+    return { ok: true, declared: input.appId };
+  }
+  await enqueue({
+    kind: "fingerprint_check",
+    orgId,
+    ref: { org_id: orgId, declared_name: input.name },
+    reason: `The business says it pays for "${input.name}" outside Xero. It isn't in our catalogue: add it, with its supplier names.`,
+  });
+  return { ok: true, declared: null };
+}
+
 /** Questions to show on the summary page, from the latest detection. */
 export async function appQuestions(orgId: string) {
   const rows = await withOrg(orgId, (tx) => tx.select().from(detectedApps).orderBy(desc(detectedApps.lastSeen)));

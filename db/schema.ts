@@ -317,6 +317,8 @@ export const flagFeedback = pgTable("flag_feedback", {
   /** already_use_app: the app they named (a catalogue id, or free text when we don't know it). */
   appId: text("app_id"),
   appName: text("app_name"),
+  /** UI-SPEC §5.7a: why "The numbers are wrong" (wrong_category | figure_mismatch | one_off | miscoded). */
+  subReason: text("sub_reason", { enum: ["wrong_category", "figure_mismatch", "one_off", "miscoded"] }),
   note: text("note"),
   createdAt: ts("created_at").notNull().defaultNow(),
 });
@@ -704,6 +706,18 @@ export const auditLog = pgTable("audit_log", {
 
 /** Tables that hold one org's data. RLS is enabled on each (see the rls migration). */
 // ---------- billing (v1.1 E) and review rewards (v1.1 O). Owner connection only: RLS on, no grant. ----------
+
+/** UI-SPEC §5.1 waitlist. Owner connection only. One row per email (lowercased); consent time recorded. */
+export const waitlist = pgTable("waitlist", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  email: text("email").notNull().unique(),
+  name: text("name").notNull(),
+  company: text("company").notNull(),
+  role: text("role").notNull(),
+  industry: text("industry").notNull(),
+  consentAt: ts("consent_at").notNull(),
+  createdAt: ts("created_at").notNull().defaultNow(),
+});
 
 /** One Stripe subscription per org or firm. Card details never reach us. */
 export const subscriptions = pgTable("subscriptions", {

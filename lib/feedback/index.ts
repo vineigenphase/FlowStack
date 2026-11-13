@@ -11,8 +11,12 @@
  *   detection miss rate = already_use_app ÷ same denominator;  not_now is a count, in neither.
  * Each flag's latest answer counts. The pre-v1.1 "no" counts as no_app_needed.
  * TODO(CHANGES-v1.1.md §4 item 5): the four answers and which count as false positives are PROPOSED.
+ *
+ * UI-SPEC §5.7a (13 Nov 2026): "The numbers are wrong" carries a sub-reason. The line is queued either way; the
+ * sub-reason picks the item our team gets (wrong_category / miscoded → account check, figure_mismatch / one_off →
+ * flag_disputed) and one_off adds the line's "May be a one-off" note. undoFeedback() removes the latest answer.
  */
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 import { flagFeedback, flags, lineOverrides } from "@/db/schema";
 import { adminDb, withOrg } from "@/lib/db/client";
 import { HttpError } from "@/lib/api";
@@ -22,6 +26,8 @@ import { apps as catalogApps } from "@/lib/catalog/load";
 
 export const ANSWERS = ["yes", "already_use_app", "no_app_needed", "numbers_wrong", "not_now"] as const;
 export type Answer = (typeof ANSWERS)[number];
+export const SUB_REASONS = ["wrong_category", "figure_mismatch", "one_off", "miscoded"] as const;
+export type SubReason = (typeof SUB_REASONS)[number];
 export const SNOOZE_DAYS = 90;
 
 const ANSWERABLE = new Set(["flagged", "covered", "marked_fine", "snoozed", "queued"]);
@@ -42,6 +48,7 @@ export async function submitFeedback(opts: {
   answer: Answer | "no";
   appId?: string;
   appName?: string;
+  subReason?: SubReason;
   note?: string;
   now?: Date;
 }) {
@@ -50,23 +57,19 @@ export async function submitFeedback(opts: {
   const known = opts.appId ? catalogApps().find((a) => a.id === opts.appId) : undefined;
   if (answer === "already_use_app" && !known && !opts.appName?.trim()) throw new HttpError(422, "Pick the app you use, or type its name");
   const appName = known?.name ?? opts.appName?.trim() ?? null;
+  const subReason = answer === "numbers_wrong" ? (opts.subReason ?? null) : null;
 
+  let feedbackRow: { id: string; createdAt: Date } | null = null;
   const flag = await withOrg(orgId, async (tx) => {
     const [f] = await tx.select().from(flags).where(eq(flags.id, flagId));
     if (!f) throw new HttpError(404, "Flag not found");
     if (!ANSWERABLE.has(f.state) || !f.ruleId) throw new HttpError(422, `A ${f.state} line can't be answered`);
-    await tx.insert(flagFeedback).values({
+    const [row] = await tx.insert(flagFeedback).values({
       flagId, orgId, userId, lineKey: f.lineKey, ruleId: f.ruleId, ruleVersion: f.ruleVersion, answer,
-      appId: known?.id ?? null, appName: answer === "already_use_app" ? appName : null, note: note ?? null,
-    });
-    const where = and(eq(lineOverrides.lineKey, f.lineKey), eq(lineOverrides.ruleId, f.ruleId));
-    await tx.delete(lineOverrides).where(where);
-    const o = { orgId, lineKey: f.lineKey, ruleId: f.ruleId, userId };
-    if (answer === "no_app_needed") await tx.insert(lineOverrides).values({ ...o, state: "marked_fine" });
-    if (answer === "not_now") await tx.insert(lineOverrides).values({ ...o, state: "snoozed", until: addDays(opts.now ?? new Date(), SNOOZE_DAYS) });
-    if (answer === "numbers_wrong") await tx.insert(lineOverrides).values({ ...o, state: "queued" });
-    // A declared app we know covers the line now; an unknown name waits for our team to add it to the catalogue.
-    if (answer === "already_use_app" && known) await tx.insert(lineOverrides).values({ ...o, state: "declared", appId: known.id });
+      appId: known?.id ?? null, appName: answer === "already_use_app" ? appName : null, subReason, note: note ?? null,
+    }).returning({ id: flagFeedback.id, createdAt: flagFeedback.createdAt });
+    await applyOverride(tx, { orgId, lineKey: f.lineKey, ruleId: f.ruleId, userId }, answer, known?.id ?? null, opts.now ?? new Date());
+    feedbackRow = row!;
     return f;
   });
 
@@ -76,10 +79,11 @@ export async function submitFeedback(opts: {
     await enqueue({ kind: "flag_disputed", orgId, ref, reason: `"We don't need an app for this" on ${flag.lineKey} (rule ${flag.ruleId} v${flag.ruleVersion})${tail}` });
   }
   if (answer === "numbers_wrong") {
-    if (flag.xeroAccountId) {
+    const why = subReason ? ` (${subReason.replace("_", " ")})` : "";
+    if (flag.xeroAccountId && subReason !== "figure_mismatch" && subReason !== "one_off") {
       await enqueue({ kind: "account_mapping", orgId, ref: { org_id: orgId, xero_account_id: flag.xeroAccountId }, reason: `The business says ${flag.lineKey} isn't right. Check the account's category${tail}` });
     } else {
-      await enqueue({ kind: "flag_disputed", orgId, ref, reason: `"This figure isn't right" on ${flag.lineKey} (rule ${flag.ruleId} v${flag.ruleVersion})${tail}` });
+      await enqueue({ kind: "flag_disputed", orgId, ref, reason: `"The numbers are wrong"${why} on ${flag.lineKey} (rule ${flag.ruleId} v${flag.ruleVersion})${tail}` });
     }
   }
   if (answer === "already_use_app") {
@@ -94,7 +98,62 @@ export async function submitFeedback(opts: {
   }
   await computeFlags(orgId, flag.runId);
   const [after] = await withOrg(orgId, (tx) => tx.select({ id: flags.id, state: flags.state }).from(flags).where(eq(flags.id, flagId)));
-  return { flagId, answer, state: after?.state ?? null };
+  return { flagId, feedbackId: feedbackRow!.id, createdAt: feedbackRow!.createdAt, answer, state: after?.state ?? null, message: messageFor(answer, appName, known !== undefined, opts.now ?? new Date()) };
+}
+
+type Tx = Parameters<Parameters<typeof withOrg>[1]>[0];
+
+/** The line override an answer leaves behind (replaces any earlier one for the same line and rule). */
+async function applyOverride(tx: Tx, o: { orgId: string; lineKey: string; ruleId: string; userId: string | null }, answer: Answer | "no", appId: string | null, now: Date) {
+  const a = answer === "no" ? "no_app_needed" : answer;
+  await tx.delete(lineOverrides).where(and(eq(lineOverrides.lineKey, o.lineKey), eq(lineOverrides.ruleId, o.ruleId)));
+  if (a === "no_app_needed") await tx.insert(lineOverrides).values({ ...o, state: "marked_fine" });
+  if (a === "not_now") await tx.insert(lineOverrides).values({ ...o, state: "snoozed", until: addDays(now, SNOOZE_DAYS) });
+  if (a === "numbers_wrong") await tx.insert(lineOverrides).values({ ...o, state: "queued" });
+  // A declared app we know covers the line now; an unknown name waits for our team to add it to the catalogue.
+  if (a === "already_use_app" && appId) await tx.insert(lineOverrides).values({ ...o, state: "declared", appId });
+}
+
+const fmtDate = (iso: string) => new Date(iso + "T00:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+
+/** What happens next, in the user's words (UI-SPEC §5.7a "After submit"). */
+export function messageFor(answer: Answer, appName: string | null, knownApp: boolean, now: Date): string {
+  if (answer === "yes") return "Thanks. That helps us check our rules.";
+  if (answer === "already_use_app")
+    return knownApp ? `Got it. This line now counts as covered by ${appName}.` : `Thanks. We'll add ${appName} to our list and check this line again.`;
+  if (answer === "no_app_needed") return "Got it. We've marked this line fine.";
+  if (answer === "numbers_wrong") return "Thanks. We're checking this line. It shows as Checking until we have.";
+  return `Got it. Hidden until ${fmtDate(addDays(now, SNOOZE_DAYS))}.`;
+}
+
+/**
+ * Undo (UI-SPEC §5.7a): remove the latest answer on a flag and put back what the answer before it did. Items it
+ * raised for our team stay in the queue (a person may already be looking). The deleted row leaves the
+ * false-positive report with it.
+ */
+export async function undoFeedback(opts: { orgId: string; flagId: string; userId: string | null }) {
+  const { orgId, flagId } = opts;
+  const flag = await withOrg(orgId, async (tx) => {
+    const [f] = await tx.select().from(flags).where(eq(flags.id, flagId));
+    if (!f || !f.ruleId) throw new HttpError(404, "Flag not found");
+    const [latest] = await tx.select().from(flagFeedback).where(eq(flagFeedback.flagId, flagId)).orderBy(desc(flagFeedback.createdAt)).limit(1);
+    if (!latest) throw new HttpError(404, "No answer to undo");
+    await tx.delete(flagFeedback).where(eq(flagFeedback.id, latest.id));
+    // The previous answer on this line (any run) decides the override now.
+    const [prev] = await tx
+      .select()
+      .from(flagFeedback)
+      .where(and(eq(flagFeedback.lineKey, f.lineKey), eq(flagFeedback.ruleId, f.ruleId)))
+      .orderBy(desc(flagFeedback.createdAt))
+      .limit(1);
+    const o = { orgId, lineKey: f.lineKey, ruleId: f.ruleId, userId: opts.userId };
+    if (prev) await applyOverride(tx, o, prev.answer, prev.appId, prev.createdAt);
+    else await tx.delete(lineOverrides).where(and(eq(lineOverrides.lineKey, f.lineKey), eq(lineOverrides.ruleId, f.ruleId)));
+    return f;
+  });
+  await computeFlags(orgId, flag.runId);
+  const [after] = await withOrg(orgId, (tx) => tx.select({ state: flags.state }).from(flags).where(eq(flags.id, flagId)));
+  return { flagId, state: after?.state ?? null, message: "Answer removed." };
 }
 
 export type Rate = { answered: number; falsePositives: number; misses: number; notNow: number; rate: number | null; missRate: number | null };
