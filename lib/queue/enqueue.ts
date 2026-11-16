@@ -41,17 +41,21 @@ export const refHash = (ref: unknown) => createHash("sha256").update(stableJson(
  * Items a person resolved or dismissed stay closed.
  */
 export async function enqueue(
-  item: { kind: QueueKind; orgId: string | null; ref: Record<string, unknown>; reason: string },
+  item: { kind: QueueKind; orgId: string | null; ref: Record<string, unknown>; reason: string; priority?: "high" | "normal" },
   db?: Db,
 ): Promise<boolean> {
   db ??= await adminDb();
   const rows = await db
     .insert(reviewQueue)
-    .values({ kind: item.kind, orgId: item.orgId, ref: item.ref, refHash: refHash(item.ref), reason: item.reason })
+    .values({ kind: item.kind, orgId: item.orgId, ref: item.ref, refHash: refHash(item.ref), reason: item.reason, priority: item.priority ?? "normal" })
     .onConflictDoUpdate({
       target: [reviewQueue.kind, reviewQueue.refHash],
-      set: { status: "open", reason: item.reason, resolution: null, assignee: null, resolvedAt: null },
-      setWhere: sql`${reviewQueue.status} = 'done' and ${reviewQueue.resolution}->>'auto' = 'true'`,
+      set: { status: "open", reason: item.reason, priority: item.priority ?? "normal", resolution: null, assignee: null, resolvedAt: null },
+      // Reopen what the system closed itself; a high-priority report also updates an item that's still open.
+      setWhere:
+        item.priority === "high"
+          ? sql`${reviewQueue.status} = 'open' or (${reviewQueue.status} = 'done' and ${reviewQueue.resolution}->>'auto' = 'true')`
+          : sql`${reviewQueue.status} = 'done' and ${reviewQueue.resolution}->>'auto' = 'true'`,
     })
     .returning({ id: reviewQueue.id, inserted: sql<boolean>`xmax = 0` });
   const r = rows[0];
@@ -88,7 +92,7 @@ export async function autoClose(kind: QueueKind, ref: Record<string, unknown>, n
   return closed.length;
 }
 
-export type QueueItem = { kind: QueueKind; orgId: string | null; ref: Record<string, unknown>; reason: string };
+export type QueueItem = { kind: QueueKind; orgId: string | null; ref: Record<string, unknown>; reason: string; priority?: "high" | "normal" };
 
 /**
  * Write items collected inside a withOrg() transaction, after it commits. The queue lives on the owner

@@ -98,7 +98,7 @@ export function computeFlags(lines: LineIn[], ctx: FlagCtx): FlagOut[] {
   /** The user's answer for this line, ignoring a snooze that has run out. */
   const overrideOf = (lineKey: string, ruleId: string): LineOverride | undefined => {
     const o = ctx.overrides.get(`${lineKey}|${ruleId}`);
-    return o && !(o.state === "snoozed" && o.until && o.until <= today) ? o : undefined;
+    return o && !(o.until && o.until <= today) ? o : undefined;
   };
   const work: Work[] = lines.map((l) => {
     const base = l.kind === "bs" ? ctx.totalAssets : ctx.revenue;

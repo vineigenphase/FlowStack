@@ -57,7 +57,8 @@ export async function listQueue(opts: { kind?: string; status?: "open" | "done" 
     .select()
     .from(reviewQueue)
     .where(where)
-    .orderBy(asc(reviewQueue.createdAt))
+    // High priority first (round-2 3b), then oldest first.
+    .orderBy(asc(reviewQueue.priority), asc(reviewQueue.createdAt))
     .limit(opts.limit ?? 200);
 }
 

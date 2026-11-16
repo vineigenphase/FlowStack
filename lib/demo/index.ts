@@ -89,7 +89,7 @@ export async function guestFeedback(
   if (input.subReason && !SUB_REASONS.includes(input.subReason)) throw new HttpError(422, "Unknown sub-reason");
   const db = await adminDb();
   await db.insert(guestActions).values({ guestId, orgId, kind: "feedback", flagId, payload: { ...input, answer }, createdAt: now });
-  return { flagId, answer, state: STATE_AFTER[answer], message: `${messageFor(answer, input.appName ?? input.appId ?? null, Boolean(input.appId), now)} (Demo: kept for 24 hours, nobody else sees it.)`, guest: true };
+  return { flagId, answer, state: answer === "numbers_wrong" && input.subReason === "one_off" ? "marked_fine" : STATE_AFTER[answer], message: `${messageFor(answer, input.appName ?? input.appId ?? null, Boolean(input.appId), now)} (Demo: kept for 24 hours, nobody else sees it.)`, guest: true };
 }
 
 export async function undoGuestFeedback(guestId: string, flagId: string) {
@@ -117,7 +117,7 @@ export async function guestAnswers(guestId: string, now = new Date()): Promise<M
   for (const r of rows) {
     if (!r.flagId || out.has(r.flagId)) continue;
     const p = r.payload as { answer: Answer; subReason?: SubReason };
-    out.set(r.flagId, { answer: p.answer, subReason: p.subReason, state: STATE_AFTER[p.answer] });
+    out.set(r.flagId, { answer: p.answer, subReason: p.subReason, state: p.answer === "numbers_wrong" && p.subReason === "one_off" ? "marked_fine" : STATE_AFTER[p.answer] });
   }
   return out;
 }

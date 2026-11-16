@@ -3,7 +3,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { eq } from "drizzle-orm";
 import { freshDb } from "./helpers/db";
 import { adminDb, withOrg } from "@/lib/db/client";
-import { flags, orgs, reviewQueue, users, waitlist } from "@/db/schema";
+import { flags, lineOverrides, orgs, reviewQueue, users, waitlist } from "@/db/schema";
 import { runRefresh } from "@/lib/sync/refresh";
 import { FixtureXeroClient } from "@/lib/xero/client";
 import { submitFeedback, undoFeedback } from "@/lib/feedback";
@@ -112,15 +112,17 @@ describe("read models", () => {
 });
 
 describe("feedback sub-reasons and undo", () => {
-  it("numbers_wrong + one_off: queued, a figure dispute for our team, and the line's one-off note", async () => {
+  it("numbers_wrong + one_off (round-2 3b): fine until the financial year ends, the one-off note, no review item", async () => {
     const f = await flagFor("pl:310");
+    const before = (await (await adminDb()).select().from(reviewQueue)).length;
     const out = await submitFeedback({ orgId, flagId: f.id, userId: null, answer: "numbers_wrong", subReason: "one_off" });
-    expect(out.state).toBe("queued");
-    expect(out.message).toMatch(/checking/i);
+    expect(out.state).toBe("marked_fine");
+    expect(out.message).toMatch(/hidden this line until .* end of this financial year/);
     const line = (await C.lineByFlag(orgId, f.id))!;
     expect(line.oneOffNote).toBeTruthy();
-    const q = await (await adminDb()).select().from(reviewQueue).where(eq(reviewQueue.kind, "flag_disputed"));
-    expect(q.some((x) => x.reason.includes("one off") && x.reason.includes("pl:310"))).toBe(true);
+    expect((await (await adminDb()).select().from(reviewQueue)).length).toBe(before);
+    const [ov] = await withOrg(orgId, (tx) => tx.select().from(lineOverrides).where(eq(lineOverrides.lineKey, "pl:310")));
+    expect(ov).toMatchObject({ state: "marked_fine", until: expect.stringMatching(/^\d{4}-\d{2}-\d{2}$/) });
     const d = (await C.lineDetail(orgId, "pl:310"))!;
     expect(d.feedback).toMatchObject({ answer: "numbers_wrong", subReason: "one_off" });
   });

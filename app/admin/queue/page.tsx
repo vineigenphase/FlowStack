@@ -51,7 +51,9 @@ export default async function QueuePage() {
                     <b>{i.review ? i.review.appName : i.quote ? i.quote.appNames.join(", ") : (i.orgName ?? String(i.ref.app_id ?? "Catalogue"))}</b>
                     <span className="muted small">{i.orgName ? `${i.orgName} · ` : ""}{day(i.createdAt)}</span>
                   </span>
-                  <span className="small">{i.reason}</span>
+                  <span className="small">
+                    {i.priority === "high" ? <b className="badge">High priority</b> : null} {i.reason}
+                  </span>
                   {i.review ? (
                     <blockquote className="queue-quote">
                       <span className="small muted block">

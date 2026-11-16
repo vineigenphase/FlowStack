@@ -695,6 +695,8 @@ export const reviewQueue = pgTable(
     ref: jsonb("ref").notNull(),
     refHash: text("ref_hash").notNull(),
     reason: text("reason").notNull(),
+    /** Round-2 3b: "high" sorts first (e.g. Xero shows a different figure from the one we hold). */
+    priority: text("priority", { enum: ["high", "normal"] }).notNull().default("normal"),
     status: text("status", { enum: ["open", "done", "dismissed"] }).notNull().default("open"),
     assignee: text("assignee"),
     resolution: jsonb("resolution"),

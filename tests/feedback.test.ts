@@ -89,7 +89,7 @@ describe("feedback", () => {
     await submitFeedback({ orgId, flagId: wages.id, userId: null, answer: "yes" });
     const r = await fpReport();
     // pl:310 latest answer is "yes", pl:477 "yes" → 0 of 2.
-    expect(r.overall).toEqual({ answered: 2, falsePositives: 0, misses: 0, notNow: 0, rate: 0, missRate: 0 });
+    expect(r.overall).toEqual({ answered: 2, falsePositives: 0, misses: 0, dataQuality: 0, notNow: 0, rate: 0, missRate: 0, dataQualityRate: 0 });
     expect(r.byRule.map((x) => x.key)).toEqual(["cost_of_sales_stock@v2", "payroll_no_bridge@v2"]);
   });
 });
@@ -104,8 +104,8 @@ describe("fpReportFrom", () => {
     ]);
     expect(r.overall).toMatchObject({ answered: 2, falsePositives: 1, rate: 0.5 });
     expect(r.byRule).toEqual([
-      { key: "r@v1", answered: 1, falsePositives: 1, misses: 0, notNow: 0, rate: 1, missRate: 0 },
-      { key: "r@v2", answered: 1, falsePositives: 0, misses: 0, notNow: 0, rate: 0, missRate: 0 },
+      { key: "r@v1", answered: 1, falsePositives: 1, misses: 0, dataQuality: 0, notNow: 0, rate: 1, missRate: 0, dataQualityRate: 0 },
+      { key: "r@v2", answered: 1, falsePositives: 0, misses: 0, dataQuality: 0, notNow: 0, rate: 0, missRate: 0, dataQualityRate: 0 },
     ]);
     expect(r.byWeek.map((w) => w.key)).toEqual(["2026-W45", "2026-W46"]);
   });
@@ -113,7 +113,23 @@ describe("fpReportFrom", () => {
     const at = d("2026-11-09T10:00:00Z");
     const row = (flagId: string, answer: string) => ({ flagId, ruleId: "r", ruleVersion: 1, answer, createdAt: at });
     const r = fpReportFrom([row("a", "yes"), row("b", "no_app_needed"), row("c", "numbers_wrong"), row("d", "already_use_app"), row("e", "not_now"), row("f", "yes")]);
-    expect(r.overall).toEqual({ answered: 5, falsePositives: 2, misses: 1, notNow: 1, rate: 0.4, missRate: 0.2 });
+    expect(r.overall).toEqual({ answered: 5, falsePositives: 2, misses: 1, dataQuality: 0, notNow: 1, rate: 0.4, missRate: 0.2, dataQualityRate: 0 });
+  });
+  it("round-2 3b: miscoded is data quality, not our false positive; the other sub-reasons are", () => {
+    const at = d("2026-11-09T10:00:00Z");
+    const row = (flagId: string, answer: string, subReason?: string) => ({ flagId, ruleId: "r", ruleVersion: 1, answer, subReason, createdAt: at });
+    const r = fpReportFrom([
+      row("a", "yes"),
+      row("b", "numbers_wrong", "wrong_category"),
+      row("c", "numbers_wrong", "figure_mismatch"),
+      row("d", "numbers_wrong", "one_off"),
+      row("e", "numbers_wrong", "miscoded"),
+      row("f", "already_use_app"),
+      row("g", "not_now"),
+      row("h", "numbers_wrong"), // before sub-reasons: still ours
+    ]);
+    expect(r.overall).toEqual({ answered: 7, falsePositives: 4, misses: 1, dataQuality: 1, notNow: 1, rate: 0.571, missRate: 0.143, dataQualityRate: 0.143 });
+    expect(r.byWeek[0]).toMatchObject({ key: "2026-W46", dataQuality: 1 });
   });
   it("iso weeks at year boundaries", () => {
     expect(isoWeek(d("2026-01-01T00:00:00Z"))).toBe("2026-W01");
@@ -128,5 +144,40 @@ describe("scoreEval", () => {
     expect(s.overall).toMatchObject({ predictedFlagged: 2, falsePositives: 1, fpRate: 0.5, labelledFlagged: 2, missed: 1, missedRate: 0.5 });
     expect(s.rules.find((x) => x.rule === "y")).toMatchObject({ fpRate: null, missedRate: 1 });
     expect(s.stateAgreement).toBe(0.5);
+  });
+});
+
+describe("round-2 3b: one-off for this period only, figure mismatch re-fetched", () => {
+  it("a one-off override ends with the financial year; after that the line is judged afresh", async () => {
+    const [f] = await withOrg(orgId, (tx) => tx.select().from(flags).where(and(eq(flags.state, "flagged"), eq(flags.statementKind, "pl"))));
+    const key = f!.lineKey;
+    const out = await submitFeedback({ orgId, flagId: f!.id, userId: null, answer: "numbers_wrong", subReason: "one_off" });
+    expect(out.state).toBe("marked_fine");
+    const [ov] = await withOrg(orgId, (tx) => tx.select().from(lineOverrides).where(eq(lineOverrides.lineKey, key)));
+    expect(ov!.until).toBeTruthy();
+    // Pretend the period is over: the override no longer applies.
+    await withOrg(orgId, (tx) => tx.update(lineOverrides).set({ until: "2000-01-01" }).where(eq(lineOverrides.lineKey, key)));
+    await recompute(orgId);
+    expect((await flagFor(key)).state).toBe("flagged");
+  });
+
+  it("figure_mismatch: Xero still shows our figure → normal item; Xero shows another → high priority with both values", async () => {
+    const f = await flagFor("pl:477");
+    const same = await submitFeedback({ orgId, flagId: f.id, userId: null, answer: "numbers_wrong", subReason: "figure_mismatch" });
+    expect(same.figure).toMatchObject({ status: "same" });
+    expect(same.message).toMatch(/still shows the figure we hold/);
+    const db = await adminDb();
+    const q1 = (await db.select().from(reviewQueue).where(eq(reviewQueue.kind, "flag_disputed"))).find((q) => q.reason.includes("pl:477"))!;
+    expect(q1.priority).toBe("normal");
+
+    // Our copy is now stale: the re-fetch finds a different figure.
+    await withOrg(orgId, (tx) => tx.update(flags).set({ value: 1 }).where(eq(flags.id, f.id)));
+    const diff = await submitFeedback({ orgId, flagId: f.id, userId: null, answer: "numbers_wrong", subReason: "figure_mismatch" });
+    expect(diff.figure).toMatchObject({ status: "different", ours: 1 });
+    const q2 = (await db.select().from(reviewQueue).where(eq(reviewQueue.kind, "flag_disputed"))).find((q) => q.reason.includes("pl:477"))!;
+    expect(q2.priority).toBe("high");
+    expect(q2.reason).toMatch(/Xero now shows £[\d,]+\.\d\d, we hold £1\.00/);
+    const { listQueue } = await import("@/lib/queue/resolve");
+    expect((await listQueue())[0]!.priority).toBe("high");
   });
 });

@@ -1,0 +1,1 @@
+ALTER TABLE "review_queue" ADD COLUMN "priority" text DEFAULT 'normal' NOT NULL;

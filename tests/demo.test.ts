@@ -63,7 +63,7 @@ describe("guest access", () => {
     const [f] = await withOrg(DEMO_ORG_UUID, (tx) => tx.select().from(flags).where(eq(flags.state, "flagged")).limit(1));
     const before = await fpReport();
     const out = await guestFeedback(g, DEMO_ORG_UUID, f!.id, { answer: "numbers_wrong", subReason: "one_off" });
-    expect(out).toMatchObject({ state: "queued", guest: true });
+    expect(out).toMatchObject({ state: "marked_fine", guest: true });
     expect((await guestAnswers(g)).get(f!.id)).toMatchObject({ answer: "numbers_wrong", subReason: "one_off" });
     await guestShortlistAdd(g, DEMO_ORG_UUID, "cin7", f!.lineKey);
     expect(await guestShortlist(g)).toEqual([expect.objectContaining({ appId: "cin7" })]);

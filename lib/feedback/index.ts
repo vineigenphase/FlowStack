@@ -7,22 +7,29 @@
  *   numbers_wrong   → false positive (mapping/data): line queued; account_mapping item (flag_disputed for trends)
  *   not_now         → neither: line snoozed for 90 days
  *
- *   false-positive rate = (no_app_needed + numbers_wrong) ÷ (yes + no_app_needed + numbers_wrong + already_use_app)
- *   detection miss rate = already_use_app ÷ same denominator;  not_now is a count, in neither.
- * Each flag's latest answer counts. The pre-v1.1 "no" counts as no_app_needed.
- * TODO(CHANGES-v1.1.md §4 item 5): the four answers and which count as false positives are PROPOSED.
+ * Four figures (round-2 3b, 10 Nov), per rule and per week, over answered = yes + no_app_needed + numbers_wrong + already_use_app:
+ *   false-positive rate = (no_app_needed + numbers_wrong with sub-reason wrong_category | figure_mismatch | one_off) ÷ answered
+ *                         (a numbers_wrong from before sub-reasons existed counts here too)
+ *   detection-miss rate = already_use_app ÷ answered
+ *   data-quality rate   = numbers_wrong / miscoded ÷ answered   (their books, not our mistake)
+ *   not now             = a count, in none of the rates
+ * Each flag's latest answer counts. The pre-v1.1 "no" counts as no_app_needed. The eval gate uses the FP rate only.
+ * TODO(NEXT-STEPS §6 item 5): whether `miscoded` stays out of the FP rate is PROPOSED (yes).
  *
  * UI-SPEC §5.7a (13 Nov 2026): "The numbers are wrong" carries a sub-reason. The line is queued either way; the
  * sub-reason picks the item our team gets (wrong_category / miscoded → account check, figure_mismatch / one_off →
  * flag_disputed) and one_off adds the line's "May be a one-off" note. undoFeedback() removes the latest answer.
  */
 import { and, desc, eq } from "drizzle-orm";
-import { flagFeedback, flags, lineOverrides } from "@/db/schema";
+import { flagFeedback, flags, lineOverrides, orgs, statements } from "@/db/schema";
 import { adminDb, withOrg } from "@/lib/db/client";
 import { HttpError } from "@/lib/api";
 import { enqueue } from "@/lib/queue/enqueue";
 import { computeFlags } from "@/lib/signals/run";
 import { apps as catalogApps } from "@/lib/catalog/load";
+import { financialYear } from "@/lib/sync/periods";
+import { addMonths } from "@/lib/detect/lifecycle";
+import { checkFigure, figureOutcome, type FigureCheck } from "./figure-check";
 
 export const ANSWERS = ["yes", "already_use_app", "no_app_needed", "numbers_wrong", "not_now"] as const;
 export type Answer = (typeof ANSWERS)[number];
@@ -51,6 +58,8 @@ export async function submitFeedback(opts: {
   subReason?: SubReason;
   note?: string;
   now?: Date;
+  /** Tests: stand in for the Xero re-fetch. */
+  checkFigure?: (orgId: string, flagId: string) => Promise<FigureCheck>;
 }) {
   const { orgId, flagId, userId, note } = opts;
   const answer: Answer = opts.answer === "no" ? "no_app_needed" : opts.answer;
@@ -60,6 +69,7 @@ export async function submitFeedback(opts: {
   const subReason = answer === "numbers_wrong" ? (opts.subReason ?? null) : null;
 
   let feedbackRow: { id: string; createdAt: Date } | null = null;
+  let periodEnd: string | null = null;
   const flag = await withOrg(orgId, async (tx) => {
     const [f] = await tx.select().from(flags).where(eq(flags.id, flagId));
     if (!f) throw new HttpError(404, "Flag not found");
@@ -68,7 +78,8 @@ export async function submitFeedback(opts: {
       flagId, orgId, userId, lineKey: f.lineKey, ruleId: f.ruleId, ruleVersion: f.ruleVersion, answer,
       appId: known?.id ?? null, appName: answer === "already_use_app" ? appName : null, subReason, note: note ?? null,
     }).returning({ id: flagFeedback.id, createdAt: flagFeedback.createdAt });
-    await applyOverride(tx, { orgId, lineKey: f.lineKey, ruleId: f.ruleId, userId }, answer, known?.id ?? null, opts.now ?? new Date());
+    periodEnd = subReason === "one_off" ? await currentPeriodEnd(tx, orgId, f.runId, opts.now ?? new Date()) : null;
+    await applyOverride(tx, { orgId, lineKey: f.lineKey, ruleId: f.ruleId, userId }, answer, known?.id ?? null, opts.now ?? new Date(), subReason, periodEnd);
     feedbackRow = row!;
     return f;
   });
@@ -78,9 +89,17 @@ export async function submitFeedback(opts: {
   if (answer === "no_app_needed") {
     await enqueue({ kind: "flag_disputed", orgId, ref, reason: `"We don't need an app for this" on ${flag.lineKey} (rule ${flag.ruleId} v${flag.ruleVersion})${tail}` });
   }
-  if (answer === "numbers_wrong") {
+  // Round-2 3b: a one-off is the business telling us what the line is; it's hidden for this period, no review needed.
+  // Round-2 3b: "the amount isn't what our Xero shows" → re-fetch that report now and compare.
+  let figure: { result: FigureCheck; message: string } | null = null;
+  if (answer === "numbers_wrong" && subReason === "figure_mismatch") {
+    const result = await (opts.checkFigure ?? checkFigure)(orgId, flagId);
+    const out = figureOutcome(result, flag.lineKey);
+    figure = { result, message: out.message };
+    await enqueue({ kind: "flag_disputed", orgId, ref, reason: `${out.reason}${tail}`, priority: out.priority });
+  } else if (answer === "numbers_wrong" && subReason !== "one_off") {
     const why = subReason ? ` (${subReason.replace("_", " ")})` : "";
-    if (flag.xeroAccountId && subReason !== "figure_mismatch" && subReason !== "one_off") {
+    if (flag.xeroAccountId) {
       await enqueue({ kind: "account_mapping", orgId, ref: { org_id: orgId, xero_account_id: flag.xeroAccountId }, reason: `The business says ${flag.lineKey} isn't right. Check the account's category${tail}` });
     } else {
       await enqueue({ kind: "flag_disputed", orgId, ref, reason: `"The numbers are wrong"${why} on ${flag.lineKey} (rule ${flag.ruleId} v${flag.ruleVersion})${tail}` });
@@ -98,18 +117,42 @@ export async function submitFeedback(opts: {
   }
   await computeFlags(orgId, flag.runId);
   const [after] = await withOrg(orgId, (tx) => tx.select({ id: flags.id, state: flags.state }).from(flags).where(eq(flags.id, flagId)));
-  return { flagId, feedbackId: feedbackRow!.id, createdAt: feedbackRow!.createdAt, answer, state: after?.state ?? null, message: messageFor(answer, appName, known !== undefined, opts.now ?? new Date()) };
+  const message =
+    subReason === "one_off" && periodEnd
+      ? `Got it. We've hidden this line until ${fmtDate(periodEnd)}, the end of this financial year.`
+      : figure
+        ? figure.message
+        : messageFor(answer, appName, known !== undefined, opts.now ?? new Date());
+  return { flagId, feedbackId: feedbackRow!.id, createdAt: feedbackRow!.createdAt, answer, state: after?.state ?? null, message, figure: figure?.result ?? null };
 }
 
 type Tx = Parameters<Parameters<typeof withOrg>[1]>[0];
 
+/** The last day of the financial year the flag's figures belong to (round-2 3b: a one-off is hidden for this period only). */
+async function currentPeriodEnd(tx: Tx, orgId: string, runId: string, now: Date): Promise<string> {
+  const [o] = await tx.select({ m: orgs.fyEndMonth, d: orgs.fyEndDay }).from(orgs).where(eq(orgs.id, orgId));
+  const [pl] = await tx.select({ to: statements.periodTo }).from(statements).where(and(eq(statements.runId, runId), eq(statements.kind, "pl"))).limit(1);
+  const asAt = pl?.to ?? now.toISOString().slice(0, 10);
+  return addMonths(financialYear(asAt, o?.m ?? 3, o?.d ?? 31).priorEnd, 12);
+}
+
 /** The line override an answer leaves behind (replaces any earlier one for the same line and rule). */
-async function applyOverride(tx: Tx, o: { orgId: string; lineKey: string; ruleId: string; userId: string | null }, answer: Answer | "no", appId: string | null, now: Date) {
+async function applyOverride(
+  tx: Tx,
+  o: { orgId: string; lineKey: string; ruleId: string; userId: string | null },
+  answer: Answer | "no",
+  appId: string | null,
+  now: Date,
+  subReason?: string | null,
+  periodEnd?: string | null,
+) {
   const a = answer === "no" ? "no_app_needed" : answer;
   await tx.delete(lineOverrides).where(and(eq(lineOverrides.lineKey, o.lineKey), eq(lineOverrides.ruleId, o.ruleId)));
   if (a === "no_app_needed") await tx.insert(lineOverrides).values({ ...o, state: "marked_fine" });
   if (a === "not_now") await tx.insert(lineOverrides).values({ ...o, state: "snoozed", until: addDays(now, SNOOZE_DAYS) });
-  if (a === "numbers_wrong") await tx.insert(lineOverrides).values({ ...o, state: "queued" });
+  // A one-off: fine until the current financial year ends, then judged afresh.
+  if (a === "numbers_wrong" && subReason === "one_off") await tx.insert(lineOverrides).values({ ...o, state: "marked_fine", until: periodEnd ?? null });
+  else if (a === "numbers_wrong") await tx.insert(lineOverrides).values({ ...o, state: "queued" });
   // A declared app we know covers the line now; an unknown name waits for our team to add it to the catalogue.
   if (a === "already_use_app" && appId) await tx.insert(lineOverrides).values({ ...o, state: "declared", appId });
 }
@@ -147,7 +190,8 @@ export async function undoFeedback(opts: { orgId: string; flagId: string; userId
       .orderBy(desc(flagFeedback.createdAt))
       .limit(1);
     const o = { orgId, lineKey: f.lineKey, ruleId: f.ruleId, userId: opts.userId };
-    if (prev) await applyOverride(tx, o, prev.answer, prev.appId, prev.createdAt);
+    const prevEnd = prev?.subReason === "one_off" ? await currentPeriodEnd(tx, orgId, f.runId, prev.createdAt) : null;
+    if (prev) await applyOverride(tx, o, prev.answer, prev.appId, prev.createdAt, prev.subReason, prevEnd);
     else await tx.delete(lineOverrides).where(and(eq(lineOverrides.lineKey, f.lineKey), eq(lineOverrides.ruleId, f.ruleId)));
     return f;
   });
@@ -156,7 +200,16 @@ export async function undoFeedback(opts: { orgId: string; flagId: string; userId
   return { flagId, state: after?.state ?? null, message: "Answer removed." };
 }
 
-export type Rate = { answered: number; falsePositives: number; misses: number; notNow: number; rate: number | null; missRate: number | null };
+export type Rate = {
+  answered: number;
+  falsePositives: number;
+  misses: number;
+  dataQuality: number;
+  notNow: number;
+  rate: number | null;
+  missRate: number | null;
+  dataQualityRate: number | null;
+};
 
 /** ISO week label, e.g. 2026-W45. */
 export function isoWeek(d: Date): string {
@@ -168,17 +221,27 @@ export function isoWeek(d: Date): string {
   return `${y}-W${String(week).padStart(2, "0")}`;
 }
 
-type Row = { flagId: string; ruleId: string | null; ruleVersion: number | null; answer: string; createdAt: Date };
+type Row = { flagId: string; ruleId: string | null; ruleVersion: number | null; answer: string; subReason?: string | null; createdAt: Date };
 
-const norm = (a: string): Answer => (a === "no" ? "no_app_needed" : (a as Answer));
+/** Which figure an answer counts in (round-2 3b). */
+type Bucket = "yes" | "fp" | "miss" | "dq" | "not_now";
+export function bucketOf(answer: string, subReason?: string | null): Bucket {
+  if (answer === "yes") return "yes";
+  if (answer === "already_use_app") return "miss";
+  if (answer === "not_now") return "not_now";
+  if (answer === "numbers_wrong" && subReason === "miscoded") return "dq";
+  return "fp"; // no / no_app_needed, numbers_wrong (wrong_category, figure_mismatch, one_off, or none recorded)
+}
 const r3 = (n: number) => Math.round(n * 1000) / 1000;
 
-function rateOf(answers: Answer[]): Rate {
-  const c = (k: Answer) => answers.filter((a) => a === k).length;
-  const fp = c("no_app_needed") + c("numbers_wrong");
-  const misses = c("already_use_app");
-  const denom = c("yes") + fp + misses;
-  return { answered: denom, falsePositives: fp, misses, notNow: c("not_now"), rate: denom ? r3(fp / denom) : null, missRate: denom ? r3(misses / denom) : null };
+function rateOf(buckets: Bucket[]): Rate {
+  const c = (k: Bucket) => buckets.filter((b) => b === k).length;
+  const fp = c("fp");
+  const misses = c("miss");
+  const dq = c("dq");
+  const denom = c("yes") + fp + misses + dq;
+  const r = (n: number) => (denom ? r3(n / denom) : null);
+  return { answered: denom, falsePositives: fp, misses, dataQuality: dq, notNow: c("not_now"), rate: r(fp), missRate: r(misses), dataQualityRate: r(dq) };
 }
 
 /** Pure: latest answer per flag → overall, per rule (id@version) and per ISO week. */
@@ -189,13 +252,14 @@ export function fpReportFrom(rows: Row[]) {
     if (!cur || r.createdAt > cur.createdAt) latest.set(r.flagId, r);
   }
   const answers = [...latest.values()];
+  const b = (a: Row) => bucketOf(a.answer, a.subReason);
   const group = (key: (a: Row) => string) => {
-    const m = new Map<string, Answer[]>();
-    for (const a of answers) m.set(key(a), [...(m.get(key(a)) ?? []), norm(a.answer)]);
-    return [...m].sort(([a], [b]) => a.localeCompare(b)).map(([k, v]) => ({ key: k, ...rateOf(v) }));
+    const m = new Map<string, Bucket[]>();
+    for (const a of answers) m.set(key(a), [...(m.get(key(a)) ?? []), b(a)]);
+    return [...m].sort(([x], [y]) => x.localeCompare(y)).map(([k, v]) => ({ key: k, ...rateOf(v) }));
   };
   return {
-    overall: rateOf(answers.map((a) => norm(a.answer))),
+    overall: rateOf(answers.map(b)),
     byRule: group((a) => `${a.ruleId ?? "(none)"}@v${a.ruleVersion ?? 0}`),
     byWeek: group((a) => isoWeek(a.createdAt)),
   };
@@ -204,7 +268,7 @@ export function fpReportFrom(rows: Row[]) {
 export async function fpReport() {
   const db = await adminDb();
   const rows = await db
-    .select({ flagId: flagFeedback.flagId, ruleId: flagFeedback.ruleId, ruleVersion: flagFeedback.ruleVersion, answer: flagFeedback.answer, createdAt: flagFeedback.createdAt })
+    .select({ flagId: flagFeedback.flagId, ruleId: flagFeedback.ruleId, ruleVersion: flagFeedback.ruleVersion, answer: flagFeedback.answer, subReason: flagFeedback.subReason, createdAt: flagFeedback.createdAt })
     .from(flagFeedback);
   return fpReportFrom(rows);
 }

@@ -31,6 +31,7 @@ export type QueueRow = {
   id: string;
   kind: QueueKind;
   reason: string;
+  priority: "high" | "normal";
   createdAt: Date;
   orgName: string | null;
   ref: Record<string, unknown>;
@@ -67,6 +68,7 @@ export async function queueView(): Promise<{ kind: QueueKind; label: string; ite
       id: i.id,
       kind,
       reason: i.reason,
+      priority: i.priority,
       createdAt: i.createdAt,
       orgName: i.orgId ? (orgName.get(i.orgId) ?? null) : null,
       ref,

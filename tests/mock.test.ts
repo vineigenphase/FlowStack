@@ -53,7 +53,7 @@ describe("scenarios", () => {
     const post = (b: unknown) => index("POST", ["flags", line.flagId!, "feedback"], new URLSearchParams(), b);
     expect(post({ answer: "numbers_wrong" }).status).toBe(400);
     const r = post({ answer: "numbers_wrong", subReason: "one_off" }).json as T.FeedbackResult;
-    expect(r.line).toMatchObject({ state: "queued", oneOffNote: expect.any(String) });
+    expect(r.line).toMatchObject({ state: "marked_fine", oneOffNote: expect.any(String) });
     expect((post({ answer: "not_now" }).json as T.FeedbackResult).line.snoozedUntil).toBeTruthy();
     const nf = get<T.ApiError>("/nothing/here");
     expect(nf.status).toBe(404);

@@ -136,7 +136,7 @@ function feedback(flagId: string, input: T.FeedbackInput, undo: boolean): MockRe
   if (!line) return err(404, "NOT_FOUND", "Flag not found");
   if (undo) return ok({ line, message: "Answer removed." });
   if (input.answer === "numbers_wrong" && !input.subReason) return err(400, "VALIDATION", "Pick what's wrong with the numbers");
-  const state = STATE_AFTER[input.answer];
+  const state = input.answer === "numbers_wrong" && input.subReason === "one_off" ? "marked_fine" : STATE_AFTER[input.answer];
   const after: T.Line = {
     ...line,
     ...(state ? { state } : {}),
