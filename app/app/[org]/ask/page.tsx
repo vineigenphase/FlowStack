@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireOrgMember } from "@/lib/auth/session";
+import { guestOn, requireOrgMember } from "@/lib/auth/session";
 import { getSettings } from "@/lib/orgs/settings";
 import { env } from "@/lib/env";
 import { AskBox } from "@/components/ask-box";
@@ -8,6 +8,14 @@ export const dynamic = "force-dynamic";
 
 export default async function AskPage({ params }: { params: Promise<{ org: string }> }) {
   const { org } = await params;
+  if (await guestOn(org)) {
+    return (
+      <section className="panel">
+        <h2>Ask isn&apos;t part of the demo</h2>
+        <p>This is a sample business. Connect your own Xero to use Ask.</p>
+      </section>
+    );
+  }
   try {
     await requireOrgMember(org);
   } catch {

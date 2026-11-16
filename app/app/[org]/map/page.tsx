@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
-import { requireOrgMember } from "@/lib/auth/session";
+import { requireOrgReader } from "@/lib/auth/session";
 import { stackMapView } from "@/lib/read/views";
 import type { FunctionStatus, Link as XeroLink, MapFunction } from "@/lib/map/build";
 import { gbp, lineHref } from "@/lib/ui/format";
@@ -70,7 +70,7 @@ function FnCard({ org, f, side, row }: { org: string; f: MapFunction; side: "l" 
 export default async function MapPage({ params }: { params: Promise<{ org: string }> }) {
   const { org } = await params;
   try {
-    await requireOrgMember(org);
+    await requireOrgReader(org);
   } catch {
     return null;
   }

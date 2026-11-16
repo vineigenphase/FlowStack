@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireOrgMember } from "@/lib/auth/session";
+import { requireOrgReader } from "@/lib/auth/session";
 import { afterInstallView } from "@/lib/checkins";
 import { DateForm } from "@/components/date-form";
 import { PostButton } from "@/components/post-button";
@@ -49,7 +49,7 @@ function Bills({ monthly, installedOn }: { monthly: Record<string, number>; inst
 export default async function AfterPage({ params }: { params: Promise<{ org: string }> }) {
   const { org } = await params;
   try {
-    await requireOrgMember(org);
+    await requireOrgReader(org);
   } catch {
     return null;
   }

@@ -317,3 +317,11 @@ td a { font-weight: 600; }
 /* v1.1 C: app lifecycle questions */
 .app-questions .card { display: flex; flex-direction: column; gap: 8px; }
 .app-questions .actions { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* NEXT-STEPS P0.2/P0.4: plain, design-neutral notices (the designer will restyle). */
+.banner { background: var(--surface); border-bottom: 1px solid var(--line); padding: 8px 0; font-size: 0.9rem; }
+.skeleton { background: var(--surface); border: 1px solid var(--line); height: 1em; margin: 0.6em 0; animation: pulse 1.4s ease-in-out infinite; }
+.skeleton.block { height: 6em; }
+@keyframes pulse { 50% { opacity: 0.5; } }
+@media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } }
+.request-id { font: 0.75rem var(--font-m); color: var(--muted); }

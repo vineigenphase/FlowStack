@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireOrgMember } from "@/lib/auth/session";
+import { requireOrgReader } from "@/lib/auth/session";
 import { MIN_MONTHS, myReviews, PRICE_BANDS, reviewable, ROLES, SCORE_LABELS } from "@/lib/reviews";
 import { FollowupForm, ReviewForm } from "@/components/review-form";
 import { PostButton } from "@/components/post-button";
@@ -11,7 +11,7 @@ const STATUS: Record<string, string> = { pending: "Waiting for a check", publish
 export default async function ReviewsPage({ params }: { params: Promise<{ org: string }> }) {
   const { org } = await params;
   try {
-    await requireOrgMember(org);
+    await requireOrgReader(org);
   } catch {
     return null;
   }

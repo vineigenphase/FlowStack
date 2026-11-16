@@ -2,7 +2,8 @@ import { z } from "zod";
 import { body, handle, HttpError } from "@/lib/api";
 import { getSession, requireUser } from "@/lib/auth/session";
 import { JobTitle, setJobTitle } from "@/lib/me";
-import { me } from "@/lib/api/contract";
+import { guestMe, me } from "@/lib/api/contract";
+import { guestReader } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,9 @@ async function current(userId: string) {
 
 /** UI-SPEC §8 `Me`: the user, their businesses (for the switcher) and the active one. */
 export const GET = handle(async () => {
+  const s = await getSession();
+  // A /demo guest: a guest identity with the one sample business.
+  if (!s.userId && s.guestOrgId) return guestMe(guestReader(s, s.guestOrgId).guestId!, s.guestOrgId);
   const u = await requireUser();
   return current(u.userId);
 });

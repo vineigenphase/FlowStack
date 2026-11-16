@@ -5,9 +5,10 @@ import { firmMembers, firmOrgs, orgMembers, users } from "@/db/schema";
 import { adminDb } from "@/lib/db/client";
 import { env } from "@/lib/env";
 import { HttpError } from "@/lib/api";
+import { guestReader, type GuestSession, type Reader } from "@/lib/demo";
 
 /** activeOrgId: the business last switched to (v1.1 I). Every data route still checks membership itself. */
-export type SessionData = { userId?: string; email?: string; isAdmin?: boolean; activeOrgId?: string };
+export type SessionData = { userId?: string; email?: string; isAdmin?: boolean; activeOrgId?: string } & GuestSession;
 export type OAuthState = { verifier?: string; state?: string };
 
 const base = (): Omit<SessionOptions, "cookieName"> => ({
@@ -50,6 +51,41 @@ export async function requireOrgMember(orgId: string) {
   if (f) return { ...u, role: "member" as const, via: "firm" as const };
   if (!u.isAdmin) throw new HttpError(404, "Org not found");
   return { ...u, role: "member" as const, via: "admin" as const };
+}
+
+/**
+ * Read access (NEXT-STEPS P0.2): a signed-in member, or a /demo guest on the demo business. Use it on pages and GET
+ * routes only; every write keeps requireOrgMember, which a guest can never pass (no userId).
+ */
+export async function requireOrgReader(orgId: string): Promise<Reader & { email: string; isAdmin: boolean }> {
+  const s = await getSession();
+  if (s.userId) {
+    try {
+      const m = await requireOrgMember(orgId);
+      return { userId: m.userId, guestId: null, guest: false, role: m.role, email: m.email, isAdmin: m.isAdmin };
+    } catch (e) {
+      // A signed-in user who opened /demo reads the demo business as a guest (their own access is unchanged).
+      if (!(e instanceof HttpError) || e.status !== 404 || s.guestOrgId !== orgId) throw e;
+    }
+  }
+  return { ...guestReader(s, orgId), email: "", isAdmin: false };
+}
+
+/** The guest id when the visitor is a /demo guest on this org (for routes that keep guest answers apart). */
+export async function guestOn(orgId: string): Promise<string | null> {
+  const s = await getSession();
+  if (s.userId && s.guestOrgId !== orgId) return null;
+  if (s.userId && (await isMemberOf(s.userId, orgId))) return null;
+  try {
+    return guestReader(s, orgId).guestId;
+  } catch {
+    return null;
+  }
+}
+
+async function isMemberOf(userId: string, orgId: string) {
+  const [m] = await (await adminDb()).select({ r: orgMembers.role }).from(orgMembers).where(and(eq(orgMembers.orgId, orgId), eq(orgMembers.userId, userId)));
+  return Boolean(m);
 }
 
 export async function requireAdmin() {

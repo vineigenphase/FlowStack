@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { body, handle, type Params } from "@/lib/api";
-import { requireOrgMember } from "@/lib/auth/session";
+import { requireOrgMember, requireOrgReader } from "@/lib/auth/session";
 import { essentialsOf, setEssential } from "@/lib/api/contract";
 
 export const dynamic = "force-dynamic";
@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 /** Every-year essentials for the business's markets (UI-SPEC §5.10). Next due dates stay null until we know them. */
 export const GET = handle(async (_req: Request, { params }: Params<{ org: string }>) => {
   const { org } = await params;
-  await requireOrgMember(org);
+  await requireOrgReader(org);
   return essentialsOf(org);
 });
 

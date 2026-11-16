@@ -312,3 +312,15 @@ Deviations from UI-SPEC v1.0 (tell the front-end developer):
 - 12 payroll-related lines (P&L + balance sheet + cash flow) flag the same gap. One "We already use an app" answer declares the app and covers the rest on the next refresh.
 - No trend flags for Jenki; thresholds unchanged (owner to tune).
 - Apps step now incremental (rebuild from the earliest changed month; weekly full rebuild).
+
+## NEXT-STEPS build log (16 Nov 2026, autonomous overnight run)
+
+NEXT-STEPS.md (owner, 16 Nov) replaces SPRINT-1.md / BUILD.md (never committed; the half-built `pnpm doctor` from SPRINT-1 was discarded) and GAP-REPORT.md's fix order. Merges to main stay with the owner.
+
+**P0.1 production check (16 Nov):** migrations 0000–0018 applied on production (19 rows; waitlist table and flag_feedback.sub_reason present); `/api/health` ok, xero_mode live, nothing missing; deploy:check DB part ok (flowstack_app exists, RLS on 38 tables, SET ROLE works). Not done: deploy:check with production settings (pulling Vercel env was refused by the permission system) and the live Jenki refresh (needs the deployed app's Xero keys; owner presses "Refresh from Xero"). Last Jenki run: 10 Nov, ok, 124 calls.
+
+**P0.2 demo (decisions):**
+- Demo business = the ecommerce sample (fixtures `demo-uk-ecommerce`) at a fixed id `…d3e0`, created on the first /demo visit by the real pipeline (no Xero). `DEMO_ORG_ID` may point at another org but must be `sample`.
+- Guest = 24-hour iron-session fields (`guestId`, `guestOrgId`, `guestUntil`) — no user row. `requireOrgReader` (pages + GET routes) accepts members or that guest; every write still uses `requireOrgMember`, which a guest can't pass.
+- Guest feedback and shortlist go to `guest_actions` (migration 0019, owner-only, RLS on, purged nightly after 24 h). The shared sample business never changes; the guest sees their own answer on the line page. Nothing reaches flag_feedback, shortlist, the FP report or eval.
+- Settings and Ask show "isn't part of the demo"; quote requests are hidden for guests. Every page of a sample org shows a "Sample data" banner.

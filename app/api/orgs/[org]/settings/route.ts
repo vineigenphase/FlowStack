@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { body, handle, HttpError, type Params } from "@/lib/api";
-import { requireOrgMember } from "@/lib/auth/session";
+import { requireOrgMember, requireOrgReader } from "@/lib/auth/session";
 import { getSettings, saveSettings, SettingsInput } from "@/lib/orgs/settings";
 import { settingsOf } from "@/lib/api/contract";
 
@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 /** UI-SPEC §8 OrgSettings. */
 export const GET = handle(async (_req: Request, { params }: Params<{ org: string }>) => {
   const { org } = await params;
-  await requireOrgMember(org);
+  await requireOrgReader(org);
   const s = await settingsOf(org);
   if (!s) throw new HttpError(404, "Org not found");
   return s;

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { requireOrgMember } from "@/lib/auth/session";
+import { requireOrgReader } from "@/lib/auth/session";
 import { statementView } from "@/lib/read/views";
 import { day, gbp, isKind, KIND_LABEL, lineHref, pct, STATE_LABEL } from "@/lib/ui/format";
 
@@ -28,7 +28,7 @@ export default async function StatementPage({ params }: { params: Promise<{ org:
   const { org, kind } = await params;
   if (!isKind(kind)) notFound();
   try {
-    await requireOrgMember(org);
+    await requireOrgReader(org);
   } catch {
     return null;
   }

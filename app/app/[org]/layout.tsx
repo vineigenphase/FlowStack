@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { eq } from "drizzle-orm";
 import { HttpError } from "@/lib/api";
-import { requireOrgMember } from "@/lib/auth/session";
+import { requireOrgReader } from "@/lib/auth/session";
 import { withOrg } from "@/lib/db/client";
 import { orgs } from "@/db/schema";
 import { OrgNav } from "@/components/org-nav";
@@ -16,9 +16,12 @@ export const dynamic = "force-dynamic";
 /** Header, sign-in gate and tabs for every org page. Each page still checks membership itself. */
 export default async function OrgLayout({ children, params }: { children: ReactNode; params: Promise<{ org: string }> }) {
   const { org } = await params;
-  let userId: string;
+  let userId: string | null;
+  let guest = false;
   try {
-    userId = (await requireOrgMember(org)).userId;
+    const r = await requireOrgReader(org);
+    userId = r.userId;
+    guest = r.guest;
   } catch (e) {
     if (e instanceof HttpError && e.status === 401) {
       const si = signInHref(`/app/${org}`);
@@ -37,7 +40,7 @@ export default async function OrgLayout({ children, params }: { children: ReactN
       </main>
     );
   }
-  const mine = (await myOrgs(userId)).map((x) => ({ id: x.id, name: x.name, sample: x.sample }));
+  const mine = userId && !guest ? (await myOrgs(userId)).map((x) => ({ id: x.id, name: x.name, sample: x.sample })) : [];
   const [o] = await withOrg(org, (tx) => tx.select({ name: orgs.name, sample: orgs.sample }).from(orgs).where(eq(orgs.id, org)));
   return (
     <>
@@ -55,10 +58,18 @@ export default async function OrgLayout({ children, params }: { children: ReactN
             {o?.sample ? <span className="tag">sample data</span> : null}
           </span>
           <Link href="/apps" className="top-link">Apps</Link>
-          <SignOut />
+          {guest ? <a className="top-link" href="/connect">Connect your Xero</a> : <SignOut />}
         </div>
         <div className="wrap"><OrgNav org={org} /></div>
       </header>
+      {o?.sample ? (
+        <div className="banner" role="note">
+          <div className="wrap">
+            <strong>Sample data:</strong> not a real business.
+            {guest ? " You're in the demo: your answers and shortlist are kept for 24 hours and nobody else sees them." : null}
+          </div>
+        </div>
+      ) : null}
       <main className="wrap">{children}</main>
     </>
   );

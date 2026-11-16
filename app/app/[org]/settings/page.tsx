@@ -1,5 +1,5 @@
 import { peerPricesEnabled } from "@/lib/prices";
-import { requireOrgMember } from "@/lib/auth/session";
+import { guestOn, requireOrgMember } from "@/lib/auth/session";
 import { getSettings, INDUSTRIES } from "@/lib/orgs/settings";
 import { SettingsForm } from "@/components/settings-form";
 import { BillingBox } from "@/components/billing-box";
@@ -9,6 +9,14 @@ export const dynamic = "force-dynamic";
 
 export default async function SettingsPage({ params }: { params: Promise<{ org: string }> }) {
   const { org } = await params;
+  if (await guestOn(org)) {
+    return (
+      <section className="panel">
+        <h2>Settings isn&apos;t part of the demo</h2>
+        <p>This is a sample business. Connect your own Xero to use settings.</p>
+      </section>
+    );
+  }
   try {
     await requireOrgMember(org);
   } catch {

@@ -641,19 +641,22 @@ export async function setEssential(orgId: string, key: string, covered: boolean)
 // ---------- shortlist ----------
 
 export async function shortlistOf(orgId: string): Promise<T.ShortlistItem[]> {
+  const rows = await withOrg(orgId, (tx) => tx.select().from(shortlist).orderBy(shortlist.createdAt));
+  return shortlistItems(orgId, rows.map((r) => ({ appId: r.appId, lineKey: r.lineKey, addedAt: r.createdAt })));
+}
+
+/** Shortlist rows (the org's, or a /demo guest's) in the UI-SPEC shape, with line names and verified prices. */
+export async function shortlistItems(orgId: string, rows: { appId: string; lineKey: string; addedAt: Date }[]): Promise<T.ShortlistItem[]> {
   const facts = await factsBy();
-  return withOrg(orgId, async (tx) => {
-    const rows = await tx.select().from(shortlist).orderBy(shortlist.createdAt);
-    const run = await loadRun(tx, facts);
-    return rows.map((r) => ({
-      appId: r.appId,
-      appName: appName(r.appId),
-      lineKey: r.lineKey || null,
-      lineName: r.lineKey ? (run?.lines.find((l) => l.lineKey === r.lineKey)?.name ?? null) : null,
-      price: priceOf(facts.get(r.appId)),
-      addedAt: r.createdAt.toISOString(),
-    }));
-  });
+  const run = await withOrg(orgId, (tx) => loadRun(tx, facts));
+  return rows.map((r) => ({
+    appId: r.appId,
+    appName: appName(r.appId),
+    lineKey: r.lineKey || null,
+    lineName: r.lineKey ? (run?.lines.find((l) => l.lineKey === r.lineKey)?.name ?? null) : null,
+    price: priceOf(facts.get(r.appId)),
+    addedAt: r.addedAt.toISOString(),
+  }));
 }
 
 export async function addToShortlist(orgId: string, userId: string | null, appId: string, lineKey?: string | null) {
@@ -703,4 +706,17 @@ export async function subscriptionOf(orgId: string): Promise<T.Subscription> {
   const status: T.Subscription["status"] =
     s.status === "active" || s.status === "trialing" ? "active" : s.status === "past_due" || s.status === "unpaid" ? "past_due" : s.status === "design_partner" ? "design_partner" : s.status === "canceled" ? "cancelled" : "none";
   return { status, planId, currentPeriodEnd: s.currentPeriodEnd ? s.currentPeriodEnd.toISOString().slice(0, 10) : null, cancelAtPeriodEnd: false };
+}
+
+/** `Me` for a /demo guest: no account, one sample business (NEXT-STEPS P0.2). */
+export async function guestMe(guestId: string, orgId: string): Promise<T.Me> {
+  const [o] = await withOrg(orgId, (tx) => tx.select().from(orgs).where(eq(orgs.id, orgId)));
+  const s = await summary(orgId);
+  return {
+    user: { id: guestId, email: "", name: "Demo guest", jobTitle: null, isAdmin: false },
+    orgs: o
+      ? [{ id: o.id, name: o.name, industry: industryOf(o.industry), markets: marketsOf(o.markets), lastRefreshAt: s?.lastRefreshAt ?? null, atStake: s?.atStake ?? null, connection: "active", sample: o.sample }]
+      : [],
+    activeOrgId: o ? o.id : null,
+  };
 }

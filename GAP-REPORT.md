@@ -1,4 +1,5 @@
 # GAP-REPORT.md: SPRINT-1 Step 0 audit
+> **Superseded 16 Nov 2026 by NEXT-STEPS.md** (the owner withdrew SPRINT-1/BUILD). Kept as an inventory snapshot.
 
 > 13 Nov 2026, against `dev` at 0dc2556 + the catalogue-edges commit (main = 0dc2556, deployed).
 > Read: CLAUDE.md, BACKEND.md (v1.1), CHANGES-v1.1.md, UI-SPEC.md, SPRINT-1.md.

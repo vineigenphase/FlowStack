@@ -50,6 +50,10 @@ const EnvSchema = z.object({
   STRIPE_SECRET_KEY: z.string().optional().default(""),
   STRIPE_WEBHOOK_SECRET: z.string().optional().default(""),
   STRIPE_PRICE_IDS_JSON: z.string().optional().default(""),
+  /** NEXT-STEPS P0.2: /demo opens a read-only guest session on one sample business. Off unless set. */
+  DEMO_ENABLED: bool,
+  /** Optional: the sample org /demo opens. Unset → the built-in ecommerce sample, created from fixtures on first use. */
+  DEMO_ORG_ID: z.string().optional().default(""),
   /** v1.1 L: Companies House public data API. */
   COMPANIES_HOUSE_API_KEY: z.string().optional().default(""),
 });

@@ -707,6 +707,26 @@ export const auditLog = pgTable("audit_log", {
 /** Tables that hold one org's data. RLS is enabled on each (see the rls migration). */
 // ---------- billing (v1.1 E) and review rewards (v1.1 O). Owner connection only: RLS on, no grant. ----------
 
+/**
+ * NEXT-STEPS P0.2: what a /demo guest did (feedback, shortlist). Owner connection only. Kept 24 hours, then purged
+ * by the nightly cron. Never written to flag_feedback or shortlist, so it can't reach any metric or the shared org.
+ */
+export const guestActions = pgTable(
+  "guest_actions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    guestId: uuid("guest_id").notNull(),
+    orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
+    kind: text("kind", { enum: ["feedback", "shortlist"] }).notNull(),
+    flagId: uuid("flag_id"),
+    appId: text("app_id"),
+    lineKey: text("line_key"),
+    payload: jsonb("payload").notNull().default({}),
+    createdAt: ts("created_at").notNull().defaultNow(),
+  },
+  (t) => [index("guest_actions_guest").on(t.guestId, t.createdAt)],
+);
+
 /** UI-SPEC §5.1 waitlist. Owner connection only. One row per email (lowercased); consent time recorded. */
 export const waitlist = pgTable("waitlist", {
   id: uuid("id").primaryKey().defaultRandom(),

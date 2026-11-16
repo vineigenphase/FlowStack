@@ -11,6 +11,8 @@ const config: NextConfig = {
     "/app/**": ["./catalog/**/*.yaml", "./mocks/**/*.json"],
     // Fixture mode on a preview deployment (XERO_MODE=fixtures).
     "/api/orgs/**": ["./fixtures/xero/**/*.json"],
+    // /demo builds the sample business from fixtures on first use (NEXT-STEPS P0.2).
+    "/demo": ["./fixtures/xero/**/*.json"],
     // Front-end mock mode (NEXT_PUBLIC_API_MODE=mock, UI-SPEC §3).
     "/api/mock/**": ["./mocks/**/*.json"],
   },

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireOrgMember } from "@/lib/auth/session";
+import { requireOrgReader } from "@/lib/auth/session";
 import { flaggedLines, kpiView, summaryView } from "@/lib/read/views";
 import { RefreshButton } from "@/components/refresh-button";
 import { AppQuestions } from "@/components/app-questions";
@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 export default async function OrgPage({ params }: { params: Promise<{ org: string }> }) {
   const { org } = await params;
   try {
-    await requireOrgMember(org);
+    await requireOrgReader(org);
   } catch {
     return null; // the layout shows sign-in / not found
   }

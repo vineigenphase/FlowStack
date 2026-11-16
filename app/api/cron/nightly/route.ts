@@ -8,6 +8,7 @@ import { evaluateDue, orgsWithDueCheckins } from "@/lib/checkins";
 import { peerBand } from "@/lib/prices";
 import { runRefresh } from "@/lib/sync/refresh";
 import { log } from "@/lib/log";
+import { purgeGuests } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
@@ -25,6 +26,8 @@ const MAX_REFRESH = 5;
 export const GET = handle(async (req: Request) => {
   requireCron(req);
   const stale = await markStale();
+  // /demo guests: forget what they did after 24 hours (NEXT-STEPS P0.2).
+  const guestActionsPurged = await purgeGuests();
   const db = await adminDb();
   const due = await orgsWithDueCheckins();
   let refreshed = 0;
@@ -43,5 +46,5 @@ export const GET = handle(async (req: Request) => {
       log.error({ err: { message: (e as Error).message }, orgId }, "nightly check-ins failed for org");
     }
   }
-  return { stale, checkins: { orgs: due.length, refreshed, judged } };
+  return { stale, guestActionsPurged, checkins: { orgs: due.length, refreshed, judged } };
 });

@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { requireOrgMember } from "@/lib/auth/session";
+import { requireOrgReader } from "@/lib/auth/session";
+import { guestAnswers } from "@/lib/demo";
 import { lineView } from "@/lib/read/views";
 import { FeedbackButtons } from "@/components/feedback-buttons";
 import { PostButton } from "@/components/post-button";
@@ -22,8 +23,9 @@ export default async function LinePage({ params, searchParams }: { params: Promi
   const { org, lineKey } = await params;
   const { priority: pq } = await searchParams;
   const priority = isPriority(pq) ? pq : null;
+  let guestId: string | null = null;
   try {
-    await requireOrgMember(org);
+    guestId = (await requireOrgReader(org)).guestId;
   } catch {
     return null;
   }
@@ -36,6 +38,9 @@ export default async function LinePage({ params, searchParams }: { params: Promi
       </>
     );
   }
+  // A /demo guest sees their own answer (kept 24 hours); the shared sample business is never changed.
+  const mine = guestId ? (await guestAnswers(guestId)).get(l.flagId) : undefined;
+  if (mine?.state) l.state = mine.state as typeof l.state;
   const ev = l.evidence as Evidence;
   // Priority presets re-rank the same shortlist; the default order is the standard match.
   const ranked = priority ? rankByPriority(await priorityInputs(l.recommendations.map((r) => ({ appId: r.app.id, name: r.app.name, match: r.match }))), priority) : null;
@@ -212,7 +217,7 @@ export default async function LinePage({ params, searchParams }: { params: Promi
               </ul>
             </div>
           ))}
-          {quoteApps.length ? (
+          {quoteApps.length && !guestId ? (
             <details>
               <summary>Ask vendors for a quote</summary>
               <QuoteForm org={org} lineKey={l.key} apps={quoteApps} situation={situation!} />
