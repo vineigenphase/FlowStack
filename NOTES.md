@@ -295,7 +295,6 @@ Deviations from UI-SPEC v1.0 (tell the front-end developer):
 - `digestOptIn` is accepted and always reads false until the owner specifies the email.
 - Plans: `annual` doesn't include the audit and `audit_only` is unavailable until decided; all prices null.
 - `industry` is ecommerce | saas | other; a stored finer industry (hospitality…) reads as other and isn't overwritten by "other".
-- `POST /orgs/:org/refresh` still runs inline and returns the finished run (the progress page will see it done).
 - Answer route for "Is X replacing Y?": `:appId` is the old app; send `replacementAppId` (the new one).
 - `GET /apps/:id?org=` marks integrations with the business's apps (`usedByOrg`).
 - Mocks are regenerated with `pnpm mocks`; tests/mock.test.ts fails when they fall behind the contract.
@@ -324,3 +323,9 @@ NEXT-STEPS.md (owner, 16 Nov) replaces SPRINT-1.md / BUILD.md (never committed; 
 - Guest = 24-hour iron-session fields (`guestId`, `guestOrgId`, `guestUntil`) — no user row. `requireOrgReader` (pages + GET routes) accepts members or that guest; every write still uses `requireOrgMember`, which a guest can't pass.
 - Guest feedback and shortlist go to `guest_actions` (migration 0019, owner-only, RLS on, purged nightly after 24 h). The shared sample business never changes; the guest sees their own answer on the line page. Nothing reaches flag_feedback, shortlist, the FP report or eval.
 - Settings and Ask show "isn't part of the demo"; quote requests are hidden for guests. Every page of a sample org shows a "Sample data" banner.
+
+**P0.3 background refresh (decisions):**
+- `startRefresh` creates the run (steps pending) and returns; `executeRefresh` does the steps. The API and the Xero callback start runs, return at once and run the steps with Next `after()` (kept alive on Vercel up to the 300 s maxDuration). Inngest stays a later step (no account/keys yet). `runRefresh` = both, for cron, eval and the demo business.
+- The callback now sends a first-time connect to `/connect/progress?run=` (polls every 2 s; "still working" after 60 s; done → overview, partial → note + link, error → Try again + reference). There is no `/setup` page yet (UI-SPEC screens wait for the designer), so done goes straight to the overview.
+- A run whose Xero client can't be built (revoked, token refused) is now marked error at once instead of hanging as "running" until the 5-minute abandon rule.
+- Removed deviation "POST /orgs/:org/refresh runs inline".

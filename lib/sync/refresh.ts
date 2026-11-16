@@ -72,7 +72,13 @@ const isUniqueViolation = (e: unknown) => {
   return false;
 };
 
-export async function runRefresh(orgId: string, opts: RefreshOpts = {}) {
+export type RunRow = typeof syncRuns.$inferSelect;
+
+/**
+ * NEXT-STEPS P0.3: create the run (steps pending) and return at once; executeRefresh does the work, in the
+ * background from the API (after the response) so the UI can poll /refresh/:runId. One running run per org.
+ */
+export async function startRefresh(orgId: string): Promise<RunRow> {
   const admin = await adminDb();
   await admin
     .update(syncRuns)
@@ -88,9 +94,27 @@ export async function runRefresh(orgId: string, opts: RefreshOpts = {}) {
     if (isUniqueViolation(e)) throw new RefreshBusyError();
     throw e;
   }
-  const runId = run!.id;
-  const steps: RunStep[] = run!.steps;
-  const client = opts.client ?? (await clientForOrg(orgId));
+  return run!;
+}
+
+/** Start and finish a refresh in one call (cron, connect in tests, eval, the demo business). */
+export async function runRefresh(orgId: string, opts: RefreshOpts = {}) {
+  return executeRefresh(orgId, await startRefresh(orgId), opts);
+}
+
+export async function executeRefresh(orgId: string, run: RunRow, opts: RefreshOpts = {}) {
+  const admin = await adminDb();
+  const runId = run.id;
+  const steps: RunStep[] = run.steps;
+  let client: XeroClient;
+  try {
+    client = opts.client ?? (await clientForOrg(orgId));
+  } catch (e) {
+    // No usable connection (revoked, token refused): the run fails now instead of hanging as "running".
+    steps[0] = { ...steps[0]!, status: "error", error: errorText(e, 300) };
+    await admin.update(syncRuns).set({ status: "error", steps, finishedAt: new Date(), error: errorText(e, 500) }).where(eq(syncRuns.id, runId));
+    throw e;
+  }
   const now = opts.now ?? new Date();
 
   const save = () =>

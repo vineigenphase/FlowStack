@@ -4,7 +4,7 @@ import { env } from "@/lib/env";
 import { log } from "@/lib/log";
 import { getOAuthState, getSession } from "@/lib/auth/session";
 import { completeConnect } from "@/lib/auth/connect";
-import { runRefresh } from "@/lib/sync/refresh";
+import { executeRefresh, startRefresh, type RunRow } from "@/lib/sync/refresh";
 import { errorText } from "@/lib/sync/error-text";
 
 export const dynamic = "force-dynamic";
@@ -33,11 +33,20 @@ export const GET = handle(async (req: NextRequest) => {
   if (orgIds[0]) s.activeOrgId = orgIds[0];
   await s.save();
 
-  // First refresh runs after the response (inline work; Inngest replaces this in M9).
+  // First refresh (NEXT-STEPS P0.3): runs are created now, their steps run after the response, and the user
+  // watches them on /connect/progress.
+  const runs: { orgId: string; run: RunRow }[] = [];
+  for (const orgId of created) {
+    try {
+      runs.push({ orgId, run: await startRefresh(orgId) });
+    } catch (e) {
+      log.error({ orgId, message: errorText(e) }, "first refresh couldn't start");
+    }
+  }
   after(async () => {
-    for (const orgId of created) {
+    for (const { orgId, run } of runs) {
       try {
-        await runRefresh(orgId);
+        await executeRefresh(orgId, run);
       } catch (e) {
         log.error({ orgId, message: errorText(e) }, "first refresh failed");
       }
@@ -46,5 +55,7 @@ export const GET = handle(async (req: NextRequest) => {
 
   // v1.1 I: businesses over the plan cap are not taken on; say so instead of failing.
   if (!orgIds.length) return NextResponse.redirect(new URL(`/connect/limit?capped=${capped.length}`, env().APP_URL));
+  const tail = capped.length ? `&capped=${capped.length}` : "";
+  if (runs[0]) return NextResponse.redirect(new URL(`/connect/progress?run=${runs[0].run.id}${tail}`, env().APP_URL));
   return NextResponse.redirect(new URL(`/app/${orgIds[0]}${capped.length ? `?capped=${capped.length}` : ""}`, env().APP_URL));
 });

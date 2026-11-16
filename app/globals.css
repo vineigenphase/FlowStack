@@ -325,3 +325,7 @@ td a { font-weight: 600; }
 @keyframes pulse { 50% { opacity: 0.5; } }
 @media (prefers-reduced-motion: reduce) { .skeleton { animation: none; } }
 .request-id { font: 0.75rem var(--font-m); color: var(--muted); }
+.steps { list-style: none; padding: 0; }
+.step { padding: 6px 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; }
+.step-done span:first-child::before { content: "✓ "; }
+.step-error span:first-child::before { content: "✕ "; }

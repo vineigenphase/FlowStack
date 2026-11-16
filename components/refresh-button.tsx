@@ -6,7 +6,8 @@ import { useEffect, useState } from "react";
 type State = { kind: "idle" } | { kind: "running"; since: number } | { kind: "done"; status: string } | { kind: "error"; message: string };
 
 /**
- * POSTs /api/orgs/:org/refresh (runs inline, read-only Xero calls), then re-renders the page's server data.
+ * POSTs /api/orgs/:org/refresh, which starts the run and returns at once (NEXT-STEPS P0.3), then polls
+ * /refresh/:runId every 2 s until it stops and re-renders the page's server data.
  * `busy` = a refresh is already running server-side (e.g. the first one after connect).
  */
 export function RefreshButton({ org, busy = false }: { org: string; busy?: boolean }) {
@@ -34,9 +35,20 @@ export function RefreshButton({ org, busy = false }: { org: string; busy?: boole
     setState({ kind: "running", since });
     try {
       const res = await fetch(`/api/orgs/${org}/refresh`, { method: "POST" });
-      const json = (await res.json().catch(() => ({}))) as { status?: string; error?: string };
+      let json = (await res.json().catch(() => ({}))) as { id?: string; status?: string; error?: string; message?: string; requestId?: string };
       if (!res.ok) {
-        setState({ kind: "error", message: json.error ?? `Refresh failed (HTTP ${res.status}).` });
+        setState({ kind: "error", message: `${json.message ?? json.error ?? `Refresh failed (HTTP ${res.status}).`}${json.requestId ? ` (ref ${json.requestId})` : ""}` });
+        return;
+      }
+      // The steps run in the background: wait for the run to stop (5 minutes at most, the function limit).
+      while (json.status === "running" && json.id && Date.now() - since < 300_000) {
+        await new Promise((r) => setTimeout(r, 2000));
+        const poll = await fetch(`/api/orgs/${org}/refresh/${json.id}`, { cache: "no-store" });
+        if (poll.ok) json = await poll.json();
+      }
+      if (json.status === "error") {
+        setState({ kind: "error", message: (json as { error?: { message?: string } }).error?.message ?? "The update from Xero didn't finish." });
+        router.refresh();
         return;
       }
       setState({ kind: "done", status: json.status ?? "ok" });
