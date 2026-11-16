@@ -12,6 +12,8 @@ export type SpendAgg = {
   month: string; // YYYY-MM-01
   amount: number; // base currency
   source: "bill" | "bank";
+  /** Round-2 3a: the latest transaction date in this month (YYYY-MM-DD). */
+  lastDate: string;
 };
 
 export type SupplierHints = Map<string, { accountCodes: Set<string> }>;
@@ -43,10 +45,13 @@ export class SpendAggregator {
 
   private add(contactId: string, name: string, date: Date, amount: number, source: "bill" | "bank") {
     const month = monthOf(date);
+    const day = date.toISOString().slice(0, 10);
     const key = `${contactId}|${month}|${source}`;
     const cur = this.agg.get(key);
-    if (cur) cur.amount += amount;
-    else this.agg.set(key, { contactId, contactName: name, nameNorm: normaliseName(name), month, amount, source });
+    if (cur) {
+      cur.amount += amount;
+      if (day > cur.lastDate) cur.lastDate = day;
+    } else this.agg.set(key, { contactId, contactName: name, nameNorm: normaliseName(name), month, amount, source, lastDate: day });
   }
 
   result(): SpendAgg[] {

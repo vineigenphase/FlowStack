@@ -7,7 +7,7 @@
   "share": 0.0669,
   "band": "medium",
   "state": "flagged",
-  "flagId": "49fb0953-5bdc-4ba6-bba7-89c7b92b3474",
+  "flagId": "475db20c-9dcb-4971-b2ea-4da16ef34e3c",
   "topApp": {
    "id": "brightpearl",
    "name": "Brightpearl",
@@ -34,8 +34,8 @@
   "band": "medium",
   "ruleId": "cost_of_sales_stock",
   "ruleVersion": 2,
-  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
-  "refreshedAt": "2026-11-13T14:22:33.321Z"
+  "runId": "3ea3b49f-8d76-4686-b8b5-4a942d1aefa8",
+  "refreshedAt": "2026-11-16T02:19:45.892Z"
  },
  "cause": "Purchases this size are usually captured and costed by an inventory or bill-capture app.",
  "detectedInArea": [],

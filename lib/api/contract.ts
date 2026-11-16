@@ -298,7 +298,7 @@ function detectedOf(d: typeof detectedApps.$inferSelect): T.DetectedApp {
     category: cats.get(cat) ?? cat,
     spend12m: d.spend12m,
     monthsSeen: d.monthsSeen,
-    lastPaid: d.monthsSeen ? d.lastSeen : null,
+    lastPaid: d.lastPaidDate ?? (d.monthsSeen ? d.lastSeen : null), // round-2 3a: the day when we have it
     cycle: d.cycle ?? "unknown",
     state: (d.state ?? (d.present ? "active" : "inactive")) as T.Lifecycle,
   };

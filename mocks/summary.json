@@ -21,7 +21,7 @@
    "share": 0.5047,
    "band": "high",
    "state": "flagged",
-   "flagId": "b409817e-3498-4ce8-a4a9-2a68b0424ab9",
+   "flagId": "da10dbe2-abc3-4706-a5ce-48774185ab28",
    "topApp": {
     "id": "brightpearl",
     "name": "Brightpearl",
@@ -39,7 +39,7 @@
    "share": 0.5622,
    "band": "high",
    "state": "flagged",
-   "flagId": "d411e630-dc61-4433-93d3-f8cd0e34a6c9",
+   "flagId": "0fc84d96-e43c-404f-a08e-6d45d523d149",
    "topApp": {
     "id": "brightpearl",
     "name": "Brightpearl",
@@ -57,7 +57,7 @@
    "share": 0.0937,
    "band": "medium",
    "state": "flagged",
-   "flagId": "c1656651-151e-420b-9a27-254b214ae873",
+   "flagId": "7d25e39c-cecc-4855-9e1c-910435a5a114",
    "topApp": {
     "id": "brightpay",
     "name": "BrightPay",
@@ -75,7 +75,7 @@
    "share": 0.0792,
    "band": "medium",
    "state": "flagged",
-   "flagId": "776cdb61-a4ff-414c-9444-4c8d3e8dbc3f",
+   "flagId": "884cb5b2-c622-49ce-9ec6-e91211253036",
    "topApp": {
     "id": "airwallex",
     "name": "Airwallex",
@@ -93,7 +93,7 @@
    "share": 0.0669,
    "band": "medium",
    "state": "flagged",
-   "flagId": "49fb0953-5bdc-4ba6-bba7-89c7b92b3474",
+   "flagId": "475db20c-9dcb-4971-b2ea-4da16ef34e3c",
    "topApp": {
     "id": "brightpearl",
     "name": "Brightpearl",
@@ -267,11 +267,11 @@
    "flagged": true,
    "atStake": 51146.77,
    "band": "medium",
-   "flagId": "4a1c9bce-98d7-4545-ae37-5c0fd22884f6",
+   "flagId": "228fbb3e-6a5d-4081-9975-446bb493f9e0",
    "lineKey": "trend:stock_days"
   }
  ],
- "lastRefreshAt": "2026-11-13T14:22:33.321Z",
+ "lastRefreshAt": "2026-11-16T02:19:45.892Z",
  "refreshing": false,
  "sample": true,
  "banners": [

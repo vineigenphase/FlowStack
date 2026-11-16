@@ -58,6 +58,10 @@ export const RulesFile = z.object({
   scoring: Scoring,
   rules: list(Rule),
   trends: z.object({ debtor_days: TrendRule, creditor_days: TrendRule, stock_days: TrendRule, cash_headroom_months: TrendRule }).partial().default({}),
+  /** Round-2 3a (10 Nov, DECIDED): a payment is missed only 7 days after it was due AND once the books reach that day. */
+  lifecycle: z.object({ leeway_days: z.number().int().min(0).max(60).default(7) }).default({ leeway_days: 7 }),
+  /** Round-2 3c (10 Nov): one month holding this share of the year-to-date value marks a possible one-off. */
+  one_off: z.object({ concentration: z.number().min(0.3).max(1).default(0.6), min_months: z.number().int().min(2).default(3) }).default({ concentration: 0.6, min_months: 3 }),
 });
 
 export const App = z.object({

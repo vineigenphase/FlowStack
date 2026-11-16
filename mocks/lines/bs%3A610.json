@@ -7,7 +7,7 @@
   "share": 0.0417,
   "band": "medium",
   "state": "covered",
-  "flagId": "4ab501c8-c357-4b17-be3f-4710a7f77eb9",
+  "flagId": "99b63ee3-9c54-4eaa-a010-a8821671f5d3",
   "topApp": {
    "id": "adfin",
    "name": "Adfin",
@@ -37,8 +37,8 @@
   "band": "medium",
   "ruleId": "receivables",
   "ruleVersion": 2,
-  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
-  "refreshedAt": "2026-11-13T14:22:33.321Z",
+  "runId": "3ea3b49f-8d76-4686-b8b5-4a942d1aefa8",
+  "refreshedAt": "2026-11-16T02:19:45.892Z",
   "series": [
    {
     "month": "2025-11-30",
@@ -98,7 +98,7 @@
    "category": "EPOS and ecommerce sales",
    "spend12m": 1020,
    "monthsSeen": 12,
-   "lastPaid": "2026-10-01",
+   "lastPaid": "2026-10-15",
    "cycle": "monthly",
    "state": "active"
   }
@@ -125,10 +125,10 @@
     },
     "sample": true
    },
-   "match": 18,
+   "match": 43,
    "components": {
     "strength": 0,
-    "fit": 0.3,
+    "fit": 1,
     "peers": 0.5,
     "price": 0.5
    },
@@ -138,7 +138,7 @@
     "peers": 0.1,
     "price": 0.05
    },
-   "reason": "You already pay for it (£1,020 over 12 months). No integration with the apps you keep. Price not published · we're checking",
+   "reason": "You already pay for it (£1,020 over 12 months). Works directly with A2X, which you keep. Price not published · we're checking",
    "inUse": true,
    "kind": null
   },

@@ -1,17 +1,21 @@
 /**
- * App lifecycle (BACKEND.md §6.1, v1.1 C, PROPOSED). Pure. What happens when an app's payments stop: we neither
- * wait silently for months nor guess. Months are calendar months ("YYYY-MM-01"); asAt is a month end.
+ * App lifecycle (BACKEND.md §6.1, v1.1 C; rule DECIDED in round 2, 10 Nov 2026). Pure. What happens when an app's
+ * payments stop: we neither wait silently for months nor guess. Months are calendar months ("YYYY-MM-01").
  *
  *   cycle     from the median gap between paid months: 1 → monthly, 3 → quarterly, 11–13 → annual, else unknown
  *   new       first payment in the last 60 days (this month or last)
- *   active    paid within one cycle + 15 days' grace
- *   lapsing   one expected payment missed            → ask in the app: "Do you still use it?"
- *   inactive  two expected payments missed, or the user said they stopped
+ *   active    the next payment isn't missed yet
+ *   lapsing   one expected payment missed            → ask in the app: "Do you still use it?" (still counts as cover)
+ *   inactive  a second expected payment missed with no answer, or the user said they stopped
  *   declared  the user says they use it but we can't see payments (re-asked after 6 months)
+ *
+ * "Missed" (round-2 3a): expected = last payment DATE + cycle; missed only when BOTH today ≥ expected + leeway
+ * (rules.yaml lifecycle.leeway_days, 7) AND books_through ≥ expected + leeway, so books entered late never look like
+ * a cancelled app. Rows without dates (before the dates were recorded) fall back to the month rule: missed from the
+ * month end after the expected month.
  *
  * new, active, lapsing and declared count as coverage; inactive does not. So one missed payment never produces a
  * "you have no app" flag.
- * TODO(CHANGES-v1.1.md §4 item 4): "ask after one missed cycle + 15 days; inactive after two" is PROPOSED.
  */
 export type Cycle = "monthly" | "quarterly" | "annual" | "unknown";
 export type AppState = "new" | "active" | "lapsing" | "inactive" | "declared";
@@ -50,7 +54,24 @@ export type Lifecycle = {
   ask: boolean;
 };
 
-export function lifecycleOf(paidMonths: string[], asAt: string, answer?: StatusAnswer | null): Lifecycle {
+/** Day-level facts for the round-2 rule; without them the month rule applies. */
+export type LifecycleDays = { lastPaid?: string | null; booksThrough?: string | null; today?: string; leewayDays?: number };
+
+/** The same day of the month `n` months later, clamped to that month's end (31 Jan + 1 month = 28/29 Feb). */
+export function addMonths(d: string, n: number): string {
+  const [y, m, day] = d.split("-").map(Number);
+  const target = new Date(Date.UTC(y!, m! - 1 + n, 1));
+  const last = new Date(Date.UTC(target.getUTCFullYear(), target.getUTCMonth() + 1, 0)).getUTCDate();
+  return new Date(Date.UTC(target.getUTCFullYear(), target.getUTCMonth(), Math.min(day!, last))).toISOString().slice(0, 10);
+}
+
+/** Missed: both today and the books are past expected + leeway (ISO dates compare as strings). */
+export const missed = (expected: string, today: string, booksThrough: string, leeway: number) => {
+  const due = addDays(expected, leeway);
+  return today >= due && booksThrough >= due;
+};
+
+export function lifecycleOf(paidMonths: string[], asAt: string, answer?: StatusAnswer | null, days: LifecycleDays = {}): Lifecycle {
   const now = ym(asAt);
   const ms = [...new Set(paidMonths.map(ym))].sort((a, b) => a - b);
   const { cycle, months: c } = cycleOf(paidMonths);
@@ -74,13 +95,23 @@ export function lifecycleOf(paidMonths: string[], asAt: string, answer?: StatusA
     const recent = now - last <= (c ?? 3);
     return { cycle, state: recent ? "active" : "inactive", nextExpected: null, lapsingSince: null, ask: false };
   }
+  const reask = answer?.answer === "still_use" && !declaredActive;
+  // Round-2 3a: with the last payment's date and how far the books go, judge by days.
+  if (days.lastPaid && days.booksThrough && days.today) {
+    const leeway = days.leewayDays ?? 7;
+    const e1 = addMonths(days.lastPaid, c);
+    if (!missed(e1, days.today, days.booksThrough, leeway)) return { cycle, state: "active", nextExpected: e1, lapsingSince: null, ask: false };
+    const lapsingSince = addDays(e1, leeway);
+    const e2 = addMonths(days.lastPaid, 2 * c);
+    if (!missed(e2, days.today, days.booksThrough, leeway) || reask) return { cycle, state: "lapsing", nextExpected: e1, lapsingSince, ask: true };
+    return { cycle, state: "inactive", nextExpected: e1, lapsingSince: null, ask: false };
+  }
   const since = now - last; // whole months since the last paid month
   const nextExpected = monthEnd(last + c);
-  // Expected during month last+c; at month-end granularity "+15 days' grace" means it's missed from the next month end.
+  // Month fallback (no dates yet): expected during month last+c, missed from the next month end.
   if (since <= c) return { cycle, state: "active", nextExpected, lapsingSince: null, ask: false };
-  const lapsingSince = addDays(nextExpected, 15);
+  const lapsingSince = addDays(nextExpected, 7);
   // A "still use it" that has run out (6 months) means ask again rather than drop it.
-  const reask = answer?.answer === "still_use" && !declaredActive;
   if (since <= 2 * c || reask) return { cycle, state: "lapsing", nextExpected, lapsingSince, ask: true };
   return { cycle, state: "inactive", nextExpected, lapsingSince: null, ask: false };
 }

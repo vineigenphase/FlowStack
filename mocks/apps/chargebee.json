@@ -114,6 +114,12 @@
  },
  "integrations": [
   {
+   "toAppId": "stripe",
+   "toName": "Stripe",
+   "kind": "native",
+   "usedByOrg": false
+  },
+  {
    "toAppId": "xero",
    "toName": "Xero",
    "kind": "native",

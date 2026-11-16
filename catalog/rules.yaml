@@ -124,3 +124,17 @@ trends:
   creditor_days: { threshold: 60, min_change: 7 }
   stock_days: { threshold: 60, min_change: 7 }
   cash_headroom_months: { threshold: 6, min_change: 1 }
+
+# ---------------- Lifecycle (round-2 decision 3a, 10 Nov 2026: DECIDED) ----------------
+# Expected = last payment date + billing cycle. Missed only when BOTH today and books_through are at least
+# leeway_days past the expected date (books entered late never look like a cancelled app).
+# One miss → lapsing (ask "Do you still use it?", still counts as cover); a second miss, unanswered → inactive.
+lifecycle:
+  leeway_days: 7
+
+# ---------------- One-off detection (round-2 decision 3c, 10 Nov 2026) ----------------
+# With at least min_months of monthly P&L, a line where one month holds >= concentration of the year-to-date value
+# drops one band and says "Most of this year's total is in one month (<month>). It may be a one-off."
+one_off:
+  concentration: 0.6
+  min_months: 3

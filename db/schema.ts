@@ -55,6 +55,8 @@ export const orgs = pgTable("orgs", {
   includeCurrentMonth: boolean("include_current_month").notNull().default(false),
   /** NEXT-STEPS P0.5: a tester (finance leaders' council): free, full access, no Stripe. Set when an invited person connects. */
   designPartner: boolean("design_partner").notNull().default(false),
+  /** Round-2 3a: the latest date of any bill or spend bank transaction seen: how far the books are entered. */
+  booksThrough: date("books_through"),
   /** Consent (opt-in) to count what this business pays each app in anonymous peer ranges (10+ businesses). */
   sharePrices: boolean("share_prices").notNull().default(false),
   /**
@@ -223,6 +225,8 @@ export const supplierSpend = pgTable(
     month: date("month").notNull(),
     amount: money("amount").notNull(),
     source: text("source", { enum: ["bill", "bank"] }).notNull(),
+    /** Round-2 3a: the latest transaction date in this month (a day), for the 7-day lapsing rule and books_through. */
+    lastDate: date("last_date"),
   },
   (t) => [primaryKey({ columns: [t.orgId, t.contactId, t.month, t.source] })],
 );
@@ -242,6 +246,8 @@ export const detectedApps = pgTable(
     cycle: text("cycle", { enum: ["monthly", "quarterly", "annual", "unknown"] }),
     state: text("state", { enum: ["new", "active", "lapsing", "inactive", "declared"] }),
     nextExpected: date("next_expected"),
+    /** Round-2 3a: the last payment's date (a day, not a month). */
+    lastPaidDate: date("last_paid_date"),
   },
   (t) => [primaryKey({ columns: [t.orgId, t.appId] })],
 );

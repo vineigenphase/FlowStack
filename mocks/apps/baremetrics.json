@@ -112,5 +112,18 @@
    "label": "Changes of control"
   }
  },
- "integrations": []
+ "integrations": [
+  {
+   "toAppId": "stripe",
+   "toName": "Stripe",
+   "kind": "native",
+   "usedByOrg": false
+  },
+  {
+   "toAppId": "chargebee",
+   "toName": "Chargebee",
+   "kind": "native",
+   "usedByOrg": false
+  }
+ ]
 }

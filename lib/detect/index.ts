@@ -10,8 +10,9 @@
  * First live ledger: a full pull was 118 calls / 19 MB; a daily refresh now rebuilds about one month.
  */
 import { and, desc, eq, gte, lt } from "drizzle-orm";
-import { accountMaps, accounts, appStatusAnswers, detectedApps, fingerprints, supplierSpend, syncCursors } from "@/db/schema";
+import { accountMaps, accounts, appStatusAnswers, detectedApps, fingerprints, orgs, supplierSpend, syncCursors } from "@/db/schema";
 import { withOrg, type Db } from "@/lib/db/client";
+import { rulesFile } from "@/lib/catalog/load";
 import { apps as catalogApps } from "@/lib/catalog/load";
 import { enqueueAll, type QueueItem } from "@/lib/queue/enqueue";
 import type { XeroClient } from "@/lib/xero/client";
@@ -94,15 +95,20 @@ export async function syncAppsInUse(orgId: string, client: XeroClient, opts: { a
     });
   }
 
-  const { pending, ...summary } = await withOrg(orgId, (tx) => detect(tx, orgId, opts.asAt, hints));
+  const today = started.toISOString().slice(0, 10);
+  const { pending, ...summary } = await withOrg(orgId, (tx) => detect(tx, orgId, opts.asAt, hints, today));
   const queued = await enqueueAll(pending);
   return { ...summary, queued };
 }
 
 /** Match stored supplier aggregates to the catalogue and rewrite detected_apps. */
-export async function detect(tx: Db, orgId: string, asAt: string, hints: SupplierHints | null) {
+export async function detect(tx: Db, orgId: string, asAt: string, hints: SupplierHints | null, today = new Date().toISOString().slice(0, 10)) {
   const since = monthsBack(asAt, LOOKBACK_MONTHS);
   const rows = await tx.select().from(supplierSpend).where(gte(supplierSpend.month, since));
+  // Round-2 3a: how far the books are entered = the latest bill or spend date of any supplier.
+  const booksThrough = rows.reduce<string | null>((m, r) => (r.lastDate && (!m || r.lastDate > m) ? r.lastDate : m), null);
+  await tx.update(orgs).set({ booksThrough }).where(eq(orgs.id, orgId));
+  const leewayDays = rulesFile().lifecycle.leeway_days;
   // Catalogue YAML plus aliases people confirmed from the review queue.
   const confirmed = await tx.select({ appId: fingerprints.appId, pattern: fingerprints.pattern }).from(fingerprints);
   const fps = dedupeFingerprints([...catalogFingerprints(), ...confirmed]);
@@ -124,7 +130,7 @@ export async function detect(tx: Db, orgId: string, asAt: string, hints: Supplie
     if (!byContact.has(r.contactId)) byContact.set(r.contactId, { name: r.contactName, norm: r.nameNorm, match: matchSupplier(r.nameNorm, fps) });
   }
 
-  type Acc = { spend: number; months: Set<string>; byMonth: Map<string, number>; last: string; contacts: Map<string, { name: string; match: string; score: number }>; sources: Set<string> };
+  type Acc = { spend: number; months: Set<string>; byMonth: Map<string, number>; last: string; lastPaid: string | null; contacts: Map<string, { name: string; match: string; score: number }>; sources: Set<string> };
   const perApp = new Map<string, Acc>();
   const pending: QueueItem[] = [];
 
@@ -154,7 +160,8 @@ export async function detect(tx: Db, orgId: string, asAt: string, hints: Supplie
   for (const r of rows) {
     const c = byContact.get(r.contactId)!;
     if (!c.match || c.match.kind === "fuzzy_check") continue;
-    const a = perApp.get(c.match.appId) ?? { spend: 0, months: new Set(), byMonth: new Map(), last: r.month, contacts: new Map(), sources: new Set() };
+    const a = perApp.get(c.match.appId) ?? { spend: 0, months: new Set(), byMonth: new Map(), last: r.month, lastPaid: null, contacts: new Map(), sources: new Set() };
+    if (r.lastDate && (!a.lastPaid || r.lastDate > a.lastPaid)) a.lastPaid = r.lastDate;
     a.spend += r.amount;
     a.months.add(r.month);
     a.byMonth.set(r.month, (a.byMonth.get(r.month) ?? 0) + r.amount);
@@ -172,7 +179,7 @@ export async function detect(tx: Db, orgId: string, asAt: string, hints: Supplie
   await tx.delete(detectedApps).where(eq(detectedApps.orgId, orgId));
   const yearAgo = monthsBack(asAt, 12);
   const out = [...perApp].map(([appId, a]) => {
-    const life = lifecycleOf([...a.months], asAt, latestAnswer.get(appId));
+    const life = lifecycleOf([...a.months], asAt, latestAnswer.get(appId), { lastPaid: a.lastPaid, booksThrough, today, leewayDays });
     if (lapsingNeedsReview(life, asAt) && !latestAnswer.has(appId)) {
       pending.push({
         kind: "app_lapsing",
@@ -192,6 +199,7 @@ export async function detect(tx: Db, orgId: string, asAt: string, hints: Supplie
     cycle: life.cycle,
     state: life.state,
     nextExpected: life.nextExpected,
+    lastPaidDate: a.lastPaid,
     // Monthly totals (aggregates only) feed the after-install chart, renewal checks and peer prices.
     evidence: {
       contacts: [...a.contacts.values()],

@@ -7,10 +7,10 @@
   "share": 0.3569,
   "band": "high",
   "state": "covered",
-  "flagId": "bd0b9b52-f620-46e6-b6e2-3c1396f36744",
+  "flagId": "246946b8-6071-45ee-8dd4-8c22ade0cba6",
   "topApp": {
-   "id": "brightpearl",
-   "name": "Brightpearl",
+   "id": "a2x",
+   "name": "A2X",
    "match": 43
   },
   "coveredBy": {
@@ -37,8 +37,8 @@
   "band": "high",
   "ruleId": "sales_capture",
   "ruleVersion": 2,
-  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
-  "refreshedAt": "2026-11-13T14:22:33.321Z",
+  "runId": "3ea3b49f-8d76-4686-b8b5-4a942d1aefa8",
+  "refreshedAt": "2026-11-16T02:19:45.892Z",
   "series": [
    {
     "month": "2025-11-30",
@@ -98,7 +98,7 @@
    "category": "EPOS and ecommerce sales",
    "spend12m": 3588,
    "monthsSeen": 12,
-   "lastPaid": "2026-10-01",
+   "lastPaid": "2026-10-15",
    "cycle": "monthly",
    "state": "active"
   },
@@ -108,7 +108,7 @@
    "category": "EPOS and ecommerce sales",
    "spend12m": 588,
    "monthsSeen": 12,
-   "lastPaid": "2026-10-01",
+   "lastPaid": "2026-10-15",
    "cycle": "monthly",
    "state": "active"
   },
@@ -118,7 +118,7 @@
    "category": "EPOS and ecommerce sales",
    "spend12m": 1020,
    "monthsSeen": 12,
-   "lastPaid": "2026-10-01",
+   "lastPaid": "2026-10-15",
    "cycle": "monthly",
    "state": "active"
   },
@@ -128,7 +128,7 @@
    "category": "EPOS and ecommerce sales",
    "spend12m": 14400,
    "monthsSeen": 12,
-   "lastPaid": "2026-10-01",
+   "lastPaid": "2026-10-15",
    "cycle": "monthly",
    "state": "active"
   }
@@ -137,15 +137,16 @@
   {
    "rank": 1,
    "app": {
-    "id": "brightpearl",
-    "name": "Brightpearl",
+    "id": "a2x",
+    "name": "A2X",
     "categories": [
-     "inventory",
      "epos_ecommerce"
     ],
     "markets": [
      "UK",
-     "US"
+     "US",
+     "CA",
+     "AU"
     ],
     "price": {
      "value": null,
@@ -166,49 +167,12 @@
     "peers": 0.1,
     "price": 0.05
    },
-   "reason": "Works directly with Shopify, which you keep. Price not published · we're checking",
-   "inUse": false,
-   "kind": "change"
-  },
-  {
-   "rank": 2,
-   "app": {
-    "id": "a2x",
-    "name": "A2X",
-    "categories": [
-     "epos_ecommerce"
-    ],
-    "markets": [
-     "UK",
-     "US",
-     "CA",
-     "AU"
-    ],
-    "price": {
-     "value": null,
-     "state": "missing"
-    },
-    "sample": true
-   },
-   "match": 18,
-   "components": {
-    "strength": 0,
-    "fit": 0.3,
-    "peers": 0.5,
-    "price": 0.5
-   },
-   "weights": {
-    "strength": 0.5,
-    "fit": 0.35,
-    "peers": 0.1,
-    "price": 0.05
-   },
-   "reason": "You already pay for it (£588 over 12 months). No integration with the apps you keep. Price not published · we're checking",
+   "reason": "You already pay for it (£588 over 12 months). Works directly with Shopify, which you keep. Price not published · we're checking",
    "inUse": true,
    "kind": null
   },
   {
-   "rank": 3,
+   "rank": 2,
    "app": {
     "id": "amazon_seller",
     "name": "Amazon (selling on Amazon)",
@@ -227,10 +191,10 @@
     },
     "sample": true
    },
-   "match": 18,
+   "match": 43,
    "components": {
     "strength": 0,
-    "fit": 0.3,
+    "fit": 1,
     "peers": 0.5,
     "price": 0.5
    },
@@ -240,12 +204,12 @@
     "peers": 0.1,
     "price": 0.05
    },
-   "reason": "You already pay for it (£14,400 over 12 months). No integration with the apps you keep. Price not published · we're checking",
+   "reason": "You already pay for it (£14,400 over 12 months). Works directly with A2X, which you keep. Price not published · we're checking",
    "inUse": true,
    "kind": null
   },
   {
-   "rank": 4,
+   "rank": 3,
    "app": {
     "id": "paypal",
     "name": "PayPal",
@@ -265,10 +229,10 @@
     },
     "sample": true
    },
-   "match": 18,
+   "match": 43,
    "components": {
     "strength": 0,
-    "fit": 0.3,
+    "fit": 1,
     "peers": 0.5,
     "price": 0.5
    },
@@ -278,12 +242,12 @@
     "peers": 0.1,
     "price": 0.05
    },
-   "reason": "You already pay for it (£1,020 over 12 months). No integration with the apps you keep. Price not published · we're checking",
+   "reason": "You already pay for it (£1,020 over 12 months). Works directly with A2X, which you keep. Price not published · we're checking",
    "inUse": true,
    "kind": null
   },
   {
-   "rank": 5,
+   "rank": 4,
    "app": {
     "id": "shopify",
     "name": "Shopify",
@@ -302,10 +266,10 @@
     },
     "sample": true
    },
-   "match": 18,
+   "match": 43,
    "components": {
     "strength": 0,
-    "fit": 0.3,
+    "fit": 1,
     "peers": 0.5,
     "price": 0.5
    },
@@ -315,7 +279,7 @@
     "peers": 0.1,
     "price": 0.05
    },
-   "reason": "You already pay for it (£3,588 over 12 months). No integration with the apps you keep. Price not published · we're checking",
+   "reason": "You already pay for it (£3,588 over 12 months). Works directly with A2X, which you keep. Price not published · we're checking",
    "inUse": true,
    "kind": null
   }

@@ -7,7 +7,7 @@
   "share": 0.0123,
   "band": "low",
   "state": "flagged",
-  "flagId": "67857223-535b-4189-90d5-c29b9024936f",
+  "flagId": "8bcb13ec-0f47-49ff-94c0-e6a8f24e2fe9",
   "topApp": {
    "id": "airwallex",
    "name": "Airwallex",
@@ -34,8 +34,8 @@
   "band": "low",
   "ruleId": "supplier_bills",
   "ruleVersion": 2,
-  "runId": "c2d3a4ec-0e84-46c9-b615-3f19619dc496",
-  "refreshedAt": "2026-11-13T14:22:33.321Z"
+  "runId": "3ea3b49f-8d76-4686-b8b5-4a942d1aefa8",
+  "refreshedAt": "2026-11-16T02:19:45.892Z"
  },
  "cause": "Bills at this volume are usually captured by an app rather than keyed by hand.",
  "detectedInArea": [],

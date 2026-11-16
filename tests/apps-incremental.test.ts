@@ -3,7 +3,8 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { asc } from "drizzle-orm";
 import { freshDb } from "./helpers/db";
 import { adminDb, withOrg } from "@/lib/db/client";
-import { orgs, supplierSpend } from "@/db/schema";
+import { detectedApps, orgs, supplierSpend } from "@/db/schema";
+import { eq } from "drizzle-orm";
 import { FULL_REBUILD_DAYS, rebuildFrom, syncAppsInUse } from "@/lib/detect";
 import { SpendAggregator } from "@/lib/detect/aggregate";
 import type { XeroCall, XeroClient, XeroResult } from "@/lib/xero/client";
@@ -102,5 +103,11 @@ describe("syncAppsInUse", () => {
     const key = (r: { month: string; source: string; contactId: string; amount: number }) => `${r.month}|${r.source}|${r.contactId}|${r.amount}`;
     expect((await spend()).map(key).sort()).toEqual(agg.result().map(key).sort());
     expect((await spend()).find((r) => r.month === "2026-09-01" && r.source === "bill")).toBeUndefined();
+    // Round-2 3a: the books reach the latest bill or spend date; each app keeps its last payment's day.
+    const [o] = await (await adminDb()).select({ bt: orgs.booksThrough }).from(orgs).where(eq(orgs.id, orgId));
+    expect(o!.bt).toBe("2026-10-28");
+    const apps = await withOrg(orgId, (tx) => tx.select().from(detectedApps));
+    expect(apps.find((a) => a.appId === "deputy")?.lastPaidDate).toBe("2026-10-28");
+    expect(apps.find((a) => a.appId === "pleo")?.lastPaidDate).toBe("2026-10-20");
   });
 });

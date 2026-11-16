@@ -114,6 +114,24 @@
  },
  "integrations": [
   {
+   "toAppId": "shopify",
+   "toName": "Shopify",
+   "kind": "native",
+   "usedByOrg": true
+  },
+  {
+   "toAppId": "amazon_seller",
+   "toName": "Amazon (selling on Amazon)",
+   "kind": "native",
+   "usedByOrg": true
+  },
+  {
+   "toAppId": "paypal",
+   "toName": "PayPal",
+   "kind": "native",
+   "usedByOrg": true
+  },
+  {
    "toAppId": "xero",
    "toName": "Xero",
    "kind": "native",
