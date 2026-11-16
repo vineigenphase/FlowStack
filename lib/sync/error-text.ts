@@ -20,3 +20,16 @@ export function errorText(e: unknown, max = 300): string {
   }
   return msg.slice(0, max);
 }
+
+/**
+ * The call frames of an error's stack, nothing else. A drizzle "Failed query" stack starts with the SQL and a
+ * "params: …" line (ledger values, emails), and that line isn't always the first, so keep only "at …" frames.
+ */
+export function safeStack(e: unknown, maxFrames = 20): string {
+  const raw = String((e as { stack?: unknown })?.stack ?? "");
+  return raw
+    .split("\n")
+    .filter((l) => /^\s+at\s/.test(l))
+    .slice(0, maxFrames)
+    .join("\n");
+}

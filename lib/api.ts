@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { log } from "@/lib/log";
-import { errorText } from "@/lib/sync/error-text";
+import { errorText, safeStack } from "@/lib/sync/error-text";
 import type { ApiError, ErrorCode } from "@/lib/api/types";
 
 export class HttpError extends Error {
@@ -51,8 +51,8 @@ export function handle<A extends unknown[]>(fn: (...args: A) => Promise<Response
     } catch (e) {
       if (e instanceof HttpError) return errorResponse(e.status, e, requestId);
       if (e instanceof z.ZodError) return errorResponse(400, { message: "Invalid request", details: e.issues }, requestId);
-      // errorText drops SQL parameters (ledger values); the stack's first line repeats the message, so skip it.
-      const stack = String((e as Error).stack ?? "").split("\n").slice(1).join("\n");
+      // errorText drops SQL parameters (ledger values, emails); safeStack keeps only call frames for the same reason.
+      const stack = safeStack(e);
       log.error({ requestId, err: { message: errorText(e, 1000), stack } }, "route error");
       return errorResponse(500, { message: "Something went wrong" }, requestId);
     }

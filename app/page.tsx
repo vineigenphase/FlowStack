@@ -6,8 +6,11 @@ import { signInHref } from "@/lib/ui/signin";
 import { SiteHeader } from "@/components/site-header";
 import { JobTitleForm } from "@/components/job-title-form";
 import { gbp } from "@/lib/ui/format";
+import { Landing } from "@/components/landing";
+import { demoEnabled } from "@/lib/demo";
 
 export const dynamic = "force-dynamic";
+export const metadata = { title: "FlowStack: the right Xero apps for your business, from your own books" };
 
 const when = (d: Date | string | null) => (d ? new Date(d).toLocaleDateString("en-GB", { timeZone: "Europe/London", dateStyle: "medium" }) : null);
 
@@ -23,10 +26,10 @@ export default async function Home() {
     <>
     <SiteHeader />
     <main className="wrap">
-      <h1 className="display">FlowStack</h1>
-      <p className="lede">Which apps your Xero ledger says you need, based on your own figures. Read-only: we never change anything in Xero.</p>
       {s.userId ? (
         <>
+          <h1 className="display">FlowStack</h1>
+          <p className="lede">Which apps your Xero ledger says you need, based on your own figures. Read-only: we never change anything in Xero.</p>
           {me && !me.jobTitle ? <JobTitleForm options={[...JOB_TITLES]} /> : null}
           <h2>Your businesses</h2>
           {ordered.length ? (
@@ -61,9 +64,8 @@ export default async function Home() {
           )}
         </>
       ) : (
-        <p className="actions">
-          <a className="btn" href={si.href}>{si.dev ? "Sign in (local sample data)" : "Connect Xero"}</a>
-        </p>
+        // NEXT-STEPS P1.11: signed-out visitors get the public landing page and waitlist.
+        <Landing demo={demoEnabled()} signIn={si} />
       )}
     </main>
     </>
