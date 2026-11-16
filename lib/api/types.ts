@@ -104,7 +104,7 @@ export interface Recommendation {
   components: { strength: number; fit: number; peers: number; price: number };  // each 0–1
   weights: { strength: number; fit: number; peers: number; price: number };     // 0.50 / 0.35 / 0.10 / 0.05
   reason: string; inUse: boolean;
-  kind: "add" | "change" | null;                   // null = the app already in use (deviation from UI-SPEC v1.0, NOTES.md)
+  kind: "add" | "change" | null;                   // null = the app already in use (inUse: true); UI-SPEC matches since 16 Nov
 }
 export interface AppCard {
   id: string; name: string; categories: string[]; markets: Market[];

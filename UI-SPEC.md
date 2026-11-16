@@ -206,7 +206,7 @@ Each screen lists: **purpose · data · layout and components · states · inter
 3. **Likely cause:** `cause` text, prefixed "Likely cause, only your team can confirm:".
 4. **Is this right?** (feedback), §5.7a.
 5. **Apps for this line:** the `recommendations` list, ranked.
-   - Each card: rank `#1`, name, match `86`, one-line `reason`, price (FactValue rules), "You use this" badge when `inUse`, "Sample" tag when sample, kind badge ("Add" / "Change").
+   - Each card: rank `#1`, name, match `86`, one-line `reason`, price (FactValue rules), "You use this" badge when `inUse`, "Sample" tag when sample, kind badge ("Add" / "Change"; none for the app in use, whose `kind` is null).
    - Actions: "Add to shortlist", "View details" (dossier), and checkboxes to compare up to 3.
    - Expanding a card shows the score breakdown: strength / fit / peers / price, each as a bar with its weight (50 / 35 / 10 / 5).
 6. **Empty recommendations** for a fine line: "No app category applies to this line."
@@ -504,7 +504,7 @@ export interface Recommendation {
   rank: number; app: AppCard; match: number;        // 0–100
   components: { strength: number; fit: number; peers: number; price: number };  // each 0–1
   weights: { strength: number; fit: number; peers: number; price: number };     // 0.50 / 0.35 / 0.10 / 0.05
-  reason: string; inUse: boolean; kind: 'add' | 'change';
+  reason: string; inUse: boolean; kind: 'add' | 'change' | null;   // null when inUse: the app already in use is shown, not recommended
 }
 export interface AppCard {
   id: string; name: string; categories: string[]; markets: Market[];
