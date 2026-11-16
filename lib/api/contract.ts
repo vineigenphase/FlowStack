@@ -605,8 +605,8 @@ export async function settingsOf(orgId: string): Promise<T.OrgSettings | null> {
     includeCurrentMonth: o.includeCurrentMonth,
     // Price-sharing consent (orgs.share_prices). Peer price ranges stay OPEN (CHANGES-v1.1 §4 item 2): nothing shows yet.
     benchmarkOptIn: o.sharePrices,
-    // TODO(owner): the monthly email is not specified in BACKEND.md yet (NOTES.md "UI-SPEC vs backend"). Always off.
-    digestOptIn: false,
+    // Round-2 3d (NEXT-STEPS P2.13): stored; nothing is sent until an email provider is chosen.
+    digestOptIn: o.digestOptIn,
   };
 }
 

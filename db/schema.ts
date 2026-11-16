@@ -53,6 +53,8 @@ export const orgs = pgTable("orgs", {
   industry: text("industry"),
   markets: text("markets").array().notNull().default(["UK"]),
   includeCurrentMonth: boolean("include_current_month").notNull().default(false),
+  /** Round-2 3d: the monthly digest a week before billing. Off until the business turns it on. */
+  digestOptIn: boolean("digest_opt_in").notNull().default(false),
   /** NEXT-STEPS P0.5: a tester (finance leaders' council): free, full access, no Stripe. Set when an invited person connects. */
   designPartner: boolean("design_partner").notNull().default(false),
   /** Round-2 3a: the latest date of any bill or spend bank transaction seen: how far the books are entered. */

@@ -27,11 +27,13 @@ export const SettingsInput = z.object({
   askAi: z.boolean().optional(),
   /** UI-SPEC §5.4: include the month in progress (off = the last full month). Takes effect on the next refresh. */
   includeCurrentMonth: z.boolean().optional(),
+  /** Round-2 3d: monthly digest a week before billing. */
+  digestOptIn: z.boolean().optional(),
 });
 
 export async function getSettings(orgId: string) {
   const [o] = await withOrg(orgId, (tx) => tx.select().from(orgs).where(eq(orgs.id, orgId)));
-  return o ? { industry: o.industry, markets: o.markets, sharePrices: o.sharePrices, askAi: o.askAi, sample: o.sample } : null;
+  return o ? { industry: o.industry, markets: o.markets, sharePrices: o.sharePrices, askAi: o.askAi, digestOptIn: o.digestOptIn, sample: o.sample } : null;
 }
 
 /** Saves settings. Consent changes are audited and take effect on peer prices at once (rows written or deleted). */
@@ -43,6 +45,7 @@ export async function saveSettings(orgId: string, userId: string, input: z.infer
   if (input.sharePrices !== undefined) set.sharePrices = input.sharePrices;
   if (input.askAi !== undefined) set.askAi = input.askAi;
   if (input.includeCurrentMonth !== undefined) set.includeCurrentMonth = input.includeCurrentMonth;
+  if (input.digestOptIn !== undefined) set.digestOptIn = input.digestOptIn;
   if (Object.keys(set).length) await withOrg(orgId, (tx) => tx.update(orgs).set(set).where(eq(orgs.id, orgId)));
   if (input.sharePrices !== undefined && input.sharePrices !== before?.sharePrices) {
     const db = await adminDb();
@@ -51,6 +54,10 @@ export async function saveSettings(orgId: string, userId: string, input: z.infer
   if (input.askAi !== undefined && input.askAi !== before?.askAi) {
     const db = await adminDb();
     await db.insert(auditLog).values({ actor: userId, action: input.askAi ? "ask_ai.on" : "ask_ai.off", target: { org_id: orgId } });
+  }
+  if (input.digestOptIn !== undefined && input.digestOptIn !== before?.digestOptIn) {
+    const db = await adminDb();
+    await db.insert(auditLog).values({ actor: userId, action: input.digestOptIn ? "digest.on" : "digest.off", target: { org_id: orgId } });
   }
   if (input.sharePrices !== undefined || input.industry !== undefined) await recordObservations(orgId);
   // Markets decide which apps are candidates: re-rank from stored figures (no Xero calls).

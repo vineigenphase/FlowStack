@@ -23,7 +23,7 @@ const Contract = z.object({
   digestOptIn: z.boolean(),
 });
 
-/** Save the UI-SPEC settings. digestOptIn is accepted but not stored yet (owner decision pending, NOTES.md). */
+/** Save the UI-SPEC settings. digestOptIn is stored (round-2 3d); no email is sent until a provider is chosen. */
 export const PUT = handle(async (req: Request, { params }: Params<{ org: string }>) => {
   const { org } = await params;
   const u = await requireOrgMember(org);
@@ -36,6 +36,7 @@ export const PUT = handle(async (req: Request, { params }: Params<{ org: string 
     ...(keepFiner ? {} : { industry: b.industry }),
     includeCurrentMonth: b.includeCurrentMonth,
     sharePrices: b.benchmarkOptIn,
+    digestOptIn: b.digestOptIn,
   });
   return settingsOf(org);
 });

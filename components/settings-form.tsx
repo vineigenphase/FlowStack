@@ -6,7 +6,7 @@ import { useState } from "react";
 type Props = {
   org: string;
   industries: { key: string; label: string }[];
-  initial: { industry: string | null; markets: string[]; sharePrices: boolean; askAi: boolean; sample: boolean };
+  initial: { industry: string | null; markets: string[]; sharePrices: boolean; askAi: boolean; digestOptIn: boolean; sample: boolean };
   /** v1.1 G: peer prices are out of 1.0, so the opt-in is hidden unless enabled. */
   peerPrices?: boolean;
 };
@@ -19,6 +19,7 @@ export function SettingsForm({ org, industries, initial, peerPrices = false }: P
   const [markets, setMarkets] = useState<string[]>(initial.markets);
   const [share, setShare] = useState(initial.sharePrices);
   const [ask, setAsk] = useState(initial.askAi);
+  const [digest, setDigest] = useState(initial.digestOptIn);
   const [msg, setMsg] = useState<{ text: string; error?: boolean } | null>(null);
 
   async function save(e: React.FormEvent) {
@@ -27,7 +28,7 @@ export function SettingsForm({ org, industries, initial, peerPrices = false }: P
     const res = await fetch(`/api/orgs/${org}/settings`, {
       method: "PATCH",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({ industry: industry || null, markets, sharePrices: share, askAi: ask }),
+      body: JSON.stringify({ industry: industry || null, markets, sharePrices: share, askAi: ask, digestOptIn: digest }),
     }).catch(() => null);
     const json = res ? ((await res.json().catch(() => ({}))) as { error?: string }) : {};
     if (!res || !res.ok) setMsg({ text: json.error ?? "Couldn't save.", error: true });
@@ -91,6 +92,15 @@ export function SettingsForm({ org, industries, initial, peerPrices = false }: P
           provider for training, and nothing trains AI on your data. Without this, Ask still works: it lists matching apps from your
           figures without a written answer.
         </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Monthly email</legend>
+        <label className="check-label">
+          <input type="checkbox" checked={digest} onChange={(e) => setDigest(e.target.checked)} />
+          A summary of your flags and app questions, a week before billing
+        </label>
+        <p className="muted small">Not sent yet: we&apos;re still choosing an email provider. Your choice is saved for when we start.</p>
       </fieldset>
 
       <div className="inline-form">

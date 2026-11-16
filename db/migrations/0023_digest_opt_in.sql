@@ -1,0 +1,1 @@
+ALTER TABLE "orgs" ADD COLUMN "digest_opt_in" boolean DEFAULT false NOT NULL;
