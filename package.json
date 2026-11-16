@@ -20,6 +20,7 @@
     "eval:import": "tsx scripts/eval-import.ts",
     "mocks": "tsx scripts/make-mocks.ts",
     "crawl": "tsx scripts/crawl.ts",
+    "catalogue:checklist": "tsx scripts/catalogue-checklist.ts",
     "crawl:probe": "tsx scripts/probe-paths.ts",
     "queue": "tsx scripts/queue.ts",
     "deploy:check": "tsx scripts/deploy-check.ts"
