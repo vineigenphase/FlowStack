@@ -182,7 +182,7 @@
   markets: [UK, US, CA, AU]
   website: https://www.syftanalytics.com
   fingerprints: ["syft analytics", "syft analytics *"]
-  integrations: [{ to: xero, kind: native }]
+  integrations: [{ to: shopify, kind: native, source: "https://help.syftanalytics.com/en/articles/9112706-shopify" }, { to: stripe, kind: native, source: "https://help.syftanalytics.com/en/articles/9112205-stripe" }, { to: xero, kind: native }]
   sample: true
   source: hand-entered from vendor site
 - id: float
@@ -220,7 +220,7 @@
   markets: [UK, US, CA, AU]
   website: https://www.airwallex.com
   fingerprints: ["airwallex", "airwallex *"]
-  integrations: [{ to: xero, kind: native }]
+  integrations: [{ to: shopify, kind: native, source: "https://www.airwallex.com/uk/integrations/shopify" }, { to: xero, kind: native }]
   sample: true
   source: hand-entered from vendor site
 
@@ -691,7 +691,7 @@
   website: https://www.chargebee.com
   crawl: { home: /, pricing: /pricing, product: null, services: null }
   fingerprints: ["chargebee", "chargebee *"]
-  integrations: [{ to: stripe, kind: native, source: "https://www.chargebee.com/docs/payments/stripe.html" }, { to: xero, kind: native }]
+  integrations: [{ to: gocardless, kind: native, source: "https://www.chargebee.com/docs/payments/1.0/payment-gateways-and-configuration/gocardless" }, { to: stripe, kind: native, source: "https://www.chargebee.com/docs/payments/stripe.html" }, { to: xero, kind: native }]
   sample: true
   source: hand-entered; vendor site checked 2026-11-06
 
@@ -713,7 +713,7 @@
   website: https://www.cin7.com
   crawl: { home: /, pricing: /pricing, product: null, services: null }
   fingerprints: ["cin7", "cin7 *", "dear systems"]
-  integrations: [{ to: shopify, kind: native, source: "https://help.core.cin7.com/hc/en-us/articles/9034589848335-Shopify-Integration" }, { to: square, kind: native, source: "https://help.core.cin7.com/hc/en-us/articles/9034587425807-Square-sales-channel" }, { to: xero, kind: native }]
+  integrations: [{ to: amazon_seller, kind: native, source: "https://help.core.cin7.com/hc/en-us/articles/9034459874703-Amazon-integration" }, { to: shopify, kind: native, source: "https://help.core.cin7.com/hc/en-us/articles/9034589848335-Shopify-Integration" }, { to: square, kind: native, source: "https://help.core.cin7.com/hc/en-us/articles/9034587425807-Square-sales-channel" }, { to: xero, kind: native }]
   sample: true
   source: hand-entered; vendor site checked 2026-11-06
 - id: brightpearl
@@ -723,7 +723,7 @@
   website: https://www.brightpearl.com
   crawl: { home: /, pricing: /pricing, product: null, services: null }
   fingerprints: ["brightpearl", "brightpearl *"]
-  integrations: [{ to: shopify, kind: native, source: "https://apps.shopify.com/brightpearl" }, { to: xero, kind: native }]
+  integrations: [{ to: amazon_seller, kind: native, source: "https://www.brightpearl.com/integrations/marketplaces/amazon" }, { to: shopify, kind: native, source: "https://apps.shopify.com/brightpearl" }, { to: xero, kind: native }]
   sample: true
   source: hand-entered; vendor site checked 2026-11-06
 
