@@ -5,6 +5,7 @@
  * keep these simple so they're easy to replace.
  */
 import { useEffect } from "react";
+import { rememberRef } from "./report-problem";
 
 export function PageSkeleton({ rows = 6, label = "Loading" }: { rows?: number; label?: string }) {
   return (
@@ -26,6 +27,7 @@ export function PageSkeleton({ rows = 6, label = "Loading" }: { rows?: number; l
 export function ErrorState({ error, reset, title = "Something went wrong" }: { error: Error & { digest?: string }; reset: () => void; title?: string }) {
   useEffect(() => {
     console.error(error);
+    rememberRef(error.digest);
   }, [error]);
   const generic = !error.message || /server components render|digest/i.test(error.message);
   return (

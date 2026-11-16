@@ -4,6 +4,7 @@ import { env } from "@/lib/env";
 import { log } from "@/lib/log";
 import { getOAuthState, getSession } from "@/lib/auth/session";
 import { completeConnect } from "@/lib/auth/connect";
+import { AccessDeniedError } from "@/lib/access";
 import { executeRefresh, startRefresh, type RunRow } from "@/lib/sync/refresh";
 import { errorText } from "@/lib/sync/error-text";
 
@@ -22,9 +23,18 @@ export const GET = handle(async (req: NextRequest) => {
     throw new HttpError(400, "Sign-in expired or state mismatch. Start again.");
   }
   const verifier = oauth.verifier;
+  const invite = oauth.invite ?? null;
   oauth.destroy();
 
-  const { user, orgIds, created, capped } = await completeConnect(code, verifier);
+  let result;
+  try {
+    result = await completeConnect(code, verifier, { invite });
+  } catch (e) {
+    // NEXT-STEPS P0.5: invite-only and this person isn't approved (their Xero connection was removed again).
+    if (e instanceof AccessDeniedError) return NextResponse.redirect(new URL("/connect?error=invite_only", env().APP_URL));
+    throw e;
+  }
+  const { user, orgIds, created, capped } = result;
 
   const s = await getSession();
   s.userId = user.id;

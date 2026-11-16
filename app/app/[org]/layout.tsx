@@ -9,6 +9,7 @@ import { OrgNav } from "@/components/org-nav";
 import { SignOut } from "@/components/sign-out";
 import { signInHref } from "@/lib/ui/signin";
 import { OrgSwitcher } from "@/components/org-switcher";
+import { ReportProblem } from "@/components/report-problem";
 import { myOrgs } from "@/lib/me";
 
 export const dynamic = "force-dynamic";
@@ -71,6 +72,9 @@ export default async function OrgLayout({ children, params }: { children: ReactN
         </div>
       ) : null}
       <main className="wrap">{children}</main>
+      <footer className="wrap foot">
+        <ReportProblem />
+      </footer>
     </>
   );
 }

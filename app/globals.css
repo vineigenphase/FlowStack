@@ -329,3 +329,7 @@ td a { font-weight: 600; }
 .step { padding: 6px 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; }
 .step-done span:first-child::before { content: "✓ "; }
 .step-error span:first-child::before { content: "✕ "; }
+.foot { margin-top: 48px; padding: 16px 0 32px; border-top: 1px solid var(--line); }
+.report textarea { display: block; width: 100%; max-width: 560px; margin: 6px 0; font: inherit; }
+.tbl { border-collapse: collapse; width: 100%; font-size: 0.9rem; }
+.tbl th, .tbl td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }

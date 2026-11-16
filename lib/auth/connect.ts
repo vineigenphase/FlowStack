@@ -18,12 +18,23 @@ import {
 } from "@/lib/xero/oauth";
 import { getAccessToken } from "@/lib/xero/tokens";
 import { open } from "@/lib/crypto";
+import { AccessDeniedError, checkAccess, type Access } from "@/lib/access";
 
 export type ConnectDeps = {
   exchange?: typeof exchangeCode;
   verify?: (idToken: string) => Promise<XeroIdentity>;
   connections?: typeof listConnections;
+  /** NEXT-STEPS P0.5: the invite code typed on /connect (ACCESS_MODE=invite). */
+  invite?: string | null;
+  /** Undo a refused connect at Xero (tests pass a stub). */
+  undo?: (accessToken: string, refreshToken: string, connectionIds: string[]) => Promise<void>;
 };
+
+/** A refused person authorised our app at Xero: remove those connections so they don't count against the plan cap. */
+async function undoAtXero(accessToken: string, refreshToken: string, connectionIds: string[]) {
+  for (const id of connectionIds) await deleteConnection(accessToken, id).catch(() => {});
+  await revokeRefreshToken(refreshToken).catch(() => {});
+}
 
 export async function completeConnect(code: string, verifier: string, deps: ConnectDeps = {}) {
   const tokens = await (deps.exchange ?? exchangeCode)(code, verifier);
@@ -43,8 +54,18 @@ export async function completeConnect(code: string, verifier: string, deps: Conn
   const scopes = tokens.scope?.split(" ") ?? [];
 
   const cap = env().XERO_CONNECTION_CAP;
+  try {
+    return await connectRows();
+  } catch (e) {
+    if (e instanceof AccessDeniedError) await (deps.undo ?? undoAtXero)(tokens.access_token, tokens.refresh_token, tenants.map((t) => t.id));
+    throw e;
+  }
+
+  function connectRows() {
   return db.transaction(async (tx) => {
     // v1.1 I: the plan cap (Starter 5) counts every business on our app, not per user.
+    // NEXT-STEPS P0.5: invite-only gate, decided before any row is written (a refusal rolls everything back).
+    const access: Access = await checkAccess(tx as unknown as Parameters<typeof checkAccess>[0], email, deps.invite);
     const [c0] = await tx.select({ n: count() }).from(xeroConnections).where(ne(xeroConnections.status, "revoked"));
     let used = Number(c0?.n ?? 0);
     const capped: string[] = [];
@@ -71,7 +92,7 @@ export async function completeConnect(code: string, verifier: string, deps: Conn
         continue;
       } else {
         used++;
-        const [o] = await tx.insert(orgs).values({ name: t.tenantName ?? "Xero organisation" }).returning();
+        const [o] = await tx.insert(orgs).values({ name: t.tenantName ?? "Xero organisation", designPartner: access.tester }).returning();
         orgId = o!.id;
         created.push(orgId);
         await tx.insert(xeroConnections).values({ orgId, tenantId: t.tenantId, connectionId: t.id, grantKey, encAccess, encRefresh, expiresAt, scopes });
@@ -79,8 +100,9 @@ export async function completeConnect(code: string, verifier: string, deps: Conn
       await tx.insert(orgMembers).values({ orgId, userId: user!.id, role: existing ? "member" : "owner" }).onConflictDoNothing();
       orgIds.push(orgId);
     }
-    return { user: user!, orgIds, created, capped };
+    return { user: user!, orgIds, created, capped, access };
   });
+  }
 }
 
 /**

@@ -20,6 +20,9 @@ export const GET = handle(async (req: NextRequest) => {
   const s = await getOAuthState();
   s.verifier = p.verifier;
   s.state = p.state;
+  // NEXT-STEPS P0.5: an invite code typed on /connect rides along to the callback (checked there, after sign-in).
+  const invite = new URL(req.url).searchParams.get("invite")?.trim();
+  s.invite = invite ? invite.slice(0, 40) : undefined;
   await s.save();
   return NextResponse.redirect(authorizeUrl(p));
 });

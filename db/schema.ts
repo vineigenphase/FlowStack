@@ -53,6 +53,8 @@ export const orgs = pgTable("orgs", {
   industry: text("industry"),
   markets: text("markets").array().notNull().default(["UK"]),
   includeCurrentMonth: boolean("include_current_month").notNull().default(false),
+  /** NEXT-STEPS P0.5: a tester (finance leaders' council): free, full access, no Stripe. Set when an invited person connects. */
+  designPartner: boolean("design_partner").notNull().default(false),
   /** Consent (opt-in) to count what this business pays each app in anonymous peer ranges (10+ businesses). */
   sharePrices: boolean("share_prices").notNull().default(false),
   /**
@@ -736,6 +738,20 @@ export const waitlist = pgTable("waitlist", {
   role: text("role").notNull(),
   industry: text("industry").notNull(),
   consentAt: ts("consent_at").notNull(),
+  createdAt: ts("created_at").notNull().defaultNow(),
+  /** NEXT-STEPS P0.5: an admin let this email connect real Xero while ACCESS_MODE=invite. */
+  approvedAt: ts("approved_at"),
+  approvedBy: text("approved_by"),
+});
+
+/** NEXT-STEPS P0.5: invite codes for testers (ACCESS_MODE=invite). Owner connection only. */
+export const accessCodes = pgTable("access_codes", {
+  code: text("code").primaryKey(),
+  note: text("note"),
+  maxUses: integer("max_uses").notNull().default(1),
+  uses: integer("uses").notNull().default(0),
+  expiresAt: ts("expires_at"),
+  createdBy: text("created_by").notNull(),
   createdAt: ts("created_at").notNull().defaultNow(),
 });
 

@@ -700,6 +700,9 @@ export const PLAN_KEYS: Record<string, string> = { monthly: "pro_monthly", annua
 
 export async function subscriptionOf(orgId: string): Promise<T.Subscription> {
   const db = await adminDb();
+  // NEXT-STEPS P0.5: testers are design partners: free, full access, no Stripe objects.
+  const [o] = await db.select({ dp: orgs.designPartner }).from(orgs).where(eq(orgs.id, orgId));
+  if (o?.dp) return { status: "design_partner", planId: null, currentPeriodEnd: null, cancelAtPeriodEnd: false };
   const [s] = await db.select().from(subscriptions).where(eq(subscriptions.orgId, orgId)).orderBy(desc(subscriptions.updatedAt)).limit(1);
   if (!s) return { status: "none", planId: null, currentPeriodEnd: null, cancelAtPeriodEnd: false };
   const planId = (Object.entries(PLAN_KEYS).find(([, v]) => v === s.plan)?.[0] ?? null) as T.Plan["id"] | null;

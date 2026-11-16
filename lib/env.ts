@@ -50,6 +50,8 @@ const EnvSchema = z.object({
   STRIPE_SECRET_KEY: z.string().optional().default(""),
   STRIPE_WEBHOOK_SECRET: z.string().optional().default(""),
   STRIPE_PRICE_IDS_JSON: z.string().optional().default(""),
+  /** NEXT-STEPS P0.5: invite = connecting real Xero needs an approved waitlist email or an invite code. */
+  ACCESS_MODE: z.enum(["open", "invite"]).default("open"),
   /** NEXT-STEPS P0.2: /demo opens a read-only guest session on one sample business. Off unless set. */
   DEMO_ENABLED: bool,
   /** Optional: the sample org /demo opens. Unset → the built-in ecommerce sample, created from fixtures on first use. */

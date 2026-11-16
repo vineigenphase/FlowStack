@@ -13,6 +13,7 @@ export const KIND_LABELS: Record<QueueKind, string> = {
   review_moderation: "Reviews to check",
   quote_request: "Quote requests to send",
   account_mapping: "Accounts to map",
+  user_report: "Problem reports",
   unknown_supplier: "Suppliers we don't recognise",
   fingerprint_check: "App matches to confirm",
   cashflow_unreconciled: "Cash flows that don't reconcile",

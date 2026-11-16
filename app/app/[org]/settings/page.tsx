@@ -4,6 +4,7 @@ import { getSettings, INDUSTRIES } from "@/lib/orgs/settings";
 import { SettingsForm } from "@/components/settings-form";
 import { BillingBox } from "@/components/billing-box";
 import { billingStatus, plans, subscriptionFor } from "@/lib/billing";
+import { subscriptionOf } from "@/lib/api/contract";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +27,7 @@ export default async function SettingsPage({ params }: { params: Promise<{ org: 
   if (!s) return null;
   const bill = billingStatus();
   const sub = bill.enabled ? await subscriptionFor({ orgId: org }) : null;
+  const tester = (await subscriptionOf(org)).status === "design_partner";
   return (
     <>
       <h1>Settings</h1>
@@ -33,7 +35,9 @@ export default async function SettingsPage({ params }: { params: Promise<{ org: 
       <SettingsForm org={org} industries={[...INDUSTRIES]} initial={s} peerPrices={peerPricesEnabled()} />
 
       <h2>Billing</h2>
-      {bill.enabled ? (
+      {tester ? (
+        <p>You&apos;re a design partner: free, with full access, until launch. Thank you.</p>
+      ) : bill.enabled ? (
         <>
           <p className="muted small">Payments are handled by Stripe; we never see your card. Test mode: no real money moves.</p>
           <BillingBox

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import type { ApiError, RefreshRun } from "@/lib/api/types";
+import { rememberRef } from "./report-problem";
 
 const WORDS = { pending: "Waiting", running: "Working…", done: "Done", error: "Failed" } as const;
 
@@ -40,6 +41,8 @@ export function RunProgress({ org, initial }: { org: string; initial: RefreshRun
   useEffect(() => {
     if (run.status === "ok") router.push(`/app/${org}`);
   }, [run.status, org, router]);
+
+  useEffect(() => rememberRef(err?.requestId ?? run.error?.requestId), [err, run.error]);
 
   async function retry() {
     setRetrying(true);

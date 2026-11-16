@@ -9,7 +9,7 @@ import { guestReader, type GuestSession, type Reader } from "@/lib/demo";
 
 /** activeOrgId: the business last switched to (v1.1 I). Every data route still checks membership itself. */
 export type SessionData = { userId?: string; email?: string; isAdmin?: boolean; activeOrgId?: string } & GuestSession;
-export type OAuthState = { verifier?: string; state?: string };
+export type OAuthState = { verifier?: string; state?: string; invite?: string };
 
 const base = (): Omit<SessionOptions, "cookieName"> => ({
   password: env().SESSION_SECRET,
