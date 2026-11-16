@@ -43,6 +43,20 @@ export class XeroHttpError extends Error {
   }
 }
 
+/** Longest Retry-After we wait in-process. Xero's daily-limit 429 asks for hours; we stop instead (NEXT-STEPS P1.10). */
+export const MAX_RETRY_WAIT_MS = 60_000;
+
+/** Xero refused because a limit is used up for longer than we will wait (usually the 1,000-a-day Starter limit). */
+export class XeroLimitError extends XeroHttpError {
+  constructor(
+    endpoint: string,
+    public problem: string,
+    public retryAfterSeconds: number | null,
+  ) {
+    super(429, endpoint, problem === "day" ? "Xero's daily call limit for this business is used up. Try again tomorrow." : `Xero rate limit (${problem}).`);
+  }
+}
+
 type LiveOpts = {
   tenantId: string;
   orgKey: string;
@@ -103,6 +117,14 @@ export class LiveXeroClient implements XeroClient {
       if (res.status === 401 && !forced) {
         forced = true;
         continue;
+      }
+      if (res.status === 429) {
+        const ra0 = Number(res.headers.get("retry-after"));
+        const problem = (res.headers.get("x-rate-limit-problem") ?? "").toLowerCase();
+        if (problem === "day" || (Number.isFinite(ra0) && ra0 * 1000 > MAX_RETRY_WAIT_MS)) {
+          log.warn({ endpoint: call.key, problem: problem || "unknown", retryAfter: Number.isFinite(ra0) ? ra0 : null }, "xero limit used up");
+          throw new XeroLimitError(call.key, problem || "unknown", Number.isFinite(ra0) ? ra0 : null);
+        }
       }
       if (attempt < maxRetries && (res.status === 429 || res.status >= 500)) {
         const ra = Number(res.headers.get("retry-after"));

@@ -30,7 +30,8 @@ class FakeXero implements XeroClient {
         (!statuses || statuses.includes(r.status)) &&
         (!call.ifModifiedSince || new Date(r.updated) >= call.ifModifiedSince),
     );
-    const page = rows.slice(((call.page ?? 1) - 1) * 100, (call.page ?? 1) * 100);
+    const size = Number(call.query?.pageSize ?? 100);
+    const page = rows.slice(((call.page ?? 1) - 1) * size, (call.page ?? 1) * size);
     const contact = (r: Rec) => ({ ContactID: r.contact === "c1" ? "00000000-0000-4000-8000-0000000000c1" : "00000000-0000-4000-8000-0000000000c2", Name: r.contact === "c1" ? "Deputy" : "Pleo Technologies" });
     const json =
       kind === "bill"
@@ -109,5 +110,32 @@ describe("syncAppsInUse", () => {
     const apps = await withOrg(orgId, (tx) => tx.select().from(detectedApps));
     expect(apps.find((a) => a.appId === "deputy")?.lastPaidDate).toBe("2026-10-28");
     expect(apps.find((a) => a.appId === "pleo")?.lastPaidDate).toBe("2026-10-20");
+  });
+
+  // NEXT-STEPS P1.10: a busy business stays far inside Xero Starter (60 calls a minute, 1,000 a day per business).
+  it("load: 13 months of a busy ledger is a full rebuild of a few dozen calls, and a daily refresh of a handful", async () => {
+    const busy: Rec[] = [];
+    let n = 0;
+    for (const m of ["2025-10", ...months]) {
+      for (let d = 1; d <= 28; d++) {
+        const day = `${m}-${String(d).padStart(2, "0")}`;
+        for (let k = 0; k < 15; k++) {
+          busy.push({ id: `B${n++}`, kind: "bill", date: day, updated: `${day}T12:00:00Z`, total: 10 + k, status: "PAID", contact: k % 2 ? "c1" : "c2" });
+          busy.push({ id: `T${n++}`, kind: "bank", date: day, updated: `${day}T12:00:00Z`, total: 5 + k, status: "AUTHORISED", contact: k % 2 ? "c2" : "c1" });
+        }
+      }
+    }
+    expect(busy.length).toBe(10_920); // ~5,500 bills and ~5,500 card/bank spends in 13 months
+    const { id: loadOrg } = (await (await adminDb()).insert(orgs).values({ name: "Busy Ltd (sample)", sample: true }).returning())[0]!;
+    const asAt = "2026-10-31";
+    const full = new FakeXero(busy);
+    await syncAppsInUse(loadOrg, full, { asAt, now: new Date("2026-11-04T10:00:00Z") });
+    expect(full.meter.calls).toBeLessThanOrEqual(14); // 1,000 rows a page: 6 + 6 pages (+ the empty last page)
+    busy.push({ id: "late", kind: "bill", date: "2026-10-30", updated: "2026-11-05T08:00:00Z", total: 9, status: "AUTHORISED", contact: "c1" });
+    const daily = new FakeXero(busy);
+    await syncAppsInUse(loadOrg, daily, { asAt, now: new Date("2026-11-05T10:00:00Z") });
+    expect(daily.meter.calls).toBeLessThanOrEqual(4);
+    // Even 24 refreshes a day (a full rebuild each) would stay under the 1,000/day Starter limit.
+    expect(full.meter.calls * 24).toBeLessThan(1000);
   });
 });

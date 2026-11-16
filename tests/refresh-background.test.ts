@@ -30,6 +30,19 @@ describe("background refresh", () => {
     expect(done.steps.every((s) => s.status === "done")).toBe(true);
   });
 
+  it("NEXT-STEPS P1.10: with few Xero calls left today, the apps step is skipped and the run is partial", async () => {
+    const run = await startRefresh(orgId);
+    const client = new FixtureXeroClient("demo-uk-synthetic", orgId);
+    client.limits.day = 40; // as if X-DayLimit-Remaining said 40
+    await executeRefresh(orgId, run, { client, now: new Date("2026-11-04T10:00:00Z") });
+    const [r] = await (await adminDb()).select().from(syncRuns).where(eq(syncRuns.id, run.id));
+    expect(r!.status).toBe("partial");
+    const apps = r!.steps.find((s) => s.key === "apps")!;
+    expect(apps.status).toBe("error");
+    expect(apps.error).toContain("40 Xero calls left today");
+    expect(r!.steps.find((s) => s.key === "reports")!.status).toBe("ok");
+  });
+
   it("a business with no usable Xero connection fails at once instead of staying 'running'", async () => {
     process.env.XERO_MODE = "live"; // fixtures mode would hand back a fixture client
     resetEnv();

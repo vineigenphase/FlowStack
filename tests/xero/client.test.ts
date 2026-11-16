@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import { FixtureXeroClient, LiveXeroClient, XeroHttpError } from "@/lib/xero/client";
+import { FixtureXeroClient, LiveXeroClient, XeroHttpError, XeroLimitError } from "@/lib/xero/client";
 import { bills, getOrganisation } from "@/lib/xero/endpoints";
 import { OrgLimiter } from "@/lib/xero/rate-limit";
 
@@ -36,6 +36,36 @@ describe("LiveXeroClient", () => {
     await getOrganisation(c);
     expect(sleep).toHaveBeenCalledWith(7000);
     expect(c.meter.calls).toBe(2);
+  });
+
+  it("stops instead of sleeping for hours when the daily limit is used up (NEXT-STEPS P1.10)", async () => {
+    const sleep = vi.fn(async () => {});
+    const fetchImpl = vi.fn(async () => res(429, { m: "day" }, { "retry-after": "43200", "x-rate-limit-problem": "day" }));
+    const c = new LiveXeroClient({ tenantId: "t", orgKey: "o2d", token: async () => "tok", fetchImpl: fetchImpl as typeof fetch, sleep });
+    const e = await getOrganisation(c).catch((x) => x);
+    expect(e).toBeInstanceOf(XeroLimitError);
+    expect(e.problem).toBe("day");
+    expect(e.message).toContain("daily call limit");
+    expect(sleep).not.toHaveBeenCalled();
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it("a long Retry-After without a problem header also stops", async () => {
+    const sleep = vi.fn(async () => {});
+    const fetchImpl = vi.fn(async () => res(429, { m: 1 }, { "retry-after": "3600" }));
+    const c = new LiveXeroClient({ tenantId: "t", orgKey: "o2e", token: async () => "tok", fetchImpl: fetchImpl as typeof fetch, sleep });
+    await expect(getOrganisation(c)).rejects.toBeInstanceOf(XeroLimitError);
+    expect(sleep).not.toHaveBeenCalled();
+  });
+
+  it("asks for 1,000 rows a page on paged lists", async () => {
+    const fetchImpl = vi.fn(async (u: unknown) => {
+      expect(new URL(String(u)).searchParams.get("pageSize")).toBe("1000");
+      return res(200, { Invoices: [] });
+    });
+    const c = new LiveXeroClient({ tenantId: "t", orgKey: "o2f", token: async () => "t", fetchImpl: fetchImpl as typeof fetch });
+    for await (const _ of bills(c, new Date("2025-11-01"))) void _;
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
   });
 
   it("forces one token refresh on 401, then succeeds", async () => {

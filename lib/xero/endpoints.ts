@@ -72,7 +72,11 @@ export async function getTrialBalance(c: XeroClient, date: Date): Promise<Parsed
 }
 
 const dt = (d: Date) => `DateTime(${d.getUTCFullYear()},${d.getUTCMonth() + 1},${d.getUTCDate()})`;
-const PAGE_SIZE = 100;
+/**
+ * NEXT-STEPS P1.10: 1,000 rows a page (Xero's `pageSize`, on /Invoices and /BankTransactions in XeroAPI/Xero-OpenAPI
+ * xero_accounting.yaml) instead of the default 100, so a busy year of bills is a handful of calls, not dozens.
+ */
+export const PAGE_SIZE = 1000;
 
 export type Bill = z.infer<typeof InvoicesResponse>["Invoices"][number];
 export type SpendTxn = z.infer<typeof BankTransactionsResponse>["BankTransactions"][number];
@@ -89,7 +93,7 @@ export async function* bills(c: XeroClient, since: Date, ifModifiedSince?: Date,
       path: "/Invoices",
       page,
       ifModifiedSince,
-      query: { where: `Type=="ACCPAY" AND Date>=${dt(since)}`, Statuses: statuses, summaryOnly: "true" },
+      query: { where: `Type=="ACCPAY" AND Date>=${dt(since)}`, Statuses: statuses, summaryOnly: "true", pageSize: String(PAGE_SIZE) },
     });
     if (r.notModified || (r.status === 404 && page > 1)) return;
     const list = InvoicesResponse.parse(must(r, "invoices")).Invoices;
@@ -106,7 +110,7 @@ export async function* spendTransactions(c: XeroClient, since: Date, ifModifiedS
       path: "/BankTransactions",
       page,
       ifModifiedSince,
-      query: { where: `Type=="SPEND" AND Date>=${dt(since)}` },
+      query: { where: `Type=="SPEND" AND Date>=${dt(since)}`, pageSize: String(PAGE_SIZE) },
     });
     if (r.notModified || (r.status === 404 && page > 1)) return;
     const list = BankTransactionsResponse.parse(must(r, "banktransactions")).BankTransactions;

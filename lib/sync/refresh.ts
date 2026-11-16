@@ -54,6 +54,8 @@ import { peerBand, recordObservations } from "@/lib/prices";
 
 export const STEPS = ["organisation", "accounts", "reports", "mapping", "statements", "apps", "cashflow", "flags"] as const;
 type StepKey = (typeof STEPS)[number];
+/** Below this many calls left today (X-DayLimit-Remaining), the apps step is skipped. Starter: 1,000/day per business. */
+export const APPS_DAY_RESERVE = 100;
 
 export type RefreshOpts = { client?: XeroClient; now?: Date };
 
@@ -129,6 +131,8 @@ export async function executeRefresh(orgId: string, run: RunRow, opts: RefreshOp
     try {
       const out = await fn();
       Object.assign(s, { status: "ok", calls: client.meter.calls - calls0, bytes: client.meter.bytes - bytes0 });
+      // NEXT-STEPS P1.10: calls and bytes per step on the debug output (counts only, never payloads).
+      log.debug({ orgId, runId, step: key, calls: s.calls, bytes: s.bytes, dayLeft: client.limits.day, minuteLeft: client.limits.minute }, "xero step");
       await save();
       return out;
     } catch (e) {
@@ -271,7 +275,15 @@ export async function executeRefresh(orgId: string, run: RunRow, opts: RefreshOp
       });
     });
 
-    await step("apps", () => syncAppsInUse(orgId, client, { asAt: p.to }));
+    // NEXT-STEPS P1.10: the apps step is the one that pages. When Xero says the day's calls are nearly used up, skip it
+    // (the run is "partial" and keeps the last detected apps) rather than run out halfway and lock the business out.
+    const dayLeft = client.limits.day;
+    if (dayLeft !== null && dayLeft < APPS_DAY_RESERVE) {
+      const s = steps.find((x) => x.key === "apps")!;
+      Object.assign(s, { status: "error", calls: 0, bytes: 0, error: `Skipped: only ${dayLeft} Xero calls left today for this business. The apps list is from the last refresh.` });
+      log.warn({ orgId, runId, dayLeft }, "apps step skipped: daily limit low");
+      await save();
+    } else await step("apps", () => syncAppsInUse(orgId, client, { asAt: p.to }));
 
     await recompute(orgId, runId, { stepper: step });
 
