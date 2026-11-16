@@ -209,7 +209,10 @@ function lineOf(run: NonNullable<Run>, kind: T.StatementKind | "trend", l: { lin
     flagId: f?.id ?? null,
     topApp: top ? { id: top.appId, name: appName(top.appId), match: Math.round(top.match) } : null,
     coveredBy: coveredId ? { id: coveredId, name: appName(coveredId) } : null,
-    oneOffNote: fb?.answer === "numbers_wrong" && fb.subReason === "one_off" ? "You said this is a one-off cost" : null,
+    oneOffNote:
+      fb?.answer === "numbers_wrong" && fb.subReason === "one_off"
+        ? "You said this is a one-off cost"
+        : ((f?.evidence as { one_off?: { note: string } } | undefined)?.one_off?.note ?? null),
     snoozedUntil: f?.state === "snoozed" ? (ov?.until ?? null) : null,
   };
 }

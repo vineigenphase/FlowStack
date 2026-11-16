@@ -13,6 +13,7 @@
  *   strength     = coverage_gap × materiality
  */
 import type { App, Rule, Scoring } from "@/lib/catalog/load";
+import { lowerBand, type OneOff } from "./one-off";
 import { scoreCandidates, shortlistOf, type InUse, type PriceInfo, type Scored } from "@/lib/rank/score";
 
 export type LineState = "flagged" | "covered" | "fine" | "marked_fine" | "snoozed" | "queued";
@@ -53,6 +54,8 @@ export type FlagCtx = {
   tb: Map<string, TbRow>; // by xeroAccountId
   bands: { high: number; medium: number };
   scoring: Scoring;
+  /** Round-2 3c: P&L lines whose year-to-date value sits mostly in one month (lib/signals/one-off.ts). */
+  oneOff?: Map<string, OneOff>;
 };
 
 /** Recommendation kinds in 1.0 (v1.1 F). No "drop"; "fix" is reserved for 2.0 (needs transaction volumes). */
@@ -117,13 +120,15 @@ export function computeFlags(lines: LineIn[], ctx: FlagCtx): FlagOut[] {
       value: l.value,
       base,
       materiality,
-      band: bandOf(materiality, ctx.bands),
+      // Round-2 3c: a likely one-off drops one band (its size is real, its recurrence isn't).
+      band: l.kind === "pl" && ctx.oneOff?.has(l.lineKey) ? lowerBand(bandOf(materiality, ctx.bands)) : bandOf(materiality, ctx.bands),
       coverageGap: 0,
       strength: 0,
       state: "fine",
       cause: rule?.cause ?? null,
       evidence: {
         ...(l.extra ?? {}),
+        ...(l.kind === "pl" && ctx.oneOff?.has(l.lineKey) ? { one_off: ctx.oneOff.get(l.lineKey) } : {}),
         trial_balance: tb,
         statement_value: l.value,
         base_label: l.kind === "bs" ? "Total assets" : "Revenue",

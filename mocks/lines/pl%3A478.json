@@ -7,7 +7,7 @@
   "share": 0.0098,
   "band": "low",
   "state": "flagged",
-  "flagId": "9b5447d9-7c47-4328-b98f-0030dd93952e",
+  "flagId": "54cd41ca-2d0f-4a67-8bd9-dc8662cefd2e",
   "topApp": {
    "id": "brightpay",
    "name": "BrightPay",
@@ -34,8 +34,8 @@
   "band": "low",
   "ruleId": "payroll_no_bridge",
   "ruleVersion": 2,
-  "runId": "3ea3b49f-8d76-4686-b8b5-4a942d1aefa8",
-  "refreshedAt": "2026-11-16T02:19:45.892Z",
+  "runId": "5463d6b5-0196-4cdc-b6e6-bf21737af319",
+  "refreshedAt": "2026-11-16T02:40:15.965Z",
   "series": [
    {
     "month": "2025-11-30",

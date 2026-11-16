@@ -7,7 +7,7 @@
   "share": 0.0491,
   "band": "medium",
   "state": "flagged",
-  "flagId": "b1ddb2c7-a779-4943-a8cb-00c62f5f9081",
+  "flagId": "4b0dcb88-5de1-4b5e-95c3-1a194f331938",
   "topApp": {
    "id": "brightpearl",
    "name": "Brightpearl",
@@ -34,8 +34,8 @@
   "band": "medium",
   "ruleId": "cost_of_sales_stock",
   "ruleVersion": 2,
-  "runId": "3ea3b49f-8d76-4686-b8b5-4a942d1aefa8",
-  "refreshedAt": "2026-11-16T02:19:45.892Z",
+  "runId": "5463d6b5-0196-4cdc-b6e6-bf21737af319",
+  "refreshedAt": "2026-11-16T02:40:15.965Z",
   "series": [
    {
     "month": "2025-11-30",

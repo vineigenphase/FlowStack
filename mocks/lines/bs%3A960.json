@@ -7,7 +7,7 @@
   "share": 0.23,
   "band": null,
   "state": "fine",
-  "flagId": "61402a45-5889-444a-8fe7-559ce39569d8",
+  "flagId": "4c5083b1-8e47-470f-a756-9bc43a114d44",
   "topApp": null,
   "coveredBy": null,
   "oneOffNote": null,
@@ -30,8 +30,8 @@
   "band": null,
   "ruleId": "fine_as_is",
   "ruleVersion": 3,
-  "runId": "3ea3b49f-8d76-4686-b8b5-4a942d1aefa8",
-  "refreshedAt": "2026-11-16T02:19:45.892Z",
+  "runId": "5463d6b5-0196-4cdc-b6e6-bf21737af319",
+  "refreshedAt": "2026-11-16T02:40:15.965Z",
   "series": [
    {
     "month": "2025-11-30",

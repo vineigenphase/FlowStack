@@ -7,7 +7,7 @@
   "share": 0.0036,
   "band": "low",
   "state": "covered",
-  "flagId": "d522dee3-82e2-4d76-98e5-a085d30ba109",
+  "flagId": "a97013e8-c5ef-420d-9acc-97a7aec65330",
   "topApp": {
    "id": "adfin",
    "name": "Adfin",
@@ -37,8 +37,8 @@
   "band": "low",
   "ruleId": "receivables",
   "ruleVersion": 2,
-  "runId": "3ea3b49f-8d76-4686-b8b5-4a942d1aefa8",
-  "refreshedAt": "2026-11-16T02:19:45.892Z"
+  "runId": "5463d6b5-0196-4cdc-b6e6-bf21737af319",
+  "refreshedAt": "2026-11-16T02:40:15.965Z"
  },
  "cause": "Money owed by customers at this level is usually chased by a collections app.",
  "detectedInArea": [

@@ -7,7 +7,7 @@
   "share": 0.0004,
   "band": null,
   "state": "fine",
-  "flagId": "8e60e0d5-0a62-464a-9deb-28bddaca83ef",
+  "flagId": "ca7d7ed0-0dfd-4680-b6b7-efb7875c1958",
   "topApp": null,
   "coveredBy": null,
   "oneOffNote": null,
@@ -30,8 +30,8 @@
   "band": null,
   "ruleId": "payroll_liabilities",
   "ruleVersion": 2,
-  "runId": "3ea3b49f-8d76-4686-b8b5-4a942d1aefa8",
-  "refreshedAt": "2026-11-16T02:19:45.892Z"
+  "runId": "5463d6b5-0196-4cdc-b6e6-bf21737af319",
+  "refreshedAt": "2026-11-16T02:40:15.965Z"
  },
  "cause": "PAYE, NI and pension balances usually come from a payroll app's journal. Check how these reach Xero.",
  "detectedInArea": [],

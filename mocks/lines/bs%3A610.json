@@ -7,7 +7,7 @@
   "share": 0.0417,
   "band": "medium",
   "state": "covered",
-  "flagId": "99b63ee3-9c54-4eaa-a010-a8821671f5d3",
+  "flagId": "498cb1e5-ca44-4805-a6aa-fc8b7a8c84c1",
   "topApp": {
    "id": "adfin",
    "name": "Adfin",
@@ -37,8 +37,8 @@
   "band": "medium",
   "ruleId": "receivables",
   "ruleVersion": 2,
-  "runId": "3ea3b49f-8d76-4686-b8b5-4a942d1aefa8",
-  "refreshedAt": "2026-11-16T02:19:45.892Z",
+  "runId": "5463d6b5-0196-4cdc-b6e6-bf21737af319",
+  "refreshedAt": "2026-11-16T02:40:15.965Z",
   "series": [
    {
     "month": "2025-11-30",

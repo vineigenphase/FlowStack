@@ -1,5 +1,6 @@
 /** Load what flag computation needs for one run, compute, and store flags + recommendations. */
 import { computeTrends, type Month, type TrendKey } from "./trends";
+import { oneOffs } from "./one-off";
 import { and, eq, inArray } from "drizzle-orm";
 import { appFacts, cashflowAcceptances, detectedApps, flags, lineOverrides, orgs, recommendations, statementLines, statements, trialBalance } from "@/db/schema";
 import { withOrg, type Db } from "@/lib/db/client";
@@ -82,6 +83,17 @@ export async function computeFlags(orgId: string, runId: string) {
 
     // v1.1 B: trends from the 12 monthly statements (when the source had them).
     const { months, monthly, monthlyLines, ends } = await trendMonths(tx, stmts, info);
+    // Round-2 3c: this financial year's monthly P&L, per line, for one-off detection.
+    const fyMonths = monthly.filter((s) => s.kind === "pl_monthly" && s.periodTo >= pl.periodFrom! && s.periodTo <= pl.periodTo).sort((a, b) => a.periodTo.localeCompare(b.periodTo));
+    const byLine = new Map<string, Map<string, number>>();
+    for (const m of fyMonths) {
+      for (const l of monthlyLines.filter((x) => x.statementId === m.id)) {
+        const mm = byLine.get(l.lineKey) ?? new Map<string, number>();
+        mm.set(m.periodTo, (mm.get(m.periodTo) ?? 0) + l.value);
+        byLine.set(l.lineKey, mm);
+      }
+    }
+    const oneOff = pl.periodFrom ? oneOffs(fyMonths.map((m) => m.periodTo), byLine, rulesFile().one_off) : new Map();
     const trends = trendsOf(months);
     // The biggest account behind each trend's balance, for the trial balance evidence.
     const latestBs = monthly.find((s) => s.kind === "bs_monthly" && s.periodTo === ends[0]);
@@ -141,6 +153,7 @@ export async function computeFlags(orgId: string, runId: string) {
       tb,
       bands: { high: env().HIGH_BAND, medium: env().MED_BAND },
       scoring: rf.scoring,
+      oneOff,
     });
 
     // Upsert by (run, line) so flag ids — and the feedback that references them — survive a recompute.

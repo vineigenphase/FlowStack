@@ -17,6 +17,8 @@ type Evidence = {
   base_label?: string;
   base_value?: number;
   switch_option?: { app: string; match: number; in_use_match: number; reason: string };
+  /** Round-2 3c: most of this year's value sits in one month. */
+  one_off?: { month: string; share: number; note: string };
 };
 
 export default async function LinePage({ params, searchParams }: { params: Promise<{ org: string; lineKey: string }>; searchParams: Promise<{ priority?: string }> }) {
@@ -63,6 +65,7 @@ export default async function LinePage({ params, searchParams }: { params: Promi
         <span className={`badge b-${l.state}`}>{STATE_LABEL[l.state] ?? l.state}</span>
         {l.section ? <span className="muted small"> · {l.section}</span> : null}
       </p>
+      {ev.one_off ? <p className="note small">{ev.one_off.note}</p> : null}
 
       <dl className="totals">
         <div>
