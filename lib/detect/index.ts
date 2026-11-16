@@ -10,7 +10,7 @@
  * First live ledger: a full pull was 118 calls / 19 MB; a daily refresh now rebuilds about one month.
  */
 import { and, desc, eq, gte, lt } from "drizzle-orm";
-import { accountMaps, accounts, appStatusAnswers, detectedApps, fingerprints, orgs, supplierSpend, syncCursors } from "@/db/schema";
+import { accountMaps, accounts, appStatusAnswers, detectedApps, fingerprints, orgs, supplierSpend, syncCursors, appStateHistory } from "@/db/schema";
 import { withOrg, type Db } from "@/lib/db/client";
 import { rulesFile } from "@/lib/catalog/load";
 import { apps as catalogApps } from "@/lib/catalog/load";
@@ -101,6 +101,17 @@ export async function syncAppsInUse(orgId: string, client: XeroClient, opts: { a
   return { ...summary, queued };
 }
 
+/**
+ * NEXT-STEPS P2.14, pure: lifecycle changes between two runs. An app that appears has fromState null; one that
+ * disappears has state null. Unchanged apps produce nothing.
+ */
+export function stateChanges(before: Map<string, string | null>, after: Map<string, string | null>) {
+  const out: { appId: string; fromState: string | null; state: string | null }[] = [];
+  for (const [appId, state] of after) if (!before.has(appId) || before.get(appId) !== state) out.push({ appId, fromState: before.get(appId) ?? null, state });
+  for (const [appId, fromState] of before) if (!after.has(appId)) out.push({ appId, fromState, state: null });
+  return out.sort((a, b) => a.appId.localeCompare(b.appId));
+}
+
 /** Match stored supplier aggregates to the catalogue and rewrite detected_apps. */
 export async function detect(tx: Db, orgId: string, asAt: string, hints: SupplierHints | null, today = new Date().toISOString().slice(0, 10)) {
   const since = monthsBack(asAt, LOOKBACK_MONTHS);
@@ -176,6 +187,8 @@ export async function detect(tx: Db, orgId: string, asAt: string, hints: Supplie
   const latestAnswer = new Map<string, StatusAnswer>();
   for (const r of answers) if (!latestAnswer.has(r.appId)) latestAnswer.set(r.appId, { answer: r.answer, at: r.createdAt.toISOString().slice(0, 10), replacedBy: r.replacedByAppId });
 
+  // NEXT-STEPS P2.14: remember each app's state before the rewrite, to record what changed.
+  const before = new Map((await tx.select({ appId: detectedApps.appId, state: detectedApps.state }).from(detectedApps).where(eq(detectedApps.orgId, orgId))).map((r) => [r.appId, r.state]));
   await tx.delete(detectedApps).where(eq(detectedApps.orgId, orgId));
   const yearAgo = monthsBack(asAt, 12);
   const out = [...perApp].map(([appId, a]) => {
@@ -224,5 +237,7 @@ export async function detect(tx: Db, orgId: string, asAt: string, hints: Supplie
     if (old) (n.evidence as Record<string, unknown>).ask = { replacing: old.appId };
   }
   if (out.length) await tx.insert(detectedApps).values(out);
+  const changes = stateChanges(before, new Map(out.map((o) => [o.appId, o.state ?? null])));
+  if (changes.length) await tx.insert(appStateHistory).values(changes.map((c) => ({ orgId, ...c })));
   return { suppliers: byContact.size, detected: out.length, present: out.filter((o) => o.present).length, pending };
 }

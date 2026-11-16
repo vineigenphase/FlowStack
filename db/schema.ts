@@ -799,6 +799,45 @@ export const rewardLedger = pgTable("reward_ledger", {
   grantedAt: ts("granted_at").notNull().defaultNow(),
 });
 
+/**
+ * Round-2 3f (NEXT-STEPS P2.14): things a person gave back (reviews, answers, missing apps, corrections), so the
+ * "activators" reward can count them later. Table only: the contributions model and the threshold (5) are still OPEN
+ * with the founders, so nothing writes rows or grants rewards yet. Owner-only (RLS on, no app-role grant).
+ */
+export const contributions = pgTable(
+  "contributions",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    userId: uuid("user_id").notNull(),
+    orgId: uuid("org_id").references(() => orgs.id, { onDelete: "set null" }),
+    kind: text("kind", { enum: ["review", "app_answer", "flag_feedback", "missing_app", "integration_edge", "fact_correction"] }).notNull(),
+    /** Id of the row it came from (a review, an answer…), as text so any table fits. */
+    refId: text("ref_id").notNull(),
+    status: text("status", { enum: ["pending", "approved", "rejected"] }).notNull().default("pending"),
+    createdAt: ts("created_at").notNull().defaultNow(),
+    decidedAt: ts("decided_at"),
+  },
+  (t) => [uniqueIndex("contributions_ref").on(t.kind, t.refId), index("contributions_user").on(t.userId, t.createdAt)],
+);
+
+/**
+ * NEXT-STEPS P2.14: every lifecycle change of a detected app (new → active → lapsing → inactive, declared), written
+ * by detection when the state differs from the last run's. `state` null = the app no longer appears at all.
+ * detected_apps is rewritten each run, so this is the only record of how an app's state moved over time.
+ */
+export const appStateHistory = pgTable(
+  "app_state_history",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
+    appId: text("app_id").notNull(),
+    fromState: text("from_state"),
+    state: text("state"),
+    changedAt: ts("changed_at").notNull().defaultNow(),
+  },
+  (t) => [index("app_state_history_app").on(t.orgId, t.appId, t.changedAt)],
+);
+
 export const TENANT_TABLES = [
   "orgs",
   "org_members",
@@ -826,4 +865,5 @@ export const TENANT_TABLES = [
   "review_followups",
   "quote_requests",
   "quote_replies",
+  "app_state_history",
 ] as const;

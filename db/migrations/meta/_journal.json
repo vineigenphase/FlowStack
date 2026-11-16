@@ -169,6 +169,13 @@
       "when": 1794866280698,
       "tag": "0023_digest_opt_in",
       "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "7",
+      "when": 1794866841549,
+      "tag": "0024_contributions_app_state_history",
+      "breakpoints": true
     }
   ]
 }
