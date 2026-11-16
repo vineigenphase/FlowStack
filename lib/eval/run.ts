@@ -10,7 +10,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
-import { flags, orgs } from "@/db/schema";
+import { flags, orgs, statementLines, statements } from "@/db/schema";
 import { migrateDb, openDb, setDbForTests, withOrg } from "@/lib/db/client";
 import { MemoryXeroClient } from "@/lib/xero/client";
 import { runRefresh } from "@/lib/sync/refresh";
@@ -29,11 +29,13 @@ export const LabelledOrg = z.object({
   why: z.record(z.string(), z.string()).default({}),
   /** v1.1 D: for lines a user would dispute, the answer they would give (yes | already_use_app | no_app_needed | numbers_wrong | not_now). */
   expected_reason: z.record(z.string(), z.enum(["yes", "already_use_app", "no_app_needed", "numbers_wrong", "not_now"])).default({}),
+  /** NEXT-STEPS P1.7: a person reviewed and signed off these labels. Until then the eval gate is provisional. */
+  signed_off: z.object({ by: z.string().min(1), at: z.string() }).optional(),
   xero: z.record(z.string(), z.unknown()),
 });
 export type LabelledOrg = z.infer<typeof LabelledOrg>;
 
-export type LineResult = { org: string; lineKey: string; ruleId: string | null; predicted: State; expected: State; labelled: boolean };
+export type LineResult = { org: string; lineKey: string; ruleId: string | null; predicted: State; expected: State; labelled: boolean; name?: string; why?: string };
 
 export async function runLabelled(file: string): Promise<LineResult[]> {
   const l = LabelledOrg.parse(JSON.parse(fs.readFileSync(file, "utf8")));
@@ -44,6 +46,13 @@ export async function runLabelled(file: string): Promise<LineResult[]> {
     const [o] = await h.db.insert(orgs).values({ name: l.name, sample: true, markets: l.markets }).returning();
     const { runId } = await runRefresh(o!.id, { client: new MemoryXeroClient(l.xero, o!.id), now: new Date(l.now) });
     const rows = await withOrg(o!.id, (tx) => tx.select().from(flags).where(eq(flags.runId, runId)));
+    const names = new Map(
+      (
+        await withOrg(o!.id, (tx) =>
+          tx.select({ k: statementLines.lineKey, n: statementLines.name }).from(statementLines).innerJoin(statements, eq(statements.id, statementLines.statementId)).where(eq(statements.runId, runId)),
+        )
+      ).map((r) => [r.k, r.n]),
+    );
     const name = path.basename(file, ".json");
     const results: LineResult[] = rows.map((f) => ({
       org: name,
@@ -52,6 +61,8 @@ export async function runLabelled(file: string): Promise<LineResult[]> {
       predicted: f.state,
       expected: l.expected[f.lineKey] ?? (f.statementKind === "trend" ? "fine" : l.defaults[f.statementKind]),
       labelled: f.lineKey in l.expected,
+      name: names.get(f.lineKey) ?? f.lineKey,
+      why: l.why[f.lineKey],
     }));
     // A label for a line the pipeline never produced is a mismatch too (e.g. a mapping went missing).
     for (const k of Object.keys(l.expected)) {
@@ -91,6 +102,14 @@ export function scoreEval(results: LineResult[]) {
     stateAgreement: ratio(agree, results.length),
     mismatches: results.filter((r) => r.predicted !== r.expected),
   };
+}
+
+/** NEXT-STEPS P1.7: the gate counts only when a person has signed off every labelled org. */
+export function signOffStatus(files: string[]): { signed: string[]; drafts: string[] } {
+  const signed: string[] = [];
+  const drafts: string[] = [];
+  for (const f of files) (LabelledOrg.parse(JSON.parse(fs.readFileSync(f, "utf8"))).signed_off ? signed : drafts).push(path.basename(f, ".json"));
+  return { signed, drafts };
 }
 
 export function evalFiles(dir = path.resolve(process.cwd(), "fixtures/labelled")) {

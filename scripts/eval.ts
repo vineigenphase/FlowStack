@@ -6,7 +6,7 @@ import { loadEnvFiles } from "./_env";
 loadEnvFiles();
 process.env.LOG_LEVEL ??= "silent";
 
-const { evalFiles, runLabelled, scoreEval } = await import("@/lib/eval/run");
+const { evalFiles, runLabelled, scoreEval, signOffStatus } = await import("@/lib/eval/run");
 const { env } = await import("@/lib/env");
 
 const files = evalFiles();
@@ -33,5 +33,12 @@ if (process.argv.includes("--verbose")) {
 }
 const gate = env().FP_GATE;
 const fp = s.overall.fpRate ?? 0;
+// NEXT-STEPS P1.7: the gate only counts once a person has signed off the labels (pnpm eval:import --by <name>).
+const { drafts } = signOffStatus(files);
+if (drafts.length) {
+  console.log(`\nFP gate ${pct(gate)}: provisional ${fp > gate ? "FAIL" : "pass"} (overall FP rate ${pct(fp)}) — labels not signed off by a person: ${drafts.join(", ")}`);
+  console.log("Export for review: pnpm eval:export · then: pnpm eval:import <file.csv> --by \"<name>\"");
+  process.exit(0);
+}
 console.log(`\nFP gate ${pct(gate)}: ${fp > gate ? "FAIL" : "pass"} (overall FP rate ${pct(fp)})`);
 process.exit(fp > gate ? 1 : 0);
