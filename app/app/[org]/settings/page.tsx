@@ -2,8 +2,7 @@ import { peerPricesEnabled } from "@/lib/prices";
 import { guestOn, requireOrgMember } from "@/lib/auth/session";
 import { getSettings, INDUSTRIES } from "@/lib/orgs/settings";
 import { SettingsForm } from "@/components/settings-form";
-import { BillingBox } from "@/components/billing-box";
-import { billingStatus, plans, subscriptionFor } from "@/lib/billing";
+import Link from "next/link";
 import { subscriptionOf } from "@/lib/api/contract";
 
 export const dynamic = "force-dynamic";
@@ -25,8 +24,6 @@ export default async function SettingsPage({ params }: { params: Promise<{ org: 
   }
   const s = await getSettings(org);
   if (!s) return null;
-  const bill = billingStatus();
-  const sub = bill.enabled ? await subscriptionFor({ orgId: org }) : null;
   const tester = (await subscriptionOf(org)).status === "design_partner";
   return (
     <>
@@ -35,21 +32,10 @@ export default async function SettingsPage({ params }: { params: Promise<{ org: 
       <SettingsForm org={org} industries={[...INDUSTRIES]} initial={s} peerPrices={peerPricesEnabled()} />
 
       <h2>Billing</h2>
-      {tester ? (
-        <p>You&apos;re a design partner: free, with full access, until launch. Thank you.</p>
-      ) : bill.enabled ? (
-        <>
-          <p className="muted small">Payments are handled by Stripe; we never see your card. Test mode: no real money moves.</p>
-          <BillingBox
-            org={org}
-            plans={plans().plans.map((p) => ({ key: p.key, label: p.label, price: p.price_gbp === null ? "price to be confirmed" : `£${p.price_gbp}` }))}
-            subscribed={Boolean(sub && sub.status !== "canceled")}
-            status={sub?.status ?? null}
-          />
-        </>
-      ) : (
-        <p className="muted">{bill.reason}</p>
-      )}
+      {tester ? <p>You&apos;re a design partner: free, with full access, until launch. Thank you.</p> : null}
+      <p>
+        <Link href={`/app/${org}/billing`}>Plans and billing</Link>
+      </p>
     </>
   );
 }

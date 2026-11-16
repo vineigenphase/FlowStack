@@ -97,7 +97,8 @@ describe("read models", () => {
     const plans = C.plansView();
     expect(plans.map((p) => p.id)).toEqual(["monthly", "annual", "audit_only"]);
     expect(plans.every((p) => p.priceGbp === null)).toBe(true); // prices are OPEN
-    expect(plans.find((p) => p.id === "audit_only")!.available).toBe(false);
+    expect(plans.find((p) => p.id === "audit_only")!.available).toBe(true); // round-2 3e
+    expect(plans.map((p) => p.auditIncluded)).toEqual([false, true, true]);
     expect(await C.subscriptionOf(orgId)).toEqual({ status: "none", planId: null, currentPeriodEnd: null, cancelAtPeriodEnd: false });
   });
 

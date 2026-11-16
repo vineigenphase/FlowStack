@@ -691,15 +691,16 @@ export function plansView(): T.Plan[] {
   const byKey = new Map(p.plans.map((x) => [x.key, x]));
   const m = byKey.get("pro_monthly");
   const a = byKey.get("pro_annual");
+  // Round-2 3e: monthly + one-off audit, annual with the audit included, audit only. Prices from plans.yaml only.
   return [
-    { id: "monthly", label: m?.label ?? "Monthly", priceGbp: m?.price_gbp ?? null, interval: "month", auditIncluded: false, auditPriceGbp: audit?.price_gbp ?? null, available: Boolean(m), highlight: false },
-    { id: "annual", label: a?.label ?? "Annual", priceGbp: a?.price_gbp ?? null, interval: "year", auditIncluded: false, auditPriceGbp: audit?.price_gbp ?? null, available: Boolean(a), highlight: Boolean(a) },
-    { id: "audit_only", label: audit?.label ?? "Audit only", priceGbp: audit?.price_gbp ?? null, interval: "one_off", auditIncluded: true, auditPriceGbp: audit?.price_gbp ?? null, available: false, highlight: false },
+    { id: "monthly", label: m?.label ?? "Monthly", priceGbp: m?.price_gbp ?? null, interval: "month", auditIncluded: m?.audit === "included", auditPriceGbp: audit?.price_gbp ?? null, available: Boolean(m), highlight: false },
+    { id: "annual", label: a?.label ?? "Annual", priceGbp: a?.price_gbp ?? null, interval: "year", auditIncluded: a?.audit === "included", auditPriceGbp: audit?.price_gbp ?? null, available: Boolean(a), highlight: Boolean(a) },
+    { id: "audit_only", label: audit?.label ?? "Audit only", priceGbp: audit?.price_gbp ?? null, interval: "one_off", auditIncluded: true, auditPriceGbp: audit?.price_gbp ?? null, available: Boolean(audit?.sold_alone), highlight: false },
   ];
 }
 
 /** Contract plan id → plans.yaml key. */
-export const PLAN_KEYS: Record<string, string> = { monthly: "pro_monthly", annual: "pro_annual" };
+export const PLAN_KEYS: Record<string, string> = { monthly: "pro_monthly", annual: "pro_annual", audit_only: "audit" };
 
 export async function subscriptionOf(orgId: string): Promise<T.Subscription> {
   const db = await adminDb();

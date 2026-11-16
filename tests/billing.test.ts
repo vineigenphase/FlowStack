@@ -9,6 +9,7 @@ import { resetEnv } from "@/lib/env";
 import { billingStatus, checkoutParams, handleWebhook, plans } from "@/lib/billing";
 
 const ids = { pro_monthly: "price_m", pro_annual: "price_a", audit: "price_audit", audit_waived: "coupon_w" };
+const params = (plan: string, waiveAudit = false, i: Record<string, string> = ids) => checkoutParams({ owner: { orgId: ORG }, plan, waiveAudit, appUrl: "https://x.test", ids: i, catalog: plans() });
 const ORG = "11111111-1111-4111-8111-111111111111";
 
 describe("plans and checkout (pure)", () => {
@@ -17,15 +18,35 @@ describe("plans and checkout (pure)", () => {
     expect(p.plans.map((x) => x.key)).toEqual(["pro_monthly", "pro_annual"]);
     expect(p.plans.every((x) => x.price_gbp === null)).toBe(true);
   });
-  it("subscription + optional one-off audit, waived by coupon; metadata ties it to the org", () => {
-    const c = checkoutParams({ owner: { orgId: ORG }, plan: "pro_monthly", audit: true, waiveAudit: true, appUrl: "https://x.test", ids, catalog: plans() });
+  it("round-2 3e: monthly always carries the one-off audit (waivable by coupon); metadata ties it to the org", () => {
+    const c = params("pro_monthly", true);
     expect(c.mode).toBe("subscription");
     expect(c.line_items).toEqual([{ price: "price_m", quantity: 1 }, { price: "price_audit", quantity: 1 }]);
     expect(c.discounts).toEqual([{ coupon: "coupon_w" }]);
     expect(c.metadata).toEqual({ org_id: ORG, plan: "pro_monthly" });
-    expect(c.success_url).toBe(`https://x.test/app/${ORG}/settings?billing=done`);
+    expect(c.success_url).toBe(`https://x.test/app/${ORG}/billing?billing=done`);
+    expect(params("pro_monthly").line_items).toHaveLength(2);
+    expect(params("pro_monthly").discounts).toBeUndefined();
     expect(() => checkoutParams({ owner: { orgId: ORG }, plan: "gold", audit: false, waiveAudit: false, appUrl: "", ids, catalog: plans() })).toThrow(/Unknown plan/);
     expect(() => checkoutParams({ owner: { orgId: ORG }, plan: "pro_annual", audit: false, waiveAudit: false, appUrl: "", ids: {}, catalog: plans() })).toThrow(/No Stripe price/);
+  });
+  it("round-2 3e: annual includes the audit (no audit line); audit only is a one-off payment", () => {
+    const a = params("pro_annual", true);
+    expect(a.line_items).toEqual([{ price: "price_a", quantity: 1 }]);
+    expect(a.discounts).toBeUndefined();
+    const o = params("audit");
+    expect(o.mode).toBe("payment");
+    expect(o.line_items).toEqual([{ price: "price_audit", quantity: 1 }]);
+    expect(o.subscription_data).toBeUndefined();
+    expect(o.metadata).toEqual({ org_id: ORG, plan: "audit" });
+    expect(() => params("audit", false, {})).toThrow(/No Stripe price/);
+  });
+  it("plans.yaml: prices null, design_partner coupon listed, audit sold alone", () => {
+    const p = plans();
+    expect(p.plans.map((x) => [x.key, x.audit])).toEqual([["pro_monthly", "extra"], ["pro_annual", "included"]]);
+    expect([...p.plans, ...p.one_off].every((x) => x.price_gbp === null)).toBe(true);
+    expect(p.coupons.map((c) => c.key)).toEqual(["audit_waived", "design_partner"]);
+    expect(p.one_off.find((o) => o.key === "audit")!.sold_alone).toBe(true);
   });
   it("test keys only while prices are open", () => {
     const set = (k: string) => {

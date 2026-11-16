@@ -2,13 +2,13 @@ import { z } from "zod";
 import { body, handle, HttpError } from "@/lib/api";
 import { createCheckout } from "@/lib/billing";
 import { OwnerInput, requireOwner } from "@/lib/billing/owner";
-import { PLAN_KEYS } from "@/lib/api/contract";
+import { PLAN_KEYS, subscriptionOf } from "@/lib/api/contract";
 
 export const dynamic = "force-dynamic";
 
 const Checkout = z
   .object({
-    /** UI-SPEC: monthly | annual (audit_only isn't available yet). */
+    /** UI-SPEC: monthly | annual | audit_only (round-2 3e). */
     planId: z.enum(["monthly", "annual", "audit_only"]).optional(),
     /** Older form: a plans.yaml key. */
     plan: z.string().min(1).max(40).optional(),
@@ -21,7 +21,9 @@ const Checkout = z
 export const POST = handle(async (req: Request) => {
   const b = await body(req, Checkout);
   const plan = b.planId ? PLAN_KEYS[b.planId] : b.plan;
-  if (!plan) throw new HttpError(422, b.planId === "audit_only" ? "Audit only isn't available yet" : "Choose a plan");
+  if (!plan) throw new HttpError(422, "Choose a plan");
   const { owner, email } = await requireOwner(b);
+  // NEXT-STEPS P0.5: design partners are free and have no Stripe objects.
+  if (owner.orgId && (await subscriptionOf(owner.orgId)).status === "design_partner") throw new HttpError(409, "You're a design partner: FlowStack is free for you until launch.");
   return createCheckout({ owner, plan, audit: b.audit, waiveAudit: b.waive_audit, email });
 });

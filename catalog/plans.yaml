@@ -8,26 +8,37 @@
 # so each environment points at its own Stripe test-mode prices. price_gbp is display only and stays null until
 # decided; the page then says "price to be confirmed".
 
+# Round-2 3e (NEXT-STEPS 16 Nov): monthly + a one-off audit, annual with the audit included, audit only.
+# `audit`: extra = the one-off audit is added at checkout (the audit_waived coupon can waive it); included = no audit line.
 plans:
   - key: pro_monthly
     label: FlowStack, monthly
     interval: month
+    audit: extra
     price_gbp: null
     stripe_price: pro_monthly
   - key: pro_annual
     label: FlowStack, 12 months
     interval: year
+    audit: included
     price_gbp: null
     stripe_price: pro_annual
 
 one_off:
+  # Sold with the monthly plan, and on its own ("audit only": a one-off payment, no subscription).
   - key: audit
     label: Up-front audit of your stack
     price_gbp: null
     stripe_price: audit
+    sold_alone: true
 
 coupons:
-  # "Audit waived" opening offer: a Stripe coupon applied at checkout.
+  # "Audit waived" opening offer: a Stripe coupon applied at checkout. In Stripe, limit it to the audit product.
   - key: audit_waived
     label: Audit waived (opening offer)
     stripe_coupon: audit_waived
+  # Testers (orgs.design_partner) use FlowStack free with no Stripe objects (NEXT-STEPS P0.5). This coupon is for
+  # when a design partner later moves to a paid plan on agreed terms; checkout never applies it by itself.
+  - key: design_partner
+    label: Design partner
+    stripe_coupon: design_partner

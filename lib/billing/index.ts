@@ -18,8 +18,18 @@ import { env } from "@/lib/env";
 import { HttpError } from "@/lib/api";
 
 const PlansFile = z.object({
-  plans: z.array(z.object({ key: z.string(), label: z.string(), interval: z.enum(["month", "year"]), price_gbp: z.number().nullable(), stripe_price: z.string() })),
-  one_off: z.array(z.object({ key: z.string(), label: z.string(), price_gbp: z.number().nullable(), stripe_price: z.string() })).default([]),
+  plans: z.array(
+    z.object({
+      key: z.string(),
+      label: z.string(),
+      interval: z.enum(["month", "year"]),
+      /** Round-2 3e: extra = the one-off audit is added at checkout; included = the plan already covers it. */
+      audit: z.enum(["extra", "included"]).default("extra"),
+      price_gbp: z.number().nullable(),
+      stripe_price: z.string(),
+    }),
+  ),
+  one_off: z.array(z.object({ key: z.string(), label: z.string(), price_gbp: z.number().nullable(), stripe_price: z.string(), sold_alone: z.boolean().default(false) })).default([]),
   coupons: z.array(z.object({ key: z.string(), label: z.string(), stripe_coupon: z.string() })).default([]),
 });
 export type Plans = z.infer<typeof PlansFile>;
@@ -56,15 +66,42 @@ function stripe(): Stripe {
 
 export type Owner = { orgId: string; firmId?: undefined } | { firmId: string; orgId?: undefined };
 
-/** Pure: the Checkout Session parameters (tested without calling Stripe). */
-export function checkoutParams(i: { owner: Owner; plan: string; audit: boolean; waiveAudit: boolean; email?: string; appUrl: string; ids: Record<string, string>; catalog: Plans }): Stripe.Checkout.SessionCreateParams {
+/** Billing page path for an owner; Stripe sends people back here. */
+const backPath = (o: Owner) => (o.orgId ? `/app/${o.orgId}/billing` : `/practice/${o.firmId}`);
+
+/**
+ * Pure: the Checkout Session parameters (tested without calling Stripe). Round-2 3e:
+ * - a plan with `audit: extra` (monthly) always carries the one-off audit line; `waiveAudit` applies audit_waived
+ * - a plan with `audit: included` (annual) has no audit line
+ * - plan "audit" (a one-off with sold_alone) is a one-off payment, no subscription
+ * `audit` is kept for older callers; it no longer changes anything.
+ */
+export function checkoutParams(i: { owner: Owner; plan: string; audit?: boolean; waiveAudit: boolean; email?: string; appUrl: string; ids: Record<string, string>; catalog: Plans }): Stripe.Checkout.SessionCreateParams {
+  const ownerMeta: Record<string, string> = i.owner.orgId ? { org_id: i.owner.orgId } : { firm_id: i.owner.firmId! };
+  const back = backPath(i.owner);
+  const alone = i.catalog.one_off.find((o) => o.key === i.plan && o.sold_alone);
+  if (alone) {
+    const price = i.ids[alone.stripe_price];
+    if (!price) throw new HttpError(503, `No Stripe price set for ${alone.key} (STRIPE_PRICE_IDS_JSON)`);
+    return {
+      mode: "payment",
+      line_items: [{ price, quantity: 1 }],
+      allow_promotion_codes: false,
+      customer_email: i.email || undefined,
+      client_reference_id: i.owner.orgId ?? i.owner.firmId,
+      metadata: { ...ownerMeta, plan: alone.key },
+      payment_intent_data: { metadata: { ...ownerMeta, plan: alone.key } },
+      success_url: `${i.appUrl}${back}?billing=done`,
+      cancel_url: `${i.appUrl}${back}?billing=cancelled`,
+    };
+  }
   const plan = i.catalog.plans.find((p) => p.key === i.plan);
   if (!plan) throw new HttpError(422, `Unknown plan ${i.plan}`);
   const price = i.ids[plan.stripe_price];
   if (!price) throw new HttpError(503, `No Stripe price set for ${plan.key} (STRIPE_PRICE_IDS_JSON)`);
   const lineItems: { price: string; quantity: number }[] = [{ price, quantity: 1 }];
   let discounts: { coupon: string }[] | undefined;
-  if (i.audit) {
+  if (plan.audit === "extra") {
     const audit = i.catalog.one_off.find((o) => o.key === "audit");
     const auditPrice = audit ? i.ids[audit.stripe_price] : undefined;
     if (!auditPrice) throw new HttpError(503, "No Stripe price set for the audit (STRIPE_PRICE_IDS_JSON)");
@@ -76,8 +113,6 @@ export function checkoutParams(i: { owner: Owner; plan: string; audit: boolean; 
       discounts = [{ coupon }];
     }
   }
-  const ownerMeta: Record<string, string> = i.owner.orgId ? { org_id: i.owner.orgId } : { firm_id: i.owner.firmId! };
-  const back = i.owner.orgId ? `/app/${i.owner.orgId}/settings` : `/practice/${i.owner.firmId}`;
   return {
     mode: "subscription",
     line_items: lineItems,
@@ -93,7 +128,7 @@ export function checkoutParams(i: { owner: Owner; plan: string; audit: boolean; 
 
 export async function createCheckout(i: { owner: Owner; plan: string; audit?: boolean; waiveAudit?: boolean; email?: string }) {
   const s = stripe();
-  const params = checkoutParams({ ...i, audit: Boolean(i.audit), waiveAudit: Boolean(i.waiveAudit), appUrl: env().APP_URL, ids: priceIds(), catalog: plans() });
+  const params = checkoutParams({ ...i, waiveAudit: Boolean(i.waiveAudit), appUrl: env().APP_URL, ids: priceIds(), catalog: plans() });
   const session = await s.checkout.sessions.create(params);
   return { url: session.url };
 }
@@ -108,7 +143,7 @@ export async function subscriptionFor(owner: Owner) {
 export async function createPortal(owner: Owner) {
   const sub = await subscriptionFor(owner);
   if (!sub) throw new HttpError(404, "No subscription yet");
-  const back = owner.orgId ? `/app/${owner.orgId}/settings` : `/practice/${owner.firmId}`;
+  const back = backPath(owner);
   const session = await stripe().billingPortal.sessions.create({ customer: sub.stripeCustomerId, return_url: `${env().APP_URL}${back}` });
   return { url: session.url };
 }
