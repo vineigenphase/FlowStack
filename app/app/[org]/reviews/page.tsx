@@ -56,7 +56,9 @@ export default async function ReviewsPage({ params }: { params: Promise<{ org: s
             })}
           </ul>
         </section>
-      ) : null}
+      ) : (
+        <p className="muted">No reviews yet.</p>
+      )}
 
       <section>
         <h2>Apps you can review</h2>

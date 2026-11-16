@@ -20,6 +20,14 @@ async function stmt(tx: Db, runId: string, kind: "pl" | "bs" | "cf") {
   return rows.sort((a, b) => b.periodTo.localeCompare(a.periodTo))[0] ?? null;
 }
 
+/** Trend lines have no statement line; show their plain name, not the key. */
+const TREND_NAMES: Record<string, string> = {
+  "trend:debtor_days": "Debtor days rising",
+  "trend:creditor_days": "Creditor days rising",
+  "trend:stock_days": "Stock days rising",
+  "trend:cash_headroom_months": "Cash headroom falling",
+};
+
 const appName = (id: string) => catalogApps().find((a) => a.id === id)?.name ?? id;
 
 export async function statementView(orgId: string, kind: "pl" | "bs" | "cf") {
@@ -132,7 +140,7 @@ export async function lineView(orgId: string, lineKey: string) {
     const det = await tx.select().from(detectedApps);
     return {
       key: f.lineKey,
-      name: line?.name ?? f.lineKey,
+      name: line?.name ?? TREND_NAMES[f.lineKey] ?? f.lineKey,
       code: line?.code ?? null,
       section: line ? (SECTION_LABELS[line.section] ?? line.section) : null,
       statement: f.statementKind,
@@ -183,7 +191,7 @@ export async function flaggedLines(orgId: string, limit = 10) {
         const top = recs.filter((r) => r.flagId === f.id && !r.inUse).sort((a, b) => a.rank - b.rank)[0];
         return {
           key: f.lineKey,
-          name: nameOf.get(f.lineKey) ?? f.lineKey,
+          name: nameOf.get(f.lineKey) ?? TREND_NAMES[f.lineKey] ?? f.lineKey,
           statement: f.statementKind,
           value: f.value,
           materiality: f.materiality,

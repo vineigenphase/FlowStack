@@ -38,6 +38,7 @@ export default async function AppsPage({ searchParams }: { searchParams: Promise
           exact words and page they came from. Anything we couldn&apos;t find says so.
         </p>
 
+        {groups.length === 0 ? <p className="muted">No apps found for this filter.</p> : null}
         {groups.map((g) => (
           <section key={g.key}>
             <h2>{g.label} <span className="muted small">{g.apps.length}</span></h2>
