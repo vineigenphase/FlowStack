@@ -134,7 +134,7 @@ describe("syncAppsInUse", () => {
     busy.push({ id: "late", kind: "bill", date: "2026-10-30", updated: "2026-11-05T08:00:00Z", total: 9, status: "AUTHORISED", contact: "c1" });
     const daily = new FakeXero(busy);
     await syncAppsInUse(loadOrg, daily, { asAt, now: new Date("2026-11-05T10:00:00Z") });
-    expect(daily.meter.calls).toBeLessThanOrEqual(4);
+    expect(daily.meter.calls).toBeLessThanOrEqual(6); // 2 change checks + October's bills and spends (+ an empty last page each)
     // Even 24 refreshes a day (a full rebuild each) would stay under the 1,000/day Starter limit.
     expect(full.meter.calls * 24).toBeLessThan(1000);
   });

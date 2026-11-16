@@ -77,6 +77,11 @@ const dt = (d: Date) => `DateTime(${d.getUTCFullYear()},${d.getUTCMonth() + 1},$
  * xero_accounting.yaml) instead of the default 100, so a busy year of bills is a handful of calls, not dozens.
  */
 export const PAGE_SIZE = 1000;
+/**
+ * A page shorter than Xero's default (100) is the last one. Not `< PAGE_SIZE`: if Xero ever caps pageSize lower, a full
+ * capped page must not look like the end. Costs one extra (empty) call only when the last page has 100–999 rows.
+ */
+const LAST_PAGE_BELOW = 100;
 
 export type Bill = z.infer<typeof InvoicesResponse>["Invoices"][number];
 export type SpendTxn = z.infer<typeof BankTransactionsResponse>["BankTransactions"][number];
@@ -98,7 +103,7 @@ export async function* bills(c: XeroClient, since: Date, ifModifiedSince?: Date,
     if (r.notModified || (r.status === 404 && page > 1)) return;
     const list = InvoicesResponse.parse(must(r, "invoices")).Invoices;
     if (list.length) yield list;
-    if (list.length < PAGE_SIZE) return;
+    if (list.length < LAST_PAGE_BELOW) return;
   }
 }
 
@@ -115,6 +120,6 @@ export async function* spendTransactions(c: XeroClient, since: Date, ifModifiedS
     if (r.notModified || (r.status === 404 && page > 1)) return;
     const list = BankTransactionsResponse.parse(must(r, "banktransactions")).BankTransactions;
     if (list.length) yield list;
-    if (list.length < PAGE_SIZE) return;
+    if (list.length < LAST_PAGE_BELOW) return;
   }
 }

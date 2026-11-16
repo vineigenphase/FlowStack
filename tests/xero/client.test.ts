@@ -68,6 +68,19 @@ describe("LiveXeroClient", () => {
     expect(fetchImpl).toHaveBeenCalledTimes(1);
   });
 
+  it("keeps paging if Xero caps the page at 100 rows", async () => {
+    const inv = (i: number) => ({ InvoiceID: `00000000-0000-4000-8000-${String(i).padStart(12, "0")}`, Type: "ACCPAY", Contact: { ContactID: "00000000-0000-4000-8000-0000000000c1", Name: "Deputy" }, Date: "2026-01-01", Status: "PAID", Total: 1 });
+    const fetchImpl = vi.fn(async (u: unknown) => {
+      const page = Number(new URL(String(u)).searchParams.get("page"));
+      return res(200, { Invoices: page < 3 ? Array.from({ length: 100 }, (_, i) => inv(page * 1000 + i)) : [inv(9)] });
+    });
+    const c = new LiveXeroClient({ tenantId: "t", orgKey: "o2g", token: async () => "t", fetchImpl: fetchImpl as typeof fetch });
+    let rows = 0;
+    for await (const p of bills(c, new Date("2025-11-01"))) rows += p.length;
+    expect(rows).toBe(201);
+    expect(fetchImpl).toHaveBeenCalledTimes(3);
+  });
+
   it("forces one token refresh on 401, then succeeds", async () => {
     const token = vi.fn(async (force?: boolean) => (force ? "new" : "old"));
     const fetchImpl = vi.fn(async (_u: unknown, init: Init) =>
