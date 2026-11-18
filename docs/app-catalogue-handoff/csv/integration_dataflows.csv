@@ -1,0 +1,6 @@
+app_id,xero_object,xero_object_id,flow_raw,flow_meaning,evidence_status,source_url,checked_at,note
+xa-a2x,Invoices,invoices-in,in,app sends data into Xero (per listing),source-reported,https://apps.xero.com/uk/app/a2x,2026-11-17,"From the listing ""data flow"" section supplied by the developer to Xero; not independently tested"
+xa-a2x,Accounts,accounts-exchange,exchange,two-way (per listing),source-reported,https://apps.xero.com/uk/app/a2x,2026-11-17,"From the listing ""data flow"" section supplied by the developer to Xero; not independently tested"
+xa-a2x,Tracking Categories,trackingcategories-out,out,app reads data from Xero (per listing),source-reported,https://apps.xero.com/uk/app/a2x,2026-11-17,"From the listing ""data flow"" section supplied by the developer to Xero; not independently tested"
+xa-a2x,Tax Rates,taxrates-out,out,app reads data from Xero (per listing),source-reported,https://apps.xero.com/uk/app/a2x,2026-11-17,"From the listing ""data flow"" section supplied by the developer to Xero; not independently tested"
+xa-a2x,Currencies,currencies-out,out,app reads data from Xero (per listing),source-reported,https://apps.xero.com/uk/app/a2x,2026-11-17,"From the listing ""data flow"" section supplied by the developer to Xero; not independently tested"

@@ -1,0 +1,20 @@
+# Reviewed links from catalog/apps.yaml (curated id) → catalog/directory.json (directory id).
+# Only needed where the build can't match one-to-one by exact name or website (scripts/catalogue/build-directory.ts).
+# null = checked: the app has no Xero UK App Store listing in the workbook, so it stays curated-only.
+# Source: workbook App List (17 Nov 2026) and each app's Xero listing URL. Reviewed 18 Nov 2026.
+links:
+  dext: xa-dext                                  # "Dext Prepare" is listed as "Dext" (apps.xero.com/uk/app/dext); Commerce and Precision are separate products
+  employmenthero: xa-employment-hero-payroll     # curated entry is the UK payroll product (employmenthero.com/uk); xa-employment-hero is the separate HR listing
+  gusto: null                                    # US payroll; not on the UK store
+  procure_wizard: null
+  lightspeed: null
+  google_workspace: null                         # general software (other_software)
+  microsoft_365: null
+  slack: null
+  capitalontap: null
+  brightpearl: null
+  equals: null
+  avalara: null
+  amazon_seller: null
+  chartmogul: null
+  baremetrics: null

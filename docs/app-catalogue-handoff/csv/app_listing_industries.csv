@@ -1,0 +1,5 @@
+app_id,xero_industry_id,xero_industry_name,evidence_status,source_url,checked_at
+xa-float-cashflow-forecasting,not-for-profit,Not for profit,source-reported,https://apps.xero.com/uk/app/float-cashflow-forecasting,2026-11-17
+xa-float-cashflow-forecasting,professional-services,Professional services,source-reported,https://apps.xero.com/uk/app/float-cashflow-forecasting,2026-11-17
+xa-float-cashflow-forecasting,construction-trades,Construction and trades,source-reported,https://apps.xero.com/uk/app/float-cashflow-forecasting,2026-11-17
+xa-a2x,retail,Retail,source-reported,https://apps.xero.com/uk/app/a2x,2026-11-17

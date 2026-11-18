@@ -1,0 +1,71 @@
+kind,value,meaning,source_url,source_location
+account_class,ASSET,Account class (read-only field Class on each account),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,"Accounting API spec v20.1.0, components.schemas.Account.Class"
+account_class,EQUITY,Account class (read-only field Class on each account),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,"Accounting API spec v20.1.0, components.schemas.Account.Class"
+account_class,EXPENSE,Account class (read-only field Class on each account),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,"Accounting API spec v20.1.0, components.schemas.Account.Class"
+account_class,LIABILITY,Account class (read-only field Class on each account),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,"Accounting API spec v20.1.0, components.schemas.Account.Class"
+account_class,REVENUE,Account class (read-only field Class on each account),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,"Accounting API spec v20.1.0, components.schemas.Account.Class"
+account_type,BANK,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,CURRENT,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,CURRLIAB,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,DEPRECIATN,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,DIRECTCOSTS,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,EQUITY,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,EXPENSE,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,FIXED,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,INVENTORY,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,LIABILITY,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,NONCURRENT,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,OTHERINCOME,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,OVERHEADS,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,PREPAYMENT,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,REVENUE,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,SALES,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,TERMLIAB,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+account_type,PAYG,Account type code (field Type on each account). Description/class per type not in spec: read Class from the account itself.,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.AccountType
+system_account,DEBTORS,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,CREDITORS,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,BANKCURRENCYGAIN,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,GST,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,GSTONIMPORTS,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,HISTORICAL,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,REALISEDCURRENCYGAIN,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,RETAINEDEARNINGS,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,ROUNDING,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,TRACKINGTRANSFERS,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,UNPAIDEXPCLM,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,UNREALISEDCURRENCYGAIN,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,WAGEPAYABLES,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,CISASSETS,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,CISASSET,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,CISLABOUR,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,CISLABOUREXPENSE,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,CISLABOURINCOME,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,CISLIABILITY,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+system_account,CISMATERIALS,System account code (returned only for system accounts),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.SystemAccount
+bank_account_type,BANK,Bank account type (bank accounts only),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.BankAccountType
+bank_account_type,CREDITCARD,Bank account type (bank accounts only),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.BankAccountType
+bank_account_type,PAYPAL,Bank account type (bank accounts only),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.BankAccountType
+bank_account_type,NONE,Bank account type (bank accounts only),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,components.schemas.Account.BankAccountType
+pnl_section,Revenue > Trading Income,P&L revenue section; account-type group titled Trading Income,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero-finance.yaml,PnlAccountType.title
+pnl_section,Revenue > Other Income,P&L revenue section; group titled Other Income,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero-finance.yaml,PnlAccountType.title
+pnl_section,Expense > Direct Cost,P&L expense section; group titled Direct Cost,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero-finance.yaml,PnlAccountType.title
+pnl_section,Expense > Operating Expenses,P&L expense section; group titled Operating Expenses,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero-finance.yaml,PnlAccountType.title
+balance_sheet_section,Asset,Balance sheet group (accountTypes listed within),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero-finance.yaml,BalanceSheetResponse.asset
+balance_sheet_section,Liability,Balance sheet group,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero-finance.yaml,BalanceSheetResponse.liability
+balance_sheet_section,Equity,Balance sheet group,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero-finance.yaml,BalanceSheetResponse.equity
+cashflow_activity,Operating Activities,Statement of cash flows (direct method) activity; not available in US,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero-finance.yaml,CashflowActivity.name; /FinancialStatements/Cashflow
+cashflow_activity,Investing Activities,As above,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero-finance.yaml,CashflowActivity.name
+cashflow_activity,Financing Activities,As above,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero-finance.yaml,CashflowActivity.name
+report,ProfitAndLoss,Accounting API report endpoint /Reports/ProfitAndLoss,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,paths
+report,BalanceSheet,/Reports/BalanceSheet,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,paths
+report,TrialBalance,/Reports/TrialBalance,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,paths
+report,BankSummary,/Reports/BankSummary,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,paths
+report,BudgetSummary,/Reports/BudgetSummary,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,paths
+report,ExecutiveSummary,/Reports/ExecutiveSummary (closest Xero report to KPIs; not a financial statement),https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,paths
+report,AgedReceivablesByContact,/Reports/AgedReceivablesByContact,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,paths
+report,AgedPayablesByContact,/Reports/AgedPayablesByContact,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero_accounting.yaml,paths
+financial_statement,Cashflow,"Finance API /FinancialStatements/Cashflow: statement of cash flows, direct method; not available in US",https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero-finance.yaml,paths
+financial_statement,ProfitAndLoss,Finance API /FinancialStatements/ProfitAndLoss,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero-finance.yaml,paths
+financial_statement,BalanceSheet,Finance API /FinancialStatements/BalanceSheet,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero-finance.yaml,paths
+financial_statement,TrialBalance,Finance API /FinancialStatements/TrialBalance,https://github.com/XeroAPI/Xero-OpenAPI/blob/master/xero-finance.yaml,paths
+statement_rule,"Assets, liabilities, equity -> Balance sheet; revenue, expenses -> Profit and loss",Xero UK glossary: 5 main account types and which statement each appears on,https://www.xero.com/uk/glossary/chart-of-accounts/,Chart of accounts glossary page

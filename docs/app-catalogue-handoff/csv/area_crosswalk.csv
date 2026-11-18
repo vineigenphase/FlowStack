@@ -1,0 +1,28 @@
+area_legacy,app_rows,app_function_area_proposed,reason,approval_status
+Accountant Tools,67,accountant_tools,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Accounts Receivable,18,accounts_receivable,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Billing,4,billing,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+CRM & Marketing,63,crm_marketing,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Carbon Accounting,1,carbon_accounting,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Cash Flow Forecasting,3,cash_flow_forecasting,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Consolidated Reporting,3,consolidated_reporting,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Data Ingestion,15,data_ingestion,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Data Migration,4,data_migration,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Development Partners,2,development_partners,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Ecommerce,44,ecommerce,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+FP&A,3,fp_a,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+FX & Global Banking,2,fx_global_banking,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Financing,13,financing,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Inventory,40,inventory,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Job & Project Management,121,job_project_management,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Management Reporting,116,management_reporting,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Month End Automation,2,month_end_automation,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Other,12,other,"App function area (what the app does). Not a financial category. Renamed column only; value preserved. ""Other"" is a catch-all - needs review.",proposed - owner to approve
+Payments,14,payments,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Payroll,37,payroll,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Point of Sale,21,point_of_sale,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Practice Management,1,practice_management,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Spend Management & AP,93,spend_management_ap,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Tax & Compliance,19,tax_compliance,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Time Tracking,7,time_tracking,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve
+Workflow Automation,5,workflow_automation,App function area (what the app does). Not a financial category. Renamed column only; value preserved.,proposed - owner to approve

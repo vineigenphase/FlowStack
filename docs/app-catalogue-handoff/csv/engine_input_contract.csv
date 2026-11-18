@@ -1,0 +1,15 @@
+factor_type,factor,input_table_fields,proposed_role,missing_data_rule
+compatibility,country/region support,app_regions,hard filter candidate,"Unknown region list = unresolved, not incompatible"
+compatibility,language support,app_languages,hard filter candidate,Unknown = unresolved
+compatibility,Xero data objects read/written,integration_dataflows,hard filter candidate (e.g. needs Invoices in),Listing claim only; not tested
+compatibility,pricing within budget,"pricing_tiers_norm (amount, currency, period, basis)",hard filter or soft signal (owner choice),"Quote / unknown currency = unresolved, never free"
+ranking,review rating (raw),apps.xero_rating,soft signal; raw value never modified,Missing rating != low rating
+ranking,review confidence,apps.xero_reviews,"derived output, formula TBD",Weight and shrinkage method to be approved
+ranking,financial-line relevance,fs_mappings (+ tenant accounts later),soft signal,Heuristic mappings must be shown as heuristic
+ranking,industry fit,app_listing_industries; apps.industry_legacy_raw,soft signal,"""All"" is ambiguous"
+ranking,business size fit,apps.business_size_legacy_raw,soft signal,"Mostly default SME, unverified"
+ranking,app-store function match,app_store_functions,soft signal,"Category, not capability"
+ranking,listing age,apps.listed_date,soft signal; direction TBD,Older = proven or stale? Owner decision
+ranking,awards recognition,app_awards,soft signal; separate from stars,Decay and weight TBD; vendor claims vs official records
+ranking,free trial available,apps.free_trial_flag / free_trial_days,soft signal,
+output,recommendation explanation,all of the above,required,"Show why suggested, what was filtered, what is uncertain"

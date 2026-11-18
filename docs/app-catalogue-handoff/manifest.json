@@ -1,0 +1,1116 @@
+{
+  "source_workbook": "Xero_App_Ecosystem_with_Pricing.xlsx (17 Nov 2026 version; unchanged)",
+  "revised_workbook": "FlowStack_App_Catalogue_revised.xlsx",
+  "generated": "2026-11-17",
+  "encoding": "UTF-8",
+  "delimiter": ",",
+  "null_convention": "empty field",
+  "boolean_convention": "TRUE/FALSE",
+  "date_convention": "YYYY-MM-DD",
+  "id_convention": "app_id = xa-<Xero listing slug> | ext-<slugified name>; status \"proposed\" until reconciled with repo IDs",
+  "ready_vs_quarantine": "csv/ holds ready-to-import rows only; quarantine/ holds rows whose identity is unresolved",
+  "files": [
+    {
+      "file": "csv/apps.csv",
+      "table": "apps",
+      "rows": 728,
+      "quarantined_rows": 0,
+      "primary_key": "app_id",
+      "foreign_keys": "-",
+      "role": "importable",
+      "fields": [
+        {
+          "field": "app_id",
+          "type": "text",
+          "key": "PK"
+        },
+        {
+          "field": "app_id_status",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "app_name",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "app_name_raw",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "primary_record_id",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "website",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_listing_url",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_listing_slug",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_listing_read_status",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "app_function_area",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "area_legacy",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_store_categories_raw",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "description_raw",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "industry_legacy_raw",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "industry_legacy_status",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "business_size_legacy_raw",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "business_size_status",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_rating",
+          "type": "number",
+          "key": null
+        },
+        {
+          "field": "xero_reviews",
+          "type": "number",
+          "key": null
+        },
+        {
+          "field": "rating_status",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_rating_listing_now",
+          "type": "number",
+          "key": null
+        },
+        {
+          "field": "xero_reviews_listing_now",
+          "type": "number",
+          "key": null
+        },
+        {
+          "field": "pricing_summary_raw",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "legacy_source_label",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "listed_date",
+          "type": "date (YYYY-MM-DD)",
+          "key": null
+        },
+        {
+          "field": "listed_date_precision",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "listed_date_status",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "listed_date_source",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "listed_date_checked_at",
+          "type": "date (YYYY-MM-DD)",
+          "key": null
+        },
+        {
+          "field": "free_trial_flag",
+          "type": "boolean (TRUE/FALSE)",
+          "key": null
+        },
+        {
+          "field": "free_trial_days",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "ready_to_import",
+          "type": "boolean (TRUE/FALSE)",
+          "key": null
+        }
+      ]
+    },
+    {
+      "file": "csv/identity_crosswalk.csv",
+      "table": "identity_crosswalk",
+      "rows": 729,
+      "quarantined_rows": 2,
+      "primary_key": "record_id",
+      "foreign_keys": "proposed_app_id -> apps.app_id",
+      "role": "importable",
+      "fields": [
+        {
+          "field": "record_id",
+          "type": "text",
+          "key": "PK"
+        },
+        {
+          "field": "source_sheet",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "source_row",
+          "type": "number",
+          "key": null
+        },
+        {
+          "field": "app_name_raw",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "app_name_normalised",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "website",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_listing_url",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "area_legacy",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "legacy_source_label",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "proposed_app_id",
+          "type": "text",
+          "key": "FK"
+        },
+        {
+          "field": "resolution_status",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "ready_to_import",
+          "type": "boolean (TRUE/FALSE)",
+          "key": null
+        },
+        {
+          "field": "resolution_note",
+          "type": "text",
+          "key": null
+        }
+      ]
+    },
+    {
+      "file": "csv/fs_mappings.csv",
+      "table": "fs_mappings",
+      "rows": 1136,
+      "quarantined_rows": 3,
+      "primary_key": "mapping_id",
+      "foreign_keys": "app_id -> apps.app_id; record_id -> identity_crosswalk.record_id",
+      "role": "importable",
+      "fields": [
+        {
+          "field": "mapping_id",
+          "type": "text",
+          "key": "PK"
+        },
+        {
+          "field": "app_id",
+          "type": "text",
+          "key": "FK"
+        },
+        {
+          "field": "candidate_app_id",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "record_id",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "li_source_row",
+          "type": "number",
+          "key": null
+        },
+        {
+          "field": "match_method",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "statement",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "statement_is_xero_financial_statement",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "fs_line_item_legacy",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "area_legacy",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "app_function_area",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_category",
+          "type": "text (all null)",
+          "key": null
+        },
+        {
+          "field": "xero_account_class_proposed",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_account_type_proposed",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_report_section_proposed",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_account_name",
+          "type": "text (all null)",
+          "key": null
+        },
+        {
+          "field": "xero_secondary_category",
+          "type": "text (all null)",
+          "key": null
+        },
+        {
+          "field": "general_pl",
+          "type": "text (all null)",
+          "key": null
+        },
+        {
+          "field": "further_categorisation",
+          "type": "text (all null)",
+          "key": null
+        },
+        {
+          "field": "mapping_status",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "mapping_source",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "mapping_checked_at",
+          "type": "text (all null)",
+          "key": null
+        },
+        {
+          "field": "legacy_source_label",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "ready_to_import",
+          "type": "boolean (TRUE/FALSE)",
+          "key": null
+        },
+        {
+          "field": "unresolved_reason",
+          "type": "text",
+          "key": null
+        }
+      ]
+    },
+    {
+      "file": "csv/fs_line_item_crosswalk.csv",
+      "table": "fs_line_item_crosswalk",
+      "rows": 41,
+      "quarantined_rows": 0,
+      "primary_key": "statement + fs_line_item_legacy",
+      "foreign_keys": "(statement, fs_line_item_legacy) <- fs_mappings",
+      "role": "reference",
+      "fields": [
+        {
+          "field": "statement",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "fs_line_item_legacy",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "mapping_rows",
+          "type": "number",
+          "key": null
+        },
+        {
+          "field": "new_column",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "label_kind",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_account_class_proposed",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_account_type_proposed",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_report_section_proposed",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "suggested_treatment",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "approval_status",
+          "type": "text",
+          "key": null
+        }
+      ]
+    },
+    {
+      "file": "csv/area_crosswalk.csv",
+      "table": "area_crosswalk",
+      "rows": 27,
+      "quarantined_rows": 0,
+      "primary_key": "area_legacy",
+      "foreign_keys": "area_legacy <- apps / fs_mappings",
+      "role": "reference",
+      "fields": [
+        {
+          "field": "area_legacy",
+          "type": "text",
+          "key": "PK"
+        },
+        {
+          "field": "app_rows",
+          "type": "number",
+          "key": null
+        },
+        {
+          "field": "app_function_area_proposed",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "reason",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "approval_status",
+          "type": "text",
+          "key": null
+        }
+      ]
+    },
+    {
+      "file": "csv/pricing_tiers_norm.csv",
+      "table": "pricing_tiers_norm",
+      "rows": 330,
+      "quarantined_rows": 0,
+      "primary_key": "tier_id",
+      "foreign_keys": "app_id -> apps.app_id",
+      "role": "importable",
+      "fields": [
+        {
+          "field": "tier_id",
+          "type": "text",
+          "key": "PK"
+        },
+        {
+          "field": "app_id",
+          "type": "text",
+          "key": "FK"
+        },
+        {
+          "field": "link_method",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "app_name_label",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "tier_name",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "price_raw",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "amount",
+          "type": "number",
+          "key": null
+        },
+        {
+          "field": "currency",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "billing_period",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "billing_basis_raw",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "billing_basis_norm",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "is_quote",
+          "type": "boolean (TRUE/FALSE)",
+          "key": null
+        },
+        {
+          "field": "is_from_price",
+          "type": "boolean (TRUE/FALSE)",
+          "key": null
+        },
+        {
+          "field": "is_free_plan",
+          "type": "boolean (TRUE/FALSE)",
+          "key": null
+        },
+        {
+          "field": "is_trial",
+          "type": "boolean (TRUE/FALSE)",
+          "key": null
+        },
+        {
+          "field": "min_quantity",
+          "type": "number",
+          "key": null
+        },
+        {
+          "field": "tax_status",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "region",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "add_ons_and_usage_raw",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "includes_raw",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "description_raw",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "source_type",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "source_url",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "source_date",
+          "type": "date (YYYY-MM-DD)",
+          "key": null
+        },
+        {
+          "field": "checked_at",
+          "type": "text (all null)",
+          "key": null
+        },
+        {
+          "field": "evidence_status",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "edge_case_flags",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "ready_to_import",
+          "type": "boolean (TRUE/FALSE)",
+          "key": null
+        }
+      ]
+    },
+    {
+      "file": "csv/app_regions.csv",
+      "table": "app_regions",
+      "rows": 24,
+      "quarantined_rows": 0,
+      "primary_key": "app_id + region_code",
+      "foreign_keys": "app_id -> apps.app_id",
+      "role": "importable",
+      "fields": [
+        {
+          "field": "app_id",
+          "type": "text",
+          "key": "FK"
+        },
+        {
+          "field": "region_code",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "region_name",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "in_listing_regions",
+          "type": "boolean (TRUE/FALSE)",
+          "key": null
+        },
+        {
+          "field": "in_supported_regions",
+          "type": "boolean (TRUE/FALSE)",
+          "key": null
+        },
+        {
+          "field": "evidence_status",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "source_url",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "checked_at",
+          "type": "date (YYYY-MM-DD)",
+          "key": null
+        },
+        {
+          "field": "note",
+          "type": "text",
+          "key": null
+        }
+      ]
+    },
+    {
+      "file": "csv/app_languages.csv",
+      "table": "app_languages",
+      "rows": 2,
+      "quarantined_rows": 0,
+      "primary_key": "app_id + language_code",
+      "foreign_keys": "app_id -> apps.app_id",
+      "role": "importable",
+      "fields": [
+        {
+          "field": "app_id",
+          "type": "text",
+          "key": "FK"
+        },
+        {
+          "field": "language_code",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "language_name",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "evidence_status",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "source_url",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "checked_at",
+          "type": "date (YYYY-MM-DD)",
+          "key": null
+        }
+      ]
+    },
+    {
+      "file": "csv/app_store_functions.csv",
+      "table": "app_store_functions",
+      "rows": 4,
+      "quarantined_rows": 0,
+      "primary_key": "app_id + xero_store_function_id",
+      "foreign_keys": "app_id -> apps.app_id",
+      "role": "importable",
+      "fields": [
+        {
+          "field": "app_id",
+          "type": "text",
+          "key": "FK"
+        },
+        {
+          "field": "xero_store_function_id",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_store_function_name",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "kind",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "evidence_status",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "source_url",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "checked_at",
+          "type": "date (YYYY-MM-DD)",
+          "key": null
+        }
+      ]
+    },
+    {
+      "file": "csv/app_listing_industries.csv",
+      "table": "app_listing_industries",
+      "rows": 4,
+      "quarantined_rows": 0,
+      "primary_key": "app_id + xero_industry_id",
+      "foreign_keys": "app_id -> apps.app_id",
+      "role": "importable",
+      "fields": [
+        {
+          "field": "app_id",
+          "type": "text",
+          "key": "FK"
+        },
+        {
+          "field": "xero_industry_id",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_industry_name",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "evidence_status",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "source_url",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "checked_at",
+          "type": "date (YYYY-MM-DD)",
+          "key": null
+        }
+      ]
+    },
+    {
+      "file": "csv/integration_dataflows.csv",
+      "table": "integration_dataflows",
+      "rows": 5,
+      "quarantined_rows": 0,
+      "primary_key": "app_id + xero_object_id",
+      "foreign_keys": "app_id -> apps.app_id",
+      "role": "importable",
+      "fields": [
+        {
+          "field": "app_id",
+          "type": "text",
+          "key": "FK"
+        },
+        {
+          "field": "xero_object",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "xero_object_id",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "flow_raw",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "flow_meaning",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "evidence_status",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "source_url",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "checked_at",
+          "type": "date (YYYY-MM-DD)",
+          "key": null
+        },
+        {
+          "field": "note",
+          "type": "text",
+          "key": null
+        }
+      ]
+    },
+    {
+      "file": "csv/app_awards.csv",
+      "table": "app_awards",
+      "rows": 21,
+      "quarantined_rows": 0,
+      "primary_key": "award_id",
+      "foreign_keys": "app_id -> apps.app_id",
+      "role": "importable",
+      "fields": [
+        {
+          "field": "award_id",
+          "type": "text",
+          "key": "PK"
+        },
+        {
+          "field": "app_id",
+          "type": "text",
+          "key": "FK"
+        },
+        {
+          "field": "award_program",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "award_year",
+          "type": "number",
+          "key": null
+        },
+        {
+          "field": "award_category",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "result",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "evidence_status",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "source_url",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "note",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "checked_at",
+          "type": "date (YYYY-MM-DD)",
+          "key": null
+        }
+      ]
+    },
+    {
+      "file": "csv/xero_taxonomy.csv",
+      "table": "xero_taxonomy",
+      "rows": 70,
+      "quarantined_rows": 0,
+      "primary_key": "kind + value",
+      "foreign_keys": "-",
+      "role": "reference",
+      "fields": [
+        {
+          "field": "kind",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "value",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "meaning",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "source_url",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "source_location",
+          "type": "text",
+          "key": null
+        }
+      ]
+    },
+    {
+      "file": "csv/xero_research_log.csv",
+      "table": "xero_research_log",
+      "rows": 5,
+      "quarantined_rows": 0,
+      "primary_key": "source_url",
+      "foreign_keys": "-",
+      "role": "reference",
+      "fields": [
+        {
+          "field": "source_url",
+          "type": "text",
+          "key": "PK"
+        },
+        {
+          "field": "source",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "established",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "not_established",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "read_on",
+          "type": "date (YYYY-MM-DD)",
+          "key": null
+        }
+      ]
+    },
+    {
+      "file": "csv/engine_input_contract.csv",
+      "table": "engine_input_contract",
+      "rows": 14,
+      "quarantined_rows": 0,
+      "primary_key": "factor",
+      "foreign_keys": "-",
+      "role": "reference",
+      "fields": [
+        {
+          "field": "factor_type",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "factor",
+          "type": "text",
+          "key": "PK"
+        },
+        {
+          "field": "input_table_fields",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "proposed_role",
+          "type": "text",
+          "key": null
+        },
+        {
+          "field": "missing_data_rule",
+          "type": "text",
+          "key": null
+        }
+      ]
+    },
+    {
+      "file": "csv/data_dictionary.csv",
+      "table": "data_dictionary",
+      "rows": 219,
+      "quarantined_rows": 0,
+      "primary_key": "table + field",
+      "foreign_keys": "-",
+      "role": "documentation",
+      "fields": []
+    },
+    {
+      "file": "csv/change_log.csv",
+      "table": "change_log",
+      "rows": 16,
+      "quarantined_rows": 0,
+      "primary_key": "-",
+      "foreign_keys": "-",
+      "role": "documentation",
+      "fields": []
+    },
+    {
+      "file": "csv/research_backlog.csv",
+      "table": "research_backlog",
+      "rows": 10,
+      "quarantined_rows": 0,
+      "primary_key": "item",
+      "foreign_keys": "-",
+      "role": "documentation",
+      "fields": []
+    },
+    {
+      "file": "csv/unresolved_questions.csv",
+      "table": "unresolved_questions",
+      "rows": 10,
+      "quarantined_rows": 0,
+      "primary_key": "question",
+      "foreign_keys": "-",
+      "role": "documentation",
+      "fields": []
+    },
+    {
+      "file": "quarantine/identity_crosswalk_quarantined.csv",
+      "table": "identity_crosswalk",
+      "rows": 2,
+      "role": "quarantine"
+    },
+    {
+      "file": "quarantine/fs_mappings_quarantined.csv",
+      "table": "fs_mappings",
+      "rows": 3,
+      "role": "quarantine"
+    },
+    {
+      "file": "identity-crosswalk.csv",
+      "table": "identity_crosswalk",
+      "rows": 729,
+      "role": "copy of csv/identity_crosswalk.csv"
+    },
+    {
+      "file": "scripts/fetch_xero_listing_metadata.py",
+      "role": "read-only enrichment script (stdlib Python)"
+    }
+  ]
+}

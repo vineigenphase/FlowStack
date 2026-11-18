@@ -16,3 +16,6 @@ fixtures/xero/*-live/
 .pglite-e2e
 .next-e2e
 .e2e-results
+
+# Xero listing pages collected by scripts/catalogue/fetch_xero_listings.py (re-collectable; not committed)
+docs/app-catalogue-handoff/enrichment_run/raw/

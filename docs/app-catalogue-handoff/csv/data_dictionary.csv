@@ -1,0 +1,220 @@
+table,field,type,key,description,nulls
+apps,app_id,text,PK,Proposed stable app identifier. xa-<Xero listing slug> for listed apps; ext-<slugified name> otherwise. Not yet reconciled with repo IDs.,0 of 728 null
+apps,app_id_status,text,,proposed = generated here; replace with repo ID via crosswalk in Claude Code.,0 of 728 null
+apps,app_name,text,,,0 of 728 null
+apps,app_name_raw,text,,,0 of 728 null
+apps,primary_record_id,text,,App List record this app row was built from.,0 of 728 null
+apps,website,text,,,0 of 728 null
+apps,xero_listing_url,text,,,5 of 728 null
+apps,xero_listing_slug,text,,,5 of 728 null
+apps,xero_listing_read_status,text,,,0 of 728 null
+apps,app_function_area,text,,Proposed rename of Area: what the app does. Snake-case code of the legacy value. Not a financial category.,0 of 728 null
+apps,area_legacy,text,,"Original Area value, verbatim.",0 of 728 null
+apps,xero_store_categories_raw,text,,,0 of 728 null
+apps,description_raw,text,,,0 of 728 null
+apps,industry_legacy_raw,text,,,0 of 728 null
+apps,industry_legacy_status,text,,,0 of 728 null
+apps,business_size_legacy_raw,text,,,0 of 728 null
+apps,business_size_status,text,,,0 of 728 null
+apps,xero_rating,number,,"Original workbook Xero rating, unchanged.",233 of 728 null
+apps,xero_reviews,number,,"Original workbook review count, unchanged.",5 of 728 null
+apps,rating_status,text,,present | present-zero-reviews | missing. Missing is not a low rating.,0 of 728 null
+apps,xero_rating_listing_now,number,,Rating read from the listing on checked date (only where read). Raw xero_rating not overwritten.,726 of 728 null
+apps,xero_reviews_listing_now,number,,,726 of 728 null
+apps,pricing_summary_raw,text,,,0 of 728 null
+apps,legacy_source_label,text,,,0 of 728 null
+apps,listed_date,date (YYYY-MM-DD),,Date the app was first listed on the Xero App Store (listing field listedDate). Not founding date or scrape date.,726 of 728 null
+apps,listed_date_precision,text,,,726 of 728 null
+apps,listed_date_status,text,,,0 of 728 null
+apps,listed_date_source,text,,,726 of 728 null
+apps,listed_date_checked_at,date (YYYY-MM-DD),,,726 of 728 null
+apps,free_trial_flag,boolean (TRUE/FALSE),,,726 of 728 null
+apps,free_trial_days,text,,,727 of 728 null
+apps,ready_to_import,boolean (TRUE/FALSE),,"TRUE = linked to a resolved app_id; FALSE = quarantined/unresolved, keep visible but do not import.",0 of 728 null
+identity_crosswalk,record_id,text,PK,"Source-record reference AL-<App List row>. Provenance only, not identity.",0 of 731 null
+identity_crosswalk,source_sheet,text,,,0 of 731 null
+identity_crosswalk,source_row,number,,,0 of 731 null
+identity_crosswalk,app_name_raw,text,,,0 of 731 null
+identity_crosswalk,app_name_normalised,text,,,0 of 731 null
+identity_crosswalk,website,text,,,1 of 731 null
+identity_crosswalk,xero_listing_url,text,,,7 of 731 null
+identity_crosswalk,area_legacy,text,,"Original Area value, verbatim.",1 of 731 null
+identity_crosswalk,legacy_source_label,text,,,0 of 731 null
+identity_crosswalk,proposed_app_id,text,FK,,0 of 731 null
+identity_crosswalk,resolution_status,text,,resolved-unique | resolved-whitespace-normalised | resolved-distinct-listing | quarantined-probable-duplicate-record | alias-label-differs-from-App-List,0 of 731 null
+identity_crosswalk,ready_to_import,boolean (TRUE/FALSE),,"TRUE = linked to a resolved app_id; FALSE = quarantined/unresolved, keep visible but do not import.",0 of 731 null
+identity_crosswalk,resolution_note,text,,,719 of 731 null
+fs_mappings,mapping_id,text,PK,,0 of 1139 null
+fs_mappings,app_id,text,FK,Proposed stable app identifier. xa-<Xero listing slug> for listed apps; ext-<slugified name> otherwise. Not yet reconciled with repo IDs.,3 of 1139 null
+fs_mappings,candidate_app_id,text,,App the row probably belongs to. For quarantined rows app_id is blank and only this is filled.,0 of 1139 null
+fs_mappings,record_id,text,,"Source-record reference AL-<App List row>. Provenance only, not identity.",0 of 1139 null
+fs_mappings,li_source_row,number,,,0 of 1139 null
+fs_mappings,match_method,text,,,0 of 1139 null
+fs_mappings,statement,text,,Original Statement value: P&L | Balance Sheet | Cash Flow | KPI.,0 of 1139 null
+fs_mappings,statement_is_xero_financial_statement,text,,Whether Xero publishes this as a financial statement (per Xero Finance API spec). KPI = no.,0 of 1139 null
+fs_mappings,fs_line_item_legacy,text,,"Original FS line item value, verbatim.",0 of 1139 null
+fs_mappings,area_legacy,text,,"Original Area value, verbatim.",0 of 1139 null
+fs_mappings,app_function_area,text,,Proposed rename of Area: what the app does. Snake-case code of the legacy value. Not a financial category.,0 of 1139 null
+fs_mappings,xero_category,text (all null),,Reserved for an approved Xero category from the documented taxonomy. Empty until approved/verified.,1139 of 1139 null
+fs_mappings,xero_account_class_proposed,text,,Proposal only: Xero account class (ASSET/LIABILITY/EQUITY/REVENUE/EXPENSE) implied by the crosswalk.,0 of 1139 null
+fs_mappings,xero_account_type_proposed,text,,Proposal only: Xero account type codes / system accounts implied by the crosswalk.,0 of 1139 null
+fs_mappings,xero_report_section_proposed,text,,Proposal only: Xero report section (e.g. P&L Expense > Direct Cost).,0 of 1139 null
+fs_mappings,xero_account_name,text (all null),,Tenant chart-of-accounts name. Only from a read-only export of a real organisation. Empty (awaiting export).,1139 of 1139 null
+fs_mappings,xero_secondary_category,text (all null),,"e.g. expenses, wages. Empty until taxonomy + tenant data support it.",1139 of 1139 null
+fs_mappings,general_pl,text (all null),,FlowStack custom layer (not Xero). Empty; undefined for non-P&L rows pending owner decision.,1139 of 1139 null
+fs_mappings,further_categorisation,text (all null),,FlowStack custom layer below general_pl. Empty.,1139 of 1139 null
+fs_mappings,mapping_status,text,,heuristic-from-app-store-category | source-reported | verified | conflicting | unverified | unknown,0 of 1139 null
+fs_mappings,mapping_source,text,,Where the mapping came from (citation or workbook claim).,0 of 1139 null
+fs_mappings,mapping_checked_at,text (all null),,Date a person/agent actually checked the mapping against a source. Empty = not checked.,1139 of 1139 null
+fs_mappings,legacy_source_label,text,,,0 of 1139 null
+fs_mappings,ready_to_import,boolean (TRUE/FALSE),,"TRUE = linked to a resolved app_id; FALSE = quarantined/unresolved, keep visible but do not import.",0 of 1139 null
+fs_mappings,unresolved_reason,text,,,448 of 1139 null
+fs_line_item_crosswalk,statement,text,,Original Statement value: P&L | Balance Sheet | Cash Flow | KPI.,0 of 41 null
+fs_line_item_crosswalk,fs_line_item_legacy,text,,"Original FS line item value, verbatim.",0 of 41 null
+fs_line_item_crosswalk,mapping_rows,number,,,0 of 41 null
+fs_line_item_crosswalk,new_column,text,,,0 of 41 null
+fs_line_item_crosswalk,label_kind,text,,,0 of 41 null
+fs_line_item_crosswalk,xero_account_class_proposed,text,,Proposal only: Xero account class (ASSET/LIABILITY/EQUITY/REVENUE/EXPENSE) implied by the crosswalk.,0 of 41 null
+fs_line_item_crosswalk,xero_account_type_proposed,text,,Proposal only: Xero account type codes / system accounts implied by the crosswalk.,0 of 41 null
+fs_line_item_crosswalk,xero_report_section_proposed,text,,Proposal only: Xero report section (e.g. P&L Expense > Direct Cost).,0 of 41 null
+fs_line_item_crosswalk,suggested_treatment,text,,,11 of 41 null
+fs_line_item_crosswalk,approval_status,text,,,0 of 41 null
+area_crosswalk,area_legacy,text,PK,"Original Area value, verbatim.",0 of 27 null
+area_crosswalk,app_rows,number,,,0 of 27 null
+area_crosswalk,app_function_area_proposed,text,,,0 of 27 null
+area_crosswalk,reason,text,,,0 of 27 null
+area_crosswalk,approval_status,text,,,0 of 27 null
+pricing_tiers_norm,tier_id,text,PK,,0 of 330 null
+pricing_tiers_norm,app_id,text,FK,Proposed stable app identifier. xa-<Xero listing slug> for listed apps; ext-<slugified name> otherwise. Not yet reconciled with repo IDs.,0 of 330 null
+pricing_tiers_norm,link_method,text,,,0 of 330 null
+pricing_tiers_norm,app_name_label,text,,,0 of 330 null
+pricing_tiers_norm,tier_name,text,,,0 of 330 null
+pricing_tiers_norm,price_raw,text,,,0 of 330 null
+pricing_tiers_norm,amount,number,,Numeric price. Blank when unknown or quote. 0 only for genuine free plans or listed zero prices (see flags).,27 of 330 null
+pricing_tiers_norm,currency,text,,"ISO code when stated (GBP from £). Blank when only ""$"" or nothing is shown.",45 of 330 null
+pricing_tiers_norm,billing_period,text,,month | year | per transaction | blank if unknown.,48 of 330 null
+pricing_tiers_norm,billing_basis_raw,text,,,15 of 330 null
+pricing_tiers_norm,billing_basis_norm,text,,flat | per_user | per_client | usage | custom | free | blank.,61 of 330 null
+pricing_tiers_norm,is_quote,boolean (TRUE/FALSE),,TRUE when the tier is custom/quote/calculator-priced.,0 of 330 null
+pricing_tiers_norm,is_from_price,boolean (TRUE/FALSE),,,0 of 330 null
+pricing_tiers_norm,is_free_plan,boolean (TRUE/FALSE),,TRUE only for an amount of 0 that is not a trial and not a quote.,0 of 330 null
+pricing_tiers_norm,is_trial,boolean (TRUE/FALSE),,TRUE when tier name/description indicates a trial.,0 of 330 null
+pricing_tiers_norm,min_quantity,number,,,327 of 330 null
+pricing_tiers_norm,tax_status,text,,"""ex VAT (stated)"" only when the source says so; otherwise unknown.",0 of 330 null
+pricing_tiers_norm,region,text,,,0 of 330 null
+pricing_tiers_norm,add_ons_and_usage_raw,text,,,274 of 330 null
+pricing_tiers_norm,includes_raw,text,,,0 of 330 null
+pricing_tiers_norm,description_raw,text,,,116 of 330 null
+pricing_tiers_norm,source_type,text,,,0 of 330 null
+pricing_tiers_norm,source_url,text,,,0 of 330 null
+pricing_tiers_norm,source_date,date (YYYY-MM-DD),,Date the source was captured (claimed in workbook or this session).,0 of 330 null
+pricing_tiers_norm,checked_at,text (all null),,Date actually checked in this pass. Empty when not re-checked.,330 of 330 null
+pricing_tiers_norm,evidence_status,text,,verified (confirmed on an authoritative primary source by us on checked_at) | source-reported (as stated by a source; not independently confirmed) | inferred | conflicting | unknown,0 of 330 null
+pricing_tiers_norm,edge_case_flags,text,,Semicolon-separated issues to review before use.,269 of 330 null
+pricing_tiers_norm,ready_to_import,boolean (TRUE/FALSE),,"TRUE = linked to a resolved app_id; FALSE = quarantined/unresolved, keep visible but do not import.",0 of 330 null
+app_regions,app_id,text,FK,Proposed stable app identifier. xa-<Xero listing slug> for listed apps; ext-<slugified name> otherwise. Not yet reconciled with repo IDs.,0 of 24 null
+app_regions,region_code,text,,,0 of 24 null
+app_regions,region_name,text,,,0 of 24 null
+app_regions,in_listing_regions,boolean (TRUE/FALSE),,,0 of 24 null
+app_regions,in_supported_regions,boolean (TRUE/FALSE),,,0 of 24 null
+app_regions,evidence_status,text,,verified (confirmed on an authoritative primary source by us on checked_at) | source-reported (as stated by a source; not independently confirmed) | inferred | conflicting | unknown,0 of 24 null
+app_regions,source_url,text,,,0 of 24 null
+app_regions,checked_at,date (YYYY-MM-DD),,Date actually checked in this pass. Empty when not re-checked.,0 of 24 null
+app_regions,note,text,,,0 of 24 null
+app_languages,app_id,text,FK,Proposed stable app identifier. xa-<Xero listing slug> for listed apps; ext-<slugified name> otherwise. Not yet reconciled with repo IDs.,0 of 2 null
+app_languages,language_code,text,,,0 of 2 null
+app_languages,language_name,text,,,0 of 2 null
+app_languages,evidence_status,text,,verified (confirmed on an authoritative primary source by us on checked_at) | source-reported (as stated by a source; not independently confirmed) | inferred | conflicting | unknown,0 of 2 null
+app_languages,source_url,text,,,0 of 2 null
+app_languages,checked_at,date (YYYY-MM-DD),,Date actually checked in this pass. Empty when not re-checked.,0 of 2 null
+app_store_functions,app_id,text,FK,Proposed stable app identifier. xa-<Xero listing slug> for listed apps; ext-<slugified name> otherwise. Not yet reconciled with repo IDs.,0 of 4 null
+app_store_functions,xero_store_function_id,text,,,0 of 4 null
+app_store_functions,xero_store_function_name,text,,,0 of 4 null
+app_store_functions,kind,text,,,0 of 4 null
+app_store_functions,evidence_status,text,,verified (confirmed on an authoritative primary source by us on checked_at) | source-reported (as stated by a source; not independently confirmed) | inferred | conflicting | unknown,0 of 4 null
+app_store_functions,source_url,text,,,0 of 4 null
+app_store_functions,checked_at,date (YYYY-MM-DD),,Date actually checked in this pass. Empty when not re-checked.,0 of 4 null
+app_listing_industries,app_id,text,FK,Proposed stable app identifier. xa-<Xero listing slug> for listed apps; ext-<slugified name> otherwise. Not yet reconciled with repo IDs.,0 of 4 null
+app_listing_industries,xero_industry_id,text,,,0 of 4 null
+app_listing_industries,xero_industry_name,text,,,0 of 4 null
+app_listing_industries,evidence_status,text,,verified (confirmed on an authoritative primary source by us on checked_at) | source-reported (as stated by a source; not independently confirmed) | inferred | conflicting | unknown,0 of 4 null
+app_listing_industries,source_url,text,,,0 of 4 null
+app_listing_industries,checked_at,date (YYYY-MM-DD),,Date actually checked in this pass. Empty when not re-checked.,0 of 4 null
+integration_dataflows,app_id,text,FK,Proposed stable app identifier. xa-<Xero listing slug> for listed apps; ext-<slugified name> otherwise. Not yet reconciled with repo IDs.,0 of 5 null
+integration_dataflows,xero_object,text,,,0 of 5 null
+integration_dataflows,xero_object_id,text,,,0 of 5 null
+integration_dataflows,flow_raw,text,,Xero listing data-flow direction: in | out | exchange.,0 of 5 null
+integration_dataflows,flow_meaning,text,,,0 of 5 null
+integration_dataflows,evidence_status,text,,verified (confirmed on an authoritative primary source by us on checked_at) | source-reported (as stated by a source; not independently confirmed) | inferred | conflicting | unknown,0 of 5 null
+integration_dataflows,source_url,text,,,0 of 5 null
+integration_dataflows,checked_at,date (YYYY-MM-DD),,Date actually checked in this pass. Empty when not re-checked.,0 of 5 null
+integration_dataflows,note,text,,,0 of 5 null
+app_awards,award_id,text,PK,,0 of 21 null
+app_awards,app_id,text,FK,Proposed stable app identifier. xa-<Xero listing slug> for listed apps; ext-<slugified name> otherwise. Not yet reconciled with repo IDs.,0 of 21 null
+app_awards,award_program,text,,,0 of 21 null
+app_awards,award_year,number,,,1 of 21 null
+app_awards,award_category,text,,,0 of 21 null
+app_awards,result,text,,,0 of 21 null
+app_awards,evidence_status,text,,verified (confirmed on an authoritative primary source by us on checked_at) | source-reported (as stated by a source; not independently confirmed) | inferred | conflicting | unknown,0 of 21 null
+app_awards,source_url,text,,,0 of 21 null
+app_awards,note,text,,,0 of 21 null
+app_awards,checked_at,date (YYYY-MM-DD),,Date actually checked in this pass. Empty when not re-checked.,0 of 21 null
+xero_taxonomy,kind,text,,,0 of 70 null
+xero_taxonomy,value,text,,,0 of 70 null
+xero_taxonomy,meaning,text,,,0 of 70 null
+xero_taxonomy,source_url,text,,,0 of 70 null
+xero_taxonomy,source_location,text,,,0 of 70 null
+xero_research_log,source_url,text,PK,,0 of 5 null
+xero_research_log,source,text,,,0 of 5 null
+xero_research_log,established,text,,,0 of 5 null
+xero_research_log,not_established,text,,,0 of 5 null
+xero_research_log,read_on,date (YYYY-MM-DD),,,1 of 5 null
+engine_input_contract,factor_type,text,,,0 of 14 null
+engine_input_contract,factor,text,PK,,0 of 14 null
+engine_input_contract,input_table_fields,text,,,0 of 14 null
+engine_input_contract,proposed_role,text,,,0 of 14 null
+engine_input_contract,missing_data_rule,text,,,1 of 14 null
+App List (original),App,as original,,"Original workbook column, preserved",
+App List (original),Website,as original,,"Original workbook column, preserved",
+App List (original),Xero listing,as original,,"Original workbook column, preserved",
+App List (original),Area,as original,,"Original workbook column, preserved",
+App List (original),Xero categories,as original,,"Original workbook column, preserved",
+App List (original),What it does,as original,,"Original workbook column, preserved",
+App List (original),FS line items,as original,,"Original workbook column, preserved",
+App List (original),Statements,as original,,"Original workbook column, preserved",
+App List (original),No. of line items,as original,,"Original workbook column, preserved",
+App List (original),"Pricing (as at Nov 2026, ex VAT)",as original,,"Original workbook column, preserved",
+App List (original),Industry,as original,,"Original workbook column, preserved",
+App List (original),Business size,as original,,"Original workbook column, preserved",
+App List (original),Xero rating,as original,,"Original workbook column, preserved",
+App List (original),Xero reviews,as original,,"Original workbook column, preserved",
+App List (original),Source,as original,,"Original workbook column, preserved",
+App List (original),Pricing tiers captured,as original,,"Original workbook column, preserved",
+App List (original),app_id (proposed),as original,,Proposed stable app identifier. xa-<Xero listing slug> for listed apps; ext-<slugified name> otherwise. Not yet reconciled with repo IDs.,
+App List (original),record_status,as original,,Proposed stable app identifier. xa-<Xero listing slug> for listed apps; ext-<slugified name> otherwise. Not yet reconciled with repo IDs.,
+Apps by Line Item (original),App,as original,,"Original workbook column, preserved",
+Apps by Line Item (original),Website,as original,,"Original workbook column, preserved",
+Apps by Line Item (original),Area,as original,,"Original workbook column, preserved",
+Apps by Line Item (original),What it does,as original,,"Original workbook column, preserved",
+Apps by Line Item (original),FS line item,as original,,"Original workbook column, preserved",
+Apps by Line Item (original),Statement,as original,,"Original workbook column, preserved",
+Apps by Line Item (original),"Pricing (as at Nov 2026, ex VAT)",as original,,"Original workbook column, preserved",
+Apps by Line Item (original),Industry,as original,,"Original workbook column, preserved",
+Apps by Line Item (original),Business size,as original,,"Original workbook column, preserved",
+Apps by Line Item (original),Xero rating,as original,,"Original workbook column, preserved",
+Apps by Line Item (original),Xero reviews,as original,,"Original workbook column, preserved",
+Apps by Line Item (original),Source,as original,,"Original workbook column, preserved",
+Apps by Line Item (original),app_id (proposed),as original,,Proposed stable app identifier. xa-<Xero listing slug> for listed apps; ext-<slugified name> otherwise. Not yet reconciled with repo IDs.,
+Apps by Line Item (original),mapping_id,as original,,Proposed stable app identifier. xa-<Xero listing slug> for listed apps; ext-<slugified name> otherwise. Not yet reconciled with repo IDs.,
+Pricing Tiers (original),App,as original,,"Original workbook column, preserved",
+Pricing Tiers (original),Area,as original,,"Original workbook column, preserved",
+Pricing Tiers (original),Tier / plan,as original,,"Original workbook column, preserved",
+Pricing Tiers (original),Price (ex VAT unless stated),as original,,"Original workbook column, preserved",
+Pricing Tiers (original),Billing basis,as original,,"Original workbook column, preserved",
+Pricing Tiers (original),Tier description / limits,as original,,"Original workbook column, preserved",
+Pricing Tiers (original),What the tier includes,as original,,"Original workbook column, preserved",
+Pricing Tiers (original),Add-ons & extra charges,as original,,"Original workbook column, preserved",
+Pricing Tiers (original),Source type,as original,,"Original workbook column, preserved",
+Pricing Tiers (original),Source URL,as original,,"Original workbook column, preserved",
+Pricing Tiers (original),app_id (proposed),as original,,Proposed stable app identifier. xa-<Xero listing slug> for listed apps; ext-<slugified name> otherwise. Not yet reconciled with repo IDs.,
+Pricing Tiers (original),tier_id,as original,,Proposed stable app identifier. xa-<Xero listing slug> for listed apps; ext-<slugified name> otherwise. Not yet reconciled with repo IDs.,

@@ -1,0 +1,11 @@
+area,question
+Identity,RemitClear and Deel each have a second record without a Xero listing and with different mappings. Merge or keep separate?
+Rename,"Approve proposed column names app_function_area (from Area) and fs_line_item_legacy (from FS line item), and the crosswalk values."
+Categorisation,"Non-P&L rows (Balance Sheet, Cash Flow, KPI): no General P&L step, a balance-sheet equivalent, or a separate chain?"
+Categorisation,"KPI rows are app functions, not a Xero statement. Move them to an app-function tag table?"
+Categorisation,Define the FlowStack General P&L and Further categorisation value lists.
+Status,"""recc"" = recommended (confirmed). Where is it stored, and what storage/UI naming do you want? (Claude Code to inspect.)"
+Engine,"Weights, listing-age direction, award decay, tie-breaks, exclusion rules, and the size of the top-recommendations list."
+Engine,Is budget a hard filter or a ranking signal? How should quote-only prices be treated?
+Stress test,"What input or action currently shows nothing, and what did you expect to see?"
+Pricing,Starshipit and Collects.io tiers are labelled per year on Xero but look monthly. Accept as listed or confirm with vendor?

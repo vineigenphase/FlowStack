@@ -1,0 +1,11 @@
+priority,item,next action,scope remaining
+P1,"Listing metadata (countries, languages, listed date, functions, industries, data flows, free trial)",Run scripts/fetch_xero_listing_metadata.py against csv/apps.csv; review fetch_log; append to the linked tables.,721 of 723 listings not yet read (2 seeded; 9 listings return 404)
+P1,Vendor pricing,Check vendor pricing pages; add tiers to pricing_tiers_norm with source_url and checked_at.,"545 App List rows still say ""Not yet checked on vendor site"""
+P1,Identity decisions,"Decide RemitClear (AL-0081 vs AL-0172) and Deel (AL-0557 vs AL-0556): merge into one product with two source records, or keep separate.",2 quarantined records + their 3 mapping rows
+P1,Tenant chart of accounts,Supply a read-only Accounts export (GET /Accounts) for a real organisation to populate xero_account_name / codes / reporting codes.,"all 1,139 mappings"
+P2,Xero account-type descriptions,Read developer.xero.com Types page (JavaScript-rendered) and record each type description and class.,18 types
+P2,Award categories,Match each of the 15 official 2025 winners to its exact category from Xero's awards announcement; record 2026 results when published.,15 apps
+P2,Pricing edge cases,"Review rows flagged in pricing_tiers_norm.edge_case_flags (currency, suspect yearly period, quote, trial).",see validation
+P2,Business size,Verify business size (currently default SME for Xero-listing apps).,~700 rows
+P3,Missing listing URLs,"Pinch, Pento, Cledara, Spendesk, Weel are not on the Xero UK store: confirm availability in other regions.",5 apps
+P3,404 listings,"Hindsight, Jack, TradeMore, HomeBozz, Invoice Tracker, Redcat, Pluto, Yordex, ClockIt listings return 404: confirm delisted.",9 apps
