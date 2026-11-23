@@ -223,6 +223,7 @@ export async function computeFlags(orgId: string, runId: string) {
         lines,
         inUse: detected.map((d) => d.appId),
         markets: org.markets,
+        industry: org.industry,
         annualRevenue: months > 0 ? (revenue * 12) / months : revenue,
         headcount: null,
         today: new Date().toISOString().slice(0, 10),

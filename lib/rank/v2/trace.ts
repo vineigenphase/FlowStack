@@ -59,6 +59,7 @@ export function flatWeights(s: ScoringV2): Record<string, number> {
     "job_fit.category_match": s.job_fit.category_match,
     "job_fit.function_match": s.job_fit.function_match,
     "job_fit.keyword_match": s.job_fit.keyword_match,
+    "job_fit.industry_fit": s.job_fit.industry_fit,
     "quality.rating_score": s.quality.rating_score,
     "quality.volume_score": s.quality.volume_score,
   };

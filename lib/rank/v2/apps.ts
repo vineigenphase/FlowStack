@@ -23,6 +23,8 @@ export type V2App = {
   listing: XeroAppListing | null;
   /** Xero functions across all of the app's listings. */
   functions: string[];
+  /** Xero industries across all of the app's listings (empty = none listed). */
+  industries: string[];
 };
 
 const read = (p: string) => fs.readFileSync(path.resolve(process.cwd(), p), "utf8");
@@ -54,6 +56,7 @@ export function buildV2Apps(curated: App[], listings: XeroAppListing[], matches:
       markets: a.markets,
       listing: ls[0] ?? null,
       functions: [...new Set(ls.flatMap((l) => l.xero_functions))].sort(),
+      industries: [...new Set(ls.flatMap((l) => l.industries))].sort(),
     });
   }
   for (const l of listings) {
@@ -66,6 +69,7 @@ export function buildV2Apps(curated: App[], listings: XeroAppListing[], matches:
       markets: l.markets,
       listing: l,
       functions: [...l.xero_functions].sort(),
+      industries: [...l.industries].sort(),
     });
   }
   return out;

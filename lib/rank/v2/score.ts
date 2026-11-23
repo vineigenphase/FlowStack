@@ -5,6 +5,7 @@
  *   match   = 100 × (strength × w.strength + fit × w.fit + quality × w.quality + price × w.price)
  *   fit     = integration_fit × f.integration_fit + job_fit × f.job_fit
  *   job_fit = category_match × j.category_match + function_match × j.function_match + keyword_match × j.keyword_match
+ *             + industry_fit × j.industry_fit   (an app built only for another industry is excluded)
  *   quality = clamp(rating_score × q.rating_score + volume_score × q.volume_score + award_boost, 0, 1)
  *
  * Every input is a part with its contribution to the match; the contributions add up to the match. A missing input
@@ -15,6 +16,7 @@ import type { V2App } from "./apps";
 import { awardBoost } from "./awards";
 import { categoryMatch } from "./category-match";
 import { functionMatch } from "./function-match";
+import { industryFit } from "./industry-fit";
 import { integrationFit } from "./integration-fit";
 import { keywordMatch } from "./keyword-match";
 import type { Input, Source } from "./part";
@@ -75,6 +77,8 @@ export type Ctx = {
   kept: App[];
   inUse: Set<string>;
   markets: string[];
+  /** The business's industry (lib/orgs/settings.ts INDUSTRIES key), or null if not set. */
+  industry: string | null;
   annualRevenue: number;
   headcount: number | null;
   year: number;
@@ -88,7 +92,7 @@ const f2 = (n: number) => n.toFixed(2);
 export function rankLine(line: LineV2, rule: Rule, ctx: Ctx): LineResult {
   const s = ctx.scoring;
   const excluded: LineResult["excluded"] = [];
-  const set: { app: V2App; cat: Input; handles: boolean }[] = [];
+  const set: { app: V2App; cat: Input; ind: Input; handles: boolean }[] = [];
   for (const app of ctx.pool) {
     const cat = categoryMatch(app, rule, s);
     if (!cat) continue;
@@ -97,7 +101,12 @@ export function rankLine(line: LineV2, rule: Rule, ctx: Ctx): LineResult {
       excluded.push({ appId: app.id, name: app.name, reason: `Not available in ${ctx.markets.join("/")} (listed for ${app.markets.join(", ")})` });
       continue;
     }
-    set.push({ app, cat, handles: cat.normalised === s.category_match.covered_by });
+    const ind = industryFit(app, ctx.industry, s);
+    if ("exclude" in ind && !used) {
+      excluded.push({ appId: app.id, name: app.name, reason: ind.exclude });
+      continue;
+    }
+    set.push({ app, cat, ind: "input" in ind ? ind.input : { raw: app.industries, normalised: 0, missing: false, note: "In use, though listed for other industries" }, handles: cat.normalised === s.category_match.covered_by });
   }
 
   const apps = set.map((x) => x.app);
@@ -111,19 +120,21 @@ export function rankLine(line: LineV2, rule: Rule, ctx: Ctx): LineResult {
     category_match: w.fit * s.fit.job_fit * s.job_fit.category_match,
     function_match: w.fit * s.fit.job_fit * s.job_fit.function_match,
     keyword_match: w.fit * s.fit.job_fit * s.job_fit.keyword_match,
+    industry_fit: w.fit * s.fit.job_fit * s.job_fit.industry_fit,
     rating_score: w.quality * s.quality.rating_score,
     volume_score: w.quality * s.quality.volume_score,
     award_boost: w.quality,
     price: w.price,
   };
 
-  const scored = set.map(({ app, cat, handles }) => {
+  const scored = set.map(({ app, cat, ind, handles }) => {
     const inputs: Record<keyof typeof share, Input> = {
       strength: { raw: { strength_norm: line.strengthNorm, materiality: line.materiality, band: line.band }, normalised: line.strengthNorm, missing: false, note: `Line strength ${f2(line.strengthNorm)} (largest flag = 1)` },
       integration_fit: integrationFit(app, ctx.kept, s),
       category_match: cat,
       function_match: functionMatch(app, rule, s),
       keyword_match: kw.get(app.id)!,
+      industry_fit: ind,
       rating_score: ratingScore(app, mean, s),
       volume_score: volumeScore(app, max, s),
       award_boost: awardBoost(app, ctx.markets, ctx.year, s),
@@ -138,6 +149,7 @@ export function rankLine(line: LineV2, rule: Rule, ctx: Ctx): LineResult {
       category_match: "Category match",
       function_match: "Xero function match",
       keyword_match: "Keyword match",
+      industry_fit: "Industry fit",
       rating_score: "Xero rating",
       volume_score: "Review volume",
       award_boost: "Xero Awards boost",
@@ -150,9 +162,9 @@ export function rankLine(line: LineV2, rule: Rule, ctx: Ctx): LineResult {
       return { key: k, label: LABEL[k], raw: i.raw, normalised: r4(i.normalised), weight: r4(share[k]), contribution: r4(contribution), missing: i.missing, ...(i.source ? { source: i.source } : {}), ...(i.note ? { note: i.note } : {}) };
     });
     const match = Math.round(parts.reduce((t, p) => t + p.contribution, 0) * 100) / 100;
-    const jobFit = s.job_fit.category_match * v.category_match + s.job_fit.function_match * v.function_match + s.job_fit.keyword_match * v.keyword_match;
+    const jobFit = s.job_fit.category_match * v.category_match + s.job_fit.function_match * v.function_match + s.job_fit.keyword_match * v.keyword_match + s.job_fit.industry_fit * v.industry_fit;
     const formula =
-      `100 × (${f2(w.strength)}×${f2(v.strength)} + ${f2(w.fit)}×(${f2(s.fit.integration_fit)}×${f2(v.integration_fit)} + ${f2(s.fit.job_fit)}×(${f2(s.job_fit.category_match)}×${f2(v.category_match)} + ${f2(s.job_fit.function_match)}×${f2(v.function_match)} + ${f2(s.job_fit.keyword_match)}×${f2(v.keyword_match)}))` +
+      `100 × (${f2(w.strength)}×${f2(v.strength)} + ${f2(w.fit)}×(${f2(s.fit.integration_fit)}×${f2(v.integration_fit)} + ${f2(s.fit.job_fit)}×(${f2(s.job_fit.category_match)}×${f2(v.category_match)} + ${f2(s.job_fit.function_match)}×${f2(v.function_match)} + ${f2(s.job_fit.keyword_match)}×${f2(v.keyword_match)} + ${f2(s.job_fit.industry_fit)}×${f2(v.industry_fit)}))` +
       ` + ${f2(w.quality)}×min(1, ${f2(s.quality.rating_score)}×${f2(v.rating_score)} + ${f2(s.quality.volume_score)}×${f2(v.volume_score)} + ${f2(v.award_boost)}) + ${f2(w.price)}×${f2(v.price)}) = ${match.toFixed(2)}` +
       `  [job fit ${f2(jobFit)}]`;
     const used = ctx.inUse.has(app.id);

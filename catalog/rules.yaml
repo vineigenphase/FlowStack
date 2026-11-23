@@ -20,14 +20,19 @@ scoring:
 # Engine v2 (ENGINE-V2.md §1.1, 22 Nov 2026). Ranking only: never changes whether a line is flagged.
 #   match   = 100 × (strength × 0.50 + fit × 0.35 + quality × 0.10 + price × 0.05)
 #   fit     = integration_fit × 0.60 + job_fit × 0.40
-#   job_fit = category_match × 0.40 + function_match × 0.35 + keyword_match × 0.25
+#   job_fit = category_match × 0.35 + function_match × 0.30 + keyword_match × 0.20 + industry_fit × 0.15
 #   quality = clamp(rating_score × 0.85 + volume_score × 0.15 + award_boost, 0, 1)
 # A missing input scores `neutral` and is shown as missing. Shown to admins at /admin/engine-v2.
 scoring_v2:
-  status: { weights: "DECIDED 9 Nov 2026", sub_weights: "APPROVED by the owner 23 Nov 2026" }
+  status:
+    weights: "DECIDED 9 Nov 2026"
+    sub_weights: "APPROVED by the owner 23 Nov 2026; industry fit added 23 Nov (its split PROPOSED)"
+    proposed: [job_fit.category_match, job_fit.function_match, job_fit.keyword_match, job_fit.industry_fit, industry_fit.broad_only]
   weights: { strength: 0.50, fit: 0.35, quality: 0.10, price: 0.05 }
   fit: { integration_fit: 0.60, job_fit: 0.40 }
-  job_fit: { category_match: 0.40, function_match: 0.35, keyword_match: 0.25 }
+  # Was 0.40 / 0.35 / 0.25 (approved 23 Nov); industry_fit added on the owner's request the same day, split PROPOSED.
+  job_fit: { category_match: 0.35, function_match: 0.30, keyword_match: 0.20, industry_fit: 0.15 }
+  industry_fit: { broad_only: 0.3 }    # app lists only general industries (Professional services, Accounting), not the business's; catalog/industry-map.yaml
   category_match: { covered_by: 1.0, app_categories_only: 0.7 }   # else 0 and not a candidate
   function_match: { helpful_factor: 0.5 }                         # share of required + 0.5 × share of helpful, capped at 1
   quality: { rating_score: 0.85, volume_score: 0.15 }

@@ -25,16 +25,16 @@ const rule = (id: string) => rulesFile().rules.find((r) => r.id === id)!;
 
 const listing = (p: Partial<XeroAppListing>): XeroAppListing => ({
   listing_id: "xa-x", name: "X", website: null, xero_categories: [], xero_functions: [], description: null,
-  rating_avg: null, rating_count: null, review_count: null, pricing_tiers: [], awards: [], markets: ["UK"],
+  rating_avg: null, rating_count: null, review_count: null, pricing_tiers: [], awards: [], markets: ["UK"], industries: [],
   source_url: null, captured_at: "2026-11-18", ...p,
 });
 const app = (id: string, p: Partial<V2App> = {}, l: Partial<XeroAppListing> | null = {}): V2App => {
   const li = l === null ? null : listing({ listing_id: `xa-${id}`, name: id, ...l });
-  return { id, name: id, curated: null, categories: ["billing_receivables"], markets: ["UK"], listing: li, functions: li?.xero_functions ?? [], ...p };
+  return { id, name: id, curated: null, categories: ["billing_receivables"], markets: ["UK"], listing: li, functions: li?.xero_functions ?? [], industries: li?.industries ?? [], ...p };
 };
 const line: LineV2 = { lineKey: "bs:trade_debtors", name: "Trade debtors", value: 50_000, materiality: 0.2, band: "high", ruleId: "receivables", ruleVersion: 1, state: "flagged", strengthNorm: 1 };
 const ctx = (pool: V2App[], over: Partial<Parameters<typeof rankLine>[2]> = {}) => ({
-  pool, kept: [] as App[], inUse: new Set<string>(), markets: ["UK"], annualRevenue: 1_000_000, headcount: null, year: 2026, scoring: S, ...over,
+  pool, kept: [] as App[], inUse: new Set<string>(), markets: ["UK"], industry: null as string | null, annualRevenue: 1_000_000, headcount: null, year: 2026, scoring: S, ...over,
 });
 
 describe("inputs: missing data scores neutral and says so", () => {
@@ -166,7 +166,7 @@ describe("ranking a line", () => {
     const res = rankLine(line, rule("receivables"), ctx(pool));
     const t = v2Trace({ orgId: "o", computedAt: "2026-11-23T00:00:00Z", scoring: S, rulesVersion: "abc" }, line, res);
     expect(t).toMatchObject({ engine: "v2", lineKey: line.lineKey, line: { ruleId: "receivables" }, excluded: res.excluded });
-    expect(t.candidates[0]!.parts.map((p) => p.key)).toEqual(["strength", "integration_fit", "category_match", "function_match", "keyword_match", "rating_score", "volume_score", "award_boost", "price"]);
+    expect(t.candidates[0]!.parts.map((p) => p.key)).toEqual(["strength", "integration_fit", "category_match", "function_match", "keyword_match", "industry_fit", "rating_score", "volume_score", "award_boost", "price"]);
     expect(t.candidates[0]!.formula).toMatch(/^100 × \(/);
     expect(t.weights["job_fit.keyword_match"]).toBe(S.job_fit.keyword_match);
   });
@@ -180,7 +180,7 @@ describe("shadow mode never changes flags", () => {
     });
     const flags = [f("bs:trade_debtors", "flagged", "receivables", 0.1), f("pl:wages", "covered", "payroll_no_bridge", 0), f("pl:rent", "fine", null, 0), f("pl:x", "queued", null, 0)];
     const before = JSON.stringify(flags);
-    const out = rankFlagsV2({ flags, lines: [], inUse: [], markets: ["UK"], annualRevenue: 1e6, headcount: null, today: "2026-11-23" });
+    const out = rankFlagsV2({ flags, lines: [], inUse: [], markets: ["UK"], industry: null, annualRevenue: 1e6, headcount: null, today: "2026-11-23" });
     expect(JSON.stringify(flags)).toBe(before);
     expect(out.map((o) => o.line.lineKey).sort()).toEqual(["bs:trade_debtors", "pl:wages"]);
     expect(out.find((o) => o.line.lineKey === "pl:wages")!.result.candidates.every((c) => c.inUse || c.kind === "change")).toBe(true);
@@ -253,5 +253,37 @@ describe("dev tools gate", () => {
     await expect(requireDevTools()).rejects.toMatchObject({ status: 404 });
     process.env.DEV_TOOLS = prev;
     resetEnv();
+  });
+});
+
+describe("industry fit (owner 23 Nov 2026)", () => {
+  it("built for the business's industry → 1; only general industries → weak; none listed or industry unknown → missing", async () => {
+    const { industryFit } = await import("@/lib/rank/v2/industry-fit");
+    const pick = (r: ReturnType<typeof industryFit>) => ("input" in r ? r.input : null);
+    expect(pick(industryFit(app("a", { industries: ["Hospitality"] }), "hospitality", S))).toMatchObject({ normalised: 1, missing: false });
+    expect(pick(industryFit(app("b", { industries: ["Accounting", "Construction and trades"] }), "hospitality", S))).toMatchObject({ normalised: S.industry_fit.broad_only });
+    expect(pick(industryFit(app("c", { industries: [] }), "hospitality", S))).toMatchObject({ normalised: 0.5, missing: true });
+    expect(pick(industryFit(app("d", { industries: ["Retail"] }), null, S))).toMatchObject({ missing: true });
+    expect(pick(industryFit(app("e", { industries: ["Retail"] }), "saas", S))).toMatchObject({ missing: true, note: "Xero has no industry matching this business" });
+    expect(pick(industryFit(app("f", { industries: ["Retail"] }), "ecommerce", S))).toMatchObject({ normalised: 1 });
+  });
+
+  it("an app built only for another industry is excluded with the reason, unless the business already uses it", () => {
+    const pool = [app("motordesk", { industries: ["Automotive"] }), app("generic", { industries: ["Professional services"] }), app("hosp", { industries: ["Hospitality"] }), app("none")];
+    const res = rankLine(line, rule("receivables"), ctx(pool, { industry: "hospitality" }));
+    expect(res.excluded).toEqual([expect.objectContaining({ appId: "motordesk", reason: "Built for Automotive, not Hospitality/Tourism" })]);
+    expect(res.candidates.find((c) => c.appId === "hosp")!.match).toBeGreaterThan(res.candidates.find((c) => c.appId === "generic")!.match);
+    const used = rankLine(line, rule("receivables"), ctx(pool, { industry: "hospitality", inUse: new Set(["motordesk"]) }));
+    expect(used.candidates.find((c) => c.appId === "motordesk")).toMatchObject({ inUse: true });
+  });
+
+  it("every industry on a listing is either mapped for some business or deliberately general", async () => {
+    const { industryMap } = await import("@/lib/rank/v2/industry-fit");
+    const m = industryMap();
+    const known = new Set([...Object.values(m.industries).flat(), ...m.broad]);
+    const seen = new Set(v2Apps().flatMap((a) => a.industries));
+    // Xero industries with no FlowStack business industry yet: their apps count as "built for someone else".
+    const unmapped = [...seen].filter((i) => !known.has(i)).sort();
+    expect(unmapped).toEqual(["Agriculture", "Automotive", "Education", "Property and realty"]);
   });
 });

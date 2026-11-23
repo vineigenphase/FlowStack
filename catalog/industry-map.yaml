@@ -1,0 +1,21 @@
+# ENGINE-V2 industry fit (owner asked for it 23 Nov 2026): a business's industry (lib/orgs/settings.ts INDUSTRIES)
+# → the Xero App Store industries (as Xero labels them on listings) that mean "built for this business".
+# [] = Xero has no matching industry: industry fit is missing (neutral) for that business, never guessed.
+# Typed by hand from the 14 industries seen on 700 listings (data/xero-apps/directory.json, 18 Nov 2026). PROPOSED.
+industries:
+  ecommerce: [Retail]                       # Xero files ecommerce apps (A2X, Shopify, Cin7) under Retail
+  saas: []                                  # no software/SaaS industry on Xero
+  hospitality: [Hospitality, Tourism]
+  retail: [Retail, Franchise]
+  professional_services: [Professional services, Accounting]
+  construction_trades: [Construction and trades]
+  manufacturing: [Manufacturing]
+  wholesale: []                             # no wholesale industry on Xero
+  healthcare: [Health]
+  charity: [Not for profit]
+  other: []
+
+# Industries Xero uses for general-purpose apps. An app listing one of these but not the business's own industry is
+# a weak fit (scored low), not a mismatch. An app that lists ONLY other industries (e.g. MotorDesk: Automotive) is
+# built for someone else and is excluded, with the reason shown in the trace.
+broad: [Professional services, Accounting]

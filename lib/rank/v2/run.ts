@@ -12,6 +12,7 @@ export type V2Input = {
   lines: Pick<LineIn, "lineKey" | "name">[];
   inUse: string[];
   markets: string[];
+  industry: string | null;
   annualRevenue: number;
   headcount: number | null;
   today: string;
@@ -57,6 +58,7 @@ export function rankFlagsV2(input: V2Input): V2Line[] {
     kept,
     inUse: new Set(input.inUse),
     markets: input.markets,
+    industry: input.industry,
     annualRevenue: input.annualRevenue,
     headcount: input.headcount,
     year: Number(input.today.slice(0, 4)),

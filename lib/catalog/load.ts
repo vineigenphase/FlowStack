@@ -60,10 +60,12 @@ export type Scoring = z.infer<typeof Scoring>;
 const P = z.number().min(0).max(1);
 const W = z.record(z.string(), P);
 export const ScoringV2 = z.object({
-  status: z.object({ weights: z.string(), sub_weights: z.string() }),
+  /** proposed: dotted keys (e.g. "job_fit.industry_fit") still waiting for the owner. */
+  status: z.object({ weights: z.string(), sub_weights: z.string(), proposed: z.array(z.string()).default([]) }),
   weights: z.object({ strength: P, fit: P, quality: P, price: P }),
   fit: z.object({ integration_fit: P, job_fit: P }),
-  job_fit: z.object({ category_match: P, function_match: P, keyword_match: P }),
+  job_fit: z.object({ category_match: P, function_match: P, keyword_match: P, industry_fit: P.default(0) }),
+  industry_fit: z.object({ broad_only: P }).default({ broad_only: 0.3 }),
   category_match: z.object({ covered_by: P, app_categories_only: P }),
   function_match: z.object({ helpful_factor: P }),
   quality: z.object({ rating_score: P, volume_score: P }),

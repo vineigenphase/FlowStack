@@ -142,7 +142,8 @@ describe("v2 weights and the admin review page data", () => {
     const rows = weightRows(s);
     const total = rows.filter((r) => leafKeys.includes(r.key)).reduce((a, r) => a + r.share, 0);
     expect(total).toBeCloseTo(1, 6);
-    expect(rows.find((r) => r.key === "keyword_match")!.share).toBeCloseTo(0.35 * 0.4 * 0.25, 6);
+    expect(rows.find((r) => r.key === "keyword_match")!.share).toBeCloseTo(s.weights.fit * s.fit.job_fit * s.job_fit.keyword_match, 6);
+    expect(rows.find((r) => r.key === "industry_fit")!.share).toBeCloseTo(0.35 * 0.4 * 0.15, 6);
   });
 
   it("the review page lists every unsure match with both sides, and nothing else", () => {
@@ -165,7 +166,9 @@ describe("owner's match answers (23 Nov 2026)", () => {
     expect(m.get("xa-approvalmgr")!.status).toBe("unmatched");
     expect(m.get("xa-solido")!.status).toBe("unmatched");
   });
-  it("sub-weights are approved, so the page no longer marks them proposed", () => {
-    expect(weightRows(rulesFile().scoring_v2!).every((w) => w.status === "decided")).toBe(true);
+  it("approved weights show as decided; only the keys listed as proposed (the industry-fit split) show as proposed", () => {
+    const rows = weightRows(rulesFile().scoring_v2!);
+    expect(rows.filter((w) => w.status === "proposed").map((w) => w.key).sort()).toEqual(["category_match", "function_match", "industry_fit", "keyword_match"]);
+    expect(rows.find((w) => w.key === "rating_score")!.status).toBe("decided");
   });
 });

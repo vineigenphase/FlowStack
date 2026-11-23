@@ -110,6 +110,7 @@ export function adaptApp(app: DirApp, workbookDate: string, fx: FxRates): Adapte
     website: host(app.website),
     xero_categories: app.functions.map((f) => f.name),
     xero_functions: [...new Set(app.dataFlow.map((d) => d.object))],
+    industries: app.industries.map((i) => i.name),
     description: app.description,
     rating_avg: ratingAvg,
     // Every Xero review carries a star rating, and the listing shows one count: it is both counts.

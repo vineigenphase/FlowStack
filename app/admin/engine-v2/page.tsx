@@ -201,6 +201,14 @@ quality = clamp(rating_score × ${s.quality.rating_score} + volume_score × ${s.
                 <td>BM25 of the rule&apos;s keywords against the app&apos;s description, scaled by the best in the category (no AI)</td>
               </tr>
               <tr>
+                <td>Industry fit</td>
+                <td>
+                  1 if the Xero listing names the business&apos;s industry; {s.industry_fit.broad_only} if it names only general ones (Professional services,
+                  Accounting); an app built only for other industries (e.g. Automotive for a restaurant) is left out with the reason shown. Missing when the
+                  business&apos;s industry isn&apos;t set or Xero has no matching industry (SaaS, wholesale). Map: catalog/industry-map.yaml
+                </td>
+              </tr>
+              <tr>
                 <td>Rating</td>
                 <td>Bayesian average with a prior of {s.rating_prior_count} reviews at the category&apos;s mean rating, so 5.0 from 2 reviews ranks below 4.6 from 400</td>
               </tr>

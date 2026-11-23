@@ -91,6 +91,7 @@ export async function engineTrace(orgId: string, lineKey: string, engine: "v1" |
       lines: lineNames,
       inUse: detected.map((d) => d.appId),
       markets: org.markets,
+      industry: org.industry,
       annualRevenue: months > 0 ? (revenue * 12) / months : revenue,
       headcount: null,
       today: computedAt.slice(0, 10),

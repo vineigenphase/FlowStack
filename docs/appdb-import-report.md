@@ -1,6 +1,6 @@
 # App database import report (ENGINE-V2 Phase 0)
 
-Written: `data/xero-apps/listings.json` (unchanged from the last run). Source: `data/xero-apps/directory.json` (workbook 17 Nov 2026 + Xero listing pages read 2026-11-18); see `data/xero-apps/SOURCE.md`. No database writes: the table load and queue items are Phase 1 (migration 0025).
+Written: `data/xero-apps/listings.json` (changed since the last run). Source: `data/xero-apps/directory.json` (workbook 17 Nov 2026 + Xero listing pages read 2026-11-18); see `data/xero-apps/SOURCE.md`. No database writes: the table load and queue items are Phase 1 (migration 0025).
 
 ## 1. Rows
 

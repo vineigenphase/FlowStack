@@ -43,6 +43,8 @@ export const XeroAppListing = z
     website: z.string().min(1).nullable(),
     xero_categories: z.array(z.string().min(1)),
     xero_functions: z.array(z.string().min(1)),
+    /** Industries the listing says the app is built for, as Xero labels them (empty = none listed / not read). */
+    industries: z.array(z.string().min(1)),
     description: z.string().nullable(),
     rating_avg: z.number().min(0).max(5).nullable(),
     rating_count: z.number().int().nonnegative().nullable(),

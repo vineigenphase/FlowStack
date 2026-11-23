@@ -478,3 +478,19 @@ ENGINE-V2.md (owner, 22 Nov) saved in the repo as received. It wins over the oth
      well-known quote-only ones (Chaser). Small at 5%, but visible.
   3. Small-sample apps (5.0 from 12 reviews) still sit near the top. The prior (20 at the set mean) is working; a
      bigger prior would push them down.
+
+### Industry fit (owner asked 23 Nov 2026)
+- `catalog/industry-map.yaml` (PROPOSED) maps our industries to Xero's listing industries. Ecommerce → Retail;
+  hospitality → Hospitality, Tourism. SaaS, wholesale and other → none on Xero, so industry fit is missing (neutral).
+  "Professional services" and "Accounting" are general (weak fit 0.3, `industry_fit.broad_only`).
+- `lib/rank/v2/industry-fit.ts`: 1 if the listing names the business's industry; 0.3 if only general ones; missing if
+  the industry isn't set, Xero has none, or the listing names none. **Excluded** (with the reason in the trace) when
+  the listing names only other industries, e.g. MotorDesk ("Built for Automotive, not Hospitality/Tourism"). The
+  app in use is never excluded.
+- Weights: job_fit was 0.40 / 0.35 / 0.25 (approved), now category 0.35, functions 0.30, keywords 0.20,
+  industry 0.15 (**PROPOSED**; `scoring_v2.status.proposed` lists the keys and /admin/engine-v2 tags them). Industry
+  is 2.1% of the match: the exclusion does most of the work.
+- Canonical listing gains `industries` (Xero labels). Sample hospitality business: MotorDesk gone; Fresho (stock) and
+  CostTracker (supplier bills) now in the top 5. HireHop stays, because its listing names Hospitality.
+- Xero industries no business of ours maps to yet: Agriculture, Automotive, Education, Property and realty. Apps that
+  list only those are excluded for every business (a test pins the list).
