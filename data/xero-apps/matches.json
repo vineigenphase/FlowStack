@@ -1,0 +1,3092 @@
+{
+ "version": 1,
+ "note": "Listing → catalog/apps.yaml match. unsure = for a person (queue item appdb_match). Every listing is a v2 candidate either way (owner 23 Nov 2026).",
+ "matches": [
+  {
+   "listing_id": "ext-cledara",
+   "status": "matched",
+   "appId": "cledara",
+   "how": "website"
+  },
+  {
+   "listing_id": "ext-pento",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "ext-pinch",
+   "status": "matched",
+   "appId": "pinch",
+   "how": "website"
+  },
+  {
+   "listing_id": "ext-spendesk",
+   "status": "matched",
+   "appId": "spendesk",
+   "how": "website"
+  },
+  {
+   "listing_id": "ext-weel",
+   "status": "matched",
+   "appId": "weel",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-a2x",
+   "status": "matched",
+   "appId": "a2x",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-abacumio-connector",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-abode",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-accelo",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-accountingbi",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-accountkit",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-acterys",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-active-workpapers",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-adfin",
+   "status": "matched",
+   "appId": "adfin",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-advisorli",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-aem-journaler",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-ag-drive",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-agicap",
+   "status": "matched",
+   "appId": "agicap",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-agilico-verify",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-airpos",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-airpurchase",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-airsquare",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-airwallex",
+   "status": "matched",
+   "appId": "airwallex",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-aleph",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-allocat",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-amaka",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-amaka-bills",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-amlcc",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-analytics",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-annature",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-anrok",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-appogee-hr",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-approvalmax",
+   "status": "matched",
+   "appId": "approvalmax",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-approvalmgr",
+   "status": "unsure",
+   "candidates": [
+    {
+     "appId": "approvalmax",
+     "why": "similar name (0.82)"
+    }
+   ]
+  },
+  {
+   "listing_id": "xa-approveit",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-apptivo",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-appventory",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-appy-pie-connect",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-apron",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-apxium",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-archdesk-erp",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-aroflo",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-artifact-ai",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-ascora",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-assetaccountant",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-assetguru",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-assist",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-atoa-instant-bank-pay",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-atto",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-autoentry",
+   "status": "matched",
+   "appId": "autoentry",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-autogold",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-autohive",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-avaza",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-b2b-wave",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-backupmybooks",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-bamboohr-payroll",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-basecom",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-batch2sepa",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-batchly",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-batchpay",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-beacon",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-beanbox",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-bedful-booking-system",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-beds24-channel-manager-pms",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-bi4cloud",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-billbjorn",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-billdu",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-billfront",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-billingbooth-one",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-bitwave",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-bold-commerce",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-boma",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-bookkeepcom",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-booqable",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-boostsync-for-clickup",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-bourn",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-boxkitebackup",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-breadwinner",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-breathe",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-breezing",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-brewman",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-bricks-and-agent",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-brieff",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-brightanalytics",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-brightmanager",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-brightpay",
+   "status": "matched",
+   "appId": "brightpay",
+   "how": "exact name"
+  },
+  {
+   "listing_id": "xa-britebiz",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-brixx",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-buddy",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-budget-consolidator",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-buildern",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-buildzilla",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-bulk-contact-manager",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-business-importer",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-business-pilot-crm",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-bustle",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-caax",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-cafe",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-calxa",
+   "status": "matched",
+   "appId": "calxa",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-capitalise",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-capsule-crm",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-capture-expense",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-carboninvoice",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-carry-the-one",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-cas360",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-cash-flow-frog",
+   "status": "matched",
+   "appId": "cashflowfrog",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-castaway-cloud",
+   "status": "matched",
+   "appId": "castaway",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-causal",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-caxton-wallet-sync",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-cdata-connector",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-ces-touch",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-chargebee",
+   "status": "matched",
+   "appId": "chargebee",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-chargeover",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-charliehr",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-chartmogul-sync",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-chaser",
+   "status": "matched",
+   "appId": "chaser",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-chazy",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-checkeeper",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-checkfront",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-cheetah",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-chidesk",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-cin7-core",
+   "status": "unsure",
+   "candidates": [
+    {
+     "appId": "cin7",
+     "why": "same website (cin7.com), shared by 2 listings"
+    }
+   ]
+  },
+  {
+   "listing_id": "xa-cin7-omni",
+   "status": "unsure",
+   "candidates": [
+    {
+     "appId": "cin7",
+     "why": "same website (cin7.com), shared by 2 listings"
+    }
+   ]
+  },
+  {
+   "listing_id": "xa-circlr",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-citrus-lime-cloud-pos",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-clarity-go",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-clarity-hq",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-cleancloud-dry-cleaning-and-laundry",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-clear-course",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-clearspend-ai",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-clickpos",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-client-hub",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-client-insight",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-climate-zero",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-clio",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-clockit",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-clockwork-ai",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-cloud-depot",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-cloudfuse",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-cloudify",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-clubright",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-cmap",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-coho-property-management",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-collectsio",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-commusoft",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-compare-your-footprint",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-compleat",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-cone",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-connecteam",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-connectorly",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-connectorly-for-powerbi",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-constant-contact",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-construction-manager",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-constructionclock",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-content-snare",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-controlc",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-coreclose",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-coreloops",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-corpay-one",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-costtracker",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-couplerio",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-cradle-for-accountants",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-credec",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-creditorwatch-collect",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-crezco",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-cryptio",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-cryptoworth",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-cube",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-current-rms",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-dante",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-data-fetcher",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-data-sync-by-hubspot",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-datagate",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-datamolino",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-datarails",
+   "status": "matched",
+   "appId": "datarails",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-datasights",
+   "status": "matched",
+   "appId": "datasights",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-dayfive",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-deel",
+   "status": "matched",
+   "appId": "deel",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-dentally",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-deputy",
+   "status": "matched",
+   "appId": "deputy",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-derive",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-dext",
+   "status": "matched",
+   "appId": "dext",
+   "how": "reviewed crosswalk"
+  },
+  {
+   "listing_id": "xa-dext-commerce",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-dext-precision",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-digintu",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-docuclipper",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-dokka",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-double",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-draftworx",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-drivetrain",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-drum",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-dryrun",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-dubsado",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-dytto",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-easy-insight",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-easy-month-end",
+   "status": "matched",
+   "appId": "easymonthend",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-easyaccrue",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-easycsv",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-easyinterest",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-eazy-costing",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-eazycollect",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-ebg-linnworks-adaptor",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-ecohedge-express",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-ecomledger",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-emasphere",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-emerge-app",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-employment-hero",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-employment-hero-payroll",
+   "status": "matched",
+   "appId": "employmenthero",
+   "how": "reviewed crosswalk"
+  },
+  {
+   "listing_id": "xa-empowerrd",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-enrolmy",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-entryrocket",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-envisionbx",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-envoice",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-envy-analytics",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-epos-now",
+   "status": "matched",
+   "appId": "eposnow",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-erpag",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-etsy",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-evalue8",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-eviivo-suite",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-evolution-fms",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-evopos",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-eworks-manager",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-exconnect",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-exl-cloud-by-xlc",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-expandly",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-expend",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-expensein",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-expenseondemand",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-expensify",
+   "status": "matched",
+   "appId": "expensify",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-ezycollect",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-ezzybills",
+   "status": "matched",
+   "appId": "ezzybills",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-factory",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-fastpay",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-fathom",
+   "status": "matched",
+   "appId": "fathom",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-fena-toolkit",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-fergus",
+   "status": "matched",
+   "appId": "fergus",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-field-ascend",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-fieldinsight",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-fieldmotion",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-figured",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-fileai",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-finnex-ai-assistant",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-finsit",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-fishbowl-manufacturing-and-warehouse",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-flex-catering",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-flex-financial-reporting",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-flexearn",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-float-cashflow-forecasting",
+   "status": "matched",
+   "appId": "float",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-floqast",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-flow",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-flowlens",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-flowrev",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-fluenccy",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-foodrazor",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-fooman-connect",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-forecastr",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-formitize",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-fourfourfive",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-franchiseops",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-francis",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-fresh-projects",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-fresho",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-freshpay",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-friendly-manager",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-fumopay",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-fusesign",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-futrli",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-fyi",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-g-accon-for-xero",
+   "status": "matched",
+   "appId": "g_accon",
+   "how": "exact name"
+  },
+  {
+   "listing_id": "xa-garfield",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-gas-engineer-software",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-gathernexus",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-generatetax",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-gennaiio",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-getpaid",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-gini",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-glue-up",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-gocardless",
+   "status": "matched",
+   "appId": "gocardless",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-gojee",
+   "status": "matched",
+   "appId": "gojee",
+   "how": "exact name"
+  },
+  {
+   "listing_id": "xa-goproposal",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-greenly",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-groundplan",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-halopsa",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-hammock",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-harvest",
+   "status": "matched",
+   "appId": "harvest",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-hedgeflows",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-hello-cashflow",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-hello-club",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-hi-bob-connector",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-hike-pos",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-hindsight",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-hirehop-equipment-rental-software",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-homebozz",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-hoopscrm",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-houzz-pro",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-hr-partner",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-hubdoc",
+   "status": "matched",
+   "appId": "hubdoc",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-hydr",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-i-mve",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-identitycheck",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-idu",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-ignition",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-ilglu",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-inbound-accounts",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-inflow-inventory",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-infoodle",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-insightly-crm",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-installerpro",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-integrabalanceai",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-intellibook",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-intelligentgolf",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-inview",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-invoice-stack-for-hubspot",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-invoice-tracker",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-invoice2go",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-iris-accounts-production",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-itrade",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-iwocapay",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-jack-by-jenesys",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-jazoodle",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-jebra",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-jibble",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-jivrus-data-studio-connector",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-jobadder",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-jobber",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-jobflow",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-joiin",
+   "status": "matched",
+   "appId": "joiin",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-juice",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-karbon",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-katana-cloud-inventory",
+   "status": "matched",
+   "appId": "katana",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-kikin",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-kim",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-klipboard",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-klipfolio-dashboard",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-kolleno",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-konsolidator-financial-consolidation-reporting",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-kudwa",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-labelconnector",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-landlord-studio",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-landlord-vision",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-larasoft-business2cloud",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-leavecal-by-finlert",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-lemonbooking",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-lightspeed-kounta-pos",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-lightspeed-restaurant-k-series",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-lightspeed-retail-pos-x-series",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-lightyear",
+   "status": "matched",
+   "appId": "lightyear",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-link",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-link-my-books",
+   "status": "matched",
+   "appId": "linkmybooks",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-linnworks-xero-connector-synctools",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-livecostscom",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-liveplan",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-loaded",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-loc8",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-logicglue",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-london-zurich",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-lopay",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-luca",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-lucanet",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-lucida",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-lumin",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-luxie-tech-for-monday-com",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-made-simplr",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-magmanager",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-magnetic",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-magnetism-solutions-dynamics-365-integration",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-magnetism-solutions-power-platform-connector",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-make",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-manu-online-ltd",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-maralytics",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-marketman",
+   "status": "matched",
+   "appId": "marketman",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-maus-business-systems",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-maxio",
+   "status": "matched",
+   "appId": "maxio",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-mayday",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-mechanicdesk",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-medfin",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-membershipworks",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-memtime",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-midexpro",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-migrate-from-qbo-by-mmc-convert",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-mimo",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-mindbridge",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-mintsoft",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-minutedock",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-mixed-analytics-api-client-for-sheets",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-mmc-convert",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-mmc-excel-converter",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-mmc-receipt",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-modano",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-modlr-the-corporate-performance-cloud",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-modulr",
+   "status": "unsure",
+   "candidates": [
+    {
+     "appId": "modulr",
+     "why": "same website (modulrfinance.com), shared by 2 listings"
+    }
+   ]
+  },
+  {
+   "listing_id": "xa-mollie",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-monzo-business",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-moss",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-motordesk",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-movemybooks",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-mrpeasy",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-muse-finance",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-muzeek",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-mydocsafe",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-myiq",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-mytrucking",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-myworkpapers",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-myworks-sync",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-nagging-panda",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-navan-expense",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-neoeco",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-nettverk",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-nexudus",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-nicejob",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-nook",
+   "status": "unsure",
+   "candidates": [
+    {
+     "appId": "modulr",
+     "why": "same website (modulrfinance.com), shared by 2 listings"
+    }
+   ]
+  },
+  {
+   "listing_id": "xa-nucleus-commercial-finance",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-nume",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-numeric",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-numerintbackup",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-ocerli",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-ocerra",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-odatalink",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-ofx",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-omniboost",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-omnipresent",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-omono",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-onboardme",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-oncord",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-onecore",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-onepagecrm",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-onrent",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-ontraport-powered-by-xosync",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-open-payout",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-opsimize-financial-control",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-opsyte",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-orderez",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-orderspace",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-otto-capture",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-outonsite",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-own-your-numbers",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-oysterhr",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-pabbly-connect",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-paidnice",
+   "status": "matched",
+   "appId": "paidnice",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-paiyroll",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-paperdrop",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-paperless",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-parex-bridge",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-payaca",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-payapps",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-paycircle",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-payhawk",
+   "status": "matched",
+   "appId": "payhawk",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-paypal",
+   "status": "matched",
+   "appId": "paypal",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-paytraqer",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-penfold",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-personio",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-pet-manager",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-phorest",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-pikohana-dashboard",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-pipedrive-advanced-automation-syncq",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-pixiebooks",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-planday",
+   "status": "matched",
+   "appId": "planday",
+   "how": "exact name"
+  },
+  {
+   "listing_id": "xa-planergy-p2p",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-planright",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-planyard",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-playter",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-pleo",
+   "status": "matched",
+   "appId": "pleo",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-pluto",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-post-from-shopify-by-hyve",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-posttrans-for-xl",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-powdr",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-powered-now",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-precoro",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-preno",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-prism-pay",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-procore",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-procuredesk",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-procurementexpresscom",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-productive",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-profitkeeper",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-programa",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-projectworks",
+   "status": "matched",
+   "appId": "projectworks",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-propeller-powered",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-prospect-crm",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-pry",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-psohub",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-pulsify",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-pylon",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-qoblex",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-qssconnect",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-quaderno",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-quadient-ap",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-quick-consols",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-quickb2b-order-management-system",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-quoterite",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-quotient",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-qurk",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-qvinci",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-qyon",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-radiuscore",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-ramp",
+   "status": "matched",
+   "appId": "ramp",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-rdvault",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-re-flow-connector",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-re-leased",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-reach-reporting",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-really-simple-systems",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-realm-realtime",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-receipt-bot",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-receiptor-ai",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-rechargly",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-rechound",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-reconcilely",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-redcat",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-reducer",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-redware-power-bi-connector",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-rekki",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-remitclear",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-remote",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-repairdesk",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-restoke",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-retention-track",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-revelation-pets",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-revolut-business",
+   "status": "matched",
+   "appId": "revolut",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-rippling",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-rocketspark",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-roll",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-rooby",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-rosterelf",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-rotaready",
+   "status": "matched",
+   "appId": "rotaready",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-roveel",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-rubli",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-ruddr",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-runway-financial-inc",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-rvvup-payments",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-saasant-transactions",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-saasgrid",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-saasybill",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-salesin",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-salesroller",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-satago",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-scalexp",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-scoro",
+   "status": "matched",
+   "appId": "scoro",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-scotts-add-ins",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-see-my-bills",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-semble",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-semper",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-senomix-timesheets",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-senta",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-servicem8",
+   "status": "matched",
+   "appId": "servicem8",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-setyl",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-sfx-connect",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-sharesight",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-shiptheory",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-shogo",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-shopify",
+   "status": "matched",
+   "appId": "shopify",
+   "how": "exact name"
+  },
+  {
+   "listing_id": "xa-shopvox",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-signwell",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-silverfin",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-simpleai-books",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-simpro",
+   "status": "matched",
+   "appId": "simpro",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-skyvia",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-smartbiz-online",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-smarterpay",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-smoothx-apps",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-socket",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-sodium",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-soldo",
+   "status": "matched",
+   "appId": "soldo",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-solido",
+   "status": "unsure",
+   "candidates": [
+    {
+     "appId": "soldo",
+     "why": "similar name (0.83)"
+    }
+   ]
+  },
+  {
+   "listing_id": "xa-sonovate",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-sortscape",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-sotsyncpro",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-specifi",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-splose",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-splynx",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-spotlight-reporting",
+   "status": "matched",
+   "appId": "spotlight",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-spread",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-sps-commerce",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-square",
+   "status": "matched",
+   "appId": "square",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-staffology",
+   "status": "matched",
+   "appId": "staffology",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-standard-metrics",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-starshipit",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-statey",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-stayonhire",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-sterling",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-stocktrim",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-stockunify",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-streamtime",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-stripe",
+   "status": "matched",
+   "appId": "stripe",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-studio-ninja",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-subscript",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-subsync-by-finlert",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-suitefiles",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-sumday",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-summ",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-sumup-payments-and-pos",
+   "status": "matched",
+   "appId": "sumup",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-sumup-pos-pro",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-superops",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-supy-accounting-integration",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-surefire-software",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-syft",
+   "status": "matched",
+   "appId": "syft",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-sync-by-boost-plugins",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-synchub",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-syncpenguin",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-synctools-app",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-synder",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-synergist-partner",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-synergy",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-syngency",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-synnch",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-syntax",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-syrve",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tabology",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tahua",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tailride",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tallybreeze",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tanda",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-taxcalc-accounts-production",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-taxfiler",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-taxomate",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-telleroo",
+   "status": "matched",
+   "appId": "telleroo",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-tempus-tools",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-the-fleet-office",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-the-gap",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-the-percentage-app",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-the-portal-genie",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-thinksmart-software-apps",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tidybuild",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tidyclinic",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tidyflow",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tidystock",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tidywork",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-time-invoice-finance-ltd",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-time-tracker-by-ebillity",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-timedock",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-timekeeper",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-timely",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-timesheet-portal",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tipalti",
+   "status": "matched",
+   "appId": "tipalti",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-tofu",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tomahawk-resbook",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-top-5",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-trace",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tradebox-one",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-trademore",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tradify",
+   "status": "matched",
+   "appId": "tradify",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-traild",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-translucent-multi-entity",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-transport-exchange-group",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-trelica",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tres-finance-web3-accounting",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-triffin",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tripcatcher",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-triplog",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-triver",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-trove",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-trybooking",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-tugger",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-twocanconnect",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-uber",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-ucollect",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-uncapped",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-uncat",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-unifyordering",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-uniify",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-unleashed-software",
+   "status": "matched",
+   "appId": "unleashed",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-upflow",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-uphance",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-upsheets",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-uptick-workforce",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-utilmate",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-vendoralert",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-verifyiq",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-veryfi-receipts-expenses-and-projects",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-vibe-cfo",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-viberent",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-vinyl",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-virtual-finance-director",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-virtual-garage-manager",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-virtual-yard",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-vtiger-crm",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-vwork",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-vxt",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-w2x",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-wagestream",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-wave",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-wayflyer",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-waylog",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-wbsync",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-weava",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-website-world",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-wellybox",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-wequote",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-windcave-payments",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-windsorai",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-wink-reports",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-wiplist",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-wise-business",
+   "status": "matched",
+   "appId": "wise",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-wolters-kluwer-cch-oneclick",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-workever",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-workflowmax",
+   "status": "matched",
+   "appId": "workflowmax",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-workguru",
+   "status": "matched",
+   "appId": "workguru",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-workhorse-order-inventory-management",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-workshop-software",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-workxflow-planner",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-xbert",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-xelation",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-xemplo",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-xenett",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-xenon-connect",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-xero-bill-payments",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-xero-practice-manager",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-xeyex-software-for-opticians",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-xfe",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-xlreporting",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-xo-report",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-xpna",
+   "status": "matched",
+   "appId": "xpna",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-xportmydata",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-xpos",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-yordex",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-yourtradebase",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-zahara",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-zanda",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-zap-data-hub",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-zapier",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-zeablue-inventory-management",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-zeevou",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-zelt",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-zenflow",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-zenoti",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-zettle",
+   "status": "matched",
+   "appId": "zettle",
+   "how": "website"
+  },
+  {
+   "listing_id": "xa-zigaflow",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-zoho-flow",
+   "status": "unmatched"
+  },
+  {
+   "listing_id": "xa-zomentum",
+   "status": "unmatched"
+  }
+ ]
+}

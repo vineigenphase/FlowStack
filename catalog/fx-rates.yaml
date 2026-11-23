@@ -1,0 +1,17 @@
+# Exchange rates used to show vendor prices in pounds (owner decision 23 Nov 2026: "convert and write as pounds, the UK
+# is the main customer"). European Central Bank euro foreign exchange reference rates (units of currency per 1 EUR).
+# Source: https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml, rates for 2026-11-20, fetched 2026-11-23.
+# £ per unit of X = GBP / X. Converted prices keep the vendor's original amount and currency next to them.
+# A price with no stated currency ("$" only) is never converted: "$" could be USD, AUD, NZD or CAD.
+# Refresh: fetch the XML again, update the rates and `date`, re-run `pnpm appdb:adapt`.
+source: European Central Bank euro reference rates
+source_url: https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml
+date: "2026-11-20"
+base: EUR
+rates:
+  GBP: 0.83735
+  USD: 1.0990
+  AUD: 1.6487
+  CAD: 1.5723
+  NZD: 1.9968
+  EUR: 1

@@ -33,14 +33,30 @@ export function host(u: string | null | undefined): string | null {
   }
 }
 
-export function adaptTier(t: DirTier): { tier: PricingTier } | { dropped: Dropped } {
+/** catalog/fx-rates.yaml: units of each currency per 1 of `base`. */
+export type FxRates = { date: string; base: string; rates: Record<string, number> };
+
+/** Pounds for an amount in `currency`, or null when the currency is unknown or has no rate. Rounded to the penny. */
+export function toGbp(amount: number, currency: string, fx: FxRates): number | null {
+  if (currency === "GBP") return amount;
+  const gbp = fx.rates.GBP;
+  const x = fx.rates[currency];
+  if (!gbp || !x) return null;
+  return Math.round(amount * (gbp / x) * 100) / 100;
+}
+
+export function adaptTier(t: DirTier, fx: FxRates): { tier: PricingTier } | { dropped: Dropped } {
   const drop = (reason: string) => ({ dropped: { what: "tier" as const, reason } });
   if (t.isTrial) return drop("free trial, not a price");
   if (t.period === "transaction") return drop("priced per transaction with no billing period");
   if (t.period === null) return drop("billing period not stated");
   let price: number | null = null;
+  let original: PricingTier["original"];
   if (t.isFree && t.amount === 0) price = 0;
-  else if (!t.isQuote && t.amount !== null && t.currency === "GBP") price = t.amount;
+  else if (!t.isQuote && t.amount !== null && t.currency !== null) {
+    price = toGbp(t.amount, t.currency, fx);
+    if (price !== null && t.currency !== "GBP") original = { amount: t.amount, currency: t.currency, fx_date: fx.date };
+  }
   const limits = [t.limits, t.minQuantity ? `minimum ${t.minQuantity} ${t.basis === "per_user" ? "users" : "units"}` : null, t.isFrom ? "price is a 'from' price" : null]
     .filter(Boolean)
     .join("; ");
@@ -51,6 +67,7 @@ export function adaptTier(t: DirTier): { tier: PricingTier } | { dropped: Droppe
     unit: t.basis ? (UNIT[t.basis] ?? "other") : "other",
     ...(t.includes ? { included: t.includes } : {}),
     ...(limits ? { limits } : {}),
+    ...(original ? { original } : {}),
   };
   return { tier };
 }
@@ -61,16 +78,17 @@ export function adaptAward(a: DirApp["awards"][number]): { award: Award } | { dr
   if (a.year === null) return drop("year not stated");
   const level = /finalist/i.test(a.result) ? "finalist" : /winner/i.test(a.result) ? "winner" : null;
   if (!level) return drop(`result not winner or finalist: ${a.result}`);
-  // The source names the programme but not which regional category was won: region stays "unknown".
-  const region = /\b(UK|United Kingdom)\b/.test(a.category ?? "") ? "UK" : /\bANZ|Australia|New Zealand\b/.test(a.category ?? "") ? "ANZ" : /\b(US|United States)\b/.test(a.category ?? "") ? "US" : "unknown";
+  // The source names the programme but not which regional category was won. Owner decision 23 Nov 2026: such an
+  // award counts as global. A region the source does state is kept.
+  const region = /\b(UK|United Kingdom)\b/.test(a.category ?? "") ? "UK" : /\bANZ|Australia|New Zealand\b/.test(a.category ?? "") ? "ANZ" : /\b(US|United States)\b/.test(a.category ?? "") ? "US" : "global";
   return { award: { name: a.program, year: a.year, region, level } };
 }
 
-export function adaptApp(app: DirApp, workbookDate: string): Adapted {
+export function adaptApp(app: DirApp, workbookDate: string, fx: FxRates): Adapted {
   const dropped: Dropped[] = [];
   const tiers: PricingTier[] = [];
   for (const t of app.pricing.tiers) {
-    const r = adaptTier(t);
+    const r = adaptTier(t, fx);
     if ("tier" in r) tiers.push(r.tier);
     else dropped.push(r.dropped);
   }

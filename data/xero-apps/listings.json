@@ -105,66 +105,101 @@
    "pricing_tiers": [
     {
      "name": "Amazon",
-     "price_gbp": null,
+     "price_gbp": 22.1,
      "period": "month",
      "unit": "other",
      "included": "Amazon settlement data into Xero/QBO/NetSuite",
-     "limits": "price is a 'from' price"
+     "limits": "price is a 'from' price",
+     "original": {
+      "amount": 29,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Shopify",
-     "price_gbp": null,
+     "price_gbp": 22.1,
      "period": "month",
      "unit": "other",
      "included": "Shopify payout data into Xero",
-     "limits": "price is a 'from' price"
+     "limits": "price is a 'from' price",
+     "original": {
+      "amount": 29,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "TikTok Shop",
-     "price_gbp": null,
+     "price_gbp": 22.1,
      "period": "month",
      "unit": "other",
      "included": "TikTok Shop order data into Xero",
-     "limits": "price is a 'from' price"
+     "limits": "price is a 'from' price",
+     "original": {
+      "amount": 29,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Etsy",
-     "price_gbp": null,
+     "price_gbp": 22.1,
      "period": "month",
      "unit": "other",
      "included": "Etsy payment data into Xero",
-     "limits": "price is a 'from' price"
+     "limits": "price is a 'from' price",
+     "original": {
+      "amount": 29,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "eBay",
-     "price_gbp": null,
+     "price_gbp": 22.1,
      "period": "month",
      "unit": "other",
      "included": "eBay payout data into Xero",
-     "limits": "price is a 'from' price"
+     "limits": "price is a 'from' price",
+     "original": {
+      "amount": 29,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "PayPal",
-     "price_gbp": null,
+     "price_gbp": 22.1,
      "period": "month",
      "unit": "other",
      "included": "PayPal payout data into Xero",
-     "limits": "price is a 'from' price"
+     "limits": "price is a 'from' price",
+     "original": {
+      "amount": 29,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Walmart",
-     "price_gbp": null,
+     "price_gbp": 64.76,
      "period": "month",
      "unit": "other",
      "included": "Walmart settlement data into Xero",
-     "limits": "price is a 'from' price"
+     "limits": "price is a 'from' price",
+     "original": {
+      "amount": 85,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [
     {
      "name": "Xero Global App Awards",
      "year": 2025,
-     "region": "unknown",
+     "region": "global",
      "level": "winner"
     }
    ],
@@ -373,7 +408,7 @@
     {
      "name": "Xero Global App Awards",
      "year": 2025,
-     "region": "unknown",
+     "region": "global",
      "level": "winner"
     }
    ],
@@ -872,17 +907,27 @@
    "pricing_tiers": [
     {
      "name": "Premium",
-     "price_gbp": null,
+     "price_gbp": 13.71,
      "period": "month",
      "unit": "other",
-     "included": "Up to 500 orders/mo; 2 integrations; 2 locations; backsync 90 days"
+     "included": "Up to 500 orders/mo; 2 integrations; 2 locations; backsync 90 days",
+     "original": {
+      "amount": 18,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Premium+",
-     "price_gbp": null,
+     "price_gbp": 37.33,
      "period": "month",
      "unit": "other",
-     "included": "Unlimited orders, integrations, locations; backsync 365 days"
+     "included": "Unlimited orders, integrations, locations; backsync 365 days",
+     "original": {
+      "amount": 49,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -1031,10 +1076,15 @@
    "pricing_tiers": [
     {
      "name": "Branded SMS links (add-on)",
-     "price_gbp": null,
+     "price_gbp": 7.62,
      "period": "month",
      "unit": "other",
-     "included": "Custom domain for SMS links"
+     "included": "Custom domain for SMS links",
+     "original": {
+      "amount": 15,
+      "currency": "AUD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -4101,11 +4151,16 @@
    "pricing_tiers": [
     {
      "name": "Web Xero Financial Integration",
-     "price_gbp": null,
+     "price_gbp": 41.65,
      "period": "month",
      "unit": "org",
      "included": "Web Xero Financial Integration | Unlimited Invoices Web Xero Financial Integration",
-     "limits": "Web Xero Financial Integration"
+     "limits": "Web Xero Financial Integration",
+     "original": {
+      "amount": 82,
+      "currency": "AUD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -4632,24 +4687,39 @@
    "pricing_tiers": [
     {
      "name": "Basic (per hub)",
-     "price_gbp": null,
+     "price_gbp": 22.1,
      "period": "month",
      "unit": "other",
-     "included": "Essentials; extra users ~USD 0.5-1.0/user/month depending on hub"
+     "included": "Essentials; extra users ~USD 0.5-1.0/user/month depending on hub",
+     "original": {
+      "amount": 29,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Advanced (per hub, most popular)",
-     "price_gbp": null,
+     "price_gbp": 37.33,
      "period": "month",
      "unit": "other",
-     "included": "Work faster; extra users ~USD 1.5-3.0/user/month"
+     "included": "Work faster; extra users ~USD 1.5-3.0/user/month",
+     "original": {
+      "amount": 49,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Expert (per hub)",
-     "price_gbp": null,
+     "price_gbp": 75.43,
      "period": "month",
      "unit": "other",
-     "included": "Automation; extra users ~USD 4.2-5.0/user/month"
+     "included": "Automation; extra users ~USD 4.2-5.0/user/month",
+     "original": {
+      "amount": 99,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -4832,7 +4902,7 @@
     {
      "name": "Xero Global App Awards",
      "year": 2025,
-     "region": "unknown",
+     "region": "global",
      "level": "winner"
     }
    ],
@@ -4884,11 +4954,16 @@
    "pricing_tiers": [
     {
      "name": "Platinum",
-     "price_gbp": null,
+     "price_gbp": 8.38,
      "period": "month",
      "unit": "org",
      "included": "Take control of your Xero data with automated backups, offline access, and built-in business continuity. Stay operational during outages and protect against data loss, risks, and lockouts. | Stay compliant with Xero's Terms of Use - you must keep a copy of your data | Full historical data extraction | Secure, independent copy of your Xero data | Continue creating and issuing invoices during Xero outages | Create draft invoices without triggering Xero sequencing | Preserve original invoice data (protect against contact overwrite issues) | Advanced Zero‑Trust access controls and user permissions | Create and manage Control-C user access | Granular data access | Business Continuity Platform for uninterrupted operations | Protection against data loss, corruption, or lockout | Offline access via In‑Control (NexGen BackApp) | Annual plan option (no onboarding fee)",
-     "limits": "Own your data. Stay operational. Your Xero data. Always available. Always yours. Stay in control. No matter what."
+     "limits": "Own your data. Stay operational. Your Xero data. Always available. Always yours. Stay in control. No matter what.",
+     "original": {
+      "amount": 19.99,
+      "currency": "NZD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -5018,35 +5093,55 @@
    "pricing_tiers": [
     {
      "name": "Basic",
-     "price_gbp": null,
+     "price_gbp": 121.15,
      "period": "year",
      "unit": "org",
      "included": "Budget per project | Approval flow | Unlimited purchase orders | Xero integration | Full support",
-     "limits": "For small project teams · 1–5 users"
+     "limits": "For small project teams · 1–5 users",
+     "original": {
+      "amount": 159,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Plus",
-     "price_gbp": null,
+     "price_gbp": 209.53,
      "period": "year",
      "unit": "org",
      "included": "Everything in Basic | Multi-company | Planned purchases | Cash flow forecast",
-     "limits": "Multi-company and cash flow · 6–10 users"
+     "limits": "Multi-company and cash flow · 6–10 users",
+     "original": {
+      "amount": 275,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Gold",
-     "price_gbp": null,
+     "price_gbp": 311.63,
      "period": "year",
      "unit": "org",
      "included": "Everything in Plus | 11-20 users",
-     "limits": "Most popular · 11–20 users"
+     "limits": "Most popular · 11–20 users",
+     "original": {
+      "amount": 409,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Diamond",
-     "price_gbp": null,
+     "price_gbp": 524.96,
      "period": "year",
      "unit": "org",
      "included": "Everything in Plus | 21-50 users | More than 50 users - get custom quote.",
-     "limits": "For larger teams · 21–50 users"
+     "limits": "For larger teams · 21–50 users",
+     "original": {
+      "amount": 689,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -5944,17 +6039,27 @@
    "pricing_tiers": [
     {
      "name": "STANDARD",
-     "price_gbp": null,
+     "price_gbp": 66.15,
      "period": "month",
      "unit": "org",
-     "included": "Everything in Free Starter, plus: | 500 transactions / month included | 1 Xero organization included | 2 team seats included (Owner + Accountant) | 1 automated feed pipeline included (Email / Google Drive) | 1-Click Bank Statement Sync to Xero | Bulk Spreadsheet Invoice Ingestion to Xero | Direct Xero PDF Attachment & Address Sync | Global ISO 20022 Clearing (SIX, SEPA, Cross-Border) | Structured Address Compliance (Auto-Split for ISO 20022) | Company Verification & Xero Contact Profile Sync"
+     "included": "Everything in Free Starter, plus: | 500 transactions / month included | 1 Xero organization included | 2 team seats included (Owner + Accountant) | 1 automated feed pipeline included (Email / Google Drive) | 1-Click Bank Statement Sync to Xero | Bulk Spreadsheet Invoice Ingestion to Xero | Direct Xero PDF Attachment & Address Sync | Global ISO 20022 Clearing (SIX, SEPA, Cross-Border) | Structured Address Compliance (Auto-Split for ISO 20022) | Company Verification & Xero Contact Profile Sync",
+     "original": {
+      "amount": 79,
+      "currency": "EUR",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "ADVANCED",
-     "price_gbp": null,
+     "price_gbp": 166.63,
      "period": "month",
      "unit": "org",
-     "included": "Everything in Standard, plus: | 5,000 transactions / month included (+EUR 19/mo per 1,000 extra) | 3 Xero organizations included (+EUR 29/mo per extra) | 5 team seats included (+EUR 15/mo per extra) | 3 automated feed pipelines included (+EUR 39 per extra) | Swiss QR-Bill & ZUGFeRD Parsing | Automated Multi-Account & Multi-Currency Auto-Routing | Multi-Statement 1-to-N Auto-Routing | Priority High-Throughput Processing Queue | Hosted SFTP Drop Gateway (Dedicated Port & SSH Key) | Remote Server SFTP Polling (ERP/Bank Drop Pull) | Direct REST API Ingestion & Webhooks (HMAC Signed) | IP Whitelisting & CIDR Network Firewall Rules | Scheduled PAIN.001 Payment Export & Dispatch | Automated Headless PDF Billing (QR / ZUGFeRD) | Batch Company Verification & Immutable Audit Trail"
+     "included": "Everything in Standard, plus: | 5,000 transactions / month included (+EUR 19/mo per 1,000 extra) | 3 Xero organizations included (+EUR 29/mo per extra) | 5 team seats included (+EUR 15/mo per extra) | 3 automated feed pipelines included (+EUR 39 per extra) | Swiss QR-Bill & ZUGFeRD Parsing | Automated Multi-Account & Multi-Currency Auto-Routing | Multi-Statement 1-to-N Auto-Routing | Priority High-Throughput Processing Queue | Hosted SFTP Drop Gateway (Dedicated Port & SSH Key) | Remote Server SFTP Polling (ERP/Bank Drop Pull) | Direct REST API Ingestion & Webhooks (HMAC Signed) | IP Whitelisting & CIDR Network Firewall Rules | Scheduled PAIN.001 Payment Export & Dispatch | Automated Headless PDF Billing (QR / ZUGFeRD) | Batch Company Verification & Immutable Audit Trail",
+     "original": {
+      "amount": 199,
+      "currency": "EUR",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -7701,7 +7806,7 @@
     {
      "name": "Xero Global App Awards",
      "year": 2025,
-     "region": "unknown",
+     "region": "global",
      "level": "winner"
     }
    ],
@@ -8551,7 +8656,7 @@
     {
      "name": "Xero Global App Awards",
      "year": 2025,
-     "region": "unknown",
+     "region": "global",
      "level": "winner"
     }
    ],
@@ -9051,19 +9156,29 @@
    "pricing_tiers": [
     {
      "name": "Teams",
-     "price_gbp": null,
+     "price_gbp": 6.86,
      "period": "month",
      "unit": "user",
      "included": "Unlimited seats; team reporting; invoicing",
-     "limits": "price is a 'from' price"
+     "limits": "price is a 'from' price",
+     "original": {
+      "amount": 9,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Enterprise",
-     "price_gbp": null,
+     "price_gbp": 10.67,
      "period": "month",
      "unit": "user",
      "included": "Advanced reporting and admin",
-     "limits": "price is a 'from' price"
+     "limits": "price is a 'from' price",
+     "original": {
+      "amount": 14,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -9131,11 +9246,16 @@
    "pricing_tiers": [
     {
      "name": "Starter",
-     "price_gbp": null,
+     "price_gbp": 37.33,
      "period": "month",
      "unit": "org",
      "included": "Connect one Xero business | Clear revenue, expense, profit and cashflow reports | Build budgets and compare actual results | Forecast cashflow and spot upcoming shortfalls | Test business decisions with Scenario Calculator | Track financial goals and targets",
-     "limits": "Or US$450/year when billed annually."
+     "limits": "Or US$450/year when billed annually.",
+     "original": {
+      "amount": 49,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -10199,7 +10319,7 @@
     {
      "name": "Xero Global App Awards",
      "year": 2025,
-     "region": "unknown",
+     "region": "global",
      "level": "winner"
     }
    ],
@@ -10359,7 +10479,7 @@
     {
      "name": "Xero Global App Awards",
      "year": 2025,
-     "region": "unknown",
+     "region": "global",
      "level": "winner"
     }
    ],
@@ -11407,11 +11527,16 @@
    "pricing_tiers": [
     {
      "name": "Luxie Tech for monday.com",
-     "price_gbp": null,
+     "price_gbp": 24.89,
      "period": "month",
      "unit": "org",
      "included": "Automate your finance | Sync Invoices | Sync Purchase Orders | Sync Quotes | Sync Timesheets",
-     "limits": "Connect the power of monday.com with Xero to automate your invoicing, payroll and contacts."
+     "limits": "Connect the power of monday.com with Xero to automate your invoicing, payroll and contacts.",
+     "original": {
+      "amount": 49,
+      "currency": "AUD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -11768,7 +11893,7 @@
     {
      "name": "Xero Global App Awards",
      "year": 2025,
-     "region": "unknown",
+     "region": "global",
      "level": "winner"
     }
    ],
@@ -12049,31 +12174,51 @@
    "pricing_tiers": [
     {
      "name": "Freelancer",
-     "price_gbp": null,
+     "price_gbp": 14.48,
      "period": "month",
      "unit": "org",
-     "included": "1 user; unlimited clients, projects, invoices, time tracking; client time reports; AI assistant connection"
+     "included": "1 user; unlimited clients, projects, invoices, time tracking; client time reports; AI assistant connection",
+     "original": {
+      "amount": 19,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Starter",
-     "price_gbp": null,
+     "price_gbp": 22.1,
      "period": "month",
      "unit": "other",
-     "included": "2 users incl.; team goals, manager support, timesheet approval, team dashboard (on request)"
+     "included": "2 users incl.; team goals, manager support, timesheet approval, team dashboard (on request)",
+     "original": {
+      "amount": 29,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Small Team",
-     "price_gbp": null,
+     "price_gbp": 37.33,
      "period": "month",
      "unit": "other",
-     "included": "5 users incl.; as Starter"
+     "included": "5 users incl.; as Starter",
+     "original": {
+      "amount": 49,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Business",
-     "price_gbp": null,
+     "price_gbp": 75.43,
      "period": "month",
      "unit": "other",
-     "included": "10 users incl.; as Starter"
+     "included": "10 users incl.; as Starter",
+     "original": {
+      "amount": 99,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -12502,7 +12647,7 @@
     {
      "name": "Xero Global App Awards",
      "year": 2025,
-     "region": "unknown",
+     "region": "global",
      "level": "winner"
     }
    ],
@@ -12567,19 +12712,29 @@
     },
     {
      "name": "Pro Plan",
-     "price_gbp": null,
+     "price_gbp": 12.19,
      "period": "month",
      "unit": "org",
      "included": "XERO integration | Everything in Lite, plus: | Up to 5 accounts in a Roster | Custom Confirmation Workflow Options | Custom Collaboration Options | Custom Invoicing w/ Sending Options | XERO Integration w/ Automated Invoice Building and Tracking | Advanced Deal Terms & Custom Payment Options | Automated Roster Commissions & Calendar Grouping | Automated Booking & Commission Settlements w/ Custom Deductions | Automated Document Templates & Advancing Workflow | Multi-Date, Residency & Batch Bookings | Repeating & Duplicating Event Options | Track Open & Click Counts on Confirmations, Payments & more | Booking Confirmation Email Threads w/ CC | Event Stats & Insights | Automatic iCal, Outlook & Google Cal Sync | Bulk Event Announcements | Verified Checkmark Badge",
-     "limits": "The Muzeek Pro Plan, which comes with the ability to connect and sync with XERO"
+     "limits": "The Muzeek Pro Plan, which comes with the ability to connect and sync with XERO",
+     "original": {
+      "amount": 24,
+      "currency": "AUD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Premium Plan",
-     "price_gbp": null,
+     "price_gbp": 85.83,
      "period": "month",
      "unit": "org",
      "included": "Legally-binding Contracts | Everything in Pro, plus: | Up to 25 accounts in a Roster | Automated Signature Contracts w/ Deal Terms | Holds & Ordering Workflow | Event Profit & Loss Tracking | Advanced Budget Planning, Projections & Analytics | Automated Ticket Sales & Event Reports | Bulk Report Sending | Eventbrite Integration w/ Automated Ticket Builds, Ticket Reports, Settlements & more | Moshtix Integration w/ Automated Ticket Builds, Ticket Reports, Settlements & more | Oztix Integration w/ Automated Ticket Builds, Ticket Reports, Settlements & more | Multiple Ticket Allocations | Custom Event Fields | \"Apply to Play\" Functionality for Events | Remove Muzeek branding from Emails and Shareable Assets",
-     "limits": "The Muzeek Premium Plan offers the best range of Muzeek features, including the popular XERO integration"
+     "limits": "The Muzeek Premium Plan offers the best range of Muzeek features, including the popular XERO integration",
+     "original": {
+      "amount": 169,
+      "currency": "AUD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -12651,11 +12806,16 @@
     },
     {
      "name": "Premium Plan",
-     "price_gbp": null,
+     "price_gbp": 76.18,
      "period": "month",
      "unit": "org",
      "included": "Financial Reporting",
-     "limits": "Financial Reporting"
+     "limits": "Financial Reporting",
+     "original": {
+      "amount": 150,
+      "currency": "AUD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -13384,7 +13544,7 @@
     {
      "name": "Xero Global App Awards",
      "year": 2025,
-     "region": "unknown",
+     "region": "global",
      "level": "winner"
     }
    ],
@@ -13886,7 +14046,7 @@
     {
      "name": "Xero Global App Awards",
      "year": 2025,
-     "region": "unknown",
+     "region": "global",
      "level": "winner"
     }
    ],
@@ -15362,17 +15522,27 @@
    "pricing_tiers": [
     {
      "name": "Solo",
-     "price_gbp": null,
+     "price_gbp": 21.33,
      "period": "month",
      "unit": "other",
-     "included": "1 team member, 100 quotes/month"
+     "included": "1 team member, 100 quotes/month",
+     "original": {
+      "amount": 28,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Team",
-     "price_gbp": null,
+     "price_gbp": 36.57,
      "period": "month",
      "unit": "other",
-     "included": "Up to 5 team members, unlimited quotes; tracking by member, private notes"
+     "included": "Up to 5 team members, unlimited quotes; tracking by member, private notes",
+     "original": {
+      "amount": 48,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -16088,19 +16258,29 @@
    "pricing_tiers": [
     {
      "name": "Essentials",
-     "price_gbp": null,
+     "price_gbp": 70.6,
      "period": "month",
      "unit": "org",
      "included": "Unlimited AI invoice processing | Real-time food costing | Live supplier pricing | Quick COGS snapshot | Smart business insights | Upload or email your invoices | Accounting integrations | POS integrations | Gmail integration",
-     "limits": "For instant insights"
+     "limits": "For instant insights",
+     "original": {
+      "amount": 139,
+      "currency": "AUD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Pro",
-     "price_gbp": null,
+     "price_gbp": 111.23,
      "period": "month",
      "unit": "org",
      "included": "Everything in Essentials, plus: | Live inventory tracking | Dynamic recipe costing | Automated vendor ordering | Prep and dish recipes | Procedures, compliance and training | Kitchen prep automation | Task management and staff communication | Multi-venue management | 24/7 chat support",
-     "limits": "For most restaurants"
+     "limits": "For most restaurants",
+     "original": {
+      "amount": 219,
+      "currency": "AUD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -16986,7 +17166,7 @@
     {
      "name": "Xero Global App Awards",
      "year": 2025,
-     "region": "unknown",
+     "region": "global",
      "level": "winner"
     }
    ],
@@ -17048,11 +17228,16 @@
    "pricing_tiers": [
     {
      "name": "SFX Basic",
-     "price_gbp": null,
+     "price_gbp": 19.81,
      "period": "month",
      "unit": "org",
      "included": "Create Invoices, bills, prepayments, credit notes from within Salesforce | Sync historical invoices, bills, credit notes, prepayments | Scheduled batch invoicing available",
-     "limits": "SFX basic connects Salesforce with Xero and enables you to create invoices from Salesforce; price is a 'from' price"
+     "limits": "SFX basic connects Salesforce with Xero and enables you to create invoices from Salesforce; price is a 'from' price",
+     "original": {
+      "amount": 39,
+      "currency": "AUD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -17476,7 +17661,7 @@
     {
      "name": "Xero Global App Awards",
      "year": 2025,
-     "region": "unknown",
+     "region": "global",
      "level": "winner"
     }
    ],
@@ -18285,7 +18470,7 @@
     {
      "name": "Xero Global App Awards",
      "year": 2025,
-     "region": "unknown",
+     "region": "global",
      "level": "winner"
     }
    ],
@@ -18367,7 +18552,7 @@
     {
      "name": "Xero Global App Awards",
      "year": 2025,
-     "region": "unknown",
+     "region": "global",
      "level": "winner"
     }
    ],
@@ -18740,34 +18925,54 @@
    "pricing_tiers": [
     {
      "name": "Basic",
-     "price_gbp": null,
+     "price_gbp": 49.52,
      "period": "month",
      "unit": "other",
-     "included": "500 synced txns/mo; 2 integration slots; daily imports; 1 user"
+     "included": "500 synced txns/mo; 2 integration slots; daily imports; 1 user",
+     "original": {
+      "amount": 65,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Essential",
-     "price_gbp": null,
+     "price_gbp": 98.29,
      "period": "month",
      "unit": "other",
      "included": "1,000 txns incl. (up to 3,000 sales txns); unlimited integrations; hourly imports; 1 user",
-     "limits": "price is a 'from' price"
+     "limits": "price is a 'from' price",
+     "original": {
+      "amount": 129,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Pro",
-     "price_gbp": null,
+     "price_gbp": 227.81,
      "period": "month",
      "unit": "other",
      "included": "10,000 txns incl.; NetSuite/Sage Intacct; 2 premium integrations; 30 mapping groups; 2 users",
-     "limits": "price is a 'from' price"
+     "limits": "price is a 'from' price",
+     "original": {
+      "amount": 299,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Pro Max",
-     "price_gbp": null,
+     "price_gbp": 456.39,
      "period": "month",
      "unit": "other",
      "included": "20,000 txns incl.; custom ERP; unlimited premium integrations; 5 custom mods; 2 users",
-     "limits": "price is a 'from' price"
+     "limits": "price is a 'from' price",
+     "original": {
+      "amount": 599,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -18861,27 +19066,42 @@
    "pricing_tiers": [
     {
      "name": "Solo",
-     "price_gbp": null,
+     "price_gbp": 37.33,
      "period": "month",
      "unit": "user",
      "included": "100 Talent Profiles | 1 Gallery per Talent | 1 User Only",
-     "limits": "Start your business"
+     "limits": "Start your business",
+     "original": {
+      "amount": 49,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Standard",
-     "price_gbp": null,
+     "price_gbp": 75.43,
      "period": "month",
      "unit": "user",
      "included": "200 Talent Profiles | 3 Galleries per Talent | Single Office",
-     "limits": "Grow your business"
+     "limits": "Grow your business",
+     "original": {
+      "amount": 99,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Premium",
-     "price_gbp": null,
+     "price_gbp": 113.53,
      "period": "month",
      "unit": "user",
      "included": "1000 Talent Profiles | 10 Galleries per Talent | Multi-Office | Casting Calls | Website Integration | Syngency Sign",
-     "limits": "Accelerate your business"
+     "limits": "Accelerate your business",
+     "original": {
+      "amount": 149,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -19744,38 +19964,63 @@
    "pricing_tiers": [
     {
      "name": "Starter",
-     "price_gbp": null,
+     "price_gbp": 44.95,
      "period": "month",
      "unit": "other",
-     "included": "400 entries/mo (2 entities) or 4,800/yr"
+     "included": "400 entries/mo (2 entities) or 4,800/yr",
+     "original": {
+      "amount": 59,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Pro",
-     "price_gbp": null,
+     "price_gbp": 75.43,
      "period": "month",
      "unit": "other",
-     "included": "800 entries/mo or 9,600/yr; unlimited users, entities, line items; onboarding"
+     "included": "800 entries/mo or 9,600/yr; unlimited users, entities, line items; onboarding",
+     "original": {
+      "amount": 99,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Business",
-     "price_gbp": null,
+     "price_gbp": 189.72,
      "period": "month",
      "unit": "other",
-     "included": "2,500 entries/mo or 30,000/yr"
+     "included": "2,500 entries/mo or 30,000/yr",
+     "original": {
+      "amount": 249,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Enterprise",
-     "price_gbp": null,
+     "price_gbp": 304.01,
      "period": "month",
      "unit": "other",
-     "included": "6,500 entries/mo or 78,000/yr"
+     "included": "6,500 entries/mo or 78,000/yr",
+     "original": {
+      "amount": 399,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Max",
-     "price_gbp": null,
+     "price_gbp": 608.77,
      "period": "month",
      "unit": "other",
-     "included": "20,000 entries/mo or 240,000/yr"
+     "included": "20,000 entries/mo or 240,000/yr",
+     "original": {
+      "amount": 799,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -21024,27 +21269,42 @@
    "pricing_tiers": [
     {
      "name": "Basic",
-     "price_gbp": null,
+     "price_gbp": 55.41,
      "period": "month",
      "unit": "org",
      "included": "Connect Virtual Yard to Xero | Unlimited invoices | Unlimited tracked inventory | Unlimited expenses | Dealership website additional | Limited advertising feeds",
-     "limits": "VIRTUAL YARD BASIC"
+     "limits": "VIRTUAL YARD BASIC",
+     "original": {
+      "amount": 109.09,
+      "currency": "AUD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Small",
-     "price_gbp": null,
+     "price_gbp": 166.22,
      "period": "month",
      "unit": "org",
      "included": "Unlimited invoices | Unlimited tracked inventory | Unlimited expenses | Under $500k retail stock value | List on Carsforsale.com.au | Dealership website included | Advertising Feeds",
-     "limits": "VY SMALL"
+     "limits": "VY SMALL",
+     "original": {
+      "amount": 327.27,
+      "currency": "AUD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Medium",
-     "price_gbp": null,
+     "price_gbp": 309.35,
      "period": "month",
      "unit": "org",
      "included": "Unlimited invoices | Unlimited tracked inventory | Unlimited expenses | Under $1M retail stock value | List on Carsforsale.com.au | Dealership website included | Advertising Feeds",
-     "limits": "VY Medium"
+     "limits": "VY Medium",
+     "original": {
+      "amount": 609.09,
+      "currency": "AUD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -21278,19 +21538,29 @@
    "pricing_tiers": [
     {
      "name": "Starter",
-     "price_gbp": null,
+     "price_gbp": 13.39,
      "period": "month",
      "unit": "org",
      "included": "100 orders per month | Unlimited inventory sync | Unlimited helpdesk | Free onboarding session",
-     "limits": "Great for new stores"
+     "limits": "Great for new stores",
+     "original": {
+      "amount": 26.36,
+      "currency": "AUD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Growth",
-     "price_gbp": null,
+     "price_gbp": 22.63,
      "period": "month",
      "unit": "org",
      "included": "Unlimited orders per month | Unlimited inventory sync | Unlimited helpdesk | Free onboarding session",
-     "limits": "For stores ready to scale"
+     "limits": "For stores ready to scale",
+     "original": {
+      "amount": 44.55,
+      "currency": "AUD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],
@@ -22267,35 +22537,55 @@
    "pricing_tiers": [
     {
      "name": "Solo",
-     "price_gbp": null,
+     "price_gbp": 7.54,
      "period": "month",
      "unit": "org",
      "included": "Unlimited users | Unlimited usage | Excel add-in | Google Sheets add-on | 11 custom functions (Excel only) | Tables & Reports | Email support",
-     "limits": "1 Xero Organization"
+     "limits": "1 Xero Organization",
+     "original": {
+      "amount": 9.9,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Lite",
-     "price_gbp": null,
+     "price_gbp": 11.35,
      "period": "month",
      "unit": "org",
      "included": "Unlimited users | Unlimited usage | Excel add-in | Google Sheets add-on | 11 custom functions (Excel only) | Tables & Reports | Email support",
-     "limits": "3 Xero Organizations"
+     "limits": "3 Xero Organizations",
+     "original": {
+      "amount": 14.9,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Pro",
-     "price_gbp": null,
+     "price_gbp": 22.78,
      "period": "month",
      "unit": "org",
      "included": "Unlimited users | Unlimited usage | Excel add-in | Google Sheets add-on | 11 custom functions (Excel only) | Tables & Reports | Priority support",
-     "limits": "10 Xero Organizations"
+     "limits": "10 Xero Organizations",
+     "original": {
+      "amount": 29.9,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     },
     {
      "name": "Business",
-     "price_gbp": null,
+     "price_gbp": 38.02,
      "period": "month",
      "unit": "org",
      "included": "Unlimited users | Unlimited usage | Excel add-in | Google Sheets add-on | 11 custom functions (Excel only) | Tables & Reports | Priority support",
-     "limits": "25 Xero Organizations"
+     "limits": "25 Xero Organizations",
+     "original": {
+      "amount": 49.9,
+      "currency": "USD",
+      "fx_date": "2026-11-20"
+     }
     }
    ],
    "awards": [],

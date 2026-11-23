@@ -12,12 +12,18 @@ export const MARKETS = ["UK", "US", "CA", "AU"] as const;
 
 export const PricingTier = z.object({
   name: z.string().min(1),
-  /** Pounds per period. null = quote-only, not published, or priced in another currency (never converted). 0 = an explicit free plan. */
+  /**
+   * Pounds per period. null = quote-only, not published, or no stated currency ("$" alone is never guessed).
+   * 0 = an explicit free plan. Non-£ prices are converted at catalog/fx-rates.yaml (owner decision 23 Nov 2026) and
+   * keep the vendor's own figure in `original`.
+   */
   price_gbp: z.number().nonnegative().nullable(),
   period: z.enum(["month", "year", "one_off"]),
   unit: z.enum(["org", "user", "employee", "transaction", "other"]),
   included: z.string().optional(),
   limits: z.string().optional(),
+  /** Present only when price_gbp was converted: the vendor's amount and currency, and the rate date used. */
+  original: z.object({ amount: z.number().nonnegative(), currency: z.string().length(3), fx_date: z.string() }).optional(),
 });
 export type PricingTier = z.infer<typeof PricingTier>;
 

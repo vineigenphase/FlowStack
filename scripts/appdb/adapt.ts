@@ -13,10 +13,11 @@ import fs from "node:fs";
 import { parse as parseYaml } from "yaml";
 import { directory } from "@/lib/catalog/xero-directory";
 import { apps as yamlApps, appCategories } from "@/lib/catalog/load";
-import { adaptApp, mapCategories, matchListing, type CategoryMap, type Match } from "@/lib/appdb/adapt";
+import { adaptApp, mapCategories, matchListing, type FxRates, type CategoryMap, type Match } from "@/lib/appdb/adapt";
 import { MARKETS, type XeroAppListing } from "@/lib/appdb/schema";
 
 const OUT = "data/xero-apps/listings.json";
+const MATCHES = "data/xero-apps/matches.json";
 const REPORT = "docs/appdb-import-report.md";
 const WORKBOOK_DATE = "2026-11-17";
 const dry = process.argv.includes("--dry-run");
@@ -24,6 +25,7 @@ const dry = process.argv.includes("--dry-run");
 const dir = directory();
 const catMap = parseYaml(fs.readFileSync("catalog/xero-category-map.yaml", "utf8")) as CategoryMap;
 const fnVocab = new Set(Object.keys((parseYaml(fs.readFileSync("catalog/xero-functions.yaml", "utf8")) as { functions: Record<string, unknown> }).functions));
+const fx = parseYaml(fs.readFileSync("catalog/fx-rates.yaml", "utf8")) as FxRates;
 const xw = (parseYaml(fs.readFileSync("catalog/directory-crosswalk.yaml", "utf8")) as { links: Record<string, string | null> }).links;
 const curated = yamlApps().filter((a) => a.id !== "xero");
 const ourCats = appCategories().map((c) => c.key);
@@ -35,7 +37,7 @@ const droppedCount = new Map<string, number>();
 const ratingSource = new Map<string, number>();
 const bump = (m: Map<string, number>, k: string, n = 1) => m.set(k, (m.get(k) ?? 0) + n);
 for (const app of dir.apps) {
-  const r = adaptApp(app, WORKBOOK_DATE);
+  const r = adaptApp(app, WORKBOOK_DATE, fx);
   if (!r.ok) {
     rejected.push({ id: r.id, reasons: r.reasons });
     continue;
@@ -77,7 +79,21 @@ for (const l of accepted) {
 // ---------- write ----------
 const json = JSON.stringify({ version: 1, source: "data/xero-apps/directory.json", asOf: dir.asOf, listings: accepted }, null, 1) + "\n";
 const before = fs.existsSync(OUT) ? fs.readFileSync(OUT, "utf8") : null;
-if (!dry) fs.writeFileSync(OUT, json, "utf8");
+// Match per listing, for Phase 1 (catalogue app behind each listing) and the admin review page (/admin/engine-v2).
+const matchesJson =
+  JSON.stringify(
+    {
+      version: 1,
+      note: "Listing → catalog/apps.yaml match. unsure = for a person (queue item appdb_match). Every listing is a v2 candidate either way (owner 23 Nov 2026).",
+      matches: accepted.map((l) => ({ listing_id: l.listing_id, ...matches.get(l.listing_id)! })),
+    },
+    null,
+    1,
+  ) + "\n";
+if (!dry) {
+  fs.writeFileSync(OUT, json, "utf8");
+  fs.writeFileSync(MATCHES, matchesJson, "utf8");
+}
 
 // ---------- report ----------
 const n = accepted.length;
@@ -141,7 +157,7 @@ const rows: [string, number, string][] = [
   ["review_count = 0", has((l) => l.review_count === 0), "listed, no reviews yet (rating null, not low)"],
   ["review_count null", has((l) => l.review_count === null), "no listing read"],
   ["pricing_tiers (any)", has((l) => l.pricing_tiers.length > 0), ""],
-  ["a tier with a £ price", has((l) => l.pricing_tiers.some((t) => t.price_gbp !== null)), "price_gbp null = quote, unknown or not in £"],
+  ["a tier with a £ price", has((l) => l.pricing_tiers.some((t) => t.price_gbp !== null)), "converted to £; null = quote, unknown, or no stated currency"],
   ["a per-org £ tier", has((l) => l.pricing_tiers.some((t) => t.price_gbp !== null && t.unit === "org")), "what Phase 1 price scoring can use directly"],
   ["awards (official)", has((l) => l.awards.length > 0), "vendor claims are left out (see §1)"],
   ["markets", has((l) => l.markets.length > 0), "empty = not read (not 'unsupported')"],
@@ -151,7 +167,7 @@ for (const [k, v, note] of rows) L.push(`| ${k} | ${v} | ${pct(v)} | ${note} |`)
 L.push("", `Rating source: ${[...ratingSource].map(([k, v]) => `${k} ${v}`).join(", ")} (workbook = no readable listing; the workbook's figure is kept and labelled).`, "");
 
 L.push("## 4. Candidates per category × market", "");
-L.push("Each cell: **all listings** / listings matched to a catalogue app / catalogue apps (apps.yaml) today. Under ENGINE-V2 §3 only catalogue apps are candidates, so the last two numbers are what v2 could rank without a person adding apps.", "");
+L.push("Each cell: **all listings** / listings matched to a catalogue app / catalogue apps (apps.yaml) today. Owner decision 23 Nov 2026: **every listing is a v2 candidate** (the first number); the catalogue entry is used where a listing matches one.", "");
 L.push(`| our category | ${MARKETS.join(" | ")} |`, `|---|${MARKETS.map(() => "---").join("|")}|`);
 const listingIdsByApp = new Map<string, string>();
 for (const [lid, m] of matches) if (m.status === "matched") listingIdsByApp.set(m.appId, lid);
@@ -166,7 +182,7 @@ for (const c of ourCats) {
   });
   L.push(`| ${c} | ${cells.join(" | ")} |`);
 }
-L.push("", `Categories with fewer than 3 catalogue apps in the UK (would need a \`catalog_gap\` warning under §1.4): ${gaps.join("; ") || "none"}.`, "");
+L.push("", `Categories with fewer than 3 catalogue apps in the UK (before the 23 Nov decision these would have needed a \`catalog_gap\` warning): ${gaps.join("; ") || "none"}.`, "");
 
 L.push("## 5. Xero labels not in the hand-typed maps", "");
 L.push(`- Xero categories not in \`catalog/xero-category-map.yaml\`: ${[...unknownCats].map(([k, v]) => `"${k}" (${v})`).join(", ") || "none"}.`);
@@ -174,8 +190,14 @@ L.push(`- Xero functions not in \`catalog/xero-functions.yaml\`: ${[...unknownFn
 const zeroCat = Object.entries(catMap.categories).filter(([, v]) => v.length === 0).map(([k]) => k);
 L.push(`- Mapped to no FlowStack category on purpose (never a gap candidate alone): ${zeroCat.map((z) => `"${z}"`).join(", ")}.`, "");
 
-L.push("## 6. Terms check (waiting on owner)", "");
-L.push("Descriptions, ratings and review counts come from the public Xero App Store. Until the owner confirms the App Store terms allow it: descriptions are used only for keyword matching and shown only in the admin dev panel; ratings are shown only as numbers, attributed \"Xero App Store, captured <date>\"; no review text is stored or shown (none was collected).", "");
+L.push("## 6. Terms check", "");
+L.push("Owner confirmed 23 Nov 2026: OK to use the App Store descriptions, ratings and review counts. Ratings are attributed \"Xero App Store, captured <date>\". No review text was collected.", "");
+L.push("## 7. Prices in pounds", "");
+const conv = accepted.flatMap((l) => l.pricing_tiers).filter((t) => t.original);
+const byCur = new Map<string, number>();
+conv.forEach((t) => bump(byCur, t.original!.currency));
+const noCur = dir.apps.flatMap((a) => a.pricing.tiers.filter((t) => t.currency === null && (t.amount ?? 0) > 0 && !t.isTrial).map((t) => `${a.name} ${t.name}`));
+L.push(`Owner decision 23 Nov 2026: every price is shown in £. ${conv.length} tiers converted (${[...byCur].map(([k, v]) => `${k} ${v}`).join(", ")}) at ECB reference rates for ${fx.date} (\`catalog/fx-rates.yaml\`); each keeps the vendor's own amount and currency. Not converted because the vendor states no currency ("$" could be USD, AUD, NZD or CAD): ${noCur.length} (${noCur.join("; ") || "none"}).`, "");
 
 if (!fs.existsSync("docs")) fs.mkdirSync("docs");
 fs.writeFileSync(REPORT, L.join("\n"), "utf8");

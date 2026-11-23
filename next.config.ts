@@ -9,6 +9,8 @@ const config: NextConfig = {
   outputFileTracingIncludes: {
     "/api/**": ["./catalog/**/*.yaml"],
     "/app/**": ["./catalog/**/*.yaml", "./mocks/**/*.json"],
+    // ENGINE-V2 review page reads the app database files.
+    "/admin/**": ["./catalog/**/*.yaml", "./data/xero-apps/listings.json", "./data/xero-apps/matches.json"],
     // Fixture mode on a preview deployment (XERO_MODE=fixtures).
     "/api/orgs/**": ["./fixtures/xero/**/*.json"],
     // /demo builds the sample business from fixtures on first use (NEXT-STEPS P0.2).

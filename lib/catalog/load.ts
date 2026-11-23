@@ -52,10 +52,29 @@ export const Scoring = z.object({
 });
 export type Scoring = z.infer<typeof Scoring>;
 
+/** ENGINE-V2 §1.1 (22 Nov 2026). Top-level weights DECIDED 9 Nov; everything inside fit and quality is PROPOSED. */
+const W = z.record(z.string(), z.number().min(0).max(1));
+export const ScoringV2 = z.object({
+  status: z.object({ weights: z.string(), sub_weights: z.string() }),
+  weights: z.object({ strength: z.number(), fit: z.number(), quality: z.number(), price: z.number() }),
+  fit: z.object({ integration_fit: z.number(), job_fit: z.number() }),
+  job_fit: z.object({ category_match: z.number(), function_match: z.number(), keyword_match: z.number() }),
+  category_match: z.object({ covered_by: z.number(), app_categories_only: z.number() }),
+  function_match: z.object({ helpful_factor: z.number() }),
+  quality: z.object({ rating_score: z.number(), volume_score: z.number() }),
+  rating_prior_count: z.number().int().positive(),
+  award_boost: z.object({ winner: z.number(), finalist: z.number(), half_life_years: z.number().positive(), cap: z.number() }),
+  price: z.object({ price_share_good: z.number(), price_share_bad: z.number() }),
+  integration_fit: W,
+  neutral: z.number().default(0.5),
+});
+export type ScoringV2 = z.infer<typeof ScoringV2>;
+
 const TrendRule = z.object({ threshold: z.number(), min_change: z.number() });
 /** v1.1 B: trend thresholds (BACKEND §7.3). Each trend also needs a rule whose account_categories has trend:<key>. */
 export const RulesFile = z.object({
   scoring: Scoring,
+  scoring_v2: ScoringV2.optional(),
   rules: list(Rule),
   trends: z.object({ debtor_days: TrendRule, creditor_days: TrendRule, stock_days: TrendRule, cash_headroom_months: TrendRule }).partial().default({}),
   /** Round-2 3a (10 Nov, DECIDED): a payment is missed only 7 days after it was due AND once the books reach that day. */

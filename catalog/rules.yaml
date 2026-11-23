@@ -14,6 +14,26 @@ scoring:
   fit: { native: 1.0, via_app: 0.8, csv: 0.6, none: 0.3, no_apps: 0.5 }
   neutral: 0.5
 
+# Engine v2 (ENGINE-V2.md §1.1, 22 Nov 2026). Ranking only: never changes whether a line is flagged.
+#   match   = 100 × (strength × 0.50 + fit × 0.35 + quality × 0.10 + price × 0.05)
+#   fit     = integration_fit × 0.60 + job_fit × 0.40
+#   job_fit = category_match × 0.40 + function_match × 0.35 + keyword_match × 0.25
+#   quality = clamp(rating_score × 0.85 + volume_score × 0.15 + award_boost, 0, 1)
+# A missing input scores `neutral` and is shown as missing. Shown to admins at /admin/engine-v2.
+scoring_v2:
+  status: { weights: "DECIDED 9 Nov 2026", sub_weights: "PROPOSED 22 Nov 2026 (owner to review)" }
+  weights: { strength: 0.50, fit: 0.35, quality: 0.10, price: 0.05 }
+  fit: { integration_fit: 0.60, job_fit: 0.40 }
+  job_fit: { category_match: 0.40, function_match: 0.35, keyword_match: 0.25 }
+  category_match: { covered_by: 1.0, app_categories_only: 0.7 }   # else 0 and not a candidate
+  function_match: { helpful_factor: 0.5 }                         # share of required + 0.5 × share of helpful, capped at 1
+  quality: { rating_score: 0.85, volume_score: 0.15 }
+  rating_prior_count: 20                                          # Bayesian prior, at the category's mean rating
+  award_boost: { winner: 0.10, finalist: 0.05, half_life_years: 1, cap: 0.15 }   # region-unknown awards count as global (owner 23 Nov)
+  price: { price_share_good: 0.002, price_share_bad: 0.02 }       # annual cost as a share of annual revenue; prices in £ (converted, owner 23 Nov)
+  integration_fit: { native: 1.0, via_app: 0.8, csv: 0.6, none: 0.3, no_apps: 0.5 }
+  neutral: 0.5
+
 rules:
   - id: payroll_no_bridge
     version: 2

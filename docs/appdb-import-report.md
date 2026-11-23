@@ -59,8 +59,8 @@ Unsure matches, for a person:
 | review_count = 0 | 225 | 31% | listed, no reviews yet (rating null, not low) |
 | review_count null | 5 | 1% | no listing read |
 | pricing_tiers (any) | 112 | 15% |  |
-| a tier with a £ price | 90 | 12% | price_gbp null = quote, unknown or not in £ |
-| a per-org £ tier | 62 | 9% | what Phase 1 price scoring can use directly |
+| a tier with a £ price | 111 | 15% | converted to £; null = quote, unknown, or no stated currency |
+| a per-org £ tier | 74 | 10% | what Phase 1 price scoring can use directly |
 | awards (official) | 15 | 2% | vendor claims are left out (see §1) |
 | markets | 714 | 98% | empty = not read (not 'unsupported') |
 | source_url | 728 | 100% |  |
@@ -69,7 +69,7 @@ Rating source: none 5, listing 714, workbook 9 (workbook = no readable listing; 
 
 ## 4. Candidates per category × market
 
-Each cell: **all listings** / listings matched to a catalogue app / catalogue apps (apps.yaml) today. Under ENGINE-V2 §3 only catalogue apps are candidates, so the last two numbers are what v2 could rank without a person adding apps.
+Each cell: **all listings** / listings matched to a catalogue app / catalogue apps (apps.yaml) today. Owner decision 23 Nov 2026: **every listing is a v2 candidate** (the first number); the catalogue entry is used where a listing matches one.
 
 | our category | UK | US | CA | AU |
 |---|---|---|---|---|
@@ -90,7 +90,7 @@ Each cell: **all listings** / listings matched to a catalogue app / catalogue ap
 | month_end | **0** / 0 / 1 | **0** / 0 / 0 | **0** / 0 / 0 | **0** / 0 / 0 |
 | other_software | **0** / 0 / 3 | **0** / 0 / 3 | **0** / 0 / 3 | **0** / 0 / 3 |
 
-Categories with fewer than 3 catalogue apps in the UK (would need a `catalog_gap` warning under §1.4): compliance (UK: 1 catalogue app, 20 listings); month_end (UK: 1 catalogue app, 0 listings).
+Categories with fewer than 3 catalogue apps in the UK (before the 23 Nov decision these would have needed a `catalog_gap` warning): compliance (UK: 1 catalogue app, 20 listings); month_end (UK: 1 catalogue app, 0 listings).
 
 ## 5. Xero labels not in the hand-typed maps
 
@@ -98,6 +98,10 @@ Categories with fewer than 3 catalogue apps in the UK (would need a `catalog_gap
 - Xero functions not in `catalog/xero-functions.yaml`: none.
 - Mapped to no FlowStack category on purpose (never a gap candidate alone): "Convert data to Xero", "Loans, financing and credit", "Accountant tools", "Practice manager", "CRM and marketing", "Workflow builders", "Development partners", "Carbon accounting", "Other".
 
-## 6. Terms check (waiting on owner)
+## 6. Terms check
 
-Descriptions, ratings and review counts come from the public Xero App Store. Until the owner confirms the App Store terms allow it: descriptions are used only for keyword matching and shown only in the admin dev panel; ratings are shown only as numbers, attributed "Xero App Store, captured <date>"; no review text is stored or shown (none was collected).
+Owner confirmed 23 Nov 2026: OK to use the App Store descriptions, ratings and review counts. Ratings are attributed "Xero App Store, captured <date>". No review text was collected.
+
+## 7. Prices in pounds
+
+Owner decision 23 Nov 2026: every price is shown in £. 58 tiers converted (USD 41, AUD 14, NZD 1, EUR 2) at ECB reference rates for 2026-11-20 (`catalog/fx-rates.yaml`); each keeps the vendor's own amount and currency. Not converted because the vendor states no currency ("$" could be USD, AUD, NZD or CAD): 2 (Fergus Basic; Fergus Professional (Pro)).

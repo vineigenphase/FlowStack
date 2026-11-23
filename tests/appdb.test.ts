@@ -2,7 +2,9 @@
 import fs from "node:fs";
 import { describe, expect, it } from "vitest";
 import { parse as parseYaml } from "yaml";
-import { adaptApp, adaptAward, adaptTier, mapCategories, matchListing, similarity, type CategoryMap } from "@/lib/appdb/adapt";
+import { adaptApp, adaptAward, adaptTier as adaptTierFx, mapCategories, matchListing, similarity, toGbp, type CategoryMap, type FxRates } from "@/lib/appdb/adapt";
+import { engineV2Review, leafKeys, tierText, weightRows } from "@/lib/appdb/review";
+import { rulesFile } from "@/lib/catalog/load";
 import { XeroAppListing } from "@/lib/appdb/schema";
 import { directory } from "@/lib/catalog/xero-directory";
 import type { DirApp, DirTier } from "@/lib/catalog/xero-directory";
@@ -12,17 +14,24 @@ const tier = (t: Partial<DirTier>): DirTier => ({
   isQuote: false, isFree: false, isTrial: false, isFrom: false, minQuantity: null, includes: null, limits: null,
   flags: [], sourceUrl: null, checkedAt: null, ...t,
 });
+const fx: FxRates = { date: "2026-11-20", base: "EUR", rates: { GBP: 0.8, USD: 1.0, AUD: 1.6, EUR: 1 } };
+const adaptTier = (t: DirTier) => adaptTierFx(t, fx);
 const catMap = parseYaml(fs.readFileSync("catalog/xero-category-map.yaml", "utf8")) as CategoryMap;
 const listingsFile = JSON.parse(fs.readFileSync("data/xero-apps/listings.json", "utf8")) as { listings: unknown[] };
 
 describe("adapter: unknown stays unknown", () => {
-  it("only £ prices get price_gbp; other currencies and a $ with no currency stay null, never converted", () => {
+  it("prices are converted to £ and keep the vendor's own figure; a $ with no currency is never guessed", () => {
     const gbp = adaptTier(tier({ amount: 25, currency: "GBP" }));
     const usd = adaptTier(tier({ amount: 29, currency: "USD" }));
     const noCur = adaptTier(tier({ amount: 29, currency: null, priceRaw: "$29/mo" }));
-    expect("tier" in gbp && gbp.tier.price_gbp).toBe(25);
-    expect("tier" in usd && usd.tier.price_gbp).toBeNull();
+    const noRate = adaptTier(tier({ amount: 29, currency: "JPY" }));
+    expect("tier" in gbp && gbp.tier).toMatchObject({ price_gbp: 25 });
+    expect("tier" in gbp && gbp.tier.original).toBeUndefined();
+    expect("tier" in usd && usd.tier).toMatchObject({ price_gbp: 23.2, original: { amount: 29, currency: "USD", fx_date: "2026-11-20" } });
     expect("tier" in noCur && noCur.tier.price_gbp).toBeNull();
+    expect("tier" in noRate && noRate.tier.price_gbp).toBeNull();
+    expect(toGbp(16, "AUD", fx)).toBe(8);
+    expect("tier" in usd && tierText(usd.tier)).toBe("Plan: £23.20/month (USD 29)");
   });
 
   it("quote-only is null (not free); an explicit free plan is 0; trials and unstated periods are left out with a reason", () => {
@@ -40,9 +49,9 @@ describe("adapter: unknown stays unknown", () => {
     expect("tier" in r && r.tier).toMatchObject({ unit: "user", price_gbp: 6, limits: "minimum 5 users" });
   });
 
-  it("awards: official records only, never a vendor's claim; region is 'unknown' unless the source says", () => {
+  it("awards: official records only, never a vendor's claim; an unstated region counts as global (owner 23 Nov)", () => {
     const official = adaptAward({ id: "A", program: "Xero Global App Awards", year: 2025, category: "unknown", result: "winner (listed)", evidence: "verified", sourceUrl: null });
-    expect(official).toEqual({ award: { name: "Xero Global App Awards", year: 2025, region: "unknown", level: "winner" } });
+    expect(official).toEqual({ award: { name: "Xero Global App Awards", year: 2025, region: "global", level: "winner" } });
     expect("dropped" in adaptAward({ id: "B", program: "Xero App Awards", year: 2024, category: null, result: "winner (vendor claim)", evidence: "source-reported", sourceUrl: null })).toBe(true);
     expect("dropped" in adaptAward({ id: "C", program: "Xero App Awards", year: null, category: null, result: "winner", evidence: "verified", sourceUrl: null })).toBe(true);
   });
@@ -51,8 +60,8 @@ describe("adapter: unknown stays unknown", () => {
     const dir = directory();
     const zero = dir.apps.find((a) => a.rating.count === 0)!;
     const rated = dir.apps.find((a) => (a.rating.count ?? 0) > 50)!;
-    const z = adaptApp(zero, "2026-11-17");
-    const r = adaptApp(rated, "2026-11-17");
+    const z = adaptApp(zero, "2026-11-17", fx);
+    const r = adaptApp(rated, "2026-11-17", fx);
     expect(z.ok && z.listing.rating_avg).toBeNull();
     expect(z.ok && z.listing.review_count).toBe(0);
     expect(r.ok && r.listing.rating_avg).toBe(rated.rating.value);
@@ -60,7 +69,7 @@ describe("adapter: unknown stays unknown", () => {
 
   it("a row that fails the schema is rejected with reasons, not patched", () => {
     const bad = { ...directory().apps[0]!, id: "Not An Id" } as DirApp;
-    const r = adaptApp(bad, "2026-11-17");
+    const r = adaptApp(bad, "2026-11-17", fx);
     expect(r.ok).toBe(false);
     expect(!r.ok && r.reasons.join(" ")).toMatch(/listing_id/);
   });
@@ -123,5 +132,24 @@ describe("matching listings to catalog/apps.yaml", () => {
     expect(similarity("Solido", "Soldo")).toBeLessThan(0.93);
     expect(matchListing({ listing_id: "xa-solido", name: "Solido", website: "solido.io" }, apps, ctx({ "solido.io": 1 })).status).toBe("unsure");
     expect(matchListing({ listing_id: "xa-x", name: "Something Else Entirely", website: "else.io" }, apps, ctx({ "else.io": 1 })).status).toBe("unmatched");
+  });
+});
+
+describe("v2 weights and the admin review page data", () => {
+  it("rules.yaml scoring_v2 parses; top level is 0.50/0.35/0.10/0.05; the leaf shares add up to the whole match", () => {
+    const s = rulesFile().scoring_v2!;
+    expect(s.weights).toEqual({ strength: 0.5, fit: 0.35, quality: 0.1, price: 0.05 });
+    const rows = weightRows(s);
+    const total = rows.filter((r) => leafKeys.includes(r.key)).reduce((a, r) => a + r.share, 0);
+    expect(total).toBeCloseTo(1, 6);
+    expect(rows.find((r) => r.key === "keyword_match")!.share).toBeCloseTo(0.35 * 0.4 * 0.25, 6);
+  });
+
+  it("the review page lists every unsure match with both sides, and nothing else", () => {
+    const r = engineV2Review();
+    expect(r.unsure.length).toBe(r.count.unsure);
+    expect(r.count.matched + r.count.unsure + r.count.unmatched).toBe(r.count.listings);
+    for (const u of r.unsure) expect(u.candidates.length).toBeGreaterThan(0);
+    expect(r.unsure.map((u) => u.listing.listing_id)).toContain("xa-solido");
   });
 });

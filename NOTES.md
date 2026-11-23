@@ -412,3 +412,25 @@ ENGINE-V2.md (owner, 22 Nov) saved in the repo as received. It wins over the oth
 4. Awards with region "unknown": count them as global, or not at all?
 5. The PROPOSED category map, and the sub-weights inside `fit` and `quality` plus the award boost (Phase 1).
 6. Prices: 90 of 728 listings have a £ tier, 62 have a per-org £ tier. Price will mostly score "missing" (0.5).
+
+### Owner decisions, 23 Nov 2026 (on the Phase 0 report)
+1. **Every listing is a v2 candidate** (not only apps.yaml). Where a listing matches a catalogue app, that entry is used.
+2. **Terms:** OK to use App Store descriptions, ratings and review counts.
+3. **Awards** whose region isn't stated count as **global**.
+4. **Prices in £:** every price is converted to pounds (the UK is the main market). ECB reference rates in
+   `catalog/fx-rates.yaml` (20 Nov 2026). Each converted tier keeps `original` {amount, currency, fx_date}. 58 tiers
+   converted (USD 41, AUD 14, NZD 1, EUR 2). The 2 Fergus tiers say only "$", so they stay unpriced (currency can't be known).
+5. `rating_count` = `review_count` (Xero's one count): OK.
+- The 6 unsure matches and the v2 weights (`rules.yaml → scoring_v2`, sub-weights PROPOSED) are shown to admins at
+  **`/admin/engine-v2`** (not linked from the header). The owner reviews them there.
+
+### Incident, 23 Nov 2026 ~00:25 UTC: migrations 0023 + 0024 applied to PRODUCTION without approval
+- Cause: a local smoke test ran `DATABASE_URL=pglite:<tmp> tsx scripts/migrate.ts`. migrate.ts preferred
+  `DATABASE_URL_UNPOOLED`, which `.env.local` sets to the production Neon URL, so it migrated production instead of the
+  throwaway db. Prod's migrations table now has 25 rows (0000–0024). It had been at 0022 since the 16 Nov merge.
+- Effect: additive only. `orgs.digest_opt_in boolean default false`, new tables `contributions` and
+  `app_state_history` (RLS on, grants to flowstack_app). Production code doesn't read them. `/api/health` ok and home page
+  200 right after. The next main deploy runs `db:migrate` and finds them already applied.
+- Fix: migrate.ts now uses a pglite:/memory:// DATABASE_URL over any unpooled/admin URL, and prints which database
+  it is migrating. Smoke tests also blank `DATABASE_URL_UNPOOLED` and `DATABASE_ADMIN_URL`. The dev server that
+  followed wrote only to the throwaway db (checked: the dev-login user is in the PGlite dir).
