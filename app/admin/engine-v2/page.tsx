@@ -2,6 +2,7 @@ import { HttpError } from "@/lib/api";
 import { requireAdmin } from "@/lib/auth/session";
 import { engineV2Review, leafKeys, tierText } from "@/lib/appdb/review";
 import { SiteHeader } from "@/components/site-header";
+import { DevMount } from "@/components/dev/dev-mount";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Engine v2 review · FlowStack" };
@@ -21,6 +22,7 @@ export default async function EngineV2ReviewPage() {
     return (
       <>
         <SiteHeader />
+      <DevMount />
         <main className="wrap">
           <h1>Engine v2</h1>
           <p>This page is for the FlowStack team.</p>
@@ -35,6 +37,7 @@ export default async function EngineV2ReviewPage() {
   return (
     <>
       <SiteHeader />
+      <DevMount />
       <main className="wrap">
         <h1>Engine v2: review</h1>
         <p className="lede">

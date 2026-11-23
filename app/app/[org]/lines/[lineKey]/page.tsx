@@ -11,6 +11,7 @@ import { QuoteForm } from "@/components/quote-form";
 import { gbp, KIND_LABEL, pct, STATE_LABEL } from "@/lib/ui/format";
 
 import { apps as catalogApps } from "@/lib/catalog/load";
+import { devToolsOn, needsPersonLines } from "@/lib/dev/tools";
 export const dynamic = "force-dynamic";
 
 type Evidence = {
@@ -51,6 +52,8 @@ export default async function LinePage({ params, searchParams }: { params: Promi
   const trend = (l.evidence as { trend?: { key: string; latest: number | null; three_months_ago: number | null; formula: string; series: { end: string; value: number | null }[] } }).trend ?? null;
   const quoteApps = l.recommendations.filter((r) => !r.inUse).map((r) => ({ id: r.app.id, name: r.app.name }));
   const [quotes, situation] = await Promise.all([orgQuotes(org, l.key), quoteApps.length ? situationFor(org, {}) : null]);
+  // ENGINE-V2 §2.2: admins with dev tools see when this line needs a person.
+  const person = (await devToolsOn()) && (l.state === "queued" || (await needsPersonLines(org)).has(l.key));
 
   return (
     <>
@@ -63,6 +66,7 @@ export default async function LinePage({ params, searchParams }: { params: Promi
       </h1>
       <p>
         <span className={`badge b-${l.state}`}>{STATE_LABEL[l.state] ?? l.state}</span>
+        {person ? <span className="needs-person-badge">Needs a person</span> : null}
         {l.section ? <span className="muted small"> · {l.section}</span> : null}
       </p>
       {ev.one_off ? <p className="note small">{ev.one_off.note}</p> : null}

@@ -3,6 +3,7 @@ import { requireAdmin } from "@/lib/auth/session";
 import { testersView } from "@/lib/access";
 import { connectionUse } from "@/lib/me";
 import { SiteHeader } from "@/components/site-header";
+import { DevMount } from "@/components/dev/dev-mount";
 import { PostButton } from "@/components/post-button";
 import { NewCodeForm } from "@/components/new-code-form";
 
@@ -20,6 +21,7 @@ export default async function TestersPage() {
     return (
       <>
         <SiteHeader />
+      <DevMount />
         <main className="wrap">
           <h1>Testers</h1>
           <p>This page is for the FlowStack team.</p>
@@ -31,6 +33,7 @@ export default async function TestersPage() {
   return (
     <>
       <SiteHeader />
+      <DevMount />
       <main className="wrap">
         <h1>Testers</h1>
         <p className="meta">

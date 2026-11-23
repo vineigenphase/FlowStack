@@ -494,3 +494,30 @@ ENGINE-V2.md (owner, 22 Nov) saved in the repo as received. It wins over the oth
   CostTracker (supplier bills) now in the top 5. HireHop stays, because its listing names Hospitality.
 - Xero industries no business of ours maps to yet: Agriculture, Automotive, Education, Property and realty. Apps that
   list only those are excluded for every business (a test pins the list).
+
+### Phase 2: dev tools (23 Nov 2026)
+- **Gate:** `lib/dev/tools.ts devToolsOn()` checks `DEV_TOOLS=true` AND `users.is_admin` in the database on every
+  render. `components/dev/dev-mount.tsx` renders nothing otherwise, so no markup and no data reach customers,
+  testers, /demo guests or the public. Every dev route (`/api/dev/*`, `/api/admin/queue/summary`) checks again and
+  answers 404.
+- **Rail** (`components/dev/dev-tools.tsx`, every `/app/[org]` page and the admin pages): Engine, Review (count +
+  hover list of the 5 oldest, linking to `/admin/queue?item=…#item-…`), Reports, Testers, Debug (new
+  `/admin/debug/[org]`: last 5 refreshes, per-step calls/bytes/errors, v2 row count), Checks (disabled until
+  Phase 4), Weights. The queue summary is polled every 30 s while the tab is visible.
+- **Review box pulse:** 1.6 s glow, amber for normal and red when anything is high priority; the count is always shown.
+  Under `prefers-reduced-motion` it's a steady filled badge.
+- **Engine panel:** frosted glass, docked right, 440 px, resizable 360–720, minimises to a pill ("Engine · v2 ·
+  N flags"). Ctrl/⌘+Shift+E toggles it and Esc minimises. Open state, width and tab are kept in localStorage
+  (try/catch; falls back to minimised). `role="complementary"`; focus moves in on open and back to the rail button on
+  minimise. Tabs: Ranking (stacked bars, excluded under a fold, warnings), Breakdown (formula, parts table with
+  sources, missing highlighted, waterfall), v1 vs v2 (rank moves + main reason), What-if (all 12 weights,
+  re-ranks in the browser, Reset, Copy as YAML, "Experiment: not saved"), Data (record, completeness,
+  description for admins), Queue (this business). Download trace (JSON).
+- **Needs a person:** with dev tools on, the statements and line pages mark queued lines and lines with an open
+  flag_disputed / account_mapping item (accounts resolved to line keys on the server).
+- **Gotcha:** Next's CSS compiler dropped BOTH `backdrop-filter` and `-webkit-backdrop-filter` when the pair was
+  written together. Write only the standard property (prefixes are added). Checked in Chrome: blur applied.
+- **Checked locally** (throwaway PGlite, `DEV_TOOLS=true`, Chrome): rail, pulse, panel tabs, minimise/pill, focus
+  return, no console errors; the trace and summary APIs give 404 without a session.
+- **Owner action:** set `DEV_TOOLS=true` in Vercel (Preview first, Production when wanted). It's off by default, so
+  the deployed site shows nothing until then.
