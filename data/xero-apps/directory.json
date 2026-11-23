@@ -2,8 +2,8 @@
  "version": 1,
  "asOf": "2026-11-18",
  "sources": [
-  "docs/app-catalogue-handoff/csv (workbook 17 Nov 2026)",
-  "docs/app-catalogue-handoff/enrichment_run (public Xero listing pages)"
+  "data/xero-apps/handoff/csv (workbook 17 Nov 2026)",
+  "data/xero-apps/handoff/enrichment_run (public Xero listing pages)"
  ],
  "apps": [
   {
@@ -16033,7 +16033,7 @@
   {
    "id": "xa-cin7-omni",
    "name": "CIN7 Omni",
-   "yamlId": null,
+   "yamlId": "cin7",
    "website": "https://cin7.com",
    "listing": {
     "url": "https://apps.xero.com/uk/app/cin7-omni",
@@ -54048,7 +54048,7 @@
   {
    "id": "xa-nook",
    "name": "Modulr AP",
-   "yamlId": null,
+   "yamlId": "modulr",
    "website": "https://www.modulrfinance.com",
    "listing": {
     "url": "https://apps.xero.com/uk/app/nook",

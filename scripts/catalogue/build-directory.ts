@@ -61,7 +61,7 @@ const quarantinedIds = new Set(quarantined.map((q) => q.record_id));
 
 // ---------- crosswalk to the curated catalogue ----------
 const xwFile = "catalog/directory-crosswalk.yaml";
-const xw = (fs.existsSync(xwFile) ? (parseYaml(fs.readFileSync(xwFile, "utf8")) as { links?: Record<string, string | null> }) : {}).links ?? {};
+const xw = (fs.existsSync(xwFile) ? (parseYaml(fs.readFileSync(xwFile, "utf8")) as { links?: Record<string, string | string[] | null> }) : {}).links ?? {};
 const host = (u: string | null | undefined) => {
   if (!u) return null;
   try {
@@ -75,7 +75,8 @@ const yamlFor = new Map<string, { id: string; how: string }>();
 for (const y of yamlApps()) {
   if (y.id === "xero") continue;
   if (y.id in xw) {
-    if (xw[y.id]) yamlFor.set(xw[y.id]!, { id: y.id, how: "reviewed crosswalk" });
+    // One catalogue app can have several Xero listings (e.g. Cin7 Core and Cin7 Omni; reviewed 23 Nov 2026).
+    for (const l of [xw[y.id]].flat()) if (l) yamlFor.set(l, { id: y.id, how: "reviewed crosswalk" });
     continue;
   }
   const byName = appRows.filter((r) => normName(r.app_name!) === normName(y.name));

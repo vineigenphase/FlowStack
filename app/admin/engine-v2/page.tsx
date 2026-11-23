@@ -74,6 +74,7 @@ export default async function EngineV2ReviewPage() {
           <b>same product</b> or <b>different product</b>. Until then the listing is still a candidate on its own and the catalogue app keeps its own
           entry.
         </p>
+        {r.unsure.length === 0 && <p className="note">All matches have been checked. Nothing to look at here.</p>}
         {r.unsure.map((u) => (
           <section key={u.listing.listing_id} className="card">
             <div className="card-head">
@@ -135,8 +136,8 @@ export default async function EngineV2ReviewPage() {
 
         <h2 id="weights">Weights</h2>
         <p>
-          The top four weights were decided on 9 Nov. The split inside <b>fit</b> and <b>quality</b> is <b>proposed</b> and waiting for your review. A
-          missing input scores {s.neutral} (neutral) and is shown as missing.
+          The top four weights were decided on 9 Nov. The split inside <b>fit</b> and <b>quality</b>: {s.status.sub_weights}. A missing input scores{" "}
+          {s.neutral} (neutral) and is shown as missing.
         </p>
         <pre className="small">
           {`match   = 100 × (strength × ${s.weights.strength} + fit × ${s.weights.fit} + quality × ${s.weights.quality} + price × ${s.weights.price})
@@ -173,7 +174,7 @@ quality = clamp(rating_score × ${s.quality.rating_score} + volume_score × ${s.
                   <td style={{ paddingLeft: w.parent === null ? undefined : w.parent === "fit" || w.parent === "quality" ? 24 : 48 }}>{w.parent === null ? <b>{w.label}</b> : w.label}</td>
                   <td className="num">{w.weight.toFixed(2)}</td>
                   <td className="num">{pct(w.share)}</td>
-                  <td>{w.status === "decided" ? "decided 9 Nov" : <span className="tag">proposed</span>}</td>
+                  <td>{w.status === "proposed" ? <span className="tag">proposed</span> : w.parent === null ? "decided 9 Nov" : "approved 23 Nov"}</td>
                 </tr>
               ))}
             </tbody>

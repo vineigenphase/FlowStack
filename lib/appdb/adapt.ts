@@ -195,10 +195,18 @@ export const FUZZY_UNSURE = 0.8;
 export function matchListing(
   l: Pick<XeroAppListing, "listing_id" | "name" | "website">,
   apps: CatalogueApp[],
-  ctx: { reviewed: Map<string, string | null>; listingsPerHost: Map<string, number>; claimed: Set<string> },
+  ctx: {
+    /** catalogue app id → its reviewed listing id(s); null = checked, no listing. */
+    reviewed: Map<string, string | string[] | null>;
+    /** listing id → catalogue app ids a person said it is NOT. */
+    different?: Map<string, string[]>;
+    listingsPerHost: Map<string, number>;
+    claimed: Set<string>;
+  },
 ): Match {
-  for (const [appId, listingId] of ctx.reviewed) if (listingId === l.listing_id) return { status: "matched", appId, how: "reviewed crosswalk" };
-  const pool = apps.filter((a) => !ctx.reviewed.has(a.id) && !ctx.claimed.has(a.id));
+  for (const [appId, listingIds] of ctx.reviewed) if ([listingIds].flat().includes(l.listing_id)) return { status: "matched", appId, how: "reviewed crosswalk" };
+  const notThese = new Set(ctx.different?.get(l.listing_id) ?? []);
+  const pool = apps.filter((a) => !ctx.reviewed.has(a.id) && !ctx.claimed.has(a.id) && !notThese.has(a.id));
   const h = l.website;
   if (h) {
     const byHost = pool.filter((a) => host(a.website) === h);

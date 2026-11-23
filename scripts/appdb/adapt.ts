@@ -26,7 +26,9 @@ const dir = directory();
 const catMap = parseYaml(fs.readFileSync("catalog/xero-category-map.yaml", "utf8")) as CategoryMap;
 const fnVocab = new Set(Object.keys((parseYaml(fs.readFileSync("catalog/xero-functions.yaml", "utf8")) as { functions: Record<string, unknown> }).functions));
 const fx = parseYaml(fs.readFileSync("catalog/fx-rates.yaml", "utf8")) as FxRates;
-const xw = (parseYaml(fs.readFileSync("catalog/directory-crosswalk.yaml", "utf8")) as { links: Record<string, string | null> }).links;
+const xwFile = parseYaml(fs.readFileSync("catalog/directory-crosswalk.yaml", "utf8")) as { links: Record<string, string | string[] | null>; different?: Record<string, string[]> };
+const xw = xwFile.links;
+const different = new Map(Object.entries(xwFile.different ?? {}));
 const curated = yamlApps().filter((a) => a.id !== "xero");
 const ourCats = appCategories().map((c) => c.key);
 
@@ -52,7 +54,7 @@ accepted.sort((a, b) => a.listing_id.localeCompare(b.listing_id));
 const reviewed = new Map(Object.entries(xw));
 const listingsPerHost = new Map<string, number>();
 for (const l of accepted) if (l.website) bump(listingsPerHost, l.website);
-const raw = new Map<string, Match>(accepted.map((l) => [l.listing_id, matchListing(l, curated, { reviewed, listingsPerHost, claimed: new Set() })]));
+const raw = new Map<string, Match>(accepted.map((l) => [l.listing_id, matchListing(l, curated, { reviewed, different, listingsPerHost, claimed: new Set() })]));
 // One catalogue app matched by two listings: neither is certain.
 const claims = new Map<string, string[]>();
 for (const [lid, m] of raw) if (m.status === "matched") claims.set(m.appId, [...(claims.get(m.appId) ?? []), lid]);

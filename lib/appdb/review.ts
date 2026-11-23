@@ -21,19 +21,20 @@ export type UnsureRow = {
 
 export function weightRows(s: ScoringV2): WeightRow[] {
   const rows: WeightRow[] = [];
+  const sub: WeightRow["status"] = /PROPOSED/i.test(s.status.sub_weights) ? "proposed" : "decided";
   const add = (key: string, label: string, parent: string | null, weight: number, share: number, status: WeightRow["status"]) =>
     rows.push({ key, label, parent, weight, share, status });
   add("strength", "Strength (coverage × materiality)", null, s.weights.strength, s.weights.strength, "decided");
   add("fit", "Fit", null, s.weights.fit, s.weights.fit, "decided");
-  add("integration_fit", "Integration fit with apps kept", "fit", s.fit.integration_fit, s.weights.fit * s.fit.integration_fit, "proposed");
-  add("job_fit", "Job fit", "fit", s.fit.job_fit, s.weights.fit * s.fit.job_fit, "proposed");
+  add("integration_fit", "Integration fit with apps kept", "fit", s.fit.integration_fit, s.weights.fit * s.fit.integration_fit, sub);
+  add("job_fit", "Job fit", "fit", s.fit.job_fit, s.weights.fit * s.fit.job_fit, sub);
   const jf = s.weights.fit * s.fit.job_fit;
-  add("category_match", "Category match", "job_fit", s.job_fit.category_match, jf * s.job_fit.category_match, "proposed");
-  add("function_match", "Xero function match", "job_fit", s.job_fit.function_match, jf * s.job_fit.function_match, "proposed");
-  add("keyword_match", "Keyword match (description)", "job_fit", s.job_fit.keyword_match, jf * s.job_fit.keyword_match, "proposed");
+  add("category_match", "Category match", "job_fit", s.job_fit.category_match, jf * s.job_fit.category_match, sub);
+  add("function_match", "Xero function match", "job_fit", s.job_fit.function_match, jf * s.job_fit.function_match, sub);
+  add("keyword_match", "Keyword match (description)", "job_fit", s.job_fit.keyword_match, jf * s.job_fit.keyword_match, sub);
   add("quality", "Quality", null, s.weights.quality, s.weights.quality, "decided");
-  add("rating_score", "Xero rating (Bayesian)", "quality", s.quality.rating_score, s.weights.quality * s.quality.rating_score, "proposed");
-  add("volume_score", "Review volume", "quality", s.quality.volume_score, s.weights.quality * s.quality.volume_score, "proposed");
+  add("rating_score", "Xero rating (Bayesian)", "quality", s.quality.rating_score, s.weights.quality * s.quality.rating_score, sub);
+  add("volume_score", "Review volume", "quality", s.quality.volume_score, s.weights.quality * s.quality.volume_score, sub);
   add("price", "Price vs revenue", null, s.weights.price, s.weights.price, "decided");
   return rows;
 }

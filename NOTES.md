@@ -434,3 +434,8 @@ ENGINE-V2.md (owner, 22 Nov) saved in the repo as received. It wins over the oth
 - Fix: migrate.ts now uses a pglite:/memory:// DATABASE_URL over any unpooled/admin URL, and prints which database
   it is migrating. Smoke tests also blank `DATABASE_URL_UNPOOLED` and `DATABASE_ADMIN_URL`. The dev server that
   followed wrote only to the throwaway db (checked: the dev-login user is in the PGlite dir).
+- **23 Nov, later: match answers + weights.** Owner: Cin7 Core and Cin7 Omni are both `cin7`; Modulr and Modulr AP
+  ("Nook" on Xero) are both `modulr`; ApprovalMGR ≠ ApprovalMax, Solido ≠ Soldo. `catalog/directory-crosswalk.yaml`
+  now allows a list of listings per catalogue app and has a `different:` section (never asked again). Result: 73 matched,
+  0 unsure, 655 directory-only (all candidates). **Sub-weights in `scoring_v2` APPROVED** (the award boost too). The
+  Xero → FlowStack category map is still PROPOSED.

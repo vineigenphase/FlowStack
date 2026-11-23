@@ -154,13 +154,7 @@
   },
   {
    "listing_id": "xa-approvalmgr",
-   "status": "unsure",
-   "candidates": [
-    {
-     "appId": "approvalmax",
-     "why": "similar name (0.82)"
-    }
-   ]
+   "status": "unmatched"
   },
   {
    "listing_id": "xa-approveit",
@@ -526,23 +520,15 @@
   },
   {
    "listing_id": "xa-cin7-core",
-   "status": "unsure",
-   "candidates": [
-    {
-     "appId": "cin7",
-     "why": "same website (cin7.com), shared by 2 listings"
-    }
-   ]
+   "status": "matched",
+   "appId": "cin7",
+   "how": "reviewed crosswalk"
   },
   {
    "listing_id": "xa-cin7-omni",
-   "status": "unsure",
-   "candidates": [
-    {
-     "appId": "cin7",
-     "why": "same website (cin7.com), shared by 2 listings"
-    }
-   ]
+   "status": "matched",
+   "appId": "cin7",
+   "how": "reviewed crosswalk"
   },
   {
    "listing_id": "xa-circlr",
@@ -1662,13 +1648,9 @@
   },
   {
    "listing_id": "xa-modulr",
-   "status": "unsure",
-   "candidates": [
-    {
-     "appId": "modulr",
-     "why": "same website (modulrfinance.com), shared by 2 listings"
-    }
-   ]
+   "status": "matched",
+   "appId": "modulr",
+   "how": "reviewed crosswalk"
   },
   {
    "listing_id": "xa-mollie",
@@ -1748,13 +1730,9 @@
   },
   {
    "listing_id": "xa-nook",
-   "status": "unsure",
-   "candidates": [
-    {
-     "appId": "modulr",
-     "why": "same website (modulrfinance.com), shared by 2 listings"
-    }
-   ]
+   "status": "matched",
+   "appId": "modulr",
+   "how": "reviewed crosswalk"
   },
   {
    "listing_id": "xa-nucleus-commercial-finance",
@@ -2390,13 +2368,7 @@
   },
   {
    "listing_id": "xa-solido",
-   "status": "unsure",
-   "candidates": [
-    {
-     "appId": "soldo",
-     "why": "similar name (0.83)"
-    }
-   ]
+   "status": "unmatched"
   },
   {
    "listing_id": "xa-sonovate",

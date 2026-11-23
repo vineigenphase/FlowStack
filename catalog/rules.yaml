@@ -21,7 +21,7 @@ scoring:
 #   quality = clamp(rating_score × 0.85 + volume_score × 0.15 + award_boost, 0, 1)
 # A missing input scores `neutral` and is shown as missing. Shown to admins at /admin/engine-v2.
 scoring_v2:
-  status: { weights: "DECIDED 9 Nov 2026", sub_weights: "PROPOSED 22 Nov 2026 (owner to review)" }
+  status: { weights: "DECIDED 9 Nov 2026", sub_weights: "APPROVED by the owner 23 Nov 2026" }
   weights: { strength: 0.50, fit: 0.35, quality: 0.10, price: 0.05 }
   fit: { integration_fit: 0.60, job_fit: 0.40 }
   job_fit: { category_match: 0.40, function_match: 0.35, keyword_match: 0.25 }

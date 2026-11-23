@@ -150,6 +150,22 @@ describe("v2 weights and the admin review page data", () => {
     expect(r.unsure.length).toBe(r.count.unsure);
     expect(r.count.matched + r.count.unsure + r.count.unmatched).toBe(r.count.listings);
     for (const u of r.unsure) expect(u.candidates.length).toBeGreaterThan(0);
-    expect(r.unsure.map((u) => u.listing.listing_id)).toContain("xa-solido");
+    // Owner 23 Nov: Cin7 ×2 and Modulr ×2 are the same apps; ApprovalMGR and Solido are different. Nothing left to check.
+    expect(r.unsure).toEqual([]);
+  });
+});
+
+describe("owner's match answers (23 Nov 2026)", () => {
+  const m = new Map((JSON.parse(fs.readFileSync("data/xero-apps/matches.json", "utf8")) as { matches: { listing_id: string; status: string; appId?: string }[] }).matches.map((x) => [x.listing_id, x]));
+  it("two listings can belong to one catalogue app; a 'different' answer is never asked again", () => {
+    expect(m.get("xa-cin7-core")).toMatchObject({ status: "matched", appId: "cin7" });
+    expect(m.get("xa-cin7-omni")).toMatchObject({ status: "matched", appId: "cin7" });
+    expect(m.get("xa-modulr")).toMatchObject({ status: "matched", appId: "modulr" });
+    expect(m.get("xa-nook")).toMatchObject({ status: "matched", appId: "modulr" });
+    expect(m.get("xa-approvalmgr")!.status).toBe("unmatched");
+    expect(m.get("xa-solido")!.status).toBe("unmatched");
+  });
+  it("sub-weights are approved, so the page no longer marks them proposed", () => {
+    expect(weightRows(rulesFile().scoring_v2!).every((w) => w.status === "decided")).toBe(true);
   });
 });
