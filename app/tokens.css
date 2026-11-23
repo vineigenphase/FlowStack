@@ -1,0 +1,98 @@
+/*
+ * Design tokens: the ONLY file with colour values (a test enforces it). Owner restyle 22 Nov 2026 (ENGINE-V2 Phase 3);
+ * the designer may revise. Light by default; dark only when the user picks it (html[data-theme="dark"], set from the
+ * settings toggle), never from the system setting.
+ */
+:root {
+  color-scheme: light;
+  --bg: #F7F8FA;
+  --surface: #FFFFFF;
+  --surface-2: #F2F4F7;
+  --border: #E4E7EC;
+  --border-strong: #D0D5DD;
+  --text: #101828;
+  --text-2: #344054;
+  --muted: #667085;
+  --primary: #1D4ED8;
+  --primary-soft: #EFF4FF;
+  --on-primary: #FFFFFF;
+  --success: #067647;
+  --success-soft: #ECFDF3;
+  --warning: #B54708;
+  --warning-soft: #FFFAEB;
+  --danger: #B42318;
+  --danger-soft: #FEF3F2;
+  --radius: 8px;
+  --shadow-1: 0 1px 2px rgb(16 24 40 / .06);
+  --shadow-2: 0 8px 24px rgb(16 24 40 / .10);
+  --focus: #1D4ED8;
+
+  /* The dev rail and the stack map's Xero core stay dark in both themes. */
+  --rail: #101828;
+  --rail-ink: #FFFFFF;
+  --rail-line: rgb(255 255 255 / 0.35);
+
+  /* Dev tools (ENGINE-V2 Phase 2) */
+  --glass-bg: rgb(255 255 255 / 0.72);
+  --glass-border: rgb(16 24 40 / 0.08);
+  --glass-shadow: 0 24px 64px rgb(16 24 40 / 0.18), 0 2px 6px rgb(16 24 40 / 0.08);
+  --glass-solid: #FFFFFF;
+  --dev-amber: #B54708;
+  --dev-amber-glow: rgb(247 144 9 / 0.55);
+  --dev-red: #B42318;
+  --dev-red-glow: rgb(240 68 56 / 0.55);
+  --dev-missing-bg: rgb(247 144 9 / 0.08);
+  --seg-strength: #475467;
+  --seg-fit: #1D4ED8;
+  --seg-quality: #067647;
+  --seg-price: #B54708;
+
+  /* Older names, kept so every existing component follows the new palette. */
+  --ink: var(--text);
+  --paper: var(--surface);
+  --line: var(--border);
+  --mark: var(--warning-soft);
+  --mark-ink: var(--warning);
+  --hand: var(--warning);
+  --ok: var(--success);
+  --err: var(--danger);
+
+  --font-d: var(--font-sans), system-ui, sans-serif;
+  --font-b: var(--font-sans), system-ui, sans-serif;
+  --font-m: var(--font-mono), ui-monospace, monospace;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0B1220;
+  --surface: #111827;
+  --surface-2: #1F2937;
+  --border: #273244;
+  --border-strong: #3B4656;
+  --text: #F2F4F7;
+  --text-2: #D0D5DD;
+  --muted: #98A2B3;
+  --primary: #7CA7FF;
+  --primary-soft: #172554;
+  --on-primary: #0B1220;
+  --success: #4ADE80;
+  --success-soft: #0B2A1A;
+  --warning: #FDB022;
+  --warning-soft: #33250A;
+  --danger: #F97066;
+  --danger-soft: #3A1210;
+  --shadow-1: 0 1px 2px rgb(0 0 0 / .4);
+  --shadow-2: 0 8px 24px rgb(0 0 0 / .5);
+  --focus: #7CA7FF;
+  --rail: #030712;
+
+  --glass-bg: rgb(17 24 39 / 0.62);
+  --glass-border: rgb(255 255 255 / 0.08);
+  --glass-solid: #111827;
+  --dev-amber: #FDB022;
+  --dev-red: #F97066;
+  --seg-strength: #98A2B3;
+  --seg-fit: #7CA7FF;
+  --seg-quality: #4ADE80;
+  --seg-price: #FDB022;
+}

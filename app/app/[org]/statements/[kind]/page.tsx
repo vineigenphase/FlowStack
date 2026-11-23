@@ -91,7 +91,7 @@ export default async function StatementPage({ params }: { params: Promise<{ org:
                     <td>
                       {linked ? <Link href={lineHref(org, l.key)}>{l.name}</Link> : l.name}
                       {person ? <span className="needs-person-badge">Needs a person</span> : null}
-                      {l.code ? <span className="muted small"> {l.code}</span> : null}
+                      {l.code ? <span className="muted small code"> {l.code}</span> : null}
                     </td>
                     <td className="r num">{gbp(l.value)}</td>
                     <td className="r num muted hide-sm">{pct(l.share)}</td>

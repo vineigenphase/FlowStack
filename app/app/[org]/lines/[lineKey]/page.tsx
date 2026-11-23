@@ -62,7 +62,7 @@ export default async function LinePage({ params, searchParams }: { params: Promi
       </p>
       <h1>
         {l.name}
-        {l.code ? <span className="muted"> {l.code}</span> : null}
+        {l.code ? <span className="muted code"> {l.code}</span> : null}
       </h1>
       <p>
         <span className={`badge b-${l.state}`}>{STATE_LABEL[l.state] ?? l.state}</span>

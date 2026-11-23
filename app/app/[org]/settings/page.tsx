@@ -2,6 +2,7 @@ import { peerPricesEnabled } from "@/lib/prices";
 import { guestOn, requireOrgMember } from "@/lib/auth/session";
 import { getSettings, INDUSTRIES } from "@/lib/orgs/settings";
 import { SettingsForm } from "@/components/settings-form";
+import { ThemeToggle } from "@/components/theme-toggle";
 import Link from "next/link";
 import { subscriptionOf } from "@/lib/api/contract";
 
@@ -30,6 +31,8 @@ export default async function SettingsPage({ params }: { params: Promise<{ org: 
       <h1>Settings</h1>
       <p className="meta">Your industry and markets decide which apps we suggest.</p>
       <SettingsForm org={org} industries={[...INDUSTRIES]} initial={s} peerPrices={peerPricesEnabled()} />
+      <h2>Appearance</h2>
+      <ThemeToggle />
 
       <h2>Billing</h2>
       {tester ? <p>You&apos;re a design partner: free, with full access, until launch. Thank you.</p> : null}

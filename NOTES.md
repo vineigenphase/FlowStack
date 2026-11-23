@@ -521,3 +521,23 @@ ENGINE-V2.md (owner, 22 Nov) saved in the repo as received. It wins over the oth
   return, no console errors; the trace and summary APIs give 404 without a session.
 - **Owner action:** set `DEV_TOOLS=true` in Vercel (Preview first, Production when wanted). It's off by default, so
   the deployed site shows nothing until then.
+
+### Phase 3: cleaner, corporate look (23 Nov 2026)
+- **Tokens only:** `app/tokens.css` is the only file with colour values (`tests/theme.test.ts` fails on any hex or
+  rgb() literal elsewhere in app/ or components/). The light tokens are exactly ENGINE-V2's. Dark values are mine
+  (proposed) and also pass the test's WCAG AA checks (4.5:1): text, muted, links, buttons, the three status tags and
+  text on the glass panel, in both themes. Old token names (`--ink`, `--paper`, `--mark`, `--hand`, …) are aliases,
+  so every existing component follows the new palette; the old light grey `--surface` is now `--surface-2`.
+- **Shared components restyled:** white header with a shadow and primary-blue selected tab; primary buttons; cards,
+  stat tiles, totals, statement tables, notes and directory tiles on `--surface` with border, shadow and 8 px radius;
+  24 px grid gaps; max width 1200; tables with 44 px rows and a sticky header; status tags as soft pills ("Look at
+  this" warning-soft, "Covered" success-soft, "Fine" neutral, "Checking" warning outline); the £ at stake and `.mark`
+  in primary blue (no highlighter).
+- **Type:** Inter (variable, next/font) for headings and body with `tnum`/`cv11` on figures; IBM Plex Mono only for
+  account codes (`.code`) and IDs. Archivo and Instrument Sans removed. Scale as specified.
+- **Theme:** light by default; dark only via Settings → Appearance (`components/theme-toggle.tsx`, saved in
+  localStorage `fs-theme`, applied before first paint by an inline script in app/layout.tsx; no cookies, so pages
+  aren't made dynamic). No `prefers-color-scheme` anywhere (test). The e2e dark run now sets `fs-theme`.
+- CLAUDE.md §1 updated ("Owner restyle 22 Nov 2026; designer may revise"), with the old system kept for reference.
+- **Not done:** axe isn't installed (adding it means a new dev dependency), so the contrast checks are computed from
+  the tokens in a unit test instead. Page-specific layouts weren't redesigned (designer's job).

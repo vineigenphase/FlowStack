@@ -46,7 +46,7 @@ export default async function DigestPreview({ params }: { params: Promise<{ org:
             <p>
               Subject: <b>{d.subject}</b>
             </p>
-            <iframe title="Digest email" srcDoc={d.html} sandbox="" style={{ width: "100%", height: 640, border: "1px solid var(--line)", background: "#fff" }} />
+            <iframe title="Digest email" srcDoc={d.html} sandbox="" style={{ width: "100%", height: 640, border: "1px solid var(--line)", background: "var(--surface)" }} />
             <h2>Plain-text version</h2>
             <pre style={{ whiteSpace: "pre-wrap" }}>{d.text}</pre>
           </>
