@@ -42,6 +42,10 @@ export const Rule = z.object({
   statements: z.array(z.enum(["pl", "bs", "cf", "trend"])).default(["pl", "bs", "cf"]),
   min_value_gbp: z.number().default(0),
   cause: z.string().optional(),
+  /** ENGINE-V2 §1.2: ranking inputs only (never flagging). Xero function names (catalog/xero-functions.yaml) and description keywords. */
+  required_functions: z.array(z.string()).default([]),
+  helpful_functions: z.array(z.string()).default([]),
+  keywords: z.array(z.string()).default([]),
 });
 export type Rule = z.infer<typeof Rule>;
 
@@ -53,15 +57,16 @@ export const Scoring = z.object({
 export type Scoring = z.infer<typeof Scoring>;
 
 /** ENGINE-V2 §1.1 (22 Nov 2026). Top-level weights DECIDED 9 Nov; everything inside fit and quality is PROPOSED. */
-const W = z.record(z.string(), z.number().min(0).max(1));
+const P = z.number().min(0).max(1);
+const W = z.record(z.string(), P);
 export const ScoringV2 = z.object({
   status: z.object({ weights: z.string(), sub_weights: z.string() }),
-  weights: z.object({ strength: z.number(), fit: z.number(), quality: z.number(), price: z.number() }),
-  fit: z.object({ integration_fit: z.number(), job_fit: z.number() }),
-  job_fit: z.object({ category_match: z.number(), function_match: z.number(), keyword_match: z.number() }),
-  category_match: z.object({ covered_by: z.number(), app_categories_only: z.number() }),
-  function_match: z.object({ helpful_factor: z.number() }),
-  quality: z.object({ rating_score: z.number(), volume_score: z.number() }),
+  weights: z.object({ strength: P, fit: P, quality: P, price: P }),
+  fit: z.object({ integration_fit: P, job_fit: P }),
+  job_fit: z.object({ category_match: P, function_match: P, keyword_match: P }),
+  category_match: z.object({ covered_by: P, app_categories_only: P }),
+  function_match: z.object({ helpful_factor: P }),
+  quality: z.object({ rating_score: P, volume_score: P }),
   rating_prior_count: z.number().int().positive(),
   award_boost: z.object({ winner: z.number(), finalist: z.number(), half_life_years: z.number().positive(), cap: z.number() }),
   price: z.object({ price_share_good: z.number(), price_share_bad: z.number() }),

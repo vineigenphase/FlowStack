@@ -439,3 +439,42 @@ ENGINE-V2.md (owner, 22 Nov) saved in the repo as received. It wins over the oth
   now allows a list of listings per catalogue app and has a `different:` section (never asked again). Result: 73 matched,
   0 unsure, 655 directory-only (all candidates). **Sub-weights in `scoring_v2` APPROVED** (the award boost too). The
   Xero → FlowStack category map is still PROPOSED.
+
+### Phase 1: engine v2 in shadow (23 Nov 2026)
+- **Built:** `lib/rank/v2/` has one pure file per input (integration-fit, category-match, function-match,
+  keyword-match (BM25), rating (Bayesian), volume, awards, price), plus `score.ts` (match, parts, formula, tie-break),
+  `trace.ts` (EngineTrace, v1/v2 traces, what-if overrides), `run.ts` (shadow ranking of v1's flags), `apps.ts`
+  (pool) and `dev.ts` (trace API + gate). `catalog/rules.yaml`: `scoring_v2` and per-rule `required_functions` /
+  `helpful_functions` / `keywords` (ranking only; rule versions not bumped because flagging is unchanged).
+- **Shadow mode:** `lib/signals/run.ts` ranks every flagged and covered line with v2 after v1 and writes
+  `recommendations_v2` (top 10 + the app in use, parts + warnings in `components`). A v2 error is logged and returned
+  in the step result; it never fails the refresh. Customers still see v1 (`ENGINE_VERSION=v1`; only v1 is wired for
+  customers until Phase 5). v2 reads v1's flags and never changes them (tests: input unchanged, eval unchanged).
+- **Catalogue gaps:** a flagged line with < 3 candidates (not counting the app in use) gets a warning, plus a
+  `catalog_gap` queue item per (rule, categories, markets), written after the tenant transaction. Today only
+  month_end is thin (`pnpm engine:coverage`).
+- **API:** `GET /api/dev/engine/:org/:lineKey?engine=v1|v2&weights=<json>`, 404 unless `DEV_TOOLS=true` and the user is
+  an admin (DB check). v2 is recomputed on request; v1 is read from `recommendations`.
+- **Migration 0025** (read before committing): `recommendations_v2` (RLS tenant isolation, app-role CRUD) and
+  `xero_app_listings` (global, SELECT for the app role). Additive only. `pnpm appdb:load` fills the table and refuses
+  a non-local database without `--remote-confirmed`. The engine reads the versioned file, so no prod load is needed.
+  0025 reaches production when the owner next merges to main (Vercel runs db:migrate).
+- **Pool:** 739 apps (84 catalogue + 655 directory-only). A catalogue app keeps its own categories, markets and
+  edges, with its listing attached (Cin7: the listing with most reviews; functions are the union).
+- **Choices / deviations:**
+  - **Integration fit for directory apps = "none" (0.3), not missing (0.5).** Catalogue "none" means "no known edge",
+    not "checked and absent". Scoring unchecked apps 0.5 put every one of them 4.2 points ahead of catalogue apps.
+    Chaser was #53 of 235 for receivables on the sample business; it's #3 after the change.
+  - Unknown markets (14 apps, no listing read) are kept and flagged in the warnings, not excluded.
+  - Price: the cheapest paid tier that can be costed (per business; per user only with headcount, which orgs don't
+    have yet), else a free plan. Usage-priced and quote-only tiers → missing.
+  - Rating mean C = mean of the rated candidates for the line. Review volume: 0 reviews is a known 0, not missing.
+- **Open (owner):**
+  1. v2 has **no industry input**. A car-dealer app (MotorDesk) and an equipment-rental app (HireHop) reach the top 5 for
+     a hospitality business's stock line. CLAUDE.md §7.3 has industry exclusions; listings carry Xero's industries
+     (dropped from the canonical schema). Proposal: add `industries` to the listing and either exclude on a clear
+     mismatch or add an industry_fit part.
+  2. Price "not published" (0.5) vs a cheap published price (1.0) favours small apps with public price lists over
+     well-known quote-only ones (Chaser). Small at 5%, but visible.
+  3. Small-sample apps (5.0 from 12 reviews) still sit near the top. The prior (20 at the set mean) is working; a
+     bigger prior would push them down.
