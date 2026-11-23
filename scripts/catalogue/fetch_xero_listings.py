@@ -12,8 +12,8 @@ Writes, per run, to --out:
   fetch_log.csv              slug, HTTP status, parsed?, checked_at
 Resumable: a slug whose raw/<slug>.json exists is skipped unless --refetch.
 
-Usage: python scripts/catalogue/fetch_xero_listings.py --apps docs/app-catalogue-handoff/csv/apps.csv \
-         --out docs/app-catalogue-handoff/enrichment_run [--limit N] [--delay 1.0]
+Usage: python scripts/catalogue/fetch_xero_listings.py --apps data/xero-apps/handoff/csv/apps.csv \
+         --out data/xero-apps/handoff/enrichment_run [--limit N] [--delay 1.0]
 """
 import argparse, csv, datetime, json, os, time, urllib.error, urllib.request
 

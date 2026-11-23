@@ -1,0 +1,36 @@
+# ENGINE-V2 Phase 0: Xero App Store category (as Xero labels it on the listing) → FlowStack app categories
+# (catalog/app-categories.yaml). Many-to-many. [] = never a finance-gap candidate on that category alone.
+# Typed by hand 22 Nov 2026 from the 21 categories seen on the 714 listings read (data/xero-apps/directory.json),
+# starting from the reviewed 18 Nov function links (branch catalogue-engine, catalog/xero-links.yaml).
+# PROPOSED: owner to review. Any label on a listing that isn't here is listed in docs/appdb-import-report.md.
+#
+# Changes from the 18 Nov links, because v2 has no jobs-to-be-done step to add spend/forecasting/FP&A later:
+#   "Bills and expenses" also → spend_payables; "Payments" also → spend_payables and fx_banking;
+#   "Reporting and forecasting" also → cash_forecasting, fpa, consolidation.
+# Xero files rota and timesheet apps under both "Payroll HR" and "Time tracking": that pair is a rota app (combos).
+
+categories:
+  Payroll HR: [payroll]
+  Time tracking: [rota]
+  Bills and expenses: [data_capture, spend_payables]
+  Documents: [data_capture]
+  Convert data to Xero: []
+  Invoicing and jobs: [billing_receivables, job_project]
+  Debtor management: [billing_receivables]
+  Payments: [billing_receivables, spend_payables, fx_banking]
+  Ecommerce: [epos_ecommerce]
+  Point of sale: [epos_ecommerce]
+  Inventory: [inventory]
+  Reporting and forecasting: [management_reporting, cash_forecasting, fpa, consolidation]
+  Tax and compliance: [compliance]
+  Loans, financing and credit: []
+  Accountant tools: []
+  Practice manager: []
+  CRM and marketing: []
+  Workflow builders: []
+  Development partners: []
+  Carbon accounting: []
+  Other: []
+
+combos:
+  - { all: [Payroll HR, Time tracking], drop: [payroll], add: [rota] }

@@ -1,16 +1,16 @@
 /**
- * Builds catalog/directory.json (the app directory database) from:
- *   docs/app-catalogue-handoff/csv/{apps,pricing_tiers_norm,app_awards,fs_mappings}.csv   (reviewed workbook tables)
- *   docs/app-catalogue-handoff/enrichment_run/raw/<slug>.json + fetch_log.csv           (public Xero listing pages)
+ * Builds data/xero-apps/directory.json (the app directory database) from:
+ *   data/xero-apps/handoff/csv/{apps,pricing_tiers_norm,app_awards,fs_mappings}.csv   (reviewed workbook tables)
+ *   data/xero-apps/handoff/enrichment_run/raw/<slug>.json + fetch_log.csv           (public Xero listing pages)
  *   catalog/directory-crosswalk.yaml                                                    (reviewed links to catalog/apps.yaml)
  *
  * Idempotent: keyed on the reviewed app id; output sorted; no build timestamp, so the same inputs give the same
- * bytes and a second run changes nothing. Quarantined rows (docs/app-catalogue-handoff/quarantine/) are never
+ * bytes and a second run changes nothing. Quarantined rows (data/xero-apps/handoff/quarantine/) are never
  * imported. Every run writes docs/catalogue/directory-import-report.md (counts, problems, changes vs the last build).
  *
  *   npx tsx scripts/catalogue/build-directory.ts            build + report
- *   npx tsx scripts/catalogue/build-directory.ts --dry-run  report only; catalog/directory.json untouched
- * Rollback: git checkout catalog/directory.json (the file is versioned; nothing else is written).
+ *   npx tsx scripts/catalogue/build-directory.ts --dry-run  report only; data/xero-apps/directory.json untouched
+ * Rollback: git checkout data/xero-apps/directory.json (the file is versioned; nothing else is written).
  */
 import fs from "node:fs";
 import path from "node:path";
@@ -19,9 +19,9 @@ import { parseCsv } from "@/lib/eval/review";
 import { apps as yamlApps } from "@/lib/catalog/load";
 import { DirectoryFile, type DirApp, type DirTier } from "@/lib/catalog/xero-directory";
 
-const H = "docs/app-catalogue-handoff";
+const H = "data/xero-apps/handoff";
 const RAW = `${H}/enrichment_run/raw`;
-const OUT = "catalog/directory.json";
+const OUT = "data/xero-apps/directory.json";
 const REPORT = "docs/catalogue/directory-import-report.md";
 const dry = process.argv.includes("--dry-run");
 
@@ -234,7 +234,7 @@ const statusCount = (s: string) => count((a) => a.listing.status === s);
 const report = [
   `# Directory import report`,
   ``,
-  `${dry ? "**Dry run**: catalog/directory.json not written." : "Written: catalog/directory.json."} Listing data as of ${file.asOf}.`,
+  `${dry ? "**Dry run**: data/xero-apps/directory.json not written." : "Written: data/xero-apps/directory.json."} Listing data as of ${file.asOf}.`,
   ``,
   `| | count |`,
   `|---|---|`,

@@ -367,3 +367,48 @@ Also fixed (found while testing): the route error log kept the stack minus its f
 **P2.13 monthly digest (3d):** `orgs.digest_opt_in` (migration 0023, default off; settings checkbox "Monthly email", audited `digest.on/off`; the contract `digestOptIn` now reads and writes it). `lib/digest` composes one email per business from the summary read model — lede (£ at stake, flagged lines, period), "Needs you" (connection/refresh/payment banners), the 3 biggest flagged lines, flagged trends, app questions (lapsing/replacement), Open FlowStack, and an off link — as HTML (inline styles, escaped) and plain text. Template only, no LLM, no transactions. Send date = billing date (subscription current period end) − 7 days; no paid subscription (design partners, no plan) → no send date. `/admin/digest/[org]` previews it (sandboxed iframe + text) with opt-in and send date. **Nothing is sent**: no provider chosen; `RESEND_API_KEY` is only noted in .env.example. When one is chosen: a nightly cron sends to opted-in businesses whose send date is today (to whom: members of the org — decide whether all members or only the person who connected).
 
 **P2.14 tables (migration 0024):** `app_state_history` (tenant table, RLS + flowstack_app SELECT/INSERT): detection records each app whose lifecycle state differs from the last run (appeared: from null; gone: to null), since detected_apps is rewritten every run. Pure `stateChanges` in lib/detect. `contributions` (owner-only, RLS on, no app-role grant): user id, org (set null if the business is deleted), kind (review / app_answer / flag_feedback / missing_app / integration_edge / fact_correction), ref id, status pending/approved/rejected. Nothing writes contributions or grants rewards: the model and the threshold of 5 are still with the founders (NEXT-STEPS §6.4).
+
+## Engine v2 build log (22 Nov 2026, branch `engine-v2` off dev 09b5f32, not merged)
+
+ENGINE-V2.md (owner, 22 Nov) saved in the repo as received. It wins over the other specs on its items.
+
+### Phase 0: app database (done; stopped for the owner's review of `docs/appdb-import-report.md`)
+- **What the database is:** the owner's catalogue handoff (17 Nov workbook) plus the 723 public Xero listing pages read on
+  18 Nov. ENGINE-V2 §0.1 says "it isn't in the repo yet" because that work sat on the unpushed `catalogue-engine` branch.
+  The handoff zip re-sent on 22 Nov is byte-identical. Commit 3d43d4b (data only: handoff, `build-directory.ts`, the
+  directory) was cherry-picked onto `engine-v2`, then moved to `data/xero-apps/` (handoff → `handoff/`,
+  `catalog/directory.json` → `data/xero-apps/directory.json`) with `SOURCE.md`. Listing raw pages stay local and gitignored.
+  The rest of `catalogue-engine` (chain, xero-links, its engine) was **not** brought over: Phase 1 builds v2 as specified.
+  Its useful parts (chain, Bayesian rating, price comparability rules) can be reused there.
+- **Adapter:** `pnpm appdb:adapt` (`scripts/appdb/adapt.ts`, `lib/appdb/{schema,adapt}.ts`) → `data/xero-apps/listings.json`
+  (canonical shape, Zod) + `docs/appdb-import-report.md`. Idempotent, `--dry-run`, no DB writes. Result: 728 read, 728
+  accepted, 0 rejected. Left out with reasons, never filled: 44 tiers with no billing period (mostly quote/custom
+  plans), 6 trial tiers, 2 per-transaction tiers, 6 vendor award claims.
+- **Choices (deviations to confirm):**
+  - `price_gbp` only when the vendor states £. USD/AUD/EUR and currency-unknown tiers keep `price_gbp: null`, never converted.
+  - `rating_count` = `review_count` = Xero's one count. 0 reviews → `rating_avg: null`.
+  - Awards: official Xero records only (15, all "Xero Global App Awards 2025, winner"). The source doesn't say which
+    regional category, so `region: "unknown"`. Under §1.2 ("business's region or global") they would count for no one
+    until the owner says how to treat them.
+  - `xero_categories` = the listing's App Store categories. `xero_functions` = the listing's data-flow objects (28 names,
+    Xero's own spelling, `catalog/xero-functions.yaml`). ENGINE-V2's examples "Payroll"/"Inventory" aren't Xero object names.
+  - `catalog/xero-category-map.yaml` (PROPOSED) starts from the reviewed 18 Nov function links. It widens "Bills and
+    expenses", "Payments" and "Reporting and forecasting", since v2 has no jobs-to-be-done step.
+  - Matching: the reviewed crosswalk (`catalog/directory-crosswalk.yaml`) goes before website/name/fuzzy. A domain
+    shared by two listings, or one app claimed twice, is unsure. 69 matched, 6 unsure (Cin7 ×2, Modulr ×2, ApprovalMGR,
+    Solido). `appdb_match` queue items are created in Phase 1 with the table load (review_queue.kind is free text,
+    so no enum change is needed).
+- **Biggest finding:** §0.3 makes only `catalog/apps.yaml` apps candidates ("don't auto-create"). That leaves 653 of
+  728 listings out of v2 until a person adds them. Example: UK payroll has 25 listings, 5 catalogue apps; compliance
+  has 20 listings, 1 catalogue app. Owner to decide (below).
+
+### Waiting on owner (Engine v2)
+1. **Terms check:** OK to use App Store descriptions, ratings and review counts under Xero's App Store terms? Until then,
+   descriptions are used only for keyword matching and the admin panel; ratings are shown only as numbers attributed
+   "Xero App Store, captured <date>"; no review text (none was collected).
+2. **Candidates:** keep v2 to apps.yaml (and add apps by hand with `sample: true`), or let matched-or-not listings be
+   candidates directly? Note that `sample: true` on real vendors would put a "sample" label on real data.
+3. The 6 unsure matches (report §2).
+4. Awards with region "unknown": count them as global, or not at all?
+5. The PROPOSED category map, and the sub-weights inside `fit` and `quality` plus the award boost (Phase 1).
+6. Prices: 90 of 728 listings have a £ tier, 62 have a per-org £ tier. Price will mostly score "missing" (0.5).

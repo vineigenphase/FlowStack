@@ -1,0 +1,36 @@
+# ENGINE-V2 Phase 0: vocabulary of Xero functions, i.e. the Xero API objects an app reads or writes, exactly as the
+# listing's "data flow" section names them (28 seen on the 714 listings read, 22 Nov 2026).
+# Rules in rules.yaml (Phase 1: required_functions / helpful_functions) must use these names; a test checks it.
+# flow on the listing: in = the app writes it into Xero, out = the app reads it from Xero, exchange = both.
+# ENGINE-V2.md's examples "Payroll" and "Inventory" aren't Xero object names: the closest are PayRuns/PayItems/Timesheets
+# and Items/Purchase Orders. Typed by hand from the data; any name on a listing that isn't here is reported.
+
+functions:
+  Accounts: { label: Chart of accounts }
+  Bank Transactions: { label: Bank transactions }
+  Bank Transfers: { label: Bank transfers }
+  Branding Themes: { label: Branding themes }
+  Budgets: { label: Budgets }
+  Contacts: { label: Contacts }
+  Credit Notes: { label: Credit notes }
+  Currencies: { label: Currencies }
+  Employees: { label: Employees }
+  Invoices: { label: Invoices and bills }
+  Items: { label: Items (stock) }
+  Journals: { label: Journals }
+  Linked Transactions: { label: Linked transactions }
+  Manual Journals: { label: Manual journals }
+  Overpayments: { label: Overpayments }
+  PayItems: { label: Pay items }
+  PayRuns: { label: Pay runs }
+  Payment Services: { label: Payment services }
+  Payments: { label: Payments }
+  Prepayments: { label: Prepayments }
+  Purchase Orders: { label: Purchase orders }
+  Quotes: { label: Quotes }
+  Receipts: { label: Receipts }
+  Reports: { label: Reports }
+  Tax Rates: { label: Tax rates }
+  Timesheets: { label: Timesheets }
+  Tracking Categories: { label: Tracking categories }
+  Users: { label: Users }

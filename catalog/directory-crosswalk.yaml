@@ -1,4 +1,4 @@
-# Reviewed links from catalog/apps.yaml (curated id) → catalog/directory.json (directory id).
+# Reviewed links from catalog/apps.yaml (curated id) → data/xero-apps/directory.json (directory id).
 # Only needed where the build can't match one-to-one by exact name or website (scripts/catalogue/build-directory.ts).
 # null = checked: the app has no Xero UK App Store listing in the workbook, so it stays curated-only.
 # Source: workbook App List (17 Nov 2026) and each app's Xero listing URL. Reviewed 18 Nov 2026.

@@ -1,6 +1,6 @@
 /**
- * The app directory database (catalog/directory.json), built by scripts/catalogue/build-directory.ts from the
- * reviewed workbook (docs/app-catalogue-handoff/) and the public Xero App Store listing pages.
+ * The app directory database (data/xero-apps/directory.json), built by scripts/catalogue/build-directory.ts from the
+ * reviewed workbook (data/xero-apps/handoff/) and the public Xero App Store listing pages.
  *
  * Rules (owner brief + handoff, 17–18 Nov 2026):
  * - Identity is `id` (the reviewed crosswalk id, `xa-<listing slug>` / `ext-<name>`), never the name: names collide
@@ -103,14 +103,14 @@ export const DirectoryFile = z.object({
 export type DirectoryFile = z.infer<typeof DirectoryFile>;
 
 let cache: DirectoryFile | null = null;
-const FILE = () => path.resolve(process.cwd(), "catalog", "directory.json");
+const FILE = () => path.resolve(process.cwd(), "data", "xero-apps", "directory.json");
 
 /** The directory; an empty one when the file hasn't been built (engine falls back to the curated catalogue only). */
 export function directory(): DirectoryFile {
   if (cache) return cache;
   if (!fs.existsSync(FILE())) return (cache = { version: 1, asOf: "", sources: [], apps: [] });
   const res = DirectoryFile.safeParse(JSON.parse(fs.readFileSync(FILE(), "utf8")));
-  if (!res.success) throw new Error(`catalog/directory.json is invalid: ${z.prettifyError(res.error)}`);
+  if (!res.success) throw new Error(`data/xero-apps/directory.json is invalid: ${z.prettifyError(res.error)}`);
   return (cache = res.data);
 }
 
