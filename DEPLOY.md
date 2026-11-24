@@ -38,7 +38,7 @@ Add these for **Preview** and **Production** (`vercel env add NAME preview` / `p
 | `TOKEN_ENC_KEY` | `openssl rand -base64 32` — **different per environment; losing it means everyone reconnects** |
 | `SESSION_SECRET` | `openssl rand -base64 48` |
 | `CRON_SECRET` | `openssl rand -hex 24` (Vercel Cron sends it as `Authorization: Bearer …`) |
-| `ADMIN_EMAILS` | `svinujan10@gmail.com` (+ Luke) |
+| `ADMIN_EMAILS` | the admin emails, comma-separated (set in Vercel; checked live on every /admin page) |
 | `LLM_ENABLED` | `false` (or `true` + `ANTHROPIC_API_KEY`) |
 | `TAVILY_API_KEY` | needed for JS-rendered pricing pages (see NOTES.md, live crawl) |
 | `SENTRY_DSN` | optional |

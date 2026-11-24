@@ -545,3 +545,8 @@ ENGINE-V2.md (owner, 22 Nov) saved in the repo as received. It wins over the oth
   flagged line's page and v1/v2 traces) as full URLs for the current site, with Copy and Copy all. The same lists
   appear on the Debug and Review queue pages (admin branch only, tested), and the rail has a "Links" item.
   `/admin/engine-v2` now spells out the price score step by step, with worked examples calculated from rules.yaml.
+
+### Admin sign-in (24 Nov 2026)
+- `/admin` is the front door: admins go to `/admin/links`; anyone else gets "Sign in with Xero", which returns to the page they came from (`?next=`, same-site paths only, carried in the OAuth cookie). Every `/admin/*` page shows the same block instead of a dead end; a signed-in non-admin sees which email they're on.
+- `requireAdmin` also checks `ADMIN_EMAILS` live, so a new admin email works without reconnecting Xero. The list itself lives only in Vercel (Production + Preview), not in the repo.
+- Sign-in is still Xero-only: an admin needs a Xero login under that email with at least one organisation (the free Demo Company counts). Preview has no Xero app keys, so sign-in only works on production until XERO_CLIENT_ID/SECRET and a preview redirect URI are added there.

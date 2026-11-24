@@ -4,6 +4,7 @@ import { env } from "@/lib/env";
 import { getOAuthState } from "@/lib/auth/session";
 import { authorizeUrl, newPkce } from "@/lib/xero/oauth";
 import { connectionUse } from "@/lib/me";
+import { safeNext } from "@/lib/ui/signin";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +24,8 @@ export const GET = handle(async (req: NextRequest) => {
   // NEXT-STEPS P0.5: an invite code typed on /connect rides along to the callback (checked there, after sign-in).
   const invite = new URL(req.url).searchParams.get("invite")?.trim();
   s.invite = invite ? invite.slice(0, 40) : undefined;
+  // Where to land after sign-in (e.g. an /admin page). Same-site paths only.
+  s.next = safeNext(new URL(req.url).searchParams.get("next"));
   await s.save();
   return NextResponse.redirect(authorizeUrl(p));
 });

@@ -3,13 +3,13 @@ import { getIronSession, type SessionOptions } from "iron-session";
 import { and, eq } from "drizzle-orm";
 import { firmMembers, firmOrgs, orgMembers, users } from "@/db/schema";
 import { adminDb } from "@/lib/db/client";
-import { env } from "@/lib/env";
+import { adminEmails, env } from "@/lib/env";
 import { HttpError } from "@/lib/api";
 import { guestReader, type GuestSession, type Reader } from "@/lib/demo";
 
 /** activeOrgId: the business last switched to (v1.1 I). Every data route still checks membership itself. */
 export type SessionData = { userId?: string; email?: string; isAdmin?: boolean; activeOrgId?: string } & GuestSession;
-export type OAuthState = { verifier?: string; state?: string; invite?: string };
+export type OAuthState = { verifier?: string; state?: string; invite?: string; next?: string };
 
 const base = (): Omit<SessionOptions, "cookieName"> => ({
   password: env().SESSION_SECRET,
@@ -91,7 +91,8 @@ async function isMemberOf(userId: string, orgId: string) {
 export async function requireAdmin() {
   const u = await requireUser();
   const db = await adminDb();
-  const [row] = await db.select({ isAdmin: users.isAdmin }).from(users).where(eq(users.id, u.userId));
-  if (!row?.isAdmin) throw new HttpError(403, "Admins only");
+  const [row] = await db.select({ isAdmin: users.isAdmin, email: users.email }).from(users).where(eq(users.id, u.userId));
+  // ADMIN_EMAILS is checked live, so adding an email takes effect without that person reconnecting Xero.
+  if (!row?.isAdmin && !(row && adminEmails().includes(row.email.toLowerCase()))) throw new HttpError(403, "Admins only");
   return u;
 }

@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/site-header";
 import { DevMount } from "@/components/dev/dev-mount";
 import { PostButton } from "@/components/post-button";
 import { NewCodeForm } from "@/components/new-code-form";
+import { AdminSignIn } from "@/components/admin-sign-in";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Testers · FlowStack" };
@@ -24,7 +25,7 @@ export default async function TestersPage() {
       <DevMount />
         <main className="wrap">
           <h1>Testers</h1>
-          <p>This page is for the FlowStack team.</p>
+          <AdminSignIn next="/admin/testers" />
         </main>
       </>
     );
