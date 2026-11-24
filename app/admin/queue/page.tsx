@@ -8,6 +8,7 @@ import { DevMount } from "@/components/dev/dev-mount";
 import { DevLinks } from "@/components/dev/dev-links";
 import { generalLinks, SITES } from "@/lib/dev/links";
 import { QueueActions } from "@/components/queue-actions";
+import { AdminSignIn } from "@/components/admin-sign-in";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Review queue · FlowStack" };
@@ -25,7 +26,7 @@ export default async function QueuePage() {
       <>
         <SiteHeader />
       <DevMount />
-        <main className="wrap"><h1>Review queue</h1><p>This page is for the FlowStack team.</p></main>
+        <main className="wrap"><h1>Review queue</h1><AdminSignIn next="/admin/queue" /></main>
       </>
     );
   }

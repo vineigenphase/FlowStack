@@ -3,6 +3,7 @@ import { requireAdmin } from "@/lib/auth/session";
 import { engineV2Review, leafKeys, tierText } from "@/lib/appdb/review";
 import { SiteHeader } from "@/components/site-header";
 import { DevMount } from "@/components/dev/dev-mount";
+import { AdminSignIn } from "@/components/admin-sign-in";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Engine v2 review · FlowStack" };
@@ -25,7 +26,7 @@ export default async function EngineV2ReviewPage() {
       <DevMount />
         <main className="wrap">
           <h1>Engine v2</h1>
-          <p>This page is for the FlowStack team.</p>
+          <AdminSignIn next="/admin/engine-v2" />
         </main>
       </>
     );

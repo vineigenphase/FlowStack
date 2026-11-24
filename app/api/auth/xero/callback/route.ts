@@ -24,6 +24,7 @@ export const GET = handle(async (req: NextRequest) => {
   }
   const verifier = oauth.verifier;
   const invite = oauth.invite ?? null;
+  const next = oauth.next;
   oauth.destroy();
 
   let result;
@@ -64,6 +65,8 @@ export const GET = handle(async (req: NextRequest) => {
   });
 
   // v1.1 I: businesses over the plan cap are not taken on; say so instead of failing.
+  // A sign-in started from an /admin page goes back there (first refreshes still run in the background).
+  if (next && (user.isAdmin || !next.startsWith("/admin"))) return NextResponse.redirect(new URL(next, env().APP_URL));
   if (!orgIds.length) return NextResponse.redirect(new URL(`/connect/limit?capped=${capped.length}`, env().APP_URL));
   const tail = capped.length ? `&capped=${capped.length}` : "";
   if (runs[0]) return NextResponse.redirect(new URL(`/connect/progress?run=${runs[0].run.id}${tail}`, env().APP_URL));

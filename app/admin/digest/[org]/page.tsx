@@ -3,6 +3,7 @@ import { requireAdmin } from "@/lib/auth/session";
 import { composeDigest } from "@/lib/digest";
 import { SiteHeader } from "@/components/site-header";
 import { DevMount } from "@/components/dev/dev-mount";
+import { AdminSignIn } from "@/components/admin-sign-in";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Digest preview · FlowStack" };
@@ -22,7 +23,7 @@ export default async function DigestPreview({ params }: { params: Promise<{ org:
       <DevMount />
         <main className="wrap">
           <h1>Digest preview</h1>
-          <p>This page is for the FlowStack team.</p>
+          <AdminSignIn next={`/admin/digest/${org}`} />
         </main>
       </>
     );

@@ -5,6 +5,7 @@ import { panelLines } from "@/lib/dev/lines";
 import { SiteHeader } from "@/components/site-header";
 import { DevMount } from "@/components/dev/dev-mount";
 import { DevLinks } from "@/components/dev/dev-links";
+import { AdminSignIn } from "@/components/admin-sign-in";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Dev links · FlowStack" };
@@ -20,7 +21,7 @@ export default async function LinksPage({ searchParams }: { searchParams: Promis
         <SiteHeader />
         <main className="wrap">
           <h1>Dev links</h1>
-          <p>This page is for the FlowStack team.</p>
+          <AdminSignIn next="/admin/links" />
         </main>
       </>
     );

@@ -8,6 +8,7 @@ import { DevMount } from "@/components/dev/dev-mount";
 import { DevLinks } from "@/components/dev/dev-links";
 import { orgLinks } from "@/lib/dev/links";
 import { panelLines } from "@/lib/dev/lines";
+import { AdminSignIn } from "@/components/admin-sign-in";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Debug · FlowStack" };
@@ -27,7 +28,7 @@ export default async function DebugPage({ params }: { params: Promise<{ org: str
         <SiteHeader />
         <main className="wrap">
           <h1>Debug</h1>
-          <p>This page is for the FlowStack team.</p>
+          <AdminSignIn next={`/admin/debug/${org}`} />
         </main>
       </>
     );
