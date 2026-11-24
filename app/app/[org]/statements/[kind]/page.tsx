@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireOrgReader } from "@/lib/auth/session";
 import { statementView } from "@/lib/read/views";
+import { devToolsOn, needsPersonLines } from "@/lib/dev/tools";
 import { day, gbp, isKind, KIND_LABEL, lineHref, pct, STATE_LABEL } from "@/lib/ui/format";
 
 export const dynamic = "force-dynamic";
@@ -42,6 +43,8 @@ export default async function StatementPage({ params }: { params: Promise<{ org:
     );
   }
   const totals = v.totals as Record<string, number>;
+  // ENGINE-V2 §2.2: admins with dev tools see which lines need a person.
+  const needs = (await devToolsOn()) ? await needsPersonLines(org) : null;
 
   return (
     <>
@@ -82,11 +85,13 @@ export default async function StatementPage({ params }: { params: Promise<{ org:
             <tbody>
               {(sec.lines as Line[]).map((l) => {
                 const linked = l.flagId && l.state !== "fine";
+                const person = needs !== null && (l.state === "queued" || needs.has(l.key));
                 return (
-                  <tr key={l.key}>
+                  <tr key={l.key} className={person ? "needs-person" : undefined}>
                     <td>
                       {linked ? <Link href={lineHref(org, l.key)}>{l.name}</Link> : l.name}
-                      {l.code ? <span className="muted small"> {l.code}</span> : null}
+                      {person ? <span className="needs-person-badge">Needs a person</span> : null}
+                      {l.code ? <span className="muted small code"> {l.code}</span> : null}
                     </td>
                     <td className="r num">{gbp(l.value)}</td>
                     <td className="r num muted hide-sm">{pct(l.share)}</td>

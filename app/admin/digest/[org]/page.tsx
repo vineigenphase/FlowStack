@@ -2,6 +2,7 @@ import { HttpError } from "@/lib/api";
 import { requireAdmin } from "@/lib/auth/session";
 import { composeDigest } from "@/lib/digest";
 import { SiteHeader } from "@/components/site-header";
+import { DevMount } from "@/components/dev/dev-mount";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Digest preview · FlowStack" };
@@ -18,6 +19,7 @@ export default async function DigestPreview({ params }: { params: Promise<{ org:
     return (
       <>
         <SiteHeader />
+      <DevMount />
         <main className="wrap">
           <h1>Digest preview</h1>
           <p>This page is for the FlowStack team.</p>
@@ -29,6 +31,7 @@ export default async function DigestPreview({ params }: { params: Promise<{ org:
   return (
     <>
       <SiteHeader />
+      <DevMount />
       <main className="wrap">
         <h1>Digest preview</h1>
         {!d ? (
@@ -43,7 +46,7 @@ export default async function DigestPreview({ params }: { params: Promise<{ org:
             <p>
               Subject: <b>{d.subject}</b>
             </p>
-            <iframe title="Digest email" srcDoc={d.html} sandbox="" style={{ width: "100%", height: 640, border: "1px solid var(--line)", background: "#fff" }} />
+            <iframe title="Digest email" srcDoc={d.html} sandbox="" style={{ width: "100%", height: 640, border: "1px solid var(--line)", background: "var(--surface)" }} />
             <h2>Plain-text version</h2>
             <pre style={{ whiteSpace: "pre-wrap" }}>{d.text}</pre>
           </>

@@ -48,6 +48,9 @@ export const ALLOWED: Record<QueueKind, Resolution["action"][]> = {
   review_moderation: ["publish", "reject"],
   quote_request: ["mark_sent", "dismiss"],
   app_lapsing: ["note", "dismiss"],
+  // ENGINE-V2: a person adds the app to the crosswalk / catalogue in a PR, then notes it here.
+  appdb_match: ["note", "dismiss"],
+  catalog_gap: ["note", "dismiss"],
 };
 
 export async function listQueue(opts: { kind?: string; status?: "open" | "done" | "dismissed"; limit?: number } = {}) {

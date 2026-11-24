@@ -2,7 +2,11 @@
 import { computeTrends, type Month, type TrendKey } from "./trends";
 import { oneOffs } from "./one-off";
 import { and, eq, inArray } from "drizzle-orm";
-import { appFacts, cashflowAcceptances, detectedApps, flags, lineOverrides, orgs, recommendations, statementLines, statements, trialBalance } from "@/db/schema";
+import { appFacts, cashflowAcceptances, detectedApps, flags, lineOverrides, orgs, recommendations, recommendationsV2, statementLines, statements, trialBalance } from "@/db/schema";
+import { rankFlagsV2, type V2Line } from "@/lib/rank/v2/run";
+import { shortlistV2 } from "@/lib/rank/v2/score";
+import { enqueueAll, type QueueItem } from "@/lib/queue/enqueue";
+import { log } from "@/lib/log";
 import { withOrg, type Db } from "@/lib/db/client";
 import { env } from "@/lib/env";
 import { apps as catalogApps, rulesFile } from "@/lib/catalog/load";
@@ -56,13 +60,13 @@ export const trendsOf = (months: Month[]) => (months.length >= 6 && plsComplete(
 export async function computeFlags(orgId: string, runId: string) {
   // Verified-review results are global (owner connection), so read them before the tenant transaction opens.
   const peer = await peerResults(catalogApps().map((a) => a.id));
-  return withOrg(orgId, async (tx) => {
+  const res = await withOrg(orgId, async (tx) => {
     const [org] = await tx.select().from(orgs).where(eq(orgs.id, orgId));
     const stmts = await tx.select().from(statements).where(eq(statements.runId, runId));
     const pl = stmts.find((s) => s.kind === "pl");
     const bs = stmts.filter((s) => s.kind === "bs").sort((a, b) => b.periodTo.localeCompare(a.periodTo))[0];
     const cf = stmts.find((s) => s.kind === "cf");
-    if (!org || !pl || !bs) return { flags: 0 };
+    if (!org || !pl || !bs) return { flags: 0, flagged: 0, queue: [] as QueueItem[], v2: null as null | { lines: number; error?: string } };
 
     const ids = [pl.id, bs.id, ...(cf ? [cf.id] : [])];
     const kindOf = new Map(ids.map((id) => [id, stmts.find((s) => s.id === id)!.kind]));
@@ -161,6 +165,7 @@ export async function computeFlags(orgId: string, runId: string) {
     const existing = await tx.select({ id: flags.id, lineKey: flags.lineKey }).from(flags).where(eq(flags.runId, runId));
     const stale = existing.filter((e) => !keep.has(e.lineKey)).map((e) => e.id);
     if (stale.length) await tx.delete(flags).where(inArray(flags.id, stale));
+    const flagIds = new Map<string, string>();
     for (const f of out) {
       const values = {
         orgId,
@@ -188,6 +193,7 @@ export async function computeFlags(orgId: string, runId: string) {
         .values(values)
         .onConflictDoUpdate({ target: [flags.runId, flags.lineKey], set })
         .returning({ id: flags.id });
+      flagIds.set(f.lineKey, row!.id);
       await tx.delete(recommendations).where(eq(recommendations.flagId, row!.id));
       if (f.recommendations.length) {
         await tx.insert(recommendations).values(
@@ -205,6 +211,47 @@ export async function computeFlags(orgId: string, runId: string) {
         );
       }
     }
-    return { flags: out.length, flagged: out.filter((f) => f.state === "flagged").length };
+    // ENGINE-V2 §1.3 shadow mode: rank the same flags with v2 and keep the result apart (recommendations_v2).
+    // Customers still see v1. A v2 failure is logged and reported in the run result; it never fails the refresh.
+    const queue: QueueItem[] = [];
+    let v2: { lines: number; error?: string } = { lines: 0 };
+    try {
+      const months = pl.periodFrom ? monthsBetween(pl.periodFrom, pl.periodTo) : 12;
+      const revenue = pl.totals.revenue ?? 0;
+      const ranked: V2Line[] = rankFlagsV2({
+        flags: out,
+        lines,
+        inUse: detected.map((d) => d.appId),
+        markets: org.markets,
+        industry: org.industry,
+        annualRevenue: months > 0 ? (revenue * 12) / months : revenue,
+        headcount: null,
+        today: new Date().toISOString().slice(0, 10),
+      });
+      for (const { line, result } of ranked) {
+        const flagId = flagIds.get(line.lineKey)!;
+        await tx.delete(recommendationsV2).where(eq(recommendationsV2.flagId, flagId));
+        const rows = shortlistV2(result.candidates);
+        if (rows.length)
+          await tx.insert(recommendationsV2).values(
+            rows.map((r) => ({ flagId, orgId, appId: r.appId, rank: r.rank, match: r.match, components: { parts: r.parts, warnings: result.warnings }, inUse: r.inUse, kind: r.kind, reason: r.reason })),
+          );
+        if (result.gap && line.state === "flagged")
+          queue.push({
+            kind: "catalog_gap",
+            orgId,
+            ref: { rule_id: result.gap.ruleId, categories: result.gap.categories, markets: result.gap.markets },
+            reason: `Engine v2 has only ${result.gap.candidates} app${result.gap.candidates === 1 ? "" : "s"} for ${result.gap.categories.join("/")} in ${result.gap.markets.join("/")} (line ${line.name}). Add apps to the catalogue.`,
+          });
+      }
+      v2 = { lines: ranked.length };
+    } catch (e) {
+      log.error({ err: e, orgId, runId }, "engine v2 shadow ranking failed");
+      v2 = { lines: 0, error: e instanceof Error ? e.message : String(e) };
+    }
+    return { flags: out.length, flagged: out.filter((f) => f.state === "flagged").length, queue, v2 };
   });
+  // The queue is on the owner connection: write it after the tenant transaction commits.
+  if (res.queue.length) await enqueueAll(res.queue);
+  return { flags: res.flags, flagged: res.flagged, v2: res.v2 };
 }

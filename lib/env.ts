@@ -54,6 +54,10 @@ const EnvSchema = z.object({
   ACCESS_MODE: z.enum(["open", "invite"]).default("open"),
   /** NEXT-STEPS P0.2: /demo opens a read-only guest session on one sample business. Off unless set. */
   DEMO_ENABLED: bool,
+  /** ENGINE-V2 §2.1: dev tools (Engine panel, dev rail, /api/dev/engine) for ADMIN_EMAILS users only. Off by default. */
+  DEV_TOOLS: bool,
+  /** ENGINE-V2 §1.3: which engine customers see. v2 is always computed in shadow (recommendations_v2). Only v1 is wired for customers until Phase 5. */
+  ENGINE_VERSION: z.enum(["v1", "v2"]).default("v1"),
   /** Optional: the sample org /demo opens. Unset → the built-in ecommerce sample, created from fixtures on first use. */
   DEMO_ORG_ID: z.string().optional().default(""),
   /** v1.1 L: Companies House public data API. */

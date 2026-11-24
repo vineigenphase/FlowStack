@@ -1,6 +1,6 @@
 # App database import report (ENGINE-V2 Phase 0)
 
-Written: `data/xero-apps/listings.json` (unchanged from the last run). Source: `data/xero-apps/directory.json` (workbook 17 Nov 2026 + Xero listing pages read 2026-11-18); see `data/xero-apps/SOURCE.md`. No database writes: the table load and queue items are Phase 1 (migration 0025).
+Written: `data/xero-apps/listings.json` (changed since the last run). Source: `data/xero-apps/directory.json` (workbook 17 Nov 2026 + Xero listing pages read 2026-11-18); see `data/xero-apps/SOURCE.md`. No database writes: the table load and queue items are Phase 1 (migration 0025).
 
 ## 1. Rows
 
@@ -27,24 +27,13 @@ Order: reviewed crosswalk (`catalog/directory-crosswalk.yaml`) → website domai
 | | listings |
 |---|---|
 | matched by exact name | 5 |
-| matched by reviewed crosswalk | 2 |
+| matched by reviewed crosswalk | 6 |
 | matched by website | 62 |
-| **matched** | **69** |
-| unsure → queue item `appdb_match` (Phase 1) | 6 |
-| no catalogue app (not auto-created) | 653 |
+| **matched** | **73** |
+| unsure → queue item `appdb_match` (Phase 1) | 0 |
+| no catalogue app (not auto-created) | 655 |
 
-Catalogue apps (84, excluding Xero itself) with no listing matched: **15**: `gusto`, `procure_wizard`, `lightspeed`, `google_workspace`, `microsoft_365`, `slack`, `modulr`, `capitalontap`, `cin7`, `brightpearl`, `equals`, `avalara`, `amazon_seller`, `chartmogul`, `baremetrics`.
-
-Unsure matches, for a person:
-
-| listing | name | catalogue candidates |
-|---|---|---|
-| `xa-approvalmgr` | ApprovalMGR | `approvalmax` (similar name (0.82)) |
-| `xa-cin7-core` | Cin7 | `cin7` (same website (cin7.com), shared by 2 listings) |
-| `xa-cin7-omni` | CIN7 Omni | `cin7` (same website (cin7.com), shared by 2 listings) |
-| `xa-modulr` | Modulr | `modulr` (same website (modulrfinance.com), shared by 2 listings) |
-| `xa-nook` | Modulr AP | `modulr` (same website (modulrfinance.com), shared by 2 listings) |
-| `xa-solido` | Solido | `soldo` (similar name (0.83)) |
+Catalogue apps (84, excluding Xero itself) with no listing matched: **13**: `gusto`, `procure_wizard`, `lightspeed`, `google_workspace`, `microsoft_365`, `slack`, `capitalontap`, `brightpearl`, `equals`, `avalara`, `amazon_seller`, `chartmogul`, `baremetrics`.
 
 ## 3. Field completeness (accepted rows)
 
@@ -75,17 +64,17 @@ Each cell: **all listings** / listings matched to a catalogue app / catalogue ap
 |---|---|---|---|---|
 | management_reporting | **157** / 16 / 8 | **127** / 16 / 7 | **120** / 16 / 7 | **135** / 16 / 8 |
 | consolidation | **157** / 16 / 8 | **127** / 16 / 7 | **120** / 16 / 5 | **135** / 16 / 8 |
-| data_capture | **136** / 15 / 5 | **98** / 12 / 4 | **87** / 10 / 3 | **97** / 10 / 5 |
-| spend_payables | **166** / 23 / 16 | **106** / 17 / 10 | **93** / 15 / 3 | **104** / 16 / 8 |
-| billing_receivables | **262** / 33 / 8 | **176** / 25 / 7 | **160** / 24 / 4 | **196** / 26 / 7 |
+| data_capture | **136** / 17 / 5 | **98** / 12 / 4 | **87** / 10 / 3 | **97** / 10 / 5 |
+| spend_payables | **166** / 25 / 16 | **106** / 17 / 10 | **93** / 15 / 3 | **104** / 16 / 8 |
+| billing_receivables | **262** / 35 / 8 | **176** / 25 / 7 | **160** / 24 / 4 | **196** / 26 / 7 |
 | payroll | **25** / 4 / 5 | **6** / 1 / 2 | **6** / 1 / 1 | **14** / 2 / 2 |
 | rota | **62** / 9 / 5 | **44** / 6 / 2 | **39** / 6 / 2 | **53** / 7 / 3 |
-| fx_banking | **69** / 16 / 4 | **36** / 10 / 3 | **31** / 9 / 2 | **34** / 9 / 3 |
-| inventory | **60** / 6 / 7 | **50** / 5 / 7 | **51** / 5 / 4 | **58** / 6 / 5 |
+| fx_banking | **69** / 18 / 4 | **36** / 10 / 3 | **31** / 9 / 2 | **34** / 9 / 3 |
+| inventory | **60** / 8 / 7 | **50** / 7 / 7 | **51** / 7 / 4 | **58** / 8 / 5 |
 | job_project | **198** / 17 / 9 | **140** / 15 / 9 | **129** / 15 / 3 | **163** / 17 / 10 |
 | fpa | **157** / 16 / 5 | **127** / 16 / 4 | **120** / 16 / 1 | **135** / 16 / 4 |
 | cash_forecasting | **157** / 16 / 5 | **127** / 16 / 3 | **120** / 16 / 2 | **135** / 16 / 4 |
-| epos_ecommerce | **87** / 8 / 12 | **67** / 5 / 11 | **62** / 5 / 7 | **72** / 6 / 10 |
+| epos_ecommerce | **87** / 10 / 12 | **67** / 7 / 11 | **62** / 7 / 7 | **72** / 8 / 10 |
 | compliance | **20** / 0 / 1 | **11** / 0 / 1 | **10** / 0 / 1 | **12** / 0 / 1 |
 | month_end | **0** / 0 / 1 | **0** / 0 / 0 | **0** / 0 / 0 | **0** / 0 / 0 |
 | other_software | **0** / 0 / 3 | **0** / 0 / 3 | **0** / 0 / 3 | **0** / 0 / 3 |

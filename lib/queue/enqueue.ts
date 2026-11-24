@@ -17,7 +17,11 @@ export type QueueKind =
   | "review_moderation"
   | "quote_request"
   | "app_lapsing"
-  | "user_report";
+  | "user_report"
+  /** ENGINE-V2: a Xero listing that may be a catalogue app (a person decides). */
+  | "appdb_match"
+  /** ENGINE-V2 §1.4: a flagged line with fewer than 3 v2 candidates in its category and market. */
+  | "catalog_gap";
 
 /** Stable JSON: keys sorted, so the same ref always hashes the same. */
 export function stableJson(v: unknown): string {

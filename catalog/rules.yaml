@@ -2,6 +2,9 @@
 # Bump `version` when a rule's meaning changes: flags store rule_id + rule_version so FP-rate shifts trace to edits.
 #
 # app_categories: where candidate apps come from (what we'd recommend).
+# required_functions / helpful_functions / keywords (ENGINE-V2 §1.2, 23 Nov 2026): engine v2 ranking inputs only.
+#                 Functions are Xero's object names from the listing's data-flow section; keywords are matched against
+#                 the app's description (BM25). Never used for flagging.
 # covered_by:     categories that, if the business already pays for an app in them, mean the line is handled
 #                 ("covered"). Defaults to app_categories. An in-use app that is only in app_categories helps
 #                 but doesn't handle it → flagged with coverage gap 0.5.
@@ -17,14 +20,19 @@ scoring:
 # Engine v2 (ENGINE-V2.md §1.1, 22 Nov 2026). Ranking only: never changes whether a line is flagged.
 #   match   = 100 × (strength × 0.50 + fit × 0.35 + quality × 0.10 + price × 0.05)
 #   fit     = integration_fit × 0.60 + job_fit × 0.40
-#   job_fit = category_match × 0.40 + function_match × 0.35 + keyword_match × 0.25
+#   job_fit = category_match × 0.35 + function_match × 0.30 + keyword_match × 0.20 + industry_fit × 0.15
 #   quality = clamp(rating_score × 0.85 + volume_score × 0.15 + award_boost, 0, 1)
 # A missing input scores `neutral` and is shown as missing. Shown to admins at /admin/engine-v2.
 scoring_v2:
-  status: { weights: "DECIDED 9 Nov 2026", sub_weights: "PROPOSED 22 Nov 2026 (owner to review)" }
+  status:
+    weights: "DECIDED 9 Nov 2026"
+    sub_weights: "APPROVED by the owner 23 Nov 2026; industry fit added 23 Nov (its split PROPOSED)"
+    proposed: [job_fit.category_match, job_fit.function_match, job_fit.keyword_match, job_fit.industry_fit, industry_fit.broad_only]
   weights: { strength: 0.50, fit: 0.35, quality: 0.10, price: 0.05 }
   fit: { integration_fit: 0.60, job_fit: 0.40 }
-  job_fit: { category_match: 0.40, function_match: 0.35, keyword_match: 0.25 }
+  # Was 0.40 / 0.35 / 0.25 (approved 23 Nov); industry_fit added on the owner's request the same day, split PROPOSED.
+  job_fit: { category_match: 0.35, function_match: 0.30, keyword_match: 0.20, industry_fit: 0.15 }
+  industry_fit: { broad_only: 0.3 }    # app lists only general industries (Professional services, Accounting), not the business's; catalog/industry-map.yaml
   category_match: { covered_by: 1.0, app_categories_only: 0.7 }   # else 0 and not a candidate
   function_match: { helpful_factor: 0.5 }                         # share of required + 0.5 × share of helpful, capped at 1
   quality: { rating_score: 0.85, volume_score: 0.15 }
@@ -39,6 +47,9 @@ rules:
     version: 2
     account_categories: [wages, employer_ni, pensions]
     app_categories: [payroll, rota]
+    required_functions: [Manual Journals]   # v2: Xero objects (catalog/xero-functions.yaml) an app must list
+    helpful_functions: [Employees, PayRuns, PayItems, Timesheets, Tracking Categories]
+    keywords: [payroll, payslip, payslips, paye, rti, hmrc, pension, pensions, auto-enrolment, salary, salaries, wages, employees]
     covered_by: [payroll]          # a rota app feeds payroll but doesn't run it
     statements: [pl]
     min_value_gbp: 1000
@@ -48,6 +59,9 @@ rules:
     version: 2
     account_categories: [payroll_liabilities]
     app_categories: [payroll]
+    required_functions: [Manual Journals]   # v2: Xero objects (catalog/xero-functions.yaml) an app must list
+    helpful_functions: [Employees, PayRuns, PayItems, Timesheets, Tracking Categories]
+    keywords: [payroll, payslip, payslips, paye, rti, hmrc, pension, pensions, auto-enrolment, salary, salaries, wages, employees]
     statements: [bs, cf]
     min_value_gbp: 1000
     cause: "PAYE, NI and pension balances usually come from a payroll app's journal. Check how these reach Xero."
@@ -56,6 +70,9 @@ rules:
     version: 2
     account_categories: [cost_of_sales, inventory]
     app_categories: [inventory, data_capture]
+    required_functions: [Items, Purchase Orders]   # v2: Xero objects (catalog/xero-functions.yaml) an app must list
+    helpful_functions: [Invoices, Credit Notes, Contacts, Tracking Categories]
+    keywords: [inventory, stock, warehouse, purchase, purchasing, cogs, sku, skus, landed, reorder, manufacturing]
     covered_by: [inventory]        # bill capture records purchases but doesn't cost stock
     statements: [pl, bs, cf]
     min_value_gbp: 5000
@@ -65,6 +82,9 @@ rules:
     version: 2
     account_categories: [trade_creditors, utilities, repairs, cleaning, freight]
     app_categories: [data_capture, spend_payables]
+    required_functions: [Invoices]   # v2: Xero objects (catalog/xero-functions.yaml) an app must list
+    helpful_functions: [Contacts, Payments, Purchase Orders, Tracking Categories]
+    keywords: [bills, invoices, receipts, ocr, extraction, extract, payable, payables, approval, approvals, supplier, suppliers, capture]
     statements: [pl, bs, cf]
     min_value_gbp: 2000
     cause: "Bills at this volume are usually captured by an app rather than keyed by hand."
@@ -73,6 +93,9 @@ rules:
     version: 2
     account_categories: [trade_debtors]
     app_categories: [billing_receivables]
+    required_functions: [Invoices, Payments]   # v2: Xero objects (catalog/xero-functions.yaml) an app must list
+    helpful_functions: [Contacts, Credit Notes, Overpayments]
+    keywords: [debtors, receivables, chase, chasing, overdue, credit, collections, reminders, late, paid, dso, cash]
     statements: [bs, cf]
     min_value_gbp: 5000
     cause: "Money owed by customers at this level is usually chased by a collections app."
@@ -81,6 +104,9 @@ rules:
     version: 2
     account_categories: [sales]
     app_categories: [epos_ecommerce, billing_receivables]
+    required_functions: [Invoices]   # v2: Xero objects (catalog/xero-functions.yaml) an app must list
+    helpful_functions: [Payments, Items, Contacts, Bank Transactions]
+    keywords: [sales, orders, ecommerce, shopify, amazon, pos, payouts, settlement, settlements, marketplace, marketplaces, checkout]
     statements: [pl]
     min_value_gbp: 10000
     cause: "Sales this size usually flow into Xero from an EPOS, ecommerce or invoicing app."
@@ -89,6 +115,9 @@ rules:
     version: 2
     account_categories: [travel, entertainment, office_general, software_subscriptions, motor, advertising]
     app_categories: [spend_payables]
+    required_functions: [Bank Transactions]   # v2: Xero objects (catalog/xero-functions.yaml) an app must list
+    helpful_functions: [Receipts, Contacts, Tracking Categories, Invoices]
+    keywords: [expenses, expense, cards, card, receipts, spend, spending, reimbursement, mileage, claims]
     statements: [pl]
     min_value_gbp: 2000
     cause: "Card and expense spend is usually captured by a spend app with receipts attached."
@@ -97,6 +126,9 @@ rules:
     version: 2
     account_categories: [fx_gains_losses]
     app_categories: [fx_banking]
+    required_functions: [Bank Transactions, Currencies]   # v2: Xero objects (catalog/xero-functions.yaml) an app must list
+    helpful_functions: [Payments, Bank Transfers]
+    keywords: [fx, currency, currencies, international, exchange, multi-currency, transfers, overseas]
     statements: [pl]
     min_value_gbp: 500
     cause: "Currency gains and losses point to foreign payments that an FX account can make cheaper."
@@ -106,24 +138,36 @@ rules:
     version: 1
     account_categories: [trend:debtor_days]
     app_categories: [billing_receivables]
+    required_functions: [Invoices, Payments]   # v2: Xero objects (catalog/xero-functions.yaml) an app must list
+    helpful_functions: [Contacts, Credit Notes, Overpayments]
+    keywords: [debtors, receivables, chase, chasing, overdue, credit, collections, reminders, late, paid, dso, cash]
     statements: [trend]
     cause: "Customers are taking longer to pay than three months ago. A chasing app usually brings this back down."
   - id: trend_creditor_days
     version: 1
     account_categories: [trend:creditor_days]
     app_categories: [spend_payables]
+    required_functions: [Invoices, Payments]   # v2: Xero objects (catalog/xero-functions.yaml) an app must list
+    helpful_functions: [Contacts, Bank Transactions]
+    keywords: [suppliers, payables, payments, pay, batch, approvals, bills, runs]
     statements: [trend]
     cause: "You're taking longer to pay suppliers than three months ago. Worth checking bills aren't stuck waiting for approval."
   - id: trend_stock_days
     version: 1
     account_categories: [trend:stock_days]
     app_categories: [inventory]
+    required_functions: [Items, Purchase Orders]   # v2: Xero objects (catalog/xero-functions.yaml) an app must list
+    helpful_functions: [Invoices, Credit Notes, Contacts, Tracking Categories]
+    keywords: [inventory, stock, warehouse, purchase, purchasing, cogs, sku, skus, landed, reorder, manufacturing]
     statements: [trend]
     cause: "Stock is sitting longer than three months ago. An inventory app shows what's slow-moving."
   - id: trend_cash_headroom
     version: 1
     account_categories: [trend:cash_headroom_months]
     app_categories: [cash_forecasting]
+    required_functions: [Reports, Bank Transactions]   # v2: Xero objects (catalog/xero-functions.yaml) an app must list
+    helpful_functions: [Invoices, Accounts, Budgets]
+    keywords: [cash, forecast, forecasting, scenario, scenarios, runway, budget, budgets, cashflow]
     statements: [trend]
     cause: "At the current rate cash runs out sooner than it did three months ago. A cash flow forecast shows when and why."
 

@@ -23,6 +23,8 @@ export const KIND_LABELS: Record<QueueKind, string> = {
   fact_stale: "App facts: out of date",
   fact_spot_check: "App facts: spot checks",
   app_lapsing: "Apps whose payments stopped (no answer)",
+  appdb_match: "Xero listings to match to our catalogue",
+  catalog_gap: "Catalogue gaps (fewer than 3 apps to rank)",
 };
 /** Order on the page: things a customer is waiting on first. */
 const ORDER = Object.keys(KIND_LABELS) as QueueKind[];

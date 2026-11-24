@@ -24,6 +24,8 @@
     "catalogue:fetch": "python scripts/catalogue/fetch_xero_listings.py --apps data/xero-apps/handoff/csv/apps.csv --out data/xero-apps/handoff/enrichment_run",
     "catalogue:build": "tsx scripts/catalogue/build-directory.ts",
     "appdb:adapt": "tsx scripts/appdb/adapt.ts",
+    "appdb:load": "tsx scripts/appdb/load.ts",
+    "engine:coverage": "tsx scripts/engine-coverage.ts",
     "crawl:probe": "tsx scripts/probe-paths.ts",
     "queue": "tsx scripts/queue.ts",
     "deploy:check": "tsx scripts/deploy-check.ts"

@@ -133,6 +133,8 @@ test("practice: start a firm, add the client, playbook, proposal by link", async
 for (const scheme of ["light", "dark"] as const) {
   test(`400px wide, ${scheme} theme: no page scrolls sideways`, async ({ browser }) => {
     const ctx = await browser.newContext({ viewport: { width: 400, height: 860 }, colorScheme: scheme });
+    // ENGINE-V2 Phase 3: the theme no longer follows the system; dark is the user's choice, saved in this browser.
+    if (scheme === "dark") await ctx.addInitScript(() => localStorage.setItem("fs-theme", "dark"));
     const page = await ctx.newPage();
     await signIn(page);
     const org = await firstOrgPath(page);

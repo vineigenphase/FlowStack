@@ -314,6 +314,39 @@ export const recommendations = pgTable(
   (t) => [primaryKey({ columns: [t.flagId, t.appId] })],
 );
 
+/**
+ * ENGINE-V2 §1.3 shadow mode: engine v2's ranking for the same flags, kept apart from `recommendations` (what customers
+ * see) so the two can be compared. app_id is a catalogue id or a Xero listing id (xa-… / ext-…). components holds the
+ * v2 parts (raw, normalised, weight, contribution, missing) for the dev panel.
+ */
+export const recommendationsV2 = pgTable(
+  "recommendations_v2",
+  {
+    flagId: uuid("flag_id").notNull().references(() => flags.id, { onDelete: "cascade" }),
+    orgId: uuid("org_id").notNull().references(() => orgs.id, { onDelete: "cascade" }),
+    appId: text("app_id").notNull(),
+    rank: integer("rank").notNull(),
+    match: real("match").notNull(),
+    components: jsonb("components").notNull(),
+    inUse: boolean("in_use").notNull(),
+    kind: text("kind", { enum: ["add", "change"] }),
+    reason: text("reason").notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.flagId, t.appId] })],
+);
+
+/**
+ * ENGINE-V2 Phase 0/1: the Xero app database (global, read-only to the app role), loaded from
+ * data/xero-apps/listings.json by `pnpm appdb:load`. `data` is the canonical XeroAppListing (lib/appdb/schema.ts).
+ */
+export const xeroAppListings = pgTable("xero_app_listings", {
+  listingId: text("listing_id").primaryKey(),
+  name: text("name").notNull(),
+  data: jsonb("data").notNull(),
+  capturedAt: text("captured_at").notNull(),
+  loadedAt: ts("loaded_at").notNull().defaultNow(),
+});
+
 export const flagFeedback = pgTable("flag_feedback", {
   id: uuid("id").primaryKey().defaultRandom(),
   flagId: uuid("flag_id").notNull().references(() => flags.id, { onDelete: "cascade" }),

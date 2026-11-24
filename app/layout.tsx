@@ -1,16 +1,26 @@
 import type { ReactNode } from "react";
-import { Archivo, IBM_Plex_Mono, Instrument_Sans } from "next/font/google";
+import { IBM_Plex_Mono, Inter } from "next/font/google";
+import "./tokens.css";
 import "./globals.css";
 
-const display = Archivo({ subsets: ["latin"], axes: ["wdth"], variable: "--font-display", display: "swap" });
-const body = Instrument_Sans({ subsets: ["latin"], variable: "--font-body", display: "swap" });
+// Owner restyle 22 Nov 2026 (ENGINE-V2 Phase 3): Inter for headings and body; IBM Plex Mono only for codes and IDs.
+const sans = Inter({ subsets: ["latin"], variable: "--font-sans", display: "swap" });
 const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "600"], variable: "--font-mono", display: "swap" });
 
 export const metadata = { title: "FlowStack", description: "Which apps your Xero ledger says you need." };
 
+/**
+ * Light by default; dark only when the user chose it in Settings (stored in this browser). Applied before first paint
+ * so there's no flash, and without reading cookies (pages stay as static as they were).
+ */
+const THEME_SCRIPT = `try{if(localStorage.getItem("fs-theme")==="dark")document.documentElement.dataset.theme="dark"}catch(e){}`;
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en-GB" className={`${display.variable} ${body.variable} ${mono.variable}`}>
+    <html lang="en-GB" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
+      </head>
       <body>{children}</body>
     </html>
   );

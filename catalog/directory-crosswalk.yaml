@@ -1,10 +1,14 @@
 # Reviewed links from catalog/apps.yaml (curated id) → data/xero-apps/directory.json (directory id).
 # Only needed where the build can't match one-to-one by exact name or website (scripts/catalogue/build-directory.ts).
-# null = checked: the app has no Xero UK App Store listing in the workbook, so it stays curated-only.
-# Source: workbook App List (17 Nov 2026) and each app's Xero listing URL. Reviewed 18 Nov 2026.
+# A list = one catalogue app with several Xero listings. null = checked: the app has no Xero UK App Store listing in
+# the workbook, so it stays curated-only.
+# Source: workbook App List (17 Nov 2026) and each app's Xero listing URL. Reviewed 18 Nov 2026; Cin7, Modulr and the
+# `different` list reviewed by the owner on 23 Nov 2026 (/admin/engine-v2).
 links:
   dext: xa-dext                                  # "Dext Prepare" is listed as "Dext" (apps.xero.com/uk/app/dext); Commerce and Precision are separate products
   employmenthero: xa-employment-hero-payroll     # curated entry is the UK payroll product (employmenthero.com/uk); xa-employment-hero is the separate HR listing
+  cin7: [xa-cin7-core, xa-cin7-omni]             # owner 23 Nov: both listings are Cin7
+  modulr: [xa-modulr, xa-nook]                   # owner 23 Nov: both are Modulr ("Modulr AP" is listed on Xero as "Nook")
   gusto: null                                    # US payroll; not on the UK store
   procure_wizard: null
   lightspeed: null
@@ -18,3 +22,8 @@ links:
   amazon_seller: null
   chartmogul: null
   baremetrics: null
+
+# Checked: these listings are NOT the catalogue app they resemble. They stay separate apps and aren't asked about again.
+different:
+  xa-approvalmgr: [approvalmax]                  # owner 23 Nov: ApprovalMGR is not ApprovalMax
+  xa-solido: [soldo]                             # owner 23 Nov: Solido is not Soldo

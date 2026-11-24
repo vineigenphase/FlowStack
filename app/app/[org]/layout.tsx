@@ -11,6 +11,7 @@ import { signInHref } from "@/lib/ui/signin";
 import { OrgSwitcher } from "@/components/org-switcher";
 import { ReportProblem } from "@/components/report-problem";
 import { myOrgs } from "@/lib/me";
+import { DevMount } from "@/components/dev/dev-mount";
 
 export const dynamic = "force-dynamic";
 
@@ -75,6 +76,7 @@ export default async function OrgLayout({ children, params }: { children: ReactN
       <footer className="wrap foot">
         <ReportProblem />
       </footer>
+      {guest ? null : <DevMount org={org} />}
     </>
   );
 }

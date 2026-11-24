@@ -1,6 +1,6 @@
 # Directory import report
 
-Written: catalog/directory.json. Listing data as of 2026-11-18.
+Written: data/xero-apps/directory.json. Listing data as of 2026-11-18.
 
 | | count |
 |---|---|
@@ -23,9 +23,9 @@ Written: catalog/directory.json. Listing data as of 2026-11-18.
 | pricing unknown | 589 |
 | tiers | 330 |
 | awards (official / vendor claims) | 15 / 6 |
-| linked to the curated catalogue | 71 of 84 curated apps |
+| linked to the curated catalogue | 73 of 84 curated apps |
 
-Changes vs the last build: 0 added, 0 changed, 0 removed.
+Changes vs the last build: 0 added, 2 changed, 0 removed.
 
 ## Problems (0)
 None.

@@ -434,3 +434,114 @@ ENGINE-V2.md (owner, 22 Nov) saved in the repo as received. It wins over the oth
 - Fix: migrate.ts now uses a pglite:/memory:// DATABASE_URL over any unpooled/admin URL, and prints which database
   it is migrating. Smoke tests also blank `DATABASE_URL_UNPOOLED` and `DATABASE_ADMIN_URL`. The dev server that
   followed wrote only to the throwaway db (checked: the dev-login user is in the PGlite dir).
+- **23 Nov, later: match answers + weights.** Owner: Cin7 Core and Cin7 Omni are both `cin7`; Modulr and Modulr AP
+  ("Nook" on Xero) are both `modulr`; ApprovalMGR ≠ ApprovalMax, Solido ≠ Soldo. `catalog/directory-crosswalk.yaml`
+  now allows a list of listings per catalogue app and has a `different:` section (never asked again). Result: 73 matched,
+  0 unsure, 655 directory-only (all candidates). **Sub-weights in `scoring_v2` APPROVED** (the award boost too). The
+  Xero → FlowStack category map is still PROPOSED.
+
+### Phase 1: engine v2 in shadow (23 Nov 2026)
+- **Built:** `lib/rank/v2/` has one pure file per input (integration-fit, category-match, function-match,
+  keyword-match (BM25), rating (Bayesian), volume, awards, price), plus `score.ts` (match, parts, formula, tie-break),
+  `trace.ts` (EngineTrace, v1/v2 traces, what-if overrides), `run.ts` (shadow ranking of v1's flags), `apps.ts`
+  (pool) and `dev.ts` (trace API + gate). `catalog/rules.yaml`: `scoring_v2` and per-rule `required_functions` /
+  `helpful_functions` / `keywords` (ranking only; rule versions not bumped because flagging is unchanged).
+- **Shadow mode:** `lib/signals/run.ts` ranks every flagged and covered line with v2 after v1 and writes
+  `recommendations_v2` (top 10 + the app in use, parts + warnings in `components`). A v2 error is logged and returned
+  in the step result; it never fails the refresh. Customers still see v1 (`ENGINE_VERSION=v1`; only v1 is wired for
+  customers until Phase 5). v2 reads v1's flags and never changes them (tests: input unchanged, eval unchanged).
+- **Catalogue gaps:** a flagged line with < 3 candidates (not counting the app in use) gets a warning, plus a
+  `catalog_gap` queue item per (rule, categories, markets), written after the tenant transaction. Today only
+  month_end is thin (`pnpm engine:coverage`).
+- **API:** `GET /api/dev/engine/:org/:lineKey?engine=v1|v2&weights=<json>`, 404 unless `DEV_TOOLS=true` and the user is
+  an admin (DB check). v2 is recomputed on request; v1 is read from `recommendations`.
+- **Migration 0025** (read before committing): `recommendations_v2` (RLS tenant isolation, app-role CRUD) and
+  `xero_app_listings` (global, SELECT for the app role). Additive only. `pnpm appdb:load` fills the table and refuses
+  a non-local database without `--remote-confirmed`. The engine reads the versioned file, so no prod load is needed.
+  0025 reaches production when the owner next merges to main (Vercel runs db:migrate).
+- **Pool:** 739 apps (84 catalogue + 655 directory-only). A catalogue app keeps its own categories, markets and
+  edges, with its listing attached (Cin7: the listing with most reviews; functions are the union).
+- **Choices / deviations:**
+  - **Integration fit for directory apps = "none" (0.3), not missing (0.5).** Catalogue "none" means "no known edge",
+    not "checked and absent". Scoring unchecked apps 0.5 put every one of them 4.2 points ahead of catalogue apps.
+    Chaser was #53 of 235 for receivables on the sample business; it's #3 after the change.
+  - Unknown markets (14 apps, no listing read) are kept and flagged in the warnings, not excluded.
+  - Price: the cheapest paid tier that can be costed (per business; per user only with headcount, which orgs don't
+    have yet), else a free plan. Usage-priced and quote-only tiers → missing.
+  - Rating mean C = mean of the rated candidates for the line. Review volume: 0 reviews is a known 0, not missing.
+- **Open (owner):**
+  1. v2 has **no industry input**. A car-dealer app (MotorDesk) and an equipment-rental app (HireHop) reach the top 5 for
+     a hospitality business's stock line. CLAUDE.md §7.3 has industry exclusions; listings carry Xero's industries
+     (dropped from the canonical schema). Proposal: add `industries` to the listing and either exclude on a clear
+     mismatch or add an industry_fit part.
+  2. Price "not published" (0.5) vs a cheap published price (1.0) favours small apps with public price lists over
+     well-known quote-only ones (Chaser). Small at 5%, but visible.
+  3. Small-sample apps (5.0 from 12 reviews) still sit near the top. The prior (20 at the set mean) is working; a
+     bigger prior would push them down.
+
+### Industry fit (owner asked 23 Nov 2026)
+- `catalog/industry-map.yaml` (PROPOSED) maps our industries to Xero's listing industries. Ecommerce → Retail;
+  hospitality → Hospitality, Tourism. SaaS, wholesale and other → none on Xero, so industry fit is missing (neutral).
+  "Professional services" and "Accounting" are general (weak fit 0.3, `industry_fit.broad_only`).
+- `lib/rank/v2/industry-fit.ts`: 1 if the listing names the business's industry; 0.3 if only general ones; missing if
+  the industry isn't set, Xero has none, or the listing names none. **Excluded** (with the reason in the trace) when
+  the listing names only other industries, e.g. MotorDesk ("Built for Automotive, not Hospitality/Tourism"). The
+  app in use is never excluded.
+- Weights: job_fit was 0.40 / 0.35 / 0.25 (approved), now category 0.35, functions 0.30, keywords 0.20,
+  industry 0.15 (**PROPOSED**; `scoring_v2.status.proposed` lists the keys and /admin/engine-v2 tags them). Industry
+  is 2.1% of the match: the exclusion does most of the work.
+- Canonical listing gains `industries` (Xero labels). Sample hospitality business: MotorDesk gone; Fresho (stock) and
+  CostTracker (supplier bills) now in the top 5. HireHop stays, because its listing names Hospitality.
+- Xero industries no business of ours maps to yet: Agriculture, Automotive, Education, Property and realty. Apps that
+  list only those are excluded for every business (a test pins the list).
+
+### Phase 2: dev tools (23 Nov 2026)
+- **Gate:** `lib/dev/tools.ts devToolsOn()` checks `DEV_TOOLS=true` AND `users.is_admin` in the database on every
+  render. `components/dev/dev-mount.tsx` renders nothing otherwise, so no markup and no data reach customers,
+  testers, /demo guests or the public. Every dev route (`/api/dev/*`, `/api/admin/queue/summary`) checks again and
+  answers 404.
+- **Rail** (`components/dev/dev-tools.tsx`, every `/app/[org]` page and the admin pages): Engine, Review (count +
+  hover list of the 5 oldest, linking to `/admin/queue?item=…#item-…`), Reports, Testers, Debug (new
+  `/admin/debug/[org]`: last 5 refreshes, per-step calls/bytes/errors, v2 row count), Checks (disabled until
+  Phase 4), Weights. The queue summary is polled every 30 s while the tab is visible.
+- **Review box pulse:** 1.6 s glow, amber for normal and red when anything is high priority; the count is always shown.
+  Under `prefers-reduced-motion` it's a steady filled badge.
+- **Engine panel:** frosted glass, docked right, 440 px, resizable 360–720, minimises to a pill ("Engine · v2 ·
+  N flags"). Ctrl/⌘+Shift+E toggles it and Esc minimises. Open state, width and tab are kept in localStorage
+  (try/catch; falls back to minimised). `role="complementary"`; focus moves in on open and back to the rail button on
+  minimise. Tabs: Ranking (stacked bars, excluded under a fold, warnings), Breakdown (formula, parts table with
+  sources, missing highlighted, waterfall), v1 vs v2 (rank moves + main reason), What-if (all 12 weights,
+  re-ranks in the browser, Reset, Copy as YAML, "Experiment: not saved"), Data (record, completeness,
+  description for admins), Queue (this business). Download trace (JSON).
+- **Needs a person:** with dev tools on, the statements and line pages mark queued lines and lines with an open
+  flag_disputed / account_mapping item (accounts resolved to line keys on the server).
+- **Gotcha:** Next's CSS compiler dropped BOTH `backdrop-filter` and `-webkit-backdrop-filter` when the pair was
+  written together. Write only the standard property (prefixes are added). Checked in Chrome: blur applied.
+- **Checked locally** (throwaway PGlite, `DEV_TOOLS=true`, Chrome): rail, pulse, panel tabs, minimise/pill, focus
+  return, no console errors; the trace and summary APIs give 404 without a session.
+- **Owner action:** set `DEV_TOOLS=true` in Vercel (Preview first, Production when wanted). It's off by default, so
+  the deployed site shows nothing until then.
+
+### Phase 3: cleaner, corporate look (23 Nov 2026)
+- **Tokens only:** `app/tokens.css` is the only file with colour values (`tests/theme.test.ts` fails on any hex or
+  rgb() literal elsewhere in app/ or components/). The light tokens are exactly ENGINE-V2's. Dark values are mine
+  (proposed) and also pass the test's WCAG AA checks (4.5:1): text, muted, links, buttons, the three status tags and
+  text on the glass panel, in both themes. Old token names (`--ink`, `--paper`, `--mark`, `--hand`, …) are aliases,
+  so every existing component follows the new palette; the old light grey `--surface` is now `--surface-2`.
+- **Shared components restyled:** white header with a shadow and primary-blue selected tab; primary buttons; cards,
+  stat tiles, totals, statement tables, notes and directory tiles on `--surface` with border, shadow and 8 px radius;
+  24 px grid gaps; max width 1200; tables with 44 px rows and a sticky header; status tags as soft pills ("Look at
+  this" warning-soft, "Covered" success-soft, "Fine" neutral, "Checking" warning outline); the £ at stake and `.mark`
+  in primary blue (no highlighter).
+- **Type:** Inter (variable, next/font) for headings and body with `tnum`/`cv11` on figures; IBM Plex Mono only for
+  account codes (`.code`) and IDs. Archivo and Instrument Sans removed. Scale as specified.
+- **Theme:** light by default; dark only via Settings → Appearance (`components/theme-toggle.tsx`, saved in
+  localStorage `fs-theme`, applied before first paint by an inline script in app/layout.tsx; no cookies, so pages
+  aren't made dynamic). No `prefers-color-scheme` anywhere (test). The e2e dark run now sets `fs-theme`.
+- CLAUDE.md §1 updated ("Owner restyle 22 Nov 2026; designer may revise"), with the old system kept for reference.
+- **Not done:** axe isn't installed (adding it means a new dev dependency), so the contrast checks are computed from
+  the tokens in a unit test instead. Page-specific layouts weren't redesigned (designer's job).
+- **24 Nov: dev links + price method.** `/admin/links` lists every admin, dev API, public and per-business link (each
+  flagged line's page and v1/v2 traces) as full URLs for the current site, with Copy and Copy all. The same lists
+  appear on the Debug and Review queue pages (admin branch only, tested), and the rail has a "Links" item.
+  `/admin/engine-v2` now spells out the price score step by step, with worked examples calculated from rules.yaml.
