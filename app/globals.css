@@ -387,3 +387,9 @@ body:has(.dev-rail) { padding-left: 76px; }
 
 .theme-toggle { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); padding: 12px 16px; max-width: 640px; }
 .theme-toggle legend { font-weight: 600; padding: 0 4px; }
+.dev-link-list { list-style: none; padding: 0; margin: 0 0 16px; display: grid; gap: 2px; }
+.dev-link-list li { display: grid; grid-template-columns: minmax(180px, 1.1fr) minmax(0, 2fr) auto; gap: 12px; align-items: baseline; padding: 6px 8px; border-bottom: 1px solid var(--border); }
+.dev-link-url { overflow-wrap: anywhere; color: var(--text-2); }
+.dev-links h3 { margin: 16px 0 4px; }
+details.card > summary { cursor: pointer; }
+@media (max-width: 640px) { .dev-link-list li { grid-template-columns: 1fr; gap: 2px; } }

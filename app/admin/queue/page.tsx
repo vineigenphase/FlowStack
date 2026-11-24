@@ -5,6 +5,8 @@ import { queueView } from "@/lib/queue/view";
 import { ROLES, SCORE_LABELS } from "@/lib/reviews";
 import { SiteHeader } from "@/components/site-header";
 import { DevMount } from "@/components/dev/dev-mount";
+import { DevLinks } from "@/components/dev/dev-links";
+import { generalLinks, SITES } from "@/lib/dev/links";
 import { QueueActions } from "@/components/queue-actions";
 
 export const dynamic = "force-dynamic";
@@ -39,6 +41,12 @@ export default async function QueuePage() {
       <main className="wrap">
         <h1>Review queue</h1>
         <p className="meta">{total ? `${total} open, oldest first. Every decision is recorded with your name.` : "Nothing waiting."}</p>
+        <details className="card" id="links">
+          <summary>
+            <b>Dev links</b> <span className="muted small">(copy and paste; per-business links on <a href="/admin/links">/admin/links</a>)</span>
+          </summary>
+          <DevLinks groups={generalLinks()} sites={SITES} />
+        </details>
         {groups.length ? (
           <nav className="chips" aria-label="Kinds">
             {groups.map((g) => <a key={g.kind} href={`#${g.kind}`}>{g.label} ({g.items.length})</a>)}

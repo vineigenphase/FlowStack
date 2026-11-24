@@ -230,7 +230,7 @@ quality = clamp(rating_score × ${s.quality.rating_score} + volume_score × ${s.
                 <td>Price</td>
                 <td>
                   annual cost in £ (converted, decided 23 Nov) ≤ {pct(s.price.price_share_good)} of annual revenue scores 1, falling to 0 at {pct(s.price.price_share_bad)}; quote-only or
-                  no £ price scores {s.neutral}
+                  no £ price scores {s.neutral}. <a href="#price">Full method</a>
                 </td>
               </tr>
               <tr>
@@ -244,6 +244,86 @@ quality = clamp(rating_score × ${s.quality.rating_score} + volume_score × ${s.
           </table>
         </div>
         <p className="meta">Source: catalog/rules.yaml → scoring_v2. Changing a number there changes this page.</p>
+
+        <h3 id="price">How the price score is worked out</h3>
+        <ol className="plain">
+          <li>
+            <b>Prices:</b> each app&apos;s plans come from the vendor&apos;s pricing page (the reviewed workbook, checked 17 Nov 2026). Prices in another
+            currency are converted to £ at {r.fx.source} for {r.fx.date}; the vendor&apos;s own figure is kept next to it. Free trials, plans with no
+            billing period, per-transaction plans and prices that only say &quot;$&quot; are left out (never guessed).
+          </li>
+          <li>
+            <b>The business&apos;s revenue for a year:</b> revenue so far this financial year × 12 ÷ months so far (e.g. £700k after 7 months →
+            £1.2m).
+          </li>
+          <li>
+            <b>The plan we can cost:</b> a per-business plan is its monthly price × 12 (yearly and one-off prices as they are). Per-user or
+            per-employee plans need the headcount, which we don&apos;t hold yet, so they can&apos;t be costed. Usage-priced plans can&apos;t either. Of
+            the plans we can cost, the <b>cheapest paid plan</b> is used (a free plan only if there&apos;s no paid one). The listings don&apos;t say
+            which plan a business this size needs, so the trace names the plan used.
+          </li>
+          <li>
+            <b>Share of revenue</b> = that plan&apos;s cost for a year ÷ the year&apos;s revenue.
+          </li>
+          <li>
+            <b>Score:</b> {pct(s.price.price_share_good)} of revenue or less → 1. {pct(s.price.price_share_bad)} or more → 0. In between, a straight
+            line: score = 1 − (share − {s.price.price_share_good}) ÷ ({s.price.price_share_bad} − {s.price.price_share_good}).
+          </li>
+          <li>
+            <b>Missing</b> (scores {s.neutral}, shown as missing): no plans published, quote-only, only per-user or usage plans, or no revenue yet.
+          </li>
+          <li>
+            <b>Weight:</b> price is {pct(s.weights.price)} of the match, so it adds 0 to {(100 * s.weights.price).toFixed(1)} points (missing adds{" "}
+            {(100 * s.weights.price * s.neutral).toFixed(1)}).
+          </li>
+        </ol>
+        <p className="stat-label">Worked examples: a business with £1.2m revenue a year</p>
+        <div className="table-scroll">
+          <table className="tbl">
+            <thead>
+              <tr>
+                <th>Plan</th>
+                <th className="num">Cost a year</th>
+                <th className="num">Share of revenue</th>
+                <th className="num">Score</th>
+                <th className="num">Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["£50 a month, per business", 600],
+                ["£200 a month, per business", 2400],
+                ["£1,000 a month, per business", 12000],
+                ["£2,000 a month, per business", 24000],
+              ].map(([label, cost]) => {
+                const share = (cost as number) / 1_200_000;
+                const g = s.price.price_share_good;
+                const b = s.price.price_share_bad;
+                const score = share <= g ? 1 : share >= b ? 0 : 1 - (share - g) / (b - g);
+                return (
+                  <tr key={label as string}>
+                    <td>{label}</td>
+                    <td className="num">£{(cost as number).toLocaleString("en-GB")}</td>
+                    <td className="num">{(share * 100).toFixed(2)}%</td>
+                    <td className="num">{score.toFixed(2)}</td>
+                    <td className="num">{(100 * s.weights.price * score).toFixed(1)}</td>
+                  </tr>
+                );
+              })}
+              <tr>
+                <td>Quote only / not published (e.g. Chaser)</td>
+                <td className="num">–</td>
+                <td className="num">–</td>
+                <td className="num">{s.neutral.toFixed(2)} (missing)</td>
+                <td className="num">{(100 * s.weights.price * s.neutral).toFixed(1)}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p className="meta">
+          {r.prices.withGbp} of {r.count.listings} apps have a £ price today, so most apps score &quot;missing&quot; on price. Thresholds: catalog/rules.yaml →
+          scoring_v2.price; code: lib/rank/v2/price.ts.
+        </p>
 
         <h2 id="categories">Xero categories → our categories</h2>
         <p>

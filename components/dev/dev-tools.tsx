@@ -218,6 +218,7 @@ export function DevTools(props: { org: string | null; lines: PanelLine[]; initia
         {org ? <a className="dev-rail-item" href={`/admin/debug/${org}`}>Debug</a> : null}
         <span className="dev-rail-item disabled" title="Scenario checks arrive in Phase 4">Checks</span>
         <a className="dev-rail-item" href="/admin/engine-v2">Weights</a>
+        <a className="dev-rail-item" href={org ? `/admin/links?org=${org}#business` : "/admin/links"}>Links</a>
       </nav>
 
       {org && ready ? (

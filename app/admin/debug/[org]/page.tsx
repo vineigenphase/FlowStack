@@ -5,6 +5,9 @@ import { withOrg } from "@/lib/db/client";
 import { orgs, recommendationsV2, syncRuns } from "@/db/schema";
 import { SiteHeader } from "@/components/site-header";
 import { DevMount } from "@/components/dev/dev-mount";
+import { DevLinks } from "@/components/dev/dev-links";
+import { orgLinks } from "@/lib/dev/links";
+import { panelLines } from "@/lib/dev/lines";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Debug · FlowStack" };
@@ -45,8 +48,14 @@ export default async function DebugPage({ params }: { params: Promise<{ org: str
           {o?.sample ? "Sample data · " : ""}Industry: {o?.industry ?? "not set"} · Markets: {o?.markets.join(", ") ?? "–"} · Engine v2 shadow rows: {v2}
         </p>
         <p className="small">
-          <a href={`/app/${org}`}>Open the business</a>
+          <a href={`/app/${org}`}>Open the business</a> · <a href="/admin/links">All dev links</a>
         </p>
+        <details className="card" id="links">
+          <summary>
+            <b>Links for this business</b> <span className="muted small">(copy and paste)</span>
+          </summary>
+          <DevLinks groups={orgLinks(org, await panelLines(org))} />
+        </details>
         <h2>Last refreshes</h2>
         {runs.length === 0 ? (
           <p className="muted">No refreshes yet.</p>

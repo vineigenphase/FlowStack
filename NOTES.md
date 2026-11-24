@@ -541,3 +541,7 @@ ENGINE-V2.md (owner, 22 Nov) saved in the repo as received. It wins over the oth
 - CLAUDE.md §1 updated ("Owner restyle 22 Nov 2026; designer may revise"), with the old system kept for reference.
 - **Not done:** axe isn't installed (adding it means a new dev dependency), so the contrast checks are computed from
   the tokens in a unit test instead. Page-specific layouts weren't redesigned (designer's job).
+- **24 Nov: dev links + price method.** `/admin/links` lists every admin, dev API, public and per-business link (each
+  flagged line's page and v1/v2 traces) as full URLs for the current site, with Copy and Copy all. The same lists
+  appear on the Debug and Review queue pages (admin branch only, tested), and the rail has a "Links" item.
+  `/admin/engine-v2` now spells out the price score step by step, with worked examples calculated from rules.yaml.

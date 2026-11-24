@@ -92,3 +92,22 @@ describe("queue summary and 'needs a person' (throwaway db)", () => {
     resetEnv();
   });
 });
+
+describe("dev links", () => {
+  it("every link is a site path; business links cover the pages, debug, digest and each line's v1 + v2 trace", async () => {
+    const { generalLinks, orgLinks } = await import("@/lib/dev/links");
+    const all = [...generalLinks(), ...orgLinks("00000000-0000-0000-0000-000000000000", [{ lineKey: "pl:310", name: "Cost of Goods Sold", value: 1, state: "flagged", ruleId: "x" }])].flatMap((g) => g.links);
+    for (const l of all) expect(l.path.startsWith("/") && !l.path.startsWith("//"), l.path).toBe(true);
+    const paths = all.map((l) => l.path);
+    expect(paths).toContain("/admin/debug/00000000-0000-0000-0000-000000000000");
+    expect(paths).toContain("/api/dev/engine/00000000-0000-0000-0000-000000000000/pl%3A310?engine=v2");
+    expect(paths).toContain("/api/dev/engine/00000000-0000-0000-0000-000000000000/pl%3A310?engine=v1");
+    expect(paths).toContain("/admin/queue#catalog_gap");
+  });
+
+  it("the review queue page shows the links only after the admin check", async () => {
+    const src = (await import("node:fs")).readFileSync("app/admin/queue/page.tsx", "utf8");
+    const denied = src.indexOf("This page is for the FlowStack team.");
+    expect(src.indexOf("<DevLinks")).toBeGreaterThan(denied);
+  });
+});
